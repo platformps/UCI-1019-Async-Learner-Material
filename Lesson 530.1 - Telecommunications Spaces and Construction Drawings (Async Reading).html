@@ -1,0 +1,2294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 530 (M04) - Introduction to Enterprise Infrastructure
+  Lesson 530.1 - Telecommunications Spaces and Construction Drawings (Async Reading)
+  VERSION: v1.0.6  (2026-10-28)  Released under delegated approval (module plan v0.1.0)
+
+  CHANGES IN v1.0.6
+  Fifth and last language pass 2026-10-28: applied all 4 LP5 cuts, including
+  the feedback strings. v1.0.5 kept.
+
+  CHANGES IN v1.0.5
+  Fourth language pass 2026-10-28: applied both LP4 cuts; the scaled-length
+  tolerance now states its source (a 1/16 in misreading at 1/8 in = 1 ft is
+  6 in). v1.0.4 kept.
+
+  CHANGES IN v1.0.4
+  Third language pass 2026-10-28: applied all 10 LP3 cuts. v1.0.3 kept.
+
+  CHANGES IN v1.0.3
+  Second language pass 2026-10-28: applied all 13 LP2 cuts; none reverses an
+  earlier correction. fc expanded at first use (table), AWG expanded in the
+  riser label and description, Lighting and Bonding added to the where-it-
+  shows list. v1.0.2 kept.
+
+  CHANGES IN v1.0.2
+  Coordinator review 2026-10-28: applied the LP1 language pass (42 of 46
+  cuts; 3 engine score messages held; the code cut rejected per ruling:
+  lesson and topic numbers, UCI 1019 crumb and Begin button stay). Content:
+  530.1.1 check made single- answer (Level 2 room fed from Level 1); TR
+  worked review gains a Bonding row; scale order stated once (dimension,
+  grid, graphic scale); PBB, SBB and TBB expanded at first use in 530.1.9;
+  unused sleeves are the spare capacity; legend check options rewritten
+  without the explaining tell; negative riser stem reworded. v1.0.1 kept.
+
+  CHANGES IN v1.0.1
+  Plan-set crops (T-102 title block, T-001 symbol legend, T-102 graphic
+  scale) re-cut from the rebuilt sheet PNGs of 2026-10-28; same regions.
+  Checked: no crop shows a graded answer (no general notes, no dimensions
+  of the Break Room run). No text changed. v1.0.0 kept.
+
+  CHANGES IN v1.0.0
+  First issue. Built new for UCI 1019; no earlier version exists.
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox) reused verbatim from
+  UCI-2107.1_M529_Lesson-529.6_Async-Reading_v0.2.0.html. Appended after it: the
+  2026 brand layer from FORMAT-SPEC_Async-Reading_2026-Addendum_v0.1.0_DRAFT.md
+  section 3, and one component sheet (.calc, a worked-arithmetic panel). The
+  engine itself is untouched. Logo: inline Slate SVG from _brand/2026/assets.
+
+  OBJECTIVES, one verb each, from the module plan section 3 (JTA 4.1 subtasks
+  1-3 and 4.2 subtasks 1-4), learner-facing wording as written in the plan.
+    Identify     each telecommunications space and its function     4.1.1
+    Describe     the requirements of a telecommunications room     4.1.2
+    Relate       each space to its place in the cabling hierarchy  4.1.3
+    Read         plan, elevation, section and detail views          4.2.1
+    Interpret    symbols, legends and sheet notes                   4.2.2
+    Read         a riser diagram, a panel schedule, a device sched. 4.2.3
+    Dimension    a cable run from a scaled drawing                  4.2.4
+  Plan wording kept; "Describe" objective keeps the plan's list (space,
+  power, cooling, security). Acronyms not expanded in the objective lines
+  because the spaces are named in full there.
+
+  TOPIC OUTLINE
+    Section 1  The Spaces and the Cabling Between Them
+      530.1.1   Where the cabling lives                      entry point, 4.1.1
+      530.1.2   The cabling hierarchy                        4.1.3
+      530.1.3   What a telecommunications room needs         4.1.2
+    Section 2  Reading a Construction Drawing Set
+      530.1.4   How a drawing set is organized               4.2.1
+      530.1.5   Plan, elevation, section and detail          4.2.1
+      530.1.6   Symbols, legends and notes                   4.2.2
+    Section 3  Scale, Runs and Schedules
+      530.1.7   Scale                                        4.2.4
+      530.1.8   Dimensioning a cable run                     4.2.4
+      530.1.9   Riser diagrams                               4.2.3
+      530.1.10  Panel schedules and other schedules          4.2.3
+    Section 4  Wrapping Up
+      530.1.11  What you covered                             summary
+
+  ACTIVITY GATES: 16 - 3 card sets, 10 single-answer checks, 1 matching,
+    1 ordering, 1 acknowledgement.
+  DIAGRAMS: 5 original SVG, each with a full text description.
+  IMAGES: 3 crops of the Harlow Street plan set (T-102 title block, T-001
+    symbol legend, T-102 graphic scale and drawing title), in images/.
+
+  BUILD NOTES - what is asserted, and what is not
+  - No graded lab answer appears on the page. Every worked example uses the
+    hypothetical Mercer Avenue Clinic with its own numbers: the TR review
+    (530.1.3) finds door, pipe and lighting faults, none of which the Harlow
+    Street TR review grades; the run (530.1.8) is 62 ft horizontal plus 5 ft
+    rise, 9 ft 6 in drop and a 12 ft loop; the riser and panel schedule are
+    Mercer sheets. The Harlow Street run to its Break Room outlet, its TR
+    review and its riser and panel schedule are not described.
+  - Harlow Street facts used (overview and 530.1.1 only): Kestrel
+    Communications, Ridgeway Builders, Calder Regional Services, Issued for
+    Construction Revision 1, TR 2A on Level 2, ER 1A below it, EF 1C. All from
+    the module plan section 5 and the drawn set.
+  - Standards named by scope only, no clause numbers: ANSI/TIA-568 (90 m
+    permanent link, 100 m channel), TIA-569 (pathways and spaces). TR values
+    are stated as an owner standard's values, not as TIA-569 values.
+  - TIA-568 "Distributor A/B/C" naming stated as the standard's current
+    terms for HC/IC/MC; checked against secondary sources, not a purchased
+    copy.
+  - Architectural scale ratios (1/8 in = 1 ft is 1:96, 3/32 in is 1:128,
+    3/8 in is 1:32) are arithmetic.
+  - Module numbers kept out of learner text (header and crumb print the
+    module title); lesson and topic numbers kept because the engine needs
+    them. Course code UCI 1019 kept in the crumb and the window title, as
+    on every async page.
+
+  LANGUAGE PASS AND AUDITS (final, v1.0.6)
+  - Language pass by fresh reviewers, module-wide counts per round:
+    116, 52, 23, 14, 13. Stopped when the count stopped falling.
+  - audit_html.py: FAIL (0), WARN (0).
+  - contrast_audit.py as written: FAIL (1), the engine rule
+    .order .step.picked .seq scored against the legacy amber token (the
+    tool keeps the first token definition); the brand layer overrides it
+    to White on #8A4B00, 6.8:1. With later token definitions winning:
+    FAIL (0). REPORT lines are unresolvable containers, as on the
+    reference page.
+
+  OPEN, AND NOT RESOLVED HERE
+  - Engine-level wording, not edited (byte-identical rule), to fix across
+    all pages in the reference engine: the score messages in the engine
+    script ("Outstanding - you are working at field-standard level and are
+    ready for the lab." / "Strong work. Revisit anything you missed and you
+    will be field-ready." / "Good progress. Go back over the cards and
+    applied scenarios to close the gaps."). This page has no score ring, so
+    the messages are not shown on it as built.
+  - Not opened in a browser in this session. Checked with audit_html.py,
+    contrast_audit.py (as written and with later token definitions winning),
+    and the build script's engine byte-identity check.
+  - Reading time measured by word count only (audit_html.py estimate).
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 530.1 &mdash; Telecommunications Spaces and Construction Drawings &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Enterprise Infrastructure</b> &middot; Lesson 530.1 &mdash; Telecommunications Spaces and Construction Drawings</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v1.0.6</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Introduction to Enterprise Infrastructure</p>
+      <h2 id="ovh" tabindex="-1">Lesson 530.1 &mdash; Telecommunications Spaces and Construction Drawings</h2>
+      <p class="lead-in">Where the cabling of a building lives, and how to read the drawings that tell you where to put it.</p>
+
+      <p>Kestrel Communications has the telecommunications contract for the Harlow Street Operations Center, a two-storey building at 2200 Harlow Street. The general contractor, Ridgeway Builders, has issued the drawing set marked Issued for Construction, Revision 1. Before a crew pulls the first cable, a Kestrel technician reads that set. It says which room on Level 2 the cables start from and which room below feeds that one. It also states what the owner requires of each room and gives the distances the technician works out each cable length from.</p>
+
+      <p>The lesson first covers the building&rsquo;s telecommunications spaces: the rooms where cabling enters the building, where it is cross-connected, and where it ends at a desk, with the requirements an owner sets for the room that serves each floor. It then covers the drawing set: how its sheets are organized; its plan, elevation, section and detail views; its symbols, notes and scale; and the riser diagram and schedules that carry what a floor plan cannot show.</p>
+
+      <p>The worked examples on this page use a second, hypothetical building, the Mercer Avenue Clinic. The Harlow Street drawings use the same conventions.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>The Spaces and the Cabling Between Them.</b> The telecommunications spaces, the order in which cabling passes through them, and what an owner requires of a telecommunications room.</li>
+        <li><b>Reading a Construction Drawing Set.</b> The sheet index and title block, the plan, elevation, section and detail views, the callouts that link them, and the symbols, legends and notes.</li>
+        <li><b>Scale, Runs and Schedules.</b> Reading a distance from a scaled drawing, adding up the length of a cable run, and reading a riser diagram and a panel schedule.</li>
+        <li><b>Wrapping Up.</b> The whole lesson in one place.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>4</b><span>Sections</span></div>
+        <div class="ov-stat"><b>11</b><span>Topics</span></div>
+        <div class="ov-stat"><b>16</b><span>Activities</span></div>
+        <div class="ov-stat"><b>5</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the standards and the documents</h3>
+      <p><strong>ANSI/TIA-568</strong>, from the American National Standards Institute (ANSI) and the Telecommunications Industry Association (TIA), covers the cabling itself, including the length limits of a horizontal cable, and <strong>TIA-569</strong> covers the pathways and spaces the cabling occupies. An owner usually writes its own standard on top of them. A contractor builds to the owner standard. The owner standard&rsquo;s values may be stricter than the published standards. Where this page gives a value for a room, it is an owner standard&rsquo;s value. The project you work on will have its own.</p>
+      <p>Drawing conventions vary between design firms. Sheet prefixes, symbols and note styles on this page are common practice, not a rule; the legend and notes of each set govern that set.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or jump
+         about using the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks &mdash; a
+         knowledge check, a set of cards to open, a matching exercise or an ordering exercise.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. Your progress through the lesson is shown in the header and
+         in the contents list.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching and ordering activities every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description, each drawing excerpt has a text alternative, and tables have
+         headings and captions that read correctly aloud.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 530.1</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="530.1" data-lesson-title="Telecommunications Spaces and Construction Drawings" data-group-num="1" data-group-title="The Spaces and the Cabling Between Them" data-num="530.1.1" data-title="Where the cabling lives">
+  <p class="crumb">Lesson 530.1 &middot; Section 1 The Spaces and the Cabling Between Them</p>
+  <h2><span class="tnum">530.1.1</span> Where the cabling lives</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 530.1</span>
+    <h3>Telecommunications Spaces and Construction Drawings</h3>
+    <p>A building&rsquo;s cabling passes through a short chain of rooms, each with its own job. A drawing set shows where each room is and what goes into it. This lesson names those rooms and the cabling between them, and sets out what an owner requires of the room that serves a floor. It then takes you through reading the drawings: the sheets, the views, the symbols and notes, the scale, and the riser diagram and schedules.</p>
+    <p class="lb-meta"><b>4</b> sections &nbsp;&middot;&nbsp;
+       <b>11</b> topics &nbsp;&middot;&nbsp;
+       <b>16</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 530.1 you will be able to</div>
+    <ul>
+      <li><b>Identify</b> each telecommunications space and its function: entrance facility, equipment room, telecommunications room, telecommunications enclosure and work area.</li>
+      <li><b>Describe</b> the space, power, cooling and security requirements of a telecommunications room.</li>
+      <li><b>Relate</b> each space to its place in the cabling hierarchy.</li>
+      <li><b>Read</b> plan, elevation, section and detail views.</li>
+      <li><b>Interpret</b> telecommunications and electrical symbols, legends and sheet notes.</li>
+      <li><b>Read</b> a riser diagram, a panel schedule and a device schedule.</li>
+      <li><b>Dimension</b> a cable run from a scaled drawing.</li>
+    </ul></div>
+
+  <p class="lead-in">The chain runs from the point where the service provider&rsquo;s cable comes through the wall to the outlet at a desk.</p>
+
+  <p>On the Harlow Street drawings, the outlets on Level 2 are served from a room marked TR 2A. TR 2A is fed from a room directly below it on Level 1, ER 1A, and ER 1A is fed from a room in the north-west corner, EF 1C, where the provider&rsquo;s conduits enter. The letters are the names of the spaces: entrance facility (EF), equipment room (ER) and telecommunications room (TR).</p>
+
+  <p>The standard that defines these spaces is TIA-569, from the Telecommunications Industry Association (TIA). It names them by function, not by size, so a small building can put two of them in one room, and a large one can have several of each.</p>
+
+  <p>Open each card.</p>
+  <div class="revealset gate"><div class="cards stack">
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Entrance facility (EF)</span><span class="rcard-sub">where outside cable enters the building</span><span class="rcard-detail" hidden><p>The point where a service provider&rsquo;s cable, or a cable from another building on the same campus, comes through the outside wall or up through the floor. It holds the entrance conduits, the end of the outside cable, and the <span class="keyterm">primary protectors</span>: devices on each copper pair that carry a lightning or power-cross surge to ground before it reaches the building&rsquo;s equipment.</p><p><b>It is often a corner of another room.</b> In a small building the entrance facility may be a backboard on one wall of the equipment room.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Equipment room (ER)</span><span class="rcard-sub">the building&rsquo;s central telecommunications room</span><span class="rcard-detail" hidden><p>A room that serves the whole building, or a large part of it. It holds the <span class="keyterm">main cross-connect</span> &mdash; the patch panels where the entrance cabling meets the cabling that runs out to every floor &mdash; together with core network equipment and, often, the provider&rsquo;s equipment.</p><p><b>Drawings and owners may call it the MDF</b>, for main distribution frame.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Telecommunications room (TR)</span><span class="rcard-sub">the room that serves one floor, or part of one</span><span class="rcard-detail" hidden><p>The room where the cables to the outlets on a floor begin. It holds the <span class="keyterm">horizontal cross-connect</span>, where every horizontal cable on the floor ends on a patch panel, together with the switches and the backbone cables from the equipment room.</p><p><b>An older name is the IDF</b>, for intermediate distribution frame, and many owners still use it. A floor too large for one TR gets a second.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Telecommunications enclosure (TE)</span><span class="rcard-sub">a cabinet doing a TR&rsquo;s job for part of a floor</span><span class="rcard-detail" hidden><p>A housing &mdash; a wall cabinet or a small floor cabinet &mdash; that holds terminations and equipment for a small area: a remote wing, a classroom block, a group of offices too far from the TR. It is fed like a TR and serves outlets like a TR.</p><p><b>It does not replace the floor&rsquo;s TR.</b> It supplements the TR where a second room is not justified.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Work area</span><span class="rcard-sub">where people plug in</span><span class="rcard-detail" hidden><p>The space where occupants use telecommunications equipment: a desk, a conference table, a ceiling position for a wireless access point. The cabling ends here at an <span class="keyterm">outlet</span>, and a <span class="keyterm">work area cord</span> connects the outlet to the device.</p><p><b>An access point in a ceiling is a work area too.</b> Its outlet is above the tiles rather than in a wall box.</p></span></button>
+  </div></div>
+
+  <p>Each space&rsquo;s function decides who works there and what the room has to provide. A provider&rsquo;s technician needs the entrance facility. A building&rsquo;s network team needs the equipment room and the telecommunications rooms. Occupants have no access to any of the three.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="A telecommunications room is the room where the horizontal cables to a floor&rsquo;s outlets begin, so it holds the patch panels for those cables. The entrance facility holds the end of the provider&rsquo;s cable and the protectors on it. The equipment room holds the main cross-connect for the whole building and the cables out to each floor, not the patch panels for one floor&rsquo;s outlets. A work area is where the cable ends at an outlet.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A Level 2 floor plan shows a room holding the patch panels where every outlet on that floor is terminated. The room is fed by backbone cable from a room on Level 1. Which space is it?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The entrance facility</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The equipment room</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The telecommunications room</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The work area</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.1" data-lesson-title="Telecommunications Spaces and Construction Drawings" data-group-num="1" data-group-title="The Spaces and the Cabling Between Them" data-num="530.1.2" data-title="The cabling hierarchy">
+  <p class="crumb">Lesson 530.1 &middot; Section 1 The Spaces and the Cabling Between Them</p>
+  <h2><span class="tnum">530.1.2</span> The cabling hierarchy</h2>
+  <p class="lead-in">Cabling runs in one direction through the spaces: from the entrance, through one central cross-connect, out to each floor, and from each floor to the outlets.</p>
+
+  <p>ANSI/TIA-568, published by the American National Standards Institute (ANSI) and the TIA, sets out the cabling between the spaces as a hierarchy, a star with the equipment room at its center. Drawings, owner standards and test reports use the name of each level.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The levels of the cabling hierarchy, from the street to the desk.</caption>
+      <thead><tr>
+        <th scope="col">Level</th><th scope="col">Where it is</th><th scope="col">What it does</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Entrance cabling</th><td>Provider or campus cable into the entrance facility</td><td>Brings service into the building and ends on protectors</td></tr>
+        <tr><th scope="row">Main cross-connect</th><td>Equipment room</td><td>The single point where the entrance cabling meets the backbone to every floor</td></tr>
+        <tr><th scope="row">Backbone cabling</th><td>Between the entrance facility, the equipment room and each telecommunications room, usually vertical through floor sleeves</td><td>Carries fiber and multipair copper from the main cross-connect to each floor</td></tr>
+        <tr><th scope="row">Horizontal cross-connect</th><td>Telecommunications room or enclosure</td><td>Terminates the backbone arriving from the equipment room and every horizontal cable leaving for the outlets</td></tr>
+        <tr><th scope="row">Horizontal cabling</th><td>From the horizontal cross-connect to each outlet, usually above the ceiling on one floor</td><td>One cable per outlet port, never spliced and never shared</td></tr>
+        <tr><th scope="row">Work area</th><td>Outlet to device</td><td>Connects the device to the outlet</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A large building may add an <span class="keyterm">intermediate cross-connect</span> between the main cross-connect and some of its telecommunications rooms, for a wing or a second building. The current edition of ANSI/TIA-568 calls the three cross-connects Distributor C (main), Distributor B (intermediate) and Distributor A (horizontal). Drawings and owner standards still mostly use the cross-connect names.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; The cabling hierarchy in a two-storey building</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 340" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A section through a two-storey building showing the provider cable entering the entrance facility, a backbone to the equipment room, a backbone up to the telecommunications room, and a horizontal cable to a work area outlet, with brackets marking the permanent link and the channel. A full text description follows.">
+    <text x="24" y="24" font-size="16" font-weight="700" fill="#611940">How cabling runs from the street to the desk</text>
+    <line x1="470" y1="54" x2="900" y2="54" stroke="#26282E" stroke-width="2"/>
+    <line x1="470" y1="48" x2="470" y2="60" stroke="#26282E" stroke-width="2"/>
+    <line x1="900" y1="48" x2="900" y2="60" stroke="#26282E" stroke-width="2"/>
+    <text x="560" y="46" font-size="13" fill="#26282E">Channel: 100 m maximum, cords included</text>
+    <line x1="500" y1="80" x2="820" y2="80" stroke="#611940" stroke-width="2"/>
+    <line x1="500" y1="74" x2="500" y2="86" stroke="#611940" stroke-width="2"/>
+    <line x1="820" y1="74" x2="820" y2="86" stroke="#611940" stroke-width="2"/>
+    <text x="560" y="74" font-size="13" fill="#611940">Permanent link: 90 m maximum</text>
+    <rect x="110" y="92" width="800" height="110" fill="#ffffff" stroke="#26282E" stroke-width="1.6"/>
+    <rect x="110" y="202" width="800" height="110" fill="#ffffff" stroke="#26282E" stroke-width="1.6"/>
+    <line x1="24" y1="312" x2="916" y2="312" stroke="#26282E" stroke-width="3"/>
+    <text x="118" y="110" font-size="13" fill="#5A5D66">Level 2</text>
+    <text x="118" y="220" font-size="13" fill="#5A5D66">Level 1</text>
+    <rect x="330" y="108" width="190" height="84" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="340" y="130" font-size="13" font-weight="700" fill="#26282E">Telecommunications room</text>
+    <text x="340" y="150" font-size="13" fill="#26282E">horizontal cross-connect</text>
+    <rect x="330" y="228" width="190" height="76" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="340" y="250" font-size="13" font-weight="700" fill="#26282E">Equipment room</text>
+    <text x="340" y="270" font-size="13" fill="#26282E">main cross-connect</text>
+    <rect x="130" y="228" width="130" height="76" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="138" y="250" font-size="13" font-weight="700" fill="#26282E">Entrance facility</text>
+    <text x="138" y="270" font-size="13" fill="#26282E">protectors</text>
+    <line x1="24" y1="292" x2="130" y2="292" stroke="#26282E" stroke-width="3"/>
+    <text x="24" y="284" font-size="13" fill="#26282E">Provider cable</text>
+    <line x1="260" y1="292" x2="330" y2="292" stroke="#611940" stroke-width="3"/>
+    <text x="264" y="284" font-size="13" fill="#611940">backbone</text>
+    <line x1="425" y1="228" x2="425" y2="192" stroke="#611940" stroke-width="3"/>
+    <text x="432" y="216" font-size="13" fill="#611940">backbone</text>
+    <line x1="520" y1="160" x2="800" y2="160" stroke="#26282E" stroke-width="2.4"/>
+    <line x1="800" y1="160" x2="800" y2="178" stroke="#26282E" stroke-width="2.4"/>
+    <text x="560" y="152" font-size="13" fill="#26282E">horizontal cable</text>
+    <rect x="760" y="108" width="140" height="84" fill="#E7FD82" stroke="#26282E" stroke-width="1.4"/>
+    <text x="770" y="128" font-size="13" font-weight="700" fill="#26282E">Work area</text>
+    <rect x="794" y="176" width="12" height="12" fill="#26282E"/>
+    <text x="812" y="187" font-size="13" fill="#26282E">outlet</text>
+    <rect x="580" y="228" width="310" height="76" fill="#ffffff" stroke="#26282E" stroke-width="1.4" stroke-dasharray="6 4"/>
+    <text x="590" y="250" font-size="13" font-weight="700" fill="#26282E">Telecommunications enclosure</text>
+    <text x="590" y="270" font-size="13" fill="#26282E">serves part of a floor; fed like a TR</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is a section through a two-storey building, Level 2 above Level 1, with the ground line along the bottom.</p>
+    <p>On the far left, outside the building, a heavy line labeled Provider cable runs into a gray box on Level 1 labeled Entrance facility, protectors. A line labeled backbone runs from the entrance facility to a blue box beside it labeled Equipment room, main cross-connect. From the equipment room a second line labeled backbone runs straight up into a blue box on Level 2 labeled Telecommunications room, horizontal cross-connect.</p>
+    <p>From the telecommunications room a line labeled horizontal cable runs across Level 2 to the right and drops to a small black square labeled outlet, inside a yellow-green box labeled Work area.</p>
+    <p>Above the building, two brackets are drawn. The lower one, labeled Permanent link: 90 m maximum, spans from the telecommunications room to the outlet. The upper one, labeled Channel: 100 m maximum, cords included, spans slightly wider at both ends, from inside the telecommunications room to beyond the outlet.</p>
+    <p>On Level 1, to the right, a dashed box is labeled Telecommunications enclosure, serves part of a floor; fed like a TR. It is not connected to the chain in the drawing.</p>
+  </details>
+
+  <h3>The two length limits</h3>
+  <p>ANSI/TIA-568 sets one length limit for the installed cable and another for the cable with its cords.</p>
+  <ul>
+    <li><strong>Permanent link, 90 m (295 ft).</strong> The installed horizontal cable from its patch panel port in the telecommunications room to its outlet, with the connectors at both ends. A contractor installs and tests it. The 90 m includes the whole cable: the horizontal distance, the rises and drops, and the slack.</li>
+    <li><strong>Channel, 100 m (328 ft).</strong> The permanent link plus the cords at both ends: the patch cord in the telecommunications room and the work area cord at the desk. The extra 10 m is the allowance for the cords.</li>
+  </ul>
+  <p>A design that puts an outlet more than 90 m of cable from its telecommunications room needs a second room, a telecommunications enclosure nearer the outlet, or a different design. The limit is on cable length, not on the straight-line distance across the floor.</p>
+
+  <p>Put the cabling in the order a signal from the provider passes through it on its way to a desk.</p>
+  <div class="order gate">
+    <div class="step" data-pos="1">Provider cable ending on protectors in the entrance facility</div>
+    <div class="step" data-pos="2">Main cross-connect in the equipment room</div>
+    <div class="step" data-pos="3">Backbone cable up to the floor</div>
+    <div class="step" data-pos="4">Horizontal cross-connect in the telecommunications room</div>
+    <div class="step" data-pos="5">Horizontal cable above the ceiling</div>
+    <div class="step" data-pos="6">Outlet and work area cord at the desk</div>
+  </div>
+
+  <div class="cyu gate" data-answer="0" data-fb="The permanent link is the installed cable from the patch panel port to the outlet, including every rise, drop and service loop, so the 92 m installed cable is over its 90 m limit whatever the cords add. The 100 m channel limit includes the cords, so it is the wrong limit for the installed cable on its own. Shortening the patch cord changes the channel, not the permanent link. The straight-line distance across the floor is not what either limit measures.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A horizontal cable measures 92 m installed, from its patch panel port to its outlet. The patch cord and the work area cord add 4 m. Which statement is correct?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The permanent link exceeds its limit</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The run is within limits because the channel is 96 m</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The run is within limits if the patch cord is shortened</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Only the straight-line distance to the outlet needs checking</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.1" data-lesson-title="Telecommunications Spaces and Construction Drawings" data-group-num="1" data-group-title="The Spaces and the Cabling Between Them" data-num="530.1.3" data-title="What a telecommunications room needs">
+  <p class="crumb">Lesson 530.1 &middot; Section 1 The Spaces and the Cabling Between Them</p>
+  <h2><span class="tnum">530.1.3</span> What a telecommunications room needs</h2>
+  <p class="lead-in">An owner states its requirements for a telecommunications room by category. A design review checks the drawn room against each category in turn.</p>
+
+  <p>TIA-569 sets out what a telecommunications room has to provide. An owner standard turns that into values for its own buildings: a minimum size, a door width, a number of circuits, a temperature range. The categories below are the usual ones. The values in the table come from one owner standard, written for the hypothetical Mercer Avenue Clinic; another owner may set different values under the same categories.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Telecommunications room requirements by category, as one owner standard states them (Mercer Avenue Clinic, hypothetical).</caption>
+      <thead><tr>
+        <th scope="col">Category</th><th scope="col">What the owner standard requires</th><th scope="col">What the requirement protects</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Space</th><td>Clear interior of at least 10 ft &times; 9 ft for up to 8,000 sq ft of floor served; one room per floor</td><td>Room for racks, working clearance and growth</td></tr>
+        <tr><th scope="row">Door and security</th><td>At least 36 in wide and 80 in high, opening outward, lockable, no sill</td><td>Equipment moves in and out on a cart; only authorized staff enter</td></tr>
+        <tr><th scope="row">Power</th><td>Two dedicated 20 A, 120 V circuits on separate breakers, each to a duplex receptacle at the racks; one convenience receptacle on another circuit</td><td>One tripped breaker does not drop the whole room; tools and test sets do not share the equipment circuits</td></tr>
+        <tr><th scope="row">Cooling</th><td>Continuous, every hour of the year, 64&ndash;75 &deg;F</td><td>Switches run around the clock and heat a closed room</td></tr>
+        <tr><th scope="row">Backboards</th><td>&frac34; in fire-retardant plywood on at least two walls, 8 ft high</td><td>A fixing surface for wall-mounted hardware that does not add fuel to a fire</td></tr>
+        <tr><th scope="row">Separation</th><td>No transformer, motor or electrical panel within 10 ft of a rack; no water or drain pipe over the room; no false ceiling</td><td>Protects the equipment from electromagnetic interference and water damage; leaves no concealed space above it</td></tr>
+        <tr><th scope="row">Lighting</th><td>At least 50 foot-candles (fc) measured 3 ft above the floor</td><td>Labels and ports readable without a flashlight</td></tr>
+        <tr><th scope="row">Bonding</th><td>A secondary bonding busbar in the room, with every rack and pathway bonded to it</td><td>Equal potential across the room&rsquo;s metalwork</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A <span class="keyterm">foot-candle</span> is a measure of light falling on a surface; 50 fc is about 540 lux. <span class="keyterm">Dedicated</span> means the circuit serves nothing but the named receptacles: a circuit that also feeds a corridor&rsquo;s receptacles is not dedicated, however it is labeled.</p>
+
+  <h3>Where each requirement shows on a drawing</h3>
+  <p>No single sheet shows a room&rsquo;s compliance. Each category is drawn or written in a particular place in the set. Several share the enlarged plan.</p>
+  <ul>
+    <li><strong>Space and door:</strong> the enlarged plan of the room, with its dimensions and the door swing drawn as an arc.</li>
+    <li><strong>Power:</strong> the receptacle symbols on the enlarged plan, each tagged with a circuit number, and the panel schedule on the electrical sheet, which says what else is on that circuit.</li>
+    <li><strong>Cooling:</strong> a note on the telecommunications sheet or the mechanical drawings, naming the system that serves the room and the hours it runs.</li>
+    <li><strong>Backboards:</strong> the wall elevations, which show the plywood on each wall it covers.</li>
+    <li><strong>Separation:</strong> the neighboring rooms on the floor plan and the electrical plan, which show what sits on the other side of each wall.</li>
+    <li><strong>Lighting:</strong> the lighting note, which gives the level in foot-candles.</li>
+    <li><strong>Bonding:</strong> the enlarged plan and the bonding details, which show the busbar and the conductor from each rack.</li>
+  </ul>
+
+  <h3>A worked review</h3>
+  <p>The Mercer Avenue Clinic&rsquo;s TR 3A is drawn at 10&prime;-6&Prime; &times; 9&prime;-6&Prime;, serving 7,200 sq ft. Its door is 3&prime;-0&Prime; wide, drawn swinging into the room, with a threshold sill noted on the door schedule. Two dedicated circuits serve the racks. A split-system cooling unit serves the room on its own thermostat. Plywood is drawn on the north and west walls, and a secondary bonding busbar on the north wall with each rack bonded to it. A condensate drain from the floor above is drawn crossing the room&rsquo;s ceiling space. The lighting note gives 30 fc.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The Mercer Avenue Clinic TR 3A, checked against the owner standard in the first table.</caption>
+      <thead><tr>
+        <th scope="col">Category</th><th scope="col">Drawn</th><th scope="col">Result</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Space</th><td>10&prime;-6&Prime; &times; 9&prime;-6&Prime;, 7,200 sq ft served</td><td>Complies</td></tr>
+        <tr><th scope="row">Door and security</th><td>36 in, swings in, sill</td><td>Does not comply: swing and sill</td></tr>
+        <tr><th scope="row">Power</th><td>Two dedicated circuits</td><td>Complies</td></tr>
+        <tr><th scope="row">Cooling</th><td>Dedicated split system</td><td>Complies</td></tr>
+        <tr><th scope="row">Backboards</th><td>North and west walls</td><td>Complies</td></tr>
+        <tr><th scope="row">Separation</th><td>Condensate drain over the room</td><td>Does not comply: drain pipe over the room</td></tr>
+        <tr><th scope="row">Lighting</th><td>30 fc</td><td>Does not comply: below 50 fc</td></tr>
+        <tr><th scope="row">Bonding</th><td>Busbar on the north wall, each rack bonded to it</td><td>Complies</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A review records the compliant categories as well as the faults. A list of faults alone cannot show that the other categories were checked.</p>
+
+  <p>Match each drawn condition to the requirement category it falls under.</p>
+  <div class="match gate" data-left="Drawn condition" data-right="Category">
+    <div class="pair" data-left="A water main drawn across the ceiling of the room" data-right="Separation"></div>
+    <div class="pair" data-left="Rack receptacles on a circuit shared with a corridor" data-right="Power"></div>
+    <div class="pair" data-left="A cooling unit sized to hold the room at 82 &deg;F" data-right="Cooling"></div>
+    <div class="pair" data-left="A 32 in door leaf" data-right="Door and security"></div>
+    <div class="pair" data-left="Plywood painted over its fire-retardant stamp" data-right="Backboards"></div>
+  </div>
+
+  <div class="cyu gate" data-answer="2" data-fb="The owner standard in the first table requires a door at least 36 in wide and 80 in high, opening outward, lockable and with no sill. This door meets every part of that except the sill, so the review records the door as not complying because of the sill. Width, height, swing and lock all comply. A door that fails one part of the requirement is not recorded as compliant.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Under the owner standard in the first table, a TR door is drawn 36 in &times; 80 in, opening outward, with a lockset and a 1/2 in threshold sill. What does the review record?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Door complies</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Door does not comply: width</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Door does not comply: sill</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Door does not comply: swing</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.1" data-lesson-title="Telecommunications Spaces and Construction Drawings" data-group-num="2" data-group-title="Reading a Construction Drawing Set" data-num="530.1.4" data-title="How a drawing set is organized">
+  <p class="crumb">Lesson 530.1 &middot; Section 2 Reading a Construction Drawing Set</p>
+  <h2><span class="tnum">530.1.4</span> How a drawing set is organized</h2>
+  <p class="lead-in">A drawing set is a collection of sheets sorted by discipline. Every sheet carries a title block that identifies it.</p>
+
+  <p>A building&rsquo;s drawings are split by <span class="keyterm">discipline</span>: architectural, structural, mechanical, electrical, plumbing, fire protection and telecommunications. Each discipline&rsquo;s sheets carry a letter prefix, and a number that usually gives the sheet type and the floor. A common pattern:</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>A common sheet numbering pattern. Each set states its own in the sheet index.</caption>
+      <thead><tr>
+        <th scope="col">Prefix</th><th scope="col">Discipline</th><th scope="col">What a telecommunications technician looks for there</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">A-</th><td>Architectural</td><td>Room names and numbers, wall types, fire-rated walls, ceiling heights, door schedules</td></tr>
+        <tr><th scope="row">S-</th><td>Structural</td><td>Beams and slabs a pathway must pass under or through</td></tr>
+        <tr><th scope="row">M-</th><td>Mechanical</td><td>Ducts in the ceiling space, and whether that space carries return air</td></tr>
+        <tr><th scope="row">E-</th><td>Electrical</td><td>Receptacles and their circuits, panels, transformers, panel schedules</td></tr>
+        <tr><th scope="row">T-</th><td>Telecommunications (some firms use TN- or TA-)</td><td>Outlets, pathways, the spaces, the riser diagram, details and firestop</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Within a discipline, a typical numbering runs from a general sheet (symbols, abbreviations, notes and the sheet index, often numbered -001) through floor plans (-101 for Level 1, -102 for Level 2), enlarged plans (-201), and on to diagrams, details and schedules (-401, -501). The <span class="keyterm">sheet index</span> on the first sheet lists every sheet in the set with its title. Check it before you start: the index is where a missing sheet shows.</p>
+
+  <h3>The title block</h3>
+  <p>Along one edge of every sheet is the <span class="keyterm">title block</span>. It identifies the project, the sheet and the version of the sheet you are holding. The excerpt below is the title block of one sheet of the Harlow Street set.</p>
+
+  <figure class="photo">
+    <img src="images/530.1.4_title-block-T-102.png" loading="lazy"
+         alt="The title block from a sheet of the Harlow Street drawing set, a tall narrow column. From top to bottom it reads: Project, Harlow Street Operations Center, 2200 Harlow Street; Owner, Calder Regional Services; Project number, HSOC-26-014; Discipline, Telecommunications; Issue, Issued for Construction; Revision, 1, 2026-09-18; a note reading Training document, fictional project for instruction only, not for construction; Sheet title, Level 2 Telecommunications Plan; Scale, 3/32 inch equals 1 foot 0 inches; and Sheet, T-102 in large type.">
+    <figcaption class="cap">Title block of sheet T-102, Harlow Street Operations Center set.</figcaption>
+  </figure>
+
+  <p>Open each card.</p>
+  <div class="revealset gate"><div class="cards">
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Issue</span><span class="rcard-sub">what the sheet is for</span><span class="rcard-detail" hidden><p>Sets pass through stages: schematic design, design development, issued for bid, <b>issued for construction</b>. Crews build only from a sheet issued for construction. A bid set can be superseded without notice to the field.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Revision</span><span class="rcard-sub">which version you hold</span><span class="rcard-detail" hidden><p>Every reissue raises the revision number and adds a date. Changed areas are usually marked on the sheet with a cloud outline and a small triangle carrying the revision number. Work from the latest revision of every sheet, and check that two sheets you are comparing are both current.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Scale</span><span class="rcard-sub">one per drawing, sometimes several per sheet</span><span class="rcard-detail" hidden><p>The title block gives the sheet&rsquo;s main scale. A sheet holding several drawings at different scales says &ldquo;as noted&rdquo; and gives each scale under each drawing&rsquo;s own title.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Sheet number</span><span class="rcard-sub">the name every callout uses</span><span class="rcard-detail" hidden><p>Every reference from one drawing to another names the sheet number, so it is the identifier to write in a question to the designer or in a field note.</p></span></button>
+  </div></div>
+
+  <div class="cyu gate" data-answer="1" data-fb="The revision field and its date tell you which version of the sheet you are holding. A later revision of one sheet can change what another sheet shows, so both sheets have to be current before a comparison means anything. The project number is the same on every sheet of the set. The discipline is printed on the sheet but says nothing about its version. The scale says how to measure the drawing, not which version it is.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You are comparing a telecommunications floor plan with an electrical plan of the same floor. Which title block field do you check on both sheets first?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Project number</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Revision and its date</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Discipline</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Scale</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.1" data-lesson-title="Telecommunications Spaces and Construction Drawings" data-group-num="2" data-group-title="Reading a Construction Drawing Set" data-num="530.1.5" data-title="Plan, elevation, section and detail">
+  <p class="crumb">Lesson 530.1 &middot; Section 2 Reading a Construction Drawing Set</p>
+  <h2><span class="tnum">530.1.5</span> Plan, elevation, section and detail</h2>
+  <p class="lead-in">Plan, elevation, section and detail views show the same building from different directions. A callout on one view points to another.</p>
+
+  <p>A <span class="keyterm">plan</span> looks straight down on the building as if it were cut horizontally about 4 ft above the floor. It shows walls, doors, outlets and anything above the ceiling that the designer chooses to show, such as cable tray, drawn as if seen through the ceiling. A plan answers <em>where</em> across the floor.</p>
+  <p>An <span class="keyterm">elevation</span> looks straight at one vertical face &mdash; a wall, or the front of a rack &mdash; and answers <em>how high</em> and <em>what is on that face</em>. A <span class="keyterm">section</span> cuts through the building on a line and looks along it, so it shows what is stacked above and below: floor, ceiling, tray, structure. A <span class="keyterm">detail</span> is a small part of any of these drawn larger, often not to scale, to show how something is built.</p>
+
+  <p>An <span class="keyterm">enlarged plan</span> is a plan of one room drawn at a larger scale than the floor plan, so that racks, receptacles and dimensions can be read. A telecommunications room usually has one.</p>
+
+  <h3>Callouts</h3>
+  <p>A <span class="keyterm">callout</span> is a symbol on one drawing that points to another. The common form is a circle divided by a horizontal line: the drawing number above the line, the sheet it is drawn on below. A callout reading 3 over T-501 means drawing 3 on sheet T-501. A section callout adds a cut line across the plan, with arrows showing which way the section looks. An elevation callout points an arrow or a triangle at the face it shows.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; One telecommunications room in four views</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 540" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Four drawings of the same small telecommunications room: a plan with a section cut line, an elevation marker and a detail callout; a north wall elevation; a section along the cut line; and an enlarged detail of a busbar connection. A full text description follows.">
+    <text x="24" y="24" font-size="16" font-weight="700" fill="#611940">One room, four views</text>
+
+    <text x="24" y="52" font-size="14" font-weight="700" fill="#611940">1  Plan</text>
+    <rect x="60" y="76" width="300" height="190" fill="#ffffff" stroke="#26282E" stroke-width="3"/>
+    <rect x="66" y="80" width="288" height="6" fill="#611940"/>
+    <text x="70" y="102" font-size="13" fill="#5A5D66">plywood, north wall</text>
+    <rect x="150" y="150" width="50" height="36" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="220" y="150" width="50" height="36" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="163" y="173" font-size="13" fill="#26282E">R1</text>
+    <text x="233" y="173" font-size="13" fill="#26282E">R2</text>
+    <rect x="80" y="92" width="44" height="8" fill="#26282E"/>
+    <path d="M300 266 A 46 46 0 0 1 346 220" fill="none" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="300" y1="266" x2="300" y2="220" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="40" y1="168" x2="380" y2="168" stroke="#724DFD" stroke-width="1.6" stroke-dasharray="10 5"/>
+    <circle cx="28" cy="168" r="13" fill="#ffffff" stroke="#724DFD" stroke-width="1.6"/>
+    <text x="28" y="173" font-size="13" font-weight="700" fill="#26282E" text-anchor="middle">A</text>
+    <circle cx="392" cy="168" r="13" fill="#ffffff" stroke="#724DFD" stroke-width="1.6"/>
+    <text x="392" y="173" font-size="13" font-weight="700" fill="#26282E" text-anchor="middle">A</text>
+    <polygon points="210,60 200,72 220,72" fill="#26282E"/>
+    <text x="226" y="70" font-size="13" fill="#26282E">elevation 2 looks north</text>
+    <circle cx="102" cy="126" r="16" fill="#ffffff" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="86" y1="126" x2="118" y2="126" stroke="#26282E" stroke-width="1"/>
+    <text x="102" y="122" font-size="13" fill="#26282E" text-anchor="middle">4</text>
+    <text x="102" y="139" font-size="13" fill="#26282E" text-anchor="middle">-</text>
+    <text x="60" y="290" font-size="13" fill="#5A5D66">Section line A&ndash;A cuts through both racks.</text>
+    <text x="60" y="308" font-size="13" fill="#5A5D66">Callout 4 points to the busbar detail.</text>
+
+    <text x="480" y="52" font-size="14" font-weight="700" fill="#611940">2  North wall elevation</text>
+    <line x1="480" y1="266" x2="900" y2="266" stroke="#26282E" stroke-width="3"/>
+    <rect x="500" y="90" width="380" height="176" fill="#ffffff" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="510" y="104" width="360" height="152" fill="#F0F0F0" stroke="#611940" stroke-width="1.4"/>
+    <text x="520" y="124" font-size="13" fill="#26282E">3/4 in fire-retardant plywood, 8 ft high</text>
+    <rect x="528" y="226" width="70" height="10" fill="#26282E"/>
+    <text x="606" y="236" font-size="13" fill="#26282E">busbar, 18 in above floor</text>
+    <text x="500" y="290" font-size="13" fill="#5A5D66">Looks at the face of one wall: heights, what is mounted on it.</text>
+
+    <text x="24" y="346" font-size="14" font-weight="700" fill="#611940">3  Section A&ndash;A</text>
+    <rect x="60" y="490" width="320" height="16" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="70" y="526" font-size="13" fill="#5A5D66">floor slab</text>
+    <rect x="60" y="360" width="320" height="12" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="270" y="356" font-size="13" fill="#5A5D66">structure above</text>
+    <rect x="150" y="410" width="40" height="80" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="220" y="410" width="40" height="80" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="140" y1="398" x2="270" y2="398" stroke="#26282E" stroke-width="4"/>
+    <text x="280" y="402" font-size="13" fill="#26282E">ladder rack</text>
+    <text x="156" y="455" font-size="13" fill="#26282E">R1</text>
+    <text x="226" y="455" font-size="13" fill="#26282E">R2</text>
+    <text x="270" y="470" font-size="13" fill="#5A5D66">no ceiling</text>
+
+    <text x="480" y="346" font-size="14" font-weight="700" fill="#611940">4  Detail: rack bonding at the busbar</text>
+    <rect x="520" y="400" width="200" height="30" fill="#26282E"/>
+    <circle cx="560" cy="415" r="6" fill="#ffffff"/>
+    <circle cx="600" cy="415" r="6" fill="#ffffff"/>
+    <line x1="560" y1="430" x2="560" y2="500" stroke="#611940" stroke-width="3"/>
+    <line x1="600" y1="430" x2="600" y2="500" stroke="#611940" stroke-width="3"/>
+    <text x="740" y="420" font-size="13" fill="#26282E">busbar</text>
+    <text x="612" y="480" font-size="13" fill="#26282E">one conductor per rack</text>
+    <text x="520" y="526" font-size="13" fill="#5A5D66">Drawn larger, not to scale, to show how it is built.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram shows one small telecommunications room in four drawings, arranged two above two.</p>
+    <p>Drawing 1, Plan, top left. A rectangle with heavy walls. A thick plum line along the top wall is labeled plywood, north wall. Two blue squares in the middle of the room are labeled R1 and R2, the racks. A small black bar near the top left corner is the busbar. A door is drawn in the lower right corner as a straight leaf with a quarter-circle arc showing its swing. A dashed violet line crosses the whole room through both racks, with a circle at each end lettered A: this is the section cut line A&ndash;A. Above the room, a black triangle points down at the north wall, labeled elevation 2 looks north. Near the busbar, a circle divided by a horizontal line carries the number 4 above the line and a dash below it, meaning drawing 4 on this same sheet. Two notes under the plan read: Section line A&ndash;A cuts through both racks. Callout 4 points to the busbar detail.</p>
+    <p>Drawing 2, North wall elevation, top right. The face of the wall drawn as a rectangle standing on the floor line. A shaded panel on it is labeled 3/4 in fire-retardant plywood, 8 ft high. A black bar low on the panel is labeled busbar, 18 in above floor. A note reads: Looks at the face of one wall: heights, what is mounted on it.</p>
+    <p>Drawing 3, Section A&ndash;A, bottom left. A floor slab along the bottom labeled floor slab, and the structure above along the top labeled structure above. Two tall blue rectangles stand on the floor, labeled R1 and R2. A heavy horizontal line above them is labeled ladder rack. Text in the open space reads no ceiling.</p>
+    <p>Drawing 4, Detail: rack bonding at the busbar, bottom right. A black busbar drawn large, with two white bolt holes. From each hole a plum conductor runs down. Labels read busbar and one conductor per rack. A note reads: Drawn larger, not to scale, to show how it is built.</p>
+  </details>
+
+  <p>Open each card.</p>
+  <div class="revealset gate"><div class="cards">
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Plan</span><span class="rcard-sub">where across the floor</span><span class="rcard-detail" hidden><p>Outlet positions, the route of a tray, which wall a room shares with another room, a door&rsquo;s swing.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Elevation</span><span class="rcard-sub">how high, on one face</span><span class="rcard-detail" hidden><p>Backboard extent, busbar height, outlet mounting height, what is in each position of a rack.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Section</span><span class="rcard-sub">what is stacked above and below</span><span class="rcard-detail" hidden><p>Tray height against the ceiling and the structure, whether a duct or a beam sits in the same space, a sleeve through a floor slab.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Detail</span><span class="rcard-sub">how one thing is built</span><span class="rcard-detail" hidden><p>A J-hook hanger, a firestopped sleeve, a bonding connection. Often marked &ldquo;not to scale&rdquo;: read its dimensions, never measure it.</p></span></button>
+  </div></div>
+
+  <div class="cyu gate" data-answer="2" data-fb="A section cuts through the corridor and shows what is stacked in the ceiling space: the tray, any ducts, the ceiling and the structure, each at its height. A plan shows where the tray runs across the floor but cannot show two things one above the other. An elevation shows one vertical face. A detail shows how one item is built and is often not to scale.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You need to know whether a cable tray in a corridor passes above or below a supply duct. Which view answers it?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The floor plan</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A wall elevation</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A section through the corridor</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A detail of the tray hanger</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.1" data-lesson-title="Telecommunications Spaces and Construction Drawings" data-group-num="2" data-group-title="Reading a Construction Drawing Set" data-num="530.1.6" data-title="Symbols, legends and notes">
+  <p class="crumb">Lesson 530.1 &middot; Section 2 Reading a Construction Drawing Set</p>
+  <h2><span class="tnum">530.1.6</span> Symbols, legends and notes</h2>
+  <p class="lead-in">A symbol means what the set&rsquo;s own legend says it means. A note can change what a drawing shows.</p>
+
+  <p>Every set defines its symbols in a <span class="keyterm">legend</span>, normally on the first sheet of each discipline. Symbols are similar from one design firm to the next but not identical. A triangle is a data outlet in most telecommunications sets; the legend sets its number of ports, its mounting height and its floor-box variant. Read the legend of the set in front of you before you read any symbol on a plan.</p>
+
+  <figure class="photo">
+    <img src="images/530.1.6_symbols-legend-T-001.png" loading="lazy"
+         alt="The symbol legend from the first sheet of the Harlow Street set. Each row shows a symbol and its meaning: a triangle, data outlet, one port, wall mounted at 18 inches above finished floor unless noted; a triangle with the letter F, data outlet in floor box; a circle with the letter W, wireless access point, ceiling mounted, one data drop; a hatched strip, cable tray, ladder type, width as noted; a dashed line, J-hook pathway above accessible ceiling; a heavy line with a red dashed core, fire-rated wall, 1-hour unless noted, penetrations firestopped; a plain heavy line, non-rated wall; a red hexagon marked FS-1, firestop penetration tag, system per schedule on T-501; two small circles, sleeves through floor or wall, size as noted; and a circle divided by a line with 3 above and T-501 below, detail callout, detail number over the sheet it is drawn on.">
+    <figcaption class="cap">Symbol legend, sheet T-001, Harlow Street Operations Center set.</figcaption>
+  </figure>
+
+  <p>These entries in a legend change how you read the plan:</p>
+  <ul>
+    <li><strong>Defaults.</strong> &ldquo;Wall mounted at 18 in AFF unless noted&rdquo; sets a height for every outlet that carries no other mark. AFF is above finished floor.</li>
+    <li><strong>Line types.</strong> A wall line drawn differently from the others usually marks a fire rating. The legend says which line type means which rating.</li>
+    <li><strong>Tags.</strong> A tag &mdash; a hexagon, a diamond, a numbered circle &mdash; points into a schedule elsewhere in the set, where the full description sits.</li>
+  </ul>
+
+  <h3>Abbreviations</h3>
+  <p>The same sheet carries a list of <span class="keyterm">abbreviations</span>. Most sets use <strong>TYP</strong> (typical), meaning the condition drawn once applies to every similar location, and <strong>UON</strong> (unless otherwise noted), meaning the statement is the default and a note at a particular location overrides it.</p>
+
+  <h3>Kinds of note</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Kinds of note on a drawing set, and how far each one reaches.</caption>
+      <thead><tr>
+        <th scope="col">Kind</th><th scope="col">Where it is</th><th scope="col">What it covers</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">General notes</th><td>First sheet of the discipline</td><td>Every sheet of that discipline. Typical subjects: what the work complies with, cable type, labeling, bonding, firestopping, and the ceiling space</td></tr>
+        <tr><th scope="row">Sheet notes</th><td>On the sheet, usually beside the title</td><td>That sheet only</td></tr>
+        <tr><th scope="row">Keyed notes</th><td>A numbered symbol on the drawing, with its text in a list on the same sheet</td><td>The one spot where the symbol is placed</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A note is part of the drawing. A general note stating whether the ceiling space carries return air, or which cable type is allowed above it, is as binding as a line on the plan. Check it against the building. Where a note and a drawing on the same set disagree, or a note does not match what is in the building, the question goes back to the designer in writing; the field does not choose between them.</p>
+
+  <div class="note warn"><div class="nt">The electrical symbols on a telecommunications sheet</div>
+    <p>Telecommunications sheets often repeat electrical information for coordination: a receptacle symbol with a circuit tag such as <code>LP-3C-23</code>, a panel, a transformer. The tag names the panel and the circuit number. The electrical sheets remain the source; the copy on the telecommunications sheet is there so you can see what is beside the cabling.</p></div>
+
+  <div class="cyu gate" data-answer="1" data-fb="UON means unless otherwise noted, so 18 in is the default and the keyed note at that outlet overrides it: that one outlet goes at 44 in. The legend default does not beat a note at the location. A keyed note applies to the spot where its symbol is placed, not to the whole sheet, so the other outlets stay at the default height.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A legend says outlets mount at 18 in AFF UON. One outlet on the plan carries keyed note 3, which reads &ldquo;mount at 44 in AFF above counter&rdquo;. At what height does that outlet go?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>18 in, the legend default</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>44 in, at that outlet only</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>44 in, at every outlet on the sheet</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.1" data-lesson-title="Telecommunications Spaces and Construction Drawings" data-group-num="3" data-group-title="Scale, Runs and Schedules" data-num="530.1.7" data-title="Scale">
+  <p class="crumb">Lesson 530.1 &middot; Section 3 Scale, Runs and Schedules</p>
+  <h2><span class="tnum">530.1.7</span> Scale</h2>
+  <p class="lead-in">A written dimension governs. Where there is none, take the distance from the column grid, then from the graphic scale.</p>
+
+  <p>United States drawings use <span class="keyterm">architectural scales</span>, written as a length on paper equal to one foot in the building. At <strong>1/8&Prime; = 1&prime;-0&Prime;</strong>, one eighth of an inch on the sheet is one foot, a ratio of 1:96. Floor plans of a whole floor are commonly 1/8&Prime; or 3/32&Prime; (1:128). Enlarged plans of a room are commonly 1/4&Prime;, 3/8&Prime; (1:32) or 1/2&Prime; (1:24). Each drawing&rsquo;s scale is printed under its title.</p>
+
+  <p>The stated scale is true only on a sheet printed at its full size. On a sheet printed at half size, or viewed as a PDF on a screen, the printed scale still reads the same, but every distance measured from the sheet is wrong. These ways of reading a distance survive any printing, in this order of preference:</p>
+
+  <ol>
+    <li><strong>Dimension strings.</strong> A written dimension, such as 24&prime;-0&Prime; between two arrows, is the designer&rsquo;s value. It governs over anything you measure.</li>
+    <li><strong>The column grid.</strong> Gridlines, lettered one way and numbered the other, sit at stated spacings. A point on a gridline, or a dimension from one, gives a position you can add up.</li>
+    <li><strong>The graphic scale.</strong> A bar marked in feet. It is printed with the drawing, so it shrinks and grows with the print. Measure the bar, then measure the distance the same way.</li>
+  </ol>
+
+  <figure class="photo">
+    <img src="images/530.1.7_graphic-scale-T-102.png" loading="lazy"
+         alt="A graphic scale bar labeled Graphic scale (feet), marked 0, 8, 16 and 32 feet, with alternating dark and light segments. Below it the drawing title reads Level 2 Telecommunications Plan, Scale: 3/32 inch equals 1 foot 0 inches.">
+    <figcaption class="cap">Graphic scale and drawing title, sheet T-102, Harlow Street Operations Center set.</figcaption>
+  </figure>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; Reading a position from the grid</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 300" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A strip of floor plan with three column gridlines A, B and C at 24 foot spacing, a dimension string between them, an outlet 9 feet east of gridline B, and a graphic scale bar. A full text description follows.">
+    <text x="24" y="24" font-size="16" font-weight="700" fill="#611940">A position read from the grid and a dimension</text>
+    <line x1="120" y1="60" x2="120" y2="240" stroke="#5A5D66" stroke-width="1.2" stroke-dasharray="12 4 3 4"/>
+    <line x1="456" y1="60" x2="456" y2="240" stroke="#5A5D66" stroke-width="1.2" stroke-dasharray="12 4 3 4"/>
+    <line x1="792" y1="60" x2="792" y2="240" stroke="#5A5D66" stroke-width="1.2" stroke-dasharray="12 4 3 4"/>
+    <circle cx="120" cy="48" r="15" fill="#ffffff" stroke="#26282E" stroke-width="1.4"/>
+    <circle cx="456" cy="48" r="15" fill="#ffffff" stroke="#26282E" stroke-width="1.4"/>
+    <circle cx="792" cy="48" r="15" fill="#ffffff" stroke="#26282E" stroke-width="1.4"/>
+    <text x="120" y="53" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">A</text>
+    <text x="456" y="53" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">B</text>
+    <text x="792" y="53" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">C</text>
+    <line x1="80" y1="120" x2="840" y2="120" stroke="#26282E" stroke-width="3"/>
+    <line x1="80" y1="200" x2="840" y2="200" stroke="#26282E" stroke-width="3"/>
+    <polygon points="582,188 570,200 594,200" fill="#ffffff" stroke="#26282E" stroke-width="1.6"/>
+    <text x="602" y="194" font-size="13" fill="#26282E">outlet</text>
+    <line x1="456" y1="168" x2="582" y2="168" stroke="#611940" stroke-width="1.4"/>
+    <polygon points="456,168 466,164 466,172" fill="#611940"/>
+    <polygon points="582,168 572,164 572,172" fill="#611940"/>
+    <text x="494" y="162" font-size="13" fill="#611940">9&prime;-0&Prime;</text>
+    <line x1="120" y1="86" x2="792" y2="86" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="120" y1="80" x2="120" y2="92" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="456" y1="80" x2="456" y2="92" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="792" y1="80" x2="792" y2="92" stroke="#26282E" stroke-width="1.2"/>
+    <text x="268" y="80" font-size="13" fill="#26282E">24&prime;-0&Prime;</text>
+    <text x="604" y="80" font-size="13" fill="#26282E">24&prime;-0&Prime;</text>
+    <text x="130" y="160" font-size="13" fill="#5A5D66">corridor</text>
+    <rect x="120" y="262" width="112" height="10" fill="#26282E"/>
+    <rect x="232" y="262" width="112" height="10" fill="#ffffff" stroke="#26282E" stroke-width="1"/>
+    <rect x="344" y="262" width="224" height="10" fill="#26282E"/>
+    <text x="116" y="292" font-size="13" fill="#26282E">0</text>
+    <text x="226" y="292" font-size="13" fill="#26282E">8&prime;</text>
+    <text x="334" y="292" font-size="13" fill="#26282E">16&prime;</text>
+    <text x="558" y="292" font-size="13" fill="#26282E">32&prime;</text>
+    <text x="600" y="272" font-size="13" fill="#5A5D66">graphic scale, feet</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>A strip of floor plan showing a corridor between two heavy wall lines, running left to right.</p>
+    <p>Three vertical dash-dot gridlines cross the corridor, each with a circled letter at the top: A on the left, B in the middle, C on the right. Above the corridor a dimension string runs from A to C with ticks at each gridline: 24&prime;-0&Prime; between A and B, and 24&prime;-0&Prime; between B and C.</p>
+    <p>A triangle on the lower corridor wall, labeled outlet, sits between gridlines B and C. A plum dimension line with arrows runs from gridline B to the outlet, labeled 9&prime;-0&Prime;. The word corridor is written in the corridor near gridline A.</p>
+    <p>Below the plan is a graphic scale bar in alternating dark and light segments, marked 0, 8&prime;, 16&prime; and 32&prime;, labeled graphic scale, feet.</p>
+    <p>Read from the grid, the outlet is 33 ft east of gridline A: 24 ft plus 9 ft.</p>
+  </details>
+
+  <p>In that strip, the outlet is 33 ft east of gridline A: 24 ft from A to B by the dimension string, plus the 9 ft dimension from B. Had the 9 ft not been written, you would measure it against the graphic scale: lay a straightedge or a strip of paper along the bar, mark the 8 ft divisions, and step them off along the drawing.</p>
+
+  <div class="note tip"><div class="nt">Measuring on a PDF</div>
+    <p>A PDF reader&rsquo;s measuring tool reports distances in inches of page until it is calibrated. Calibrate it against the longest known dimension on the drawing &mdash; a gridline spacing, not the short graphic scale bar &mdash; and check it against a second dimension before you trust it.</p></div>
+
+  <div class="cyu gate" data-answer="2" data-fb="At 1/8 in to the foot, each eighth of an inch on the sheet is one foot, so one inch is 8 ft and 3 1/2 in is 28 ft. That only holds because the sheet is printed full size. 3.5 ft treats the measurement as if one inch were one foot, 14 ft is the reading for a quarter-inch scale, and 42 ft is the reading for a 1:144 scale.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a full-size print of a plan drawn at 1/8&Prime; = 1&prime;-0&Prime;, a distance with no written dimension measures 3 1/2 in on the sheet. How far is it in the building?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>3.5 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>14 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>28 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>42 ft</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.1" data-lesson-title="Telecommunications Spaces and Construction Drawings" data-group-num="3" data-group-title="Scale, Runs and Schedules" data-num="530.1.8" data-title="Dimensioning a cable run">
+  <p class="crumb">Lesson 530.1 &middot; Section 3 Scale, Runs and Schedules</p>
+  <h2><span class="tnum">530.1.8</span> Dimensioning a cable run</h2>
+  <p class="lead-in">A cable&rsquo;s length is the sum of every segment it travels along the pathway, plus the vertical distances at both ends, plus the slack the owner requires.</p>
+
+  <p>A cable follows its pathway, not a straight line: out of the rack, up to the ladder rack, along the tray, into a branch of J-hooks, and down a wall to its outlet. Dimensioning the run means adding those pieces together. The plan gives the horizontal segments; the vertical pieces come from heights given in the notes, the elevations and the owner standard.</p>
+
+  <h3>The method</h3>
+  <ol>
+    <li><strong>Trace the route on the plan</strong> from the telecommunications room to the outlet, along the pathway as drawn.</li>
+    <li><strong>Break it into horizontal segments</strong> at every change of direction, and take each length from a dimension string, then the grid, then the graphic scale.</li>
+    <li><strong>Add the vertical distances:</strong> the rise from the top of the rack to the pathway, and the drop from the pathway to the outlet height.</li>
+    <li><strong>Add the slack</strong> the owner standard requires, such as a service loop in the telecommunications room.</li>
+    <li><strong>Convert and compare.</strong> Feet times 0.3048 gives meters. The total must not exceed the 90 m (295 ft) permanent link.</li>
+  </ol>
+
+  <h3>A worked run, Mercer Avenue Clinic</h3>
+  <p>The run is to outlet <code>3A-PP01-031</code> in Exam Room 3.14 of the hypothetical clinic. Its plan shows the tray leaving TR 3A along the corridor, a J-hook branch into the exam room, and the outlet on the room&rsquo;s east wall. The sheet notes give the tray bottom at 11&prime;-0&Prime; above finished floor and racks 7&prime;-0&Prime; high, the legend puts outlets at 18 in, and the owner standard calls for a 12 ft service loop in the telecommunications room.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; One run in plan and in elevation (Mercer Avenue Clinic, hypothetical)</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 420" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A plan and an elevation of one horizontal cable run in a hypothetical clinic, from telecommunications room TR 3A along a corridor tray and a J-hook branch to an outlet, with each segment dimensioned and the vertical rise and drop shown. A full text description follows.">
+    <text x="24" y="24" font-size="16" font-weight="700" fill="#611940">The segments of one run</text>
+    <text x="24" y="50" font-size="14" font-weight="700" fill="#611940">Plan</text>
+    <rect x="40" y="64" width="110" height="80" fill="#71E2FD" stroke="#26282E" stroke-width="1.6"/>
+    <text x="52" y="100" font-size="13" font-weight="700" fill="#26282E">TR 3A</text>
+    <rect x="150" y="92" width="600" height="12" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <text x="300" y="86" font-size="13" fill="#26282E">corridor tray</text>
+    <line x1="150" y1="122" x2="704" y2="122" stroke="#611940" stroke-width="1.4"/>
+    <polygon points="150,122 160,118 160,126" fill="#611940"/>
+    <polygon points="704,122 694,118 694,126" fill="#611940"/>
+    <text x="400" y="140" font-size="13" font-weight="700" fill="#611940">46&prime;-0&Prime;</text>
+    <line x1="704" y1="104" x2="704" y2="244" stroke="#26282E" stroke-width="2" stroke-dasharray="7 5"/>
+    <line x1="724" y1="104" x2="724" y2="244" stroke="#611940" stroke-width="1.4"/>
+    <polygon points="724,104 720,114 728,114" fill="#611940"/>
+    <polygon points="724,244 720,234 728,234" fill="#611940"/>
+    <text x="732" y="180" font-size="13" font-weight="700" fill="#611940">14&prime;-0&Prime;</text>
+    <text x="586" y="200" font-size="13" fill="#26282E">J-hook branch</text>
+    <line x1="704" y1="244" x2="748" y2="244" stroke="#26282E" stroke-width="2" stroke-dasharray="7 5"/>
+    <polygon points="760,232 750,248 770,248" fill="#ffffff" stroke="#26282E" stroke-width="1.6"/>
+    <text x="778" y="248" font-size="13" fill="#26282E">3A-PP01-031</text>
+    <text x="700" y="272" font-size="13" fill="#5A5D66">2&prime;-0&Prime; scaled</text>
+    <text x="586" y="226" font-size="13" fill="#5A5D66">Exam Room 3.14</text>
+
+    <text x="24" y="308" font-size="14" font-weight="700" fill="#611940">Elevation, not to scale</text>
+    <line x1="40" y1="404" x2="900" y2="404" stroke="#26282E" stroke-width="2"/>
+    <rect x="70" y="350" width="40" height="54" fill="#71E2FD" stroke="#26282E" stroke-width="1.2"/>
+    <text x="64" y="342" font-size="13" fill="#26282E">rack top 7&prime;-0&Prime;</text>
+    <line x1="90" y1="350" x2="90" y2="322" stroke="#611940" stroke-width="2.4"/>
+    <line x1="90" y1="322" x2="820" y2="322" stroke="#611940" stroke-width="2.4"/>
+    <text x="100" y="318" font-size="13" fill="#26282E">rise 4 ft</text>
+    <text x="360" y="318" font-size="13" fill="#26282E">tray bottom 11&prime;-0&Prime;</text>
+    <line x1="820" y1="322" x2="820" y2="392" stroke="#611940" stroke-width="2.4"/>
+    <rect x="812" y="390" width="16" height="10" fill="#26282E"/>
+    <text x="832" y="360" font-size="13" fill="#26282E">drop 9 ft 6 in</text>
+    <text x="832" y="398" font-size="13" fill="#26282E">outlet 18 in</text>
+    <text x="130" y="396" font-size="13" fill="#26282E">12 ft service loop in TR 3A</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram has a plan at the top and an elevation, not to scale, at the bottom.</p>
+    <p>Plan. A blue box on the left is labeled TR 3A. A gray strip labeled corridor tray leaves it to the right. A plum dimension line under the tray runs from the TR 3A wall to the point where a branch turns off, labeled 46&prime;-0&Prime;. At that point a dashed line labeled J-hook branch turns down into a room labeled Exam Room 3.14; a plum dimension line beside it reads 14&prime;-0&Prime;. At the end of the branch, a short dashed line turns right to a triangle labeled 3A-PP01-031, with the label 2&prime;-0&Prime; scaled under it.</p>
+    <p>Elevation. A floor line along the bottom. A blue rack on the left, labeled rack top 7&prime;-0&Prime;. A plum line rises from the rack top to the tray level, labeled rise 4 ft, then runs right along the tray level, labeled tray bottom 11&prime;-0&Prime;, then drops at the right to a small black outlet. The drop is labeled drop 9 ft 6 in and the outlet is labeled outlet 18 in. A label near the rack reads 12 ft service loop in TR 3A.</p>
+  </details>
+
+  <div class="calc">
+    <table>
+      <caption>Worked length of the run to outlet 3A-PP01-031, Mercer Avenue Clinic.</caption>
+      <thead><tr><th scope="col">Segment, and where the figure comes from</th><th scope="col">Length</th></tr></thead>
+      <tbody>
+        <tr><td>Corridor tray, TR 3A wall to the branch (dimension string)</td><td class="n">46.0 ft</td></tr>
+        <tr><td>J-hook branch into Exam Room 3.14 (dimension string)</td><td class="n">14.0 ft</td></tr>
+        <tr><td>Along the wall to the outlet (graphic scale)</td><td class="n">2.0 ft</td></tr>
+        <tr><td>Rise, rack top 7 ft to tray bottom 11 ft</td><td class="n">4.0 ft</td></tr>
+        <tr><td>Drop, tray bottom 11 ft to outlet 1 ft 6 in</td><td class="n">9.5 ft</td></tr>
+        <tr><td>Service loop in TR 3A (owner standard)</td><td class="n">12.0 ft</td></tr>
+        <tr class="tot"><td>Total</td><td class="n">87.5 ft &asymp; 26.7 m</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The run is 62 ft across the floor and 87.5 ft of cable, about 26.7 m against a 90 m limit. A length taken from the plan alone would have been 25.5 ft short. A scaled segment carries a tolerance. On a plan at 1/8&Prime; = 1&prime;-0&Prime;, a misreading of 1/16 in on the sheet becomes 6 in on site, so a 2 ft piece read from the graphic scale may be anything from 1 ft 6 in to 2 ft 6 in. State the total with that tolerance.</p>
+
+  <p>Write your own run calculations the same way: one line per segment, the source of each figure, and the total in feet and in meters.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The cable runs along the pathway, so its horizontal length is the sum of the segments: 30 + 20 + 5 = 55 ft. To that the rise (3 ft), the drop (8 ft) and the service loop (10 ft) are added, for 76 ft. 55 ft leaves out every vertical piece and the loop. 66 ft adds the vertical pieces and forgets the loop. 50 ft is the straight-line distance, which the cable never follows.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A run has tray segments of 30 ft and 20 ft and a branch of 5 ft. The straight-line distance from the telecommunications room to the outlet is 50 ft. The rise is 3 ft, the drop 8 ft, and the owner requires a 10 ft service loop. What length do you record?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>55 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>76 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>66 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>50 ft</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.1" data-lesson-title="Telecommunications Spaces and Construction Drawings" data-group-num="3" data-group-title="Scale, Runs and Schedules" data-num="530.1.9" data-title="Riser diagrams">
+  <p class="crumb">Lesson 530.1 &middot; Section 3 Scale, Runs and Schedules</p>
+  <h2><span class="tnum">530.1.9</span> Riser diagrams</h2>
+  <p class="lead-in">A riser diagram shows the backbone and the bonding of the whole building on one sheet, floor above floor, without scale.</p>
+
+  <p>A floor plan shows one floor. The cabling that connects the floors, the backbone, is drawn instead on a <span class="keyterm">riser diagram</span>. So is the bonding: the primary bonding busbar (PBB) in the equipment room, the secondary bonding busbar (SBB) in each telecommunications room, and the telecommunications bonding backbone (TBB) that joins them. Each floor is a horizontal band, each space a box in its band, and each cable a line between boxes with its type and count written on it. A riser is a diagram, not a plan. It shows which space connects to which, and with what, but the distances between boxes on it are not lengths.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; Riser diagram of a three-storey building (Mercer Avenue Clinic, hypothetical)</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 420" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A riser diagram of a hypothetical three-storey clinic, showing the entrance facility and equipment room on Level 1, a telecommunications room on each of Levels 2 and 3, the fiber and copper backbone between them, the sleeves through each floor, and the bonding backbone from the primary busbar to each secondary busbar. A full text description follows.">
+    <text x="24" y="24" font-size="16" font-weight="700" fill="#611940">Backbone and bonding, floor above floor (not to scale)</text>
+    <line x1="24" y1="150" x2="916" y2="150" stroke="#26282E" stroke-width="2"/>
+    <line x1="24" y1="270" x2="916" y2="270" stroke="#26282E" stroke-width="2"/>
+    <line x1="24" y1="400" x2="916" y2="400" stroke="#26282E" stroke-width="3"/>
+    <text x="30" y="56" font-size="13" font-weight="700" fill="#5A5D66">Level 3</text>
+    <text x="30" y="176" font-size="13" font-weight="700" fill="#5A5D66">Level 2</text>
+    <text x="30" y="296" font-size="13" font-weight="700" fill="#5A5D66">Level 1</text>
+    <rect x="400" y="60" width="200" height="74" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="412" y="82" font-size="13" font-weight="700" fill="#26282E">TR 3A</text>
+    <text x="412" y="102" font-size="13" fill="#26282E">horizontal cross-connect</text>
+    <rect x="530" y="112" width="56" height="10" fill="#26282E"/>
+    <text x="472" y="124" font-size="13" fill="#26282E">SBB</text>
+    <rect x="400" y="180" width="200" height="74" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="412" y="202" font-size="13" font-weight="700" fill="#26282E">TR 2A</text>
+    <text x="412" y="222" font-size="13" fill="#26282E">horizontal cross-connect</text>
+    <rect x="530" y="232" width="56" height="10" fill="#26282E"/>
+    <text x="472" y="244" font-size="13" fill="#26282E">SBB</text>
+    <rect x="400" y="300" width="200" height="84" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="412" y="322" font-size="13" font-weight="700" fill="#26282E">ER 1B</text>
+    <text x="412" y="342" font-size="13" fill="#26282E">main cross-connect</text>
+    <rect x="530" y="362" width="56" height="10" fill="#26282E"/>
+    <text x="472" y="374" font-size="13" fill="#26282E">PBB</text>
+    <rect x="120" y="300" width="170" height="84" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="132" y="322" font-size="13" font-weight="700" fill="#26282E">EF 1A</text>
+    <text x="132" y="342" font-size="13" fill="#26282E">entrance, protectors</text>
+    <line x1="290" y1="350" x2="400" y2="350" stroke="#611940" stroke-width="2.4"/>
+    <line x1="440" y1="300" x2="440" y2="134" stroke="#611940" stroke-width="2.4"/>
+    <line x1="460" y1="300" x2="460" y2="254" stroke="#26282E" stroke-width="2.4"/>
+    <line x1="470" y1="180" x2="470" y2="134" stroke="#26282E" stroke-width="2.4"/>
+    <line x1="452" y1="180" x2="452" y2="134" stroke="#611940" stroke-width="2.4"/>
+    <line x1="586" y1="367" x2="650" y2="367" stroke="#724DFD" stroke-width="2"/>
+    <line x1="650" y1="367" x2="650" y2="117" stroke="#724DFD" stroke-width="2"/>
+    <line x1="586" y1="237" x2="650" y2="237" stroke="#724DFD" stroke-width="2"/>
+    <line x1="586" y1="117" x2="650" y2="117" stroke="#724DFD" stroke-width="2"/>
+    <circle cx="436" cy="270" r="5" fill="#ffffff" stroke="#26282E" stroke-width="1.4"/>
+    <circle cx="452" cy="270" r="5" fill="#ffffff" stroke="#26282E" stroke-width="1.4"/>
+    <circle cx="436" cy="150" r="5" fill="#ffffff" stroke="#26282E" stroke-width="1.4"/>
+    <circle cx="452" cy="150" r="5" fill="#ffffff" stroke="#26282E" stroke-width="1.4"/>
+    <text x="662" y="200" font-size="13" fill="#724DFD">TBB, 2 American Wire Gauge (AWG) copper</text>
+    <text x="662" y="220" font-size="13" fill="#26282E">bonding backbone, PBB to each SBB</text>
+    <text x="662" y="56" font-size="13" fill="#611940">Plum: 12-strand singlemode fiber</text>
+    <text x="662" y="76" font-size="13" fill="#26282E">Slate: 25-pair copper</text>
+    <text x="662" y="96" font-size="13" fill="#26282E">one of each to every TR</text>
+    <text x="300" y="286" font-size="13" fill="#26282E">2 &times; 4 in sleeves</text>
+    <text x="300" y="166" font-size="13" fill="#26282E">2 &times; 4 in sleeves</text>
+    <text x="300" y="372" font-size="13" fill="#611940">entrance cable</text>
+    <line x1="132" y1="384" x2="132" y2="400" stroke="#26282E" stroke-width="3"/>
+    <text x="140" y="396" font-size="13" fill="#5A5D66">from street</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Backbone and bonding, floor above floor (not to scale). Horizontal lines divide it into three bands, labeled from the top Level 3, Level 2 and Level 1.</p>
+    <p>On Level 1, a gray box on the left is labeled EF 1A, entrance, protectors, with a short line below it labeled from street. A plum line labeled entrance cable runs from EF 1A to a blue box labeled ER 1B, main cross-connect. Inside ER 1B a black bar is labeled PBB.</p>
+    <p>On Level 2, a blue box labeled TR 2A, horizontal cross-connect, contains a black bar labeled SBB. On Level 3, a blue box labeled TR 3A, horizontal cross-connect, also contains a black bar labeled SBB. The three blue boxes are stacked one above another.</p>
+    <p>From ER 1B, a plum line and a slate line run up to TR 2A, and another plum line and slate line run on up to TR 3A. A legend on the right reads: Plum: 12-strand singlemode fiber. Slate: 25-pair copper. One of each to every TR.</p>
+    <p>Where the backbone crosses each floor line, two small circles mark the sleeves, and each crossing is labeled 2 &times; 4 in sleeves.</p>
+    <p>On the right, a violet line runs from the PBB in ER 1B up the side of the diagram, with branches into the SBB in TR 2A and the SBB in TR 3A. It is labeled TBB, 2 American Wire Gauge (AWG) copper, bonding backbone, PBB to each SBB.</p>
+  </details>
+
+  <p>Reading a riser means answering, for each line: <em>from which space, to which space, what cable, how many, and through what</em>. In the Mercer riser, each telecommunications room receives one 12-strand singlemode fiber cable and one 25-pair copper cable, both from the main cross-connect in ER 1B, through two 4 in sleeves at each floor. A third line, the TBB, runs from the PBB in the equipment room to the SBB in each telecommunications room. On a riser, the bonding backbone is read the same way as the cabling.</p>
+  <p>Two sleeves drawn means two sleeves to install, firestop and record. A sleeve the drawn backbone does not use is the capacity left for future backbone.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="A riser diagram is not drawn to scale, so the distance between two boxes on it says nothing about the length of the cable. The length comes from the plans and sections, or from a stated figure. The cable type and count, the two spaces it connects, and the sleeves it passes through are all written on the riser and can be read from it.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which of these has to come from the plans and sections rather than the riser diagram?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The type and count of backbone cable to a telecommunications room</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Which two spaces a backbone cable connects</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>How many sleeves the backbone passes through at a floor</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The length of a backbone cable</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.1" data-lesson-title="Telecommunications Spaces and Construction Drawings" data-group-num="3" data-group-title="Scale, Runs and Schedules" data-num="530.1.10" data-title="Panel schedules and other schedules">
+  <p class="crumb">Lesson 530.1 &middot; Section 3 Scale, Runs and Schedules</p>
+  <h2><span class="tnum">530.1.10</span> Panel schedules and other schedules</h2>
+  <p class="lead-in">A schedule is a table on a drawing that describes every item of one kind. A tag on the plan points into it.</p>
+
+  <p>A plan cannot carry the full description of every receptacle, door, outlet or firestop at the point where it is drawn. Each item gets a tag on the plan instead, and the description goes into a <span class="keyterm">schedule</span>: a table with one row per item.</p>
+
+  <h3>The panel schedule</h3>
+  <p>An electrical <span class="keyterm">panel schedule</span> lists the circuits in one panelboard. Each row is one circuit: its number, the load it serves, the breaker size and number of poles, and often the location. On the plan, each receptacle carries a tag giving the panel and the circuit number. Following that tag to the schedule tells you what else is on the same circuit.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Panel LP-3C, circuits 21&ndash;26 (Mercer Avenue Clinic, hypothetical).</caption>
+      <thead><tr>
+        <th scope="col">Circuit</th><th scope="col">Load</th><th scope="col">Breaker</th><th scope="col">Location</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">21</th><td>Lighting, Corridor 3.00</td><td>20 A 1P</td><td>Corridor</td></tr>
+        <tr><th scope="row">22</th><td>Receptacles, Exam Rooms 3.10&ndash;3.14</td><td>20 A 1P</td><td>Exam rooms</td></tr>
+        <tr><th scope="row">23</th><td>TR 3A rack receptacle R1 (dedicated)</td><td>20 A 1P</td><td>TR 3A</td></tr>
+        <tr><th scope="row">24</th><td>TR 3A rack receptacle R2 (dedicated)</td><td>20 A 1P</td><td>TR 3A</td></tr>
+        <tr><th scope="row">25</th><td>Receptacles, Corridor 3.00 and TR 3A convenience</td><td>20 A 1P</td><td>Corridor / TR 3A</td></tr>
+        <tr><th scope="row">26</th><td>SPARE</td><td>20 A 1P</td><td>&mdash;</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Read the schedule for TR 3A: circuits 23 and 24 each serve one rack receptacle and nothing else, on separate breakers. Circuit 25 serves the room&rsquo;s convenience receptacle together with the corridor receptacles. The owner standard requires only that the convenience receptacle be on a circuit other than the rack circuits, so sharing with the corridor complies. 1P is a single-pole breaker, the normal breaker for a 120 V circuit.</p>
+
+  <p>Follow every receptacle tag on the telecommunications room plan to its schedule row.</p>
+
+  <h3>Other schedules a telecommunications technician reads</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Schedules found in a drawing set, and what each one tells the telecommunications trade.</caption>
+      <thead><tr>
+        <th scope="col">Schedule</th><th scope="col">One row per</th><th scope="col">What you read from it</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Device or outlet schedule</th><td>Outlet or device type</td><td>Ports per outlet, faceplate, mounting height, cable type, whether a device such as a wireless access point or camera is supplied by the contractor or the owner</td></tr>
+        <tr><th scope="row">Door schedule (architectural)</th><td>Door</td><td>Width, height, hardware, whether it has a sill or a closer</td></tr>
+        <tr><th scope="row">Firestop schedule</th><td>Firestop tag</td><td>The penetrating item, the assembly it passes through, the tested system and its rating</td></tr>
+        <tr><th scope="row">Equipment schedule (mechanical)</th><td>Air-handling unit, fan or cooling unit</td><td>Which unit serves which room, and when it runs</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cyu gate" data-answer="0" data-fb="Circuit 25 serves the corridor receptacles as well as the TR 3A convenience receptacle, so it is shared, and that is correct for a convenience receptacle. Circuits 23 and 24 each serve one rack receptacle only and are dedicated. Circuit 26 is a spare and serves nothing.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">In the LP-3C schedule, which circuit serving TR 3A also serves loads outside the room?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Circuit 25</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Circuit 23</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Circuit 24</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Circuit 26</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.1" data-lesson-title="Telecommunications Spaces and Construction Drawings" data-group-num="4" data-group-title="Wrapping Up" data-num="530.1.11" data-title="What you covered">
+  <p class="crumb">Lesson 530.1 &middot; Section 4 Wrapping Up</p>
+  <h2><span class="tnum">530.1.11</span> What you covered</h2>
+  <p class="lead-in">Name the spaces, follow the cabling through them, check the telecommunications room against the owner&rsquo;s standard, and read each length, height and circuit from the drawing that carries it.</p>
+
+  <p>The cabling passes through the telecommunications spaces. The <strong>entrance facility</strong> takes the outside cable and its protectors. The <strong>equipment room</strong> holds the main cross-connect for the building. Each <strong>telecommunications room</strong> holds the horizontal cross-connect for its floor, and a <strong>telecommunications enclosure</strong> can serve part of a floor. The <strong>work area</strong> is where the cable ends at an outlet. Cabling runs through them in one order: entrance cabling, main cross-connect, backbone, horizontal cross-connect, horizontal cable, outlet and work area cord. A permanent link is at most 90 m of installed cable, slack included; a channel, with its cords, at most 100 m.</p>
+
+  <p>An owner standard states its requirements for a telecommunications room by category: space, door and security, power, cooling, backboards, separation, lighting and bonding. TIA-569 is the standard behind them. The categories are shown in different places: the enlarged plan, the wall elevations, the panel schedule, a cooling note, the neighboring rooms. A review records the compliant categories as well as the faults.</p>
+
+  <p>A drawing set is sorted by discipline, and every sheet&rsquo;s title block gives its issue, revision, scale and number. A <strong>plan</strong> answers where across the floor, an <strong>elevation</strong> how high on one face, a <strong>section</strong> what is stacked above and below, and a <strong>detail</strong> how one thing is built. Callouts give a drawing number over a sheet number. The set&rsquo;s own legend defines its symbols and defaults; general notes cover the discipline, sheet notes the sheet, keyed notes one spot; a note at a location overrides a default stated UON.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Where a distance comes from, in order of preference.</caption>
+      <thead><tr>
+        <th scope="col">Source</th><th scope="col">When to use it</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Dimension string</th><td>Whenever one is written; it governs over anything measured</td></tr>
+        <tr><th scope="row">Column grid</th><td>For a position on or dimensioned from a gridline</td></tr>
+        <tr><th scope="row">Graphic scale</th><td>For a distance with no dimension; it survives any print size</td></tr>
+        <tr><th scope="row">Stated scale</th><td>Only on a full-size print</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A cable run is dimensioned along its pathway: every horizontal segment, the rise from the rack to the pathway, the drop to the outlet height, and the slack the owner requires, totaled in feet and converted to meters against the 90 m limit. A <strong>riser diagram</strong> gives the backbone and bonding of the building &mdash; which space to which, what cable, how many, through what &mdash; and no lengths. A <strong>schedule</strong> gives one row per item behind each tag on the plan; the panel schedule says what else shares a circuit, so you can check a circuit described as dedicated.</p>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete — continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again — this does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct>=90) msg.textContent='Outstanding — you are working at field-standard level and are ready for the lab.';
+      else if(pct>=75) msg.textContent='Strong work. Revisit anything you missed and you will be field-ready.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the cards and applied scenarios to close the gaps.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+</body>
+</html>
