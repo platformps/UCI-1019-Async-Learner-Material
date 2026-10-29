@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 530 (M04) - Introduction to Enterprise Infrastructure
+  Lesson 530.3 - Data Center Spaces and the Site Survey (Async Reading)
+  VERSION: v1.0.6  (2026-10-28)  Released under delegated approval (module plan v0.1.0)
+
+  CHANGES IN v1.0.6
+  Fifth and last language pass 2026-10-28: applied all 6 LP5 cuts, including
+  the feedback strings. v1.0.5 kept.
+
+  CHANGES IN v1.0.5
+  Fourth language pass 2026-10-28: applied all 6 LP4 cuts; RFI check option
+  D asks a single question. v1.0.4 kept.
+
+  CHANGES IN v1.0.4
+  Third language pass 2026-10-28: applied all 5 LP3 cuts. v1.0.3 kept.
+
+  CHANGES IN v1.0.3
+  Second language pass 2026-10-28: applied all 20 LP2 cuts; none reverses an
+  earlier correction. Rack figure redrawn with U1 at the bottom and the UPS
+  at U1-U3, labels and description corrected, knowledge check agrees;
+  vertical cable managers at the rear; cold aisle, perforated tiles and
+  containment defined at first use in the data hall plan topic; fc expanded;
+  RFI feedback matches option B. v1.0.2 kept.
+
+  CHANGES IN v1.0.2
+  Coordinator review 2026-10-28: applied the LP1 language pass (16 of 22
+  cuts; 3 engine score messages held; code cuts rejected per ruling; cuts 18
+  and 24 replaced by the coordinator's one-primary-class rule). Content:
+  sorting topic gives each finding one primary class, with a second class in
+  the notes column, stated once; containment examples match the gaps named;
+  rack elevation sentence names all four table concerns; UPS feedback covers
+  option C; matching right column no longer repeats UPS; survey-entry and
+  RFI checks rewritten so the right option is not the longest. v1.0.1 kept.
+
+  CHANGES IN v1.0.1
+  Coordinator correction 2026-10-28: 530.3.9 rewritten as "Sorting what the
+  survey finds", teaching the survey lab's four classes (field differs from
+  drawings; drawings do not meet owner standard; site constraint;
+  observation) with Mercer examples, a second check added; summary and
+  overview updated. Activities 12 -> 13. v1.0.0 kept.
+
+  CHANGES IN v1.0.0
+  First issue. Built new for UCI 1019; no earlier version exists.
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox) reused verbatim from
+  UCI-2107.1_M529_Lesson-529.6_Async-Reading_v0.2.0.html. Appended after it: the
+  2026 brand layer from FORMAT-SPEC_Async-Reading_2026-Addendum_v0.1.0_DRAFT.md
+  section 3. The engine itself is untouched. Logo: inline Slate SVG.
+
+  OBJECTIVES, one verb each, from the module plan section 3 (JTA 4.6, the
+  field half of 4.2, the planning subtask of 4.7), wording as in the plan.
+    Identify  each data-center space                         4.6.1
+    Trace     a link from an EDA to the MDA                   4.6.2
+    Describe  hot-aisle and cold-aisle containment            4.6.3
+    Map       the mobile infrastructure rack to production    4.6.4
+    Plan      a rack elevation                                4.7.2 (planning only)
+    Record    site constraints from field conditions          4.2.5
+    Verify    a drawing against field conditions              4.2.5
+    Raise     a request for information against a conflict    4.2.6
+
+  TOPIC OUTLINE
+    Section 1  Data Center Spaces
+      530.3.1   The spaces of a data center          entry point, 4.6.1
+      530.3.2   Following a link through the spaces  4.6.2
+      530.3.3   Reading a data hall plan             4.6.1, 4.6.5 (added topic)
+    Section 2  Air and Racks
+      530.3.4   Hot aisles, cold aisles, containment 4.6.3
+      530.3.5   Rack elevations                      4.7.2
+      530.3.6   The training rack and the production row  4.6.4
+    Section 3  The Site Survey and the RFI
+      530.3.7   What a site survey is for            4.2.5
+      530.3.8   Measuring and recording              4.2.5
+      530.3.9   Sorting what the survey finds        4.2.5
+      530.3.10   Writing a request for information    4.2.6
+    Section 4  Wrapping Up
+      530.3.11  What you covered                     summary
+
+  ACTIVITY GATES: 13 - 1 card set, 10 single-answer checks, 1 matching,
+    1 acknowledgement.
+  DIAGRAMS: 5 original SVG, each with a full text description.
+
+  BUILD NOTES - what is asserted, and what is not
+  - No graded lab answer appears. The link trace is a hypothetical hall
+    (EDA 2-06, HDA-1, MDA-1, no ZDA or IDA); ZDA and IDA cases are described
+    in words only. The Harlow Street data hall cabinets B-07 and D-06 are not
+    traced or named. The rack elevation is a hypothetical network cabinet,
+    not the training rack. The training rack is stated only as a 42U rack on
+    casters with servers, switches, routers, PDUs and UPS.
+  - Site survey examples avoid every Harlow Street site-walk finding: no
+    moved wall, door swing, duct clash, return-air plenum, missing sleeve,
+    occupied hours, tile replacement, shelving or badge lead time. Mercer
+    examples: glazed wall where an outlet is drawn (RFI worked example),
+    post-tensioned no-coring slab, receptacle count, service elevator hours,
+    ceiling grid without tiles, laboratory escort rule.
+  - v1.0.1: findings taught in the four classes the survey lab now uses
+    (coordinator, 2026-10-28): field differs from drawings; drawings do not
+    meet the owner standard (field matches; RFI under the owner's precedence
+    clause); site constraint; observation, no action. Mercer examples only.
+  - TIA-942 spaces from the standard's published scope (secondary sources);
+    "ZDA: no cross-connect" stated, active equipment not discussed. Airflow,
+    containment and rack-elevation rules are common practice, hedged in the
+    overview to manufacturer data.
+  - "Owner standards and contract documents commonly require ... verify ...
+    report in writing" and "submit an RFI and do not proceed" match the
+    Harlow Street owner standard 27 05 00 1.1 and 1.2 without naming it.
+  - Module numbers kept out of learner text; lesson and topic numbers kept.
+
+  LANGUAGE PASS AND AUDITS (final, v1.0.6)
+  - Language pass by fresh reviewers, module-wide counts per round:
+    116, 52, 23, 14, 13. Stopped when the count stopped falling.
+  - audit_html.py: FAIL (0), WARN (0).
+  - contrast_audit.py as written: FAIL (1), the engine rule
+    .order .step.picked .seq scored against the legacy amber token (the
+    tool keeps the first token definition); the brand layer overrides it
+    to White on #8A4B00, 6.8:1. With later token definitions winning:
+    FAIL (0). REPORT lines are unresolvable containers, as on the
+    reference page.
+
+  OPEN, AND NOT RESOLVED HERE
+  - Engine-level wording, not edited (byte-identical rule), to fix across
+    all pages in the reference engine: the score messages in the engine
+    script ("Outstanding - you are working at field-standard level and are
+    ready for the lab." / "Strong work. Revisit anything you missed and you
+    will be field-ready." / "Good progress. Go back over the cards and
+    applied scenarios to close the gaps."). This page has no score ring, so
+    the messages are not shown on it as built.
+  - Not opened in a browser. Checked with audit_html.py, contrast_audit.py
+    (as written and with later token definitions winning) and the build
+    script's engine byte-identity check.
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 530.3 &mdash; Data Center Spaces and the Site Survey &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Enterprise Infrastructure</b> &middot; Lesson 530.3 &mdash; Data Center Spaces and the Site Survey</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v1.0.6</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Introduction to Enterprise Infrastructure</p>
+      <h2 id="ovh" tabindex="-1">Lesson 530.3 &mdash; Data Center Spaces and the Site Survey</h2>
+      <p class="lead-in">How a data hall is laid out and cabled, how a cabinet is planned, and how the drawings are checked against the building before work starts.</p>
+
+      <p>The Harlow Street Operations Center has a data hall on Level 1, with rows of server cabinets on a raised floor and its own distribution cabinets for the cabling. Kestrel Communications will cable it. Upstairs, before the Level 2 cabling starts, Kestrel&rsquo;s site lead has walked the floor and the telecommunications room with the general contractor&rsquo;s superintendent, tape measure and drawings in hand, and written down what they found. The site lead sorts each difference between that record and the drawings, and sends the ones the drawings cannot answer to the design team as written questions.</p>
+
+      <p>This lesson covers both pieces of work. The first half is the data center: the spaces defined by the data center cabling standard, how a link runs through them and how a data hall plan shows them. It continues with the hot and cold aisles that carry air to and from the equipment, how a cabinet&rsquo;s contents are planned on a rack elevation, and how a training rack relates to a production row. The second half is the site survey: what it is for, how to measure and record, how to sort what you find, and how to write a request for information (RFI).</p>
+
+      <p>The worked examples use hypothetical sites with their own names and numbers.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>Data Center Spaces.</b> The entrance room and the main, intermediate, horizontal, zone and equipment distribution areas, following a link between them, and reading a data hall plan.</li>
+        <li><b>Air and Racks.</b> Hot aisles, cold aisles and containment; planning a rack elevation; the training rack and the production row it stands for.</li>
+        <li><b>The Site Survey and the RFI.</b> Purpose and kit, measuring and recording, sorting each finding into its class, and writing a request for information.</li>
+        <li><b>Wrapping Up.</b> The whole lesson in one place.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>4</b><span>Sections</span></div>
+        <div class="ov-stat"><b>11</b><span>Topics</span></div>
+        <div class="ov-stat"><b>13</b><span>Activities</span></div>
+        <div class="ov-stat"><b>5</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the standards and the equipment</h3>
+      <p><strong>TIA-942</strong>, from the Telecommunications Industry Association (TIA), defines the spaces and cabling of a data center. <strong>ANSI/TIA-568</strong>, from the American National Standards Institute (ANSI) and the TIA, covers the cabling itself. An owner&rsquo;s standard and the contract set out how field differences from the drawings are reported; the survey and RFI steps on this page are common practice. Each project&rsquo;s documents govern them.</p>
+      <p>Cabinet heights, equipment weights and airflow directions vary by model. Read the manufacturer&rsquo;s data for the equipment in front of you before you plan where it goes.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or jump
+         about using the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks &mdash; a
+         knowledge check, a set of cards to open or a matching exercise.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. Your progress through the lesson is shown in the header and
+         in the contents list.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching activities every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description, and tables have headings and captions that read correctly aloud.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 530.3</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="530.3" data-lesson-title="Data Center Spaces and the Site Survey" data-group-num="1" data-group-title="Data Center Spaces" data-num="530.3.1" data-title="The spaces of a data center">
+  <p class="crumb">Lesson 530.3 &middot; Section 1 Data Center Spaces</p>
+  <h2><span class="tnum">530.3.1</span> The spaces of a data center</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 530.3</span>
+    <h3>Data Center Spaces and the Site Survey</h3>
+    <p>A data center divides its floor into distribution areas, each with its own role in the cabling. Its rows face each other in a pattern that keeps the equipment cool. This lesson names those areas and follows a link through them, covers aisles and containment, and plans what goes where in a cabinet. It then covers the site survey: measuring the building against the drawings, sorting what you find, and asking the design team in writing where the drawings cannot be built.</p>
+    <p class="lb-meta"><b>4</b> sections &nbsp;&middot;&nbsp;
+       <b>11</b> topics &nbsp;&middot;&nbsp;
+       <b>13</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 530.3 you will be able to</div>
+    <ul>
+      <li><b>Identify</b> each data-center space: entrance room, main, intermediate, horizontal, zone and equipment distribution areas.</li>
+      <li><b>Trace</b> a link from an equipment distribution area to the main distribution area.</li>
+      <li><b>Describe</b> hot-aisle and cold-aisle containment.</li>
+      <li><b>Map</b> the mobile infrastructure rack to its production equivalent.</li>
+      <li><b>Plan</b> a rack elevation for weight distribution, airflow and service access.</li>
+      <li><b>Record</b> site constraints from field conditions.</li>
+      <li><b>Verify</b> a drawing against field conditions.</li>
+      <li><b>Raise</b> a request for information against a conflict.</li>
+    </ul></div>
+
+  <p class="lead-in">A data center uses the same cabling hierarchy as an office building, with its own names for the spaces and more of them.</p>
+
+  <p>TIA-942, from the Telecommunications Industry Association (TIA), sets out the spaces of a data center. TIA-942 calls most of them <em>distribution areas</em>. Most are a group of cabinets in the data hall, not a room. The hierarchy is the one used in any building &mdash; a main cross-connect, optional intermediate cross-connects, horizontal cross-connects, then the equipment &mdash; drawn at the scale of rows of cabinets.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The spaces of a data center under TIA-942.</caption>
+      <thead><tr>
+        <th scope="col">Space</th><th scope="col">What it holds</th><th scope="col">Its counterpart in an office building</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Entrance room</th><td>Where provider and campus cables enter: protectors, demarcation, often the providers&rsquo; equipment. Can be a room of its own or part of the hall</td><td>Entrance facility</td></tr>
+        <tr><th scope="row">Main distribution area (MDA)</th><td>The main cross-connect and the core routers and switches. One per data center</td><td>Main cross-connect in the equipment room</td></tr>
+        <tr><th scope="row">Intermediate distribution area (IDA)</th><td>An intermediate cross-connect, between the MDA and some horizontal distribution areas, used in large or multi-room data centers. Optional</td><td>Intermediate cross-connect</td></tr>
+        <tr><th scope="row">Horizontal distribution area (HDA)</th><td>The horizontal cross-connect for a group of rows, with the access switches that serve them</td><td>Telecommunications room</td></tr>
+        <tr><th scope="row">Zone distribution area (ZDA)</th><td>A connection point partway along the horizontal cabling (a zone outlet or consolidation point), often under the floor or overhead in a row; no cross-connect. Optional</td><td>A consolidation point in an open office</td></tr>
+        <tr><th scope="row">Equipment distribution area (EDA)</th><td>The cabinets holding the servers and storage, where the horizontal cabling ends on patch panels</td><td>Work area</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The abbreviation ER means two things. In an office building ER is the equipment room; in a data center, the entrance room. Read the legend of the set in front of you. A data hall drawing usually labels each distribution area beside its cabinets and gives the cabinet positions by row and number.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; The cabling between data center spaces</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 330" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A topology diagram of data center spaces: the entrance room feeding the main distribution area, backbone cabling from the main distribution area to horizontal distribution areas and to an optional intermediate distribution area, horizontal cabling from each horizontal distribution area to equipment distribution areas, with an optional zone distribution area on one horizontal path. A full text description follows.">
+    <text x="24" y="24" font-size="16" font-weight="700" fill="#611940">How the spaces connect (TIA-942)</text>
+    <rect x="380" y="40" width="180" height="44" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="470" y="67" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">Entrance room</text>
+    <rect x="380" y="110" width="180" height="44" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="470" y="137" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">MDA</text>
+    <line x1="470" y1="84" x2="470" y2="110" stroke="#611940" stroke-width="2.4"/>
+    <rect x="80" y="190" width="160" height="40" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="160" y="215" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">HDA</text>
+    <rect x="620" y="180" width="160" height="40" fill="#ffffff" stroke="#26282E" stroke-width="1.4" stroke-dasharray="6 4"/>
+    <text x="700" y="205" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">IDA (optional)</text>
+    <rect x="620" y="240" width="160" height="34" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="700" y="262" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">HDA</text>
+    <line x1="420" y1="154" x2="160" y2="190" stroke="#611940" stroke-width="2.4"/>
+    <line x1="520" y1="154" x2="700" y2="180" stroke="#611940" stroke-width="2.4"/>
+    <line x1="700" y1="220" x2="700" y2="240" stroke="#611940" stroke-width="2.4"/>
+    <text x="250" y="166" font-size="13" fill="#611940">backbone</text>
+    <text x="610" y="160" font-size="13" fill="#611940">backbone</text>
+    <rect x="40" y="280" width="80" height="34" fill="#E7FD82" stroke="#26282E" stroke-width="1.4"/>
+    <text x="80" y="302" font-size="13" font-weight="700" fill="#26282E" text-anchor="middle">EDA</text>
+    <rect x="140" y="280" width="80" height="34" fill="#E7FD82" stroke="#26282E" stroke-width="1.4"/>
+    <text x="180" y="302" font-size="13" font-weight="700" fill="#26282E" text-anchor="middle">EDA</text>
+    <line x1="120" y1="230" x2="80" y2="280" stroke="#26282E" stroke-width="2"/>
+    <line x1="180" y1="230" x2="180" y2="280" stroke="#26282E" stroke-width="2"/>
+    <rect x="280" y="244" width="100" height="30" fill="#ffffff" stroke="#26282E" stroke-width="1.4" stroke-dasharray="6 4"/>
+    <text x="330" y="264" font-size="13" font-weight="700" fill="#26282E" text-anchor="middle">ZDA</text>
+    <line x1="230" y1="230" x2="300" y2="244" stroke="#26282E" stroke-width="2"/>
+    <rect x="290" y="290" width="80" height="30" fill="#E7FD82" stroke="#26282E" stroke-width="1.4"/>
+    <text x="330" y="310" font-size="13" font-weight="700" fill="#26282E" text-anchor="middle">EDA</text>
+    <line x1="330" y1="274" x2="330" y2="290" stroke="#26282E" stroke-width="2"/>
+    <text x="400" y="262" font-size="13" fill="#26282E">horizontal cabling, with an</text>
+    <text x="400" y="278" font-size="13" fill="#26282E">optional zone point on the way</text>
+    <rect x="820" y="290" width="80" height="30" fill="#E7FD82" stroke="#26282E" stroke-width="1.4"/>
+    <text x="860" y="310" font-size="13" font-weight="700" fill="#26282E" text-anchor="middle">EDA</text>
+    <line x1="780" y1="262" x2="860" y2="290" stroke="#26282E" stroke-width="2"/>
+    <text x="780" y="112" font-size="13" fill="#26282E">Plum lines: backbone</text>
+    <text x="780" y="130" font-size="13" fill="#26282E">Slate lines: horizontal</text>
+    <text x="780" y="148" font-size="13" fill="#26282E">Dashed: optional</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>A tree diagram read from the top down. At the top is a gray box labeled Entrance room. A plum line joins it to a blue box below labeled MDA.</p>
+    <p>From the MDA, two plum lines labeled backbone run down. The left one goes to a blue box labeled HDA. The right one goes to a dashed box labeled IDA (optional), and from the IDA another plum line runs down to a second blue box labeled HDA.</p>
+    <p>From the left HDA, slate lines run down to two yellow-green boxes labeled EDA, and a third slate line runs to a dashed box labeled ZDA, from which a slate line continues down to a third EDA. A label beside it reads horizontal cabling, with an optional zone point on the way. From the right HDA a slate line runs to one more EDA.</p>
+    <p>A key on the right reads: Plum lines: backbone. Slate lines: horizontal. Dashed: optional.</p>
+  </details>
+
+  <div class="cyu gate" data-answer="1" data-fb="The HDA holds the horizontal cross-connect and the access switches for a group of rows, so it is the data center&rsquo;s counterpart of a telecommunications room. The MDA is the counterpart of the main cross-connect in the equipment room. The ZDA is an optional point along the horizontal cabling with no cross-connect. The EDA is where the horizontal cabling ends, like a work area.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which data center space does the job a telecommunications room does for one floor of an office building?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Main distribution area</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Horizontal distribution area</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Zone distribution area</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Equipment distribution area</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.3" data-lesson-title="Data Center Spaces and the Site Survey" data-group-num="1" data-group-title="Data Center Spaces" data-num="530.3.2" data-title="Following a link through the spaces">
+  <p class="crumb">Lesson 530.3 &middot; Section 1 Data Center Spaces</p>
+  <h2><span class="tnum">530.3.2</span> Following a link through the spaces</h2>
+  <p class="lead-in">Trace a link from a server cabinet outward, space by space, naming the cable between each pair, until it reaches the main distribution area.</p>
+
+  <p>Tracing a link means answering, at each step: which space am I in, what cable leaves it, and which space does that cable go to. The chain holds two kinds of cable. <span class="keyterm">Horizontal cabling</span> runs from an HDA to the EDAs it serves, through a ZDA where there is one. <span class="keyterm">Backbone cabling</span> runs between the distribution areas: HDA to MDA, HDA to IDA, IDA to MDA, and MDA to the entrance room. A trace from an EDA therefore always starts with horizontal cable and changes to backbone at the first HDA.</p>
+
+  <h3>The method</h3>
+  <ol>
+    <li><strong>Find the cabinet</strong> on the data hall plan by its row and number.</li>
+    <li><strong>Find its serving HDA.</strong> The plan&rsquo;s notes or labels say which HDA serves which rows, and whether a ZDA stands between the HDA and some of the cabinets.</li>
+    <li><strong>Find what feeds that HDA</strong>: the MDA directly, or an IDA. The notes or the backbone diagram say which.</li>
+    <li><strong>Write the chain</strong> as space, cable, space until it ends at the MDA.</li>
+  </ol>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; A link traced across a data hall (hypothetical hall)</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 330" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A plan of a hypothetical data hall with three rows of cabinets, an MDA on the north wall and an HDA at the end of Row 1 serving Rows 1 and 2, showing the link from cabinet 2-06 traced along horizontal cable to the HDA and along backbone to the MDA. A full text description follows.">
+    <text x="24" y="24" font-size="16" font-weight="700" fill="#611940">Cabinet 2-06 to the MDA</text>
+    <rect x="40" y="40" width="860" height="270" fill="#ffffff" stroke="#26282E" stroke-width="3"/>
+    <rect x="560" y="44" width="80" height="34" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="600" y="66" font-size="13" font-weight="700" fill="#26282E" text-anchor="middle">MDA-1</text>
+    <text x="650" y="66" font-size="13" fill="#5A5D66">north wall</text>
+    <g>
+      <rect x="120" y="110" width="40" height="40" fill="#71E2FD" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="160" y="110" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="200" y="110" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="240" y="110" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="280" y="110" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="320" y="110" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="360" y="110" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="400" y="110" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+    </g>
+    <text x="54" y="135" font-size="13" font-weight="700" fill="#26282E">Row 1</text>
+    <text x="126" y="166" font-size="13" fill="#26282E">HDA-1</text>
+    <g>
+      <rect x="120" y="200" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="160" y="200" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="200" y="200" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="240" y="200" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="280" y="200" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="320" y="200" width="40" height="40" fill="#E7FD82" stroke="#A4262C" stroke-width="3"/>
+      <rect x="360" y="200" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="400" y="200" width="40" height="40" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+    </g>
+    <text x="54" y="225" font-size="13" font-weight="700" fill="#26282E">Row 2</text>
+    <text x="324" y="258" font-size="13" font-weight="700" fill="#A4262C">2-06</text>
+    <line x1="340" y1="200" x2="340" y2="180" stroke="#26282E" stroke-width="3"/>
+    <line x1="340" y1="180" x2="140" y2="180" stroke="#26282E" stroke-width="3"/>
+    <line x1="140" y1="180" x2="140" y2="150" stroke="#26282E" stroke-width="3"/>
+    <text x="200" y="194" font-size="13" fill="#26282E">horizontal cable</text>
+    <line x1="140" y1="110" x2="140" y2="94" stroke="#611940" stroke-width="3"/>
+    <line x1="140" y1="94" x2="600" y2="94" stroke="#611940" stroke-width="3"/>
+    <line x1="600" y1="94" x2="600" y2="78" stroke="#611940" stroke-width="3"/>
+    <text x="300" y="88" font-size="13" fill="#611940">backbone, overhead tray</text>
+    <rect x="480" y="200" width="400" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2" stroke-dasharray="6 4"/>
+    <text x="500" y="225" font-size="13" fill="#5A5D66">Row 3, served by another HDA</text>
+    <text x="54" y="290" font-size="13" fill="#5A5D66">Plan note: HDA-1 (cabinet 1-01) serves Rows 1 and 2 and is fed from MDA-1.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>A plan of a hypothetical data hall, titled Cabinet 2-06 to the MDA. A blue cabinet on the north wall is labeled MDA-1, north wall.</p>
+    <p>Two rows of eight cabinets run across the west part of the hall, labeled Row 1 (upper) and Row 2 (lower). The first cabinet of Row 1 is blue and labeled HDA-1; the others are yellow-green server cabinets. The sixth cabinet of Row 2 is outlined in red and labeled 2-06.</p>
+    <p>A slate line labeled horizontal cable runs from cabinet 2-06 up into the space between the rows, west to the end, and up into HDA-1. From the top of HDA-1 a plum line labeled backbone, overhead tray runs north, then east to MDA-1.</p>
+    <p>To the east, a dashed gray row is labeled Row 3, served by another HDA. A note along the bottom reads: Plan note: HDA-1 (cabinet 1-01) serves Rows 1 and 2 and is fed from MDA-1.</p>
+  </details>
+
+  <p>Written out: <strong>EDA 2-06 &rarr; horizontal cable &rarr; HDA-1 &rarr; backbone &rarr; MDA-1</strong>. Had the plan note put a ZDA between HDA-1 and Row 2, the horizontal cable would be in two pieces, each recorded, with the ZDA named between them. Had HDA-1 been fed from an IDA, the backbone would be in two pieces with the IDA between them. Every space and every cable in the chain is named. A trace that skips one cannot be checked against the drawing.</p>
+
+  <div class="note tip"><div class="nt">Which cabinets are not EDAs</div>
+    <p>A row usually holds its HDA in one of its own cabinet positions, at the end of the row. That cabinet holds patch panels and switches, not servers, and it is not an EDA, even though it stands in the row with the server cabinets. Data hall plans number it with the row and label it with its function.</p></div>
+
+  <div class="cyu gate" data-answer="2" data-fb="Horizontal cabling runs from an HDA to the cabinets it serves, so the first cable leaving a server cabinet is horizontal, and the change to backbone happens at the HDA. Backbone runs between distribution areas, never from an EDA. A cable from the EDA does not go directly to the entrance room. A patch cord connects equipment within one cabinet, not one space to another.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You are tracing a link from a server cabinet (an EDA) toward the MDA. What is the first cable in the chain?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Backbone cable to the MDA</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Backbone cable to the entrance room</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Horizontal cable toward its HDA</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A patch cord to the MDA</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.3" data-lesson-title="Data Center Spaces and the Site Survey" data-group-num="1" data-group-title="Data Center Spaces" data-num="530.3.3" data-title="Reading a data hall plan">
+  <p class="crumb">Lesson 530.3 &middot; Section 1 Data Center Spaces</p>
+  <h2><span class="tnum">530.3.3</span> Reading a data hall plan</h2>
+  <p class="lead-in">A data hall plan is drawn at the scale of cabinets, and most of what it says is in its labels, its arrows and its notes.</p>
+
+  <p>An enlarged plan of a data hall shows every cabinet position as a small rectangle, usually 24 in wide and 42 in or 48 in deep, set out in rows. At the scales used for a hall, commonly 1/8&Prime; or 1/4&Prime; = 1&prime;-0&Prime;, the rectangles are too small to carry much text, so the plan relies on a set of conventions.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>What a data hall plan shows, and where to look for it.</caption>
+      <thead><tr>
+        <th scope="col">To find</th><th scope="col">Look for</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Which way a row faces</th><td>An arrow or the word FRONT beside each row. Two rows whose fronts point at each other have a cold aisle between them, the aisle the equipment draws its cool air from</td></tr>
+        <tr><th scope="row">Which cabinet is which</th><td>A row letter or number and a position number, written inside or beside each rectangle: Row 2, cabinet 06, labeled 2-06</td></tr>
+        <tr><th scope="row">Which cabinets are distribution areas</th><td>A label with the function (MDA, IDA, HDA) on or beside the cabinet, often with a different fill, and a note saying which rows each one serves</td></tr>
+        <tr><th scope="row">Where a zone point is</th><td>A small symbol in an aisle or under the floor, labeled ZDA, with a note on what feeds it and which cabinets it serves</td></tr>
+        <tr><th scope="row">The aisles and the air</th><td>Perforated tiles, floor tiles with holes that let the cold air up, drawn in the cold aisles; aisle labels; the cooling units along a wall. Containment, the doors and roof that close off one aisle, is drawn as doors across the aisle ends, or a note says there is none</td></tr>
+        <tr><th scope="row">The pathways</th><td>Overhead tray drawn as a dashed or hatched band over the rows, or under-floor tray noted on a separate plan; where the backbone enters the hall</td></tr>
+        <tr><th scope="row">The raised floor</th><td>A note giving its height and whether the space under it supplies cold air</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A typical set of hall notes says which cabinets are equipment distribution areas, which HDA serves which rows and what feeds it, what a ZDA serves, and whether containment is installed. Read the notes before tracing anything: two rows drawn identically can be served by different HDAs, and only the note says so.</p>
+
+  <p>Reserved positions are often drawn as an outline with no cabinets in it, labeled for future rows. Nothing in a future area is installed or cabled, but the hall&rsquo;s pathways are sometimes sized to serve it, so a tray that looks oversized for the present rows may be correct.</p>
+
+  <div class="note tip"><div class="nt">A cabinet&rsquo;s position and its function are separate</div>
+    <p>An HDA occupies a cabinet position in its row and has a position number like any other cabinet. The plan gives both: the position (for example 1-01) and the function (HDA-1). Use the function when tracing a link and the position when finding the cabinet on the floor.</p></div>
+
+  <div class="cyu gate" data-answer="1" data-fb="The FRONT arrows show which way each row faces. Rows whose fronts point toward each other take in air from the aisle between them, so that aisle is a cold aisle, and rows standing back to back share a hot aisle. The cabinet labels identify cabinets, not airflow. A dashed band over the rows is a pathway. The raised-floor note gives the floor height and whether it supplies air, not which aisle is which.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a data hall plan, what tells you which aisle between two rows is a cold aisle?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The cabinet labels in each row</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>FRONT arrows on the two rows pointing toward that aisle</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A dashed band drawn over the rows</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The raised-floor height note</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.3" data-lesson-title="Data Center Spaces and the Site Survey" data-group-num="2" data-group-title="Air and Racks" data-num="530.3.4" data-title="Hot aisles, cold aisles and containment">
+  <p class="crumb">Lesson 530.3 &middot; Section 2 Air and Racks</p>
+  <h2><span class="tnum">530.3.4</span> Hot aisles, cold aisles and containment</h2>
+  <p class="lead-in">Equipment takes in cool air at its front and exhausts hot air at its back, so rows are turned to face each other front to front and back to back.</p>
+
+  <p>Most servers and storage draw air in through the front and push it out the back. A row of cabinets set out that way produces a wall of hot air behind it. If the next row faced the same way, it would breathe the first row&rsquo;s exhaust. Rows are therefore set out in alternating directions: two rows facing each other across a <span class="keyterm">cold aisle</span>, where cool air is supplied, and back to back across a <span class="keyterm">hot aisle</span>, where exhaust collects and returns to the cooling units.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; Hot aisle and cold aisle on a raised floor, in section</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 320" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A section through a data hall on a raised floor: a cooling unit pushes cold air under the floor, up through perforated tiles into a cold aisle between two rows facing each other, through the cabinets, out into hot aisles behind them, and back to the cooling unit through the ceiling return. A full text description follows.">
+    <text x="24" y="24" font-size="16" font-weight="700" fill="#611940">Air path through the rows</text>
+    <line x1="30" y1="230" x2="910" y2="230" stroke="#26282E" stroke-width="3"/>
+    <text x="40" y="250" font-size="13" fill="#26282E">raised floor</text>
+    <line x1="30" y1="290" x2="910" y2="290" stroke="#26282E" stroke-width="3"/>
+    <text x="300" y="274" font-size="13" fill="#26282E">cold air under the floor</text>
+    <line x1="30" y1="50" x2="910" y2="50" stroke="#26282E" stroke-width="1.4" stroke-dasharray="8 4"/>
+    <text x="680" y="44" font-size="13" fill="#26282E">ceiling return to cooling unit</text>
+    <rect x="40" y="110" width="80" height="120" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="50" y="160" font-size="13" font-weight="700" fill="#26282E">cooling</text>
+    <text x="50" y="178" font-size="13" font-weight="700" fill="#26282E">unit</text>
+    <rect x="300" y="110" width="70" height="120" fill="#E7FD82" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="540" y="110" width="70" height="120" fill="#E7FD82" stroke="#26282E" stroke-width="1.4"/>
+    <text x="304" y="104" font-size="13" fill="#26282E">Row A</text>
+    <text x="544" y="104" font-size="13" fill="#26282E">Row B</text>
+    <text x="374" y="126" font-size="13" fill="#26282E">front</text>
+    <text x="500" y="126" font-size="13" fill="#26282E">front</text>
+    <rect x="400" y="226" width="110" height="8" fill="#71E2FD" stroke="#26282E" stroke-width="1"/>
+    <text x="398" y="214" font-size="13" font-weight="700" fill="#26282E">cold aisle</text>
+    <text x="395" y="246" font-size="13" fill="#26282E">perforated tiles</text>
+    <text x="196" y="170" font-size="13" font-weight="700" fill="#A4262C">hot aisle</text>
+    <text x="640" y="170" font-size="13" font-weight="700" fill="#A4262C">hot aisle</text>
+    <path d="M120 268 L455 268 L455 200" fill="none" stroke="#724DFD" stroke-width="2.4"/>
+    <polygon points="455,190 449,202 461,202" fill="#724DFD"/>
+    <path d="M440 170 L376 170" fill="none" stroke="#724DFD" stroke-width="2.4"/>
+    <polygon points="372,170 384,164 384,176" fill="#724DFD"/>
+    <path d="M470 170 L534 170" fill="none" stroke="#724DFD" stroke-width="2.4"/>
+    <polygon points="538,170 526,164 526,176" fill="#724DFD"/>
+    <path d="M298 150 L270 150 L270 60" fill="none" stroke="#A4262C" stroke-width="2.4"/>
+    <polygon points="270,54 264,66 276,66" fill="#A4262C"/>
+    <path d="M612 150 L700 150 L700 60" fill="none" stroke="#A4262C" stroke-width="2.4"/>
+    <polygon points="700,54 694,66 706,66" fill="#A4262C"/>
+    <path d="M270 62 L100 62 L100 108" fill="none" stroke="#A4262C" stroke-width="2.4" stroke-dasharray="6 4"/>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>A section through a data hall. A raised floor runs across the drawing above the slab, with the space between labeled cold air under the floor. A dashed line near the top is labeled ceiling return to cooling unit.</p>
+    <p>On the left, a gray box labeled cooling unit stands on the raised floor. Two yellow-green cabinets, labeled Row A and Row B, face each other with their fronts toward the middle, each front labeled front. Between them, blue tiles in the floor are labeled perforated tiles, and the space above them is labeled cold aisle.</p>
+    <p>A violet arrow runs from the cooling unit under the floor and rises through the perforated tiles into the cold aisle. From there, violet arrows turn left into the front of Row A and right into the front of Row B.</p>
+    <p>Behind each row, the space is labeled hot aisle in red. Red arrows leave the back of each cabinet and rise to the ceiling return. A dashed red line runs along the ceiling back to the top of the cooling unit.</p>
+  </details>
+
+  <h3>Containment</h3>
+  <p>Without a barrier, hot exhaust spills over the top of the rows and around their ends into the cold aisle, and cold air escapes past the ends without entering any equipment. <span class="keyterm">Containment</span> closes one of the aisles.</p>
+  <div class="compare">
+    <div class="box"><h3>Cold-aisle containment</h3><ul class="clean">
+      <li>Doors across the ends of the cold aisle and a roof over it.</li>
+      <li>The cold aisle becomes a closed supply chamber; the rest of the room runs warm.</li>
+      <li>Fits an existing raised-floor hall without changing the return.</li>
+    </ul></div>
+    <div class="box"><h3>Hot-aisle containment</h3><ul class="clean">
+      <li>Doors and a roof enclose the hot aisle, ducted to the ceiling return or to the cooling units.</li>
+      <li>The rest of the room stays at the supply temperature.</li>
+      <li>Needs a return path above the ceiling, or cooling units in the row.</li>
+    </ul></div>
+  </div>
+  <p>Either way, every gap in the row has to be closed for containment to work: blanking panels in empty rack units, seals between cabinets, brush grommets at floor cut-outs. Cable work can open these gaps. A removed blanking panel or a cable bundle through an unsealed tile cut-out lets air bypass the equipment. A bundle behind a cabinet blocks its exhaust.</p>
+
+  <p>On a data hall plan, rows show their front with an arrow or the word FRONT, and the aisles between them are labeled; perforated tiles are drawn in the cold aisles. Where a hall has no containment, the plan says so in a note or shows nothing across the aisle ends.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="With hot-aisle containment, the exhaust is enclosed behind the rows and returned to the cooling units, so the open room around the rows stays at the supply temperature. With cold-aisle containment it is the other way round: the cold aisle is closed and the room runs warm. Containment does not remove the need for blanking panels; gaps in a row defeat either kind. Cabinet fronts still face the cold aisle.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A data hall uses hot-aisle containment. What is true of the open room around the rows?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>It stays at about the supply air temperature</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>It runs at about the exhaust temperature</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Blanking panels are no longer needed in the cabinets</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Cabinet fronts face the contained aisle</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.3" data-lesson-title="Data Center Spaces and the Site Survey" data-group-num="2" data-group-title="Air and Racks" data-num="530.3.5" data-title="Rack elevations">
+  <p class="crumb">Lesson 530.3 &middot; Section 2 Air and Racks</p>
+  <h2><span class="tnum">530.3.5</span> Rack elevations</h2>
+  <p class="lead-in">A rack elevation is a drawing of one rack or cabinet, position by position, drawn before anything is mounted in it.</p>
+
+  <p>Racks and cabinets are measured in <span class="keyterm">rack units</span> (U): 1U is 1.75 in of vertical space. A 42U cabinet has 42 positions, numbered from the bottom up. A <span class="keyterm">rack elevation</span> shows each piece of equipment at the positions it occupies, its height in U, and what is left empty. It is drawn to settle weight, airflow, cabling and service access before the equipment arrives.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>What a rack elevation plans for, and how.</caption>
+      <thead><tr>
+        <th scope="col">Concern</th><th scope="col">Planning rule</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Weight</th><td>The heaviest items at the bottom: an uninterruptible power supply (UPS) and its batteries, then the heaviest servers. A top-heavy cabinet can tip when a loaded server is slid out on its rails. Add up the equipment weights and check them against the cabinet&rsquo;s rated load and the floor&rsquo;s rated load</td></tr>
+        <tr><th scope="row">Airflow</th><td>Every item breathing front to back, from the cold aisle to the hot aisle. A switch that breathes side to side needs a baffle, or a position where it does not take in another unit&rsquo;s exhaust. Blanking panels fill every empty position on the front</td></tr>
+        <tr><th scope="row">Cabling</th><td>Patch panels close to where the cable enters the cabinet: at the top for overhead entry, low for under-floor entry. A horizontal cable manager between a patch panel and the switch it patches to. Power distribution units (PDUs) mounted vertically at the rear, outside the U positions</td></tr>
+        <tr><th scope="row">Service access</th><td>Room in front of and behind the cabinet to slide equipment out on its rails, positions for growth left together rather than scattered, and nothing mounted so that removing it means removing something else first</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; A 42U network cabinet, front elevation (hypothetical)</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 770" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A front elevation of a hypothetical 42U network cabinet with positions numbered from U1 at the bottom to U42 at the top: a UPS at U1 to U3, a management server above it, a block reserved for growth, then a fiber enclosure, switches, cable managers and patch panels toward the top under the overhead cable entry. A full text description follows.">
+    <text x="24" y="24" font-size="16" font-weight="700" fill="#611940">42U cabinet, U1 at the bottom</text>
+    <text x="210" y="44" font-size="13" fill="#5A5D66">overhead cable entry</text>
+    <rect x="200" y="48" width="300" height="676" fill="#ffffff" stroke="#26282E" stroke-width="3"/>
+    <rect x="206" y="674" width="288" height="48" fill="#F0F0F0" stroke="#26282E"/>
+    <text x="216" y="703" font-size="13" font-weight="700" fill="#26282E">U1&ndash;U3 UPS, heaviest item</text>
+    <rect x="206" y="642" width="288" height="32" fill="#E7FD82" stroke="#26282E"/>
+    <text x="216" y="663" font-size="13" fill="#26282E">U4&ndash;U5 management server</text>
+    <rect x="206" y="178" width="288" height="464" fill="#F0F0F0" stroke="#26282E" stroke-dasharray="6 4"/>
+    <text x="216" y="406" font-size="13" fill="#26282E">U6&ndash;U34 reserved for growth</text>
+    <text x="216" y="424" font-size="13" fill="#26282E">(blanking panels fitted)</text>
+    <rect x="206" y="162" width="288" height="16" fill="#ffffff" stroke="#26282E"/>
+    <text x="216" y="175" font-size="13" fill="#26282E">U35 fiber enclosure</text>
+    <rect x="206" y="146" width="288" height="16" fill="#E7FD82" stroke="#26282E"/>
+    <text x="216" y="159" font-size="13" fill="#26282E">U36 switch 48-port</text>
+    <rect x="206" y="130" width="288" height="16" fill="#ffffff" stroke="#26282E"/>
+    <text x="216" y="143" font-size="13" fill="#26282E">U37 horizontal cable manager</text>
+    <rect x="206" y="114" width="288" height="16" fill="#71E2FD" stroke="#26282E"/>
+    <text x="216" y="127" font-size="13" fill="#26282E">U38 patch panel 48-port</text>
+    <rect x="206" y="98" width="288" height="16" fill="#E7FD82" stroke="#26282E"/>
+    <text x="216" y="111" font-size="13" fill="#26282E">U39 switch 48-port</text>
+    <rect x="206" y="82" width="288" height="16" fill="#ffffff" stroke="#26282E"/>
+    <text x="216" y="95" font-size="13" fill="#26282E">U40 horizontal cable manager</text>
+    <rect x="206" y="66" width="288" height="16" fill="#71E2FD" stroke="#26282E"/>
+    <text x="216" y="79" font-size="13" fill="#26282E">U41 patch panel 48-port</text>
+    <rect x="206" y="50" width="288" height="16" fill="#ffffff" stroke="#26282E"/>
+    <text x="216" y="63" font-size="13" fill="#26282E">U42 blanking panel</text>
+    <text x="190" y="719" font-size="13" fill="#5A5D66" text-anchor="end">U1</text>
+    <text x="190" y="575" font-size="13" fill="#5A5D66" text-anchor="end">U10</text>
+    <text x="190" y="415" font-size="13" fill="#5A5D66" text-anchor="end">U20</text>
+    <text x="190" y="255" font-size="13" fill="#5A5D66" text-anchor="end">U30</text>
+    <text x="190" y="63" font-size="13" fill="#5A5D66" text-anchor="end">U42</text>
+    <text x="520" y="62" font-size="13" fill="#26282E">Patch panels near the top, under the</text>
+    <text x="520" y="80" font-size="13" fill="#26282E">overhead cable entry</text>
+    <text x="520" y="134" font-size="13" fill="#26282E">Manager between each panel</text>
+    <text x="520" y="152" font-size="13" fill="#26282E">and the switch it patches to</text>
+    <text x="520" y="378" font-size="13" fill="#26282E">Growth kept in one block,</text>
+    <text x="520" y="396" font-size="13" fill="#26282E">every empty position blanked</text>
+    <text x="520" y="654" font-size="13" fill="#26282E">Server low, above the UPS</text>
+    <text x="520" y="702" font-size="13" fill="#26282E">Weight at the bottom: UPS at U1</text>
+    <text x="520" y="752" font-size="13" fill="#26282E">PDUs mounted vertically at the rear</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>A front elevation of a tall cabinet, titled 42U cabinet, U1 at the bottom. The words overhead cable entry are written above the top of the cabinet. Position numbers U1, U10, U20, U30 and U42 are marked down the left side. Reading from the bottom up, the positions are:</p>
+    <ol>
+      <li>U1&ndash;U3 UPS, heaviest item.</li>
+      <li>U4&ndash;U5 management server.</li>
+      <li>U6&ndash;U34 reserved for growth (blanking panels fitted), drawn as a dashed block.</li>
+      <li>U35 fiber enclosure.</li>
+      <li>U36 switch 48-port.</li>
+      <li>U37 horizontal cable manager.</li>
+      <li>U38 patch panel 48-port.</li>
+      <li>U39 switch 48-port.</li>
+      <li>U40 horizontal cable manager.</li>
+      <li>U41 patch panel 48-port.</li>
+      <li>U42 blanking panel, below the overhead cable entry.</li>
+    </ol>
+    <p>Notes to the right, from top to bottom: Patch panels near the top, under the overhead cable entry. Manager between each panel and the switch it patches to. Growth kept in one block, every empty position blanked. Server low, above the UPS. Weight at the bottom: UPS at U1. Below the cabinet: PDUs mounted vertically at the rear.</p>
+  </details>
+
+  <h3>Reading a rack elevation sheet</h3>
+  <p>A set usually draws rack elevations on one sheet, several cabinets side by side, each titled with its cabinet name and its position in the hall. Some show the front and rear of each cabinet as two views, because PDUs, vertical cable managers and the bonding connection are mounted at the rear. A schedule beside the elevations often lists each item with its make and model, height in U, weight and power draw, and totals them per cabinet. Check the totals against the cabinet&rsquo;s load rating and its power feed before anything is ordered or mounted.</p>
+
+  <p>An elevation states the height of every item in U and its position number, so that two people mounting the same cabinet from the drawing put each item in the same place. Count the U: the items and the empty positions must add up to the cabinet&rsquo;s height.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="The UPS and its batteries are the heaviest items, so they go at the bottom, where they keep the center of gravity low when a server is slid out on its rails. Putting the UPS at the top makes the cabinet top-heavy. The weight rule applies regardless of cable entry. Mounting it in the middle saves no access and still raises the center of gravity. Placing it above the switches it powers still puts the heaviest item high in the cabinet.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Where on a rack elevation do you place a rack-mounted UPS with internal batteries?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>At the top, near the overhead cable entry</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>In the middle, where it is easiest to reach</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Directly above the switches it powers</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>At the bottom of the cabinet</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.3" data-lesson-title="Data Center Spaces and the Site Survey" data-group-num="2" data-group-title="Air and Racks" data-num="530.3.6" data-title="The training rack and the production row">
+  <p class="crumb">Lesson 530.3 &middot; Section 2 Air and Racks</p>
+  <h2><span class="tnum">530.3.6</span> The training rack and the production row</h2>
+  <p class="lead-in">A mobile infrastructure rack holds in one 42U frame the same kinds of equipment that a production data hall spreads across its rows and rooms.</p>
+
+  <p>The <span class="keyterm">mobile infrastructure rack</span> is a 42U rack on casters used for training. It holds servers, switches, routers, power distribution units and an uninterruptible power supply. A production data center holds the same component types, each in a different space: the servers in the equipment distribution areas, the switching in the distribution areas, the routing toward the providers, and the power in the cabinets and in the electrical room. The table maps each component on the training rack to the space where it sits in a production hall.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Component types on a training rack and where the same type sits in a production data center.</caption>
+      <thead><tr>
+        <th scope="col">On the training rack</th><th scope="col">In a production data center</th><th scope="col">What changes at production scale</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Servers</th><td>Server cabinets in the equipment distribution areas</td><td>Many cabinets per row, each with its own patch panels and rack PDUs</td></tr>
+        <tr><th scope="row">Switches</th><td>Access switches in the horizontal distribution areas; core switches in the main distribution area</td><td>Switching is split by role and placed in different cabinets</td></tr>
+        <tr><th scope="row">Routers</th><td>The main distribution area and the entrance room, at the connection to the providers</td><td>Duplicated, with links to more than one provider</td></tr>
+        <tr><th scope="row">Power distribution units</th><td>Rack PDUs in every cabinet, fed from floor-standing PDUs or panels in the hall</td><td>Two PDUs per cabinet on separate feeds, labeled A and B</td></tr>
+        <tr><th scope="row">UPS</th><td>A central UPS system in its own electrical room, feeding the hall</td><td>Sized for the whole hall, with battery or flywheel rooms of its own</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A single rack also mixes jobs that a production hall separates: there is one patch field, one cable manager set, one power path. The same rules apply to it as to a production cabinet: weight at the bottom, front-to-back airflow, blanking panels, managers between panels and switches.</p>
+
+  <p>Match each component on the training rack to the space where it sits in a production data center.</p>
+  <div class="match gate" data-left="Training rack component" data-right="Production space">
+    <div class="pair" data-left="Servers" data-right="Equipment distribution area cabinets"></div>
+    <div class="pair" data-left="Access switch" data-right="Horizontal distribution area"></div>
+    <div class="pair" data-left="Core switch" data-right="Main distribution area"></div>
+    <div class="pair" data-left="Uninterruptible power supply" data-right="Electrical room"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.3" data-lesson-title="Data Center Spaces and the Site Survey" data-group-num="3" data-group-title="The Site Survey and the RFI" data-num="530.3.7" data-title="What a site survey is for">
+  <p class="crumb">Lesson 530.3 &middot; Section 3 The Site Survey and the RFI</p>
+  <h2><span class="tnum">530.3.7</span> What a site survey is for</h2>
+  <p class="lead-in">A site survey checks the building against the drawings before work starts, so that differences are found on paper rather than with a crew standing in front of them.</p>
+
+  <p>Drawings show what was designed. The building shows what was built, and the two drift apart: a column is boxed in larger than drawn, a pipe is rerouted, casework is fixed where an outlet was planned. Owner standards and contract documents commonly require the contractor to verify dimensions and conditions on site before installing and to report every difference in writing. A <span class="keyterm">site survey</span>, or site walk, is how that verification is done.</p>
+
+  <h3>Before you go</h3>
+  <ul>
+    <li><strong>The current drawings.</strong> The latest revision of every sheet you will check, with the revision dates confirmed against the sheet index.</li>
+    <li><strong>The owner standard and the specification sections</strong> you will check the space against.</li>
+    <li><strong>Access.</strong> Badges, escorts, keys, working hours, and who on site can open ceilings and locked rooms. Arrange them before the day.</li>
+    <li><strong>Instruments.</strong> A tape measure, a laser distance meter, a flashlight, a ladder where you are permitted to use one, and a camera.</li>
+    <li><strong>Personal protective equipment</strong> the site requires.</li>
+    <li><strong>A record form</strong>: date and time, who walked, who accompanied, the drawings carried, and a numbered line for each finding.</li>
+  </ul>
+
+  <p>Walk with someone who can answer questions on the spot, such as the general contractor&rsquo;s superintendent or the owner&rsquo;s facilities lead. Write any explanation heard during the walk into the record, with the name of the person who gave it.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="A survey compares the building with the drawings that will be built from, so it has to be done against the current revision of every sheet; a superseded sheet can show a condition that has already been changed by the design team. The site&rsquo;s schedule, the instruments and an escort all matter, but none of them makes a comparison against the wrong drawing valid.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which check before a site survey decides whether its findings mean anything?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Booking the walk for the start of the working day</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Confirming that every sheet carried is the current revision</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Bringing a laser distance meter as well as a tape</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Arranging an escort from the owner&rsquo;s facilities staff</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.3" data-lesson-title="Data Center Spaces and the Site Survey" data-group-num="3" data-group-title="The Site Survey and the RFI" data-num="530.3.8" data-title="Measuring and recording">
+  <p class="crumb">Lesson 530.3 &middot; Section 3 The Site Survey and the RFI</p>
+  <h2><span class="tnum">530.3.8</span> Measuring and recording</h2>
+  <p class="lead-in">A finding is useful only if someone who was not on the walk can read where it is, what was measured, and what the drawing shows instead.</p>
+
+  <h3>Measuring</h3>
+  <ul>
+    <li><strong>Say what you measured to.</strong> Room dimensions to the finished inside faces of the walls; heights above finished floor (AFF); the bottom of a duct or beam, not its center.</li>
+    <li><strong>Measure what the drawing dimensions.</strong> If the drawing gives a room as wall-to-wall, measure wall-to-wall. A figure taken a different way cannot be compared.</li>
+    <li><strong>Measure twice where it matters.</strong> A dimension that will be reported as a difference is measured again, with a second instrument where possible.</li>
+    <li><strong>Count what the drawing counts.</strong> Sleeves, outlets, receptacles and doors are counted, not estimated.</li>
+    <li><strong>Look above the ceiling.</strong> Where tiles can be lifted with permission, check the space the pathway will use: ducts, pipes, structure, and whether return grilles open into the void.</li>
+  </ul>
+
+  <h3>Recording</h3>
+  <p>Each finding is written as one numbered entry carrying its location, the measured value with its unit, what the drawing or standard shows, and a photograph reference. The entry states the fact and does not yet say what to do about it.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Two survey entries, written well and written badly (Mercer Avenue Clinic, hypothetical).</caption>
+      <thead><tr>
+        <th scope="col">Written like this</th><th scope="col">Not like this</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>Consult Room 3.20, north wall: built as full-height glazing in an aluminum frame, from floor to ceiling, grid C to D. Sheet T-103 shows outlet 3A-PP01-044 on this wall at 18 in AFF. Photo 14.</td><td>Problem with outlet in 3.20.</td></tr>
+        <tr><td>Exam Room 3.16, floor: slab stamped &ldquo;post-tensioned &mdash; no coring or drilling without engineer&rsquo;s approval&rdquo; across the whole room. Sheet T-103 shows floor box outlet 3A-PP01-052 at the room center, cored through the slab. Photos 15&ndash;16.</td><td>Can&rsquo;t do the floor box.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Photographs</h3>
+  <p>A photograph supports a finding only if a reader can tell where it was taken and what it shows. Take a wide shot that places the condition in the room, then a close shot of the condition itself. Put a measuring tape or a laser reading in the frame where the finding is a dimension. Number the photographs in the order taken and write the number on the entry at the same moment, so that the two cannot drift apart. Before you photograph inside an occupied building, check the site&rsquo;s rules on cameras: some owners forbid photographs of security equipment, people or screens.</p>
+
+  <p>The record is signed or initialed by whoever walked, and copied to the people the contract names. It is a document the project relies on, so a correction to it is made as a dated addition, not by overwriting an entry.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="An entry that someone else can act on gives the location, the measured value with its unit and what it was measured to, what the drawing shows, and a photo reference. &ldquo;Receptacles do not match the drawing&rdquo; gives no count and names no sheet. &ldquo;See photo 7; Sheet E-103 differs&rdquo; leaves the reader to work out what differs. The entry ending &ldquo;Add one&rdquo; counts the receptacles but names no sheet and turns the finding into an instruction; a survey entry records the fact first.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which survey entry can a designer act on without calling the person who wrote it?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Room 3.12, south wall: receptacles do not match the drawing. Photo 7.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Room 3.12, south wall: see photo 7; Sheet E-103 differs.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Room 3.12, south wall: two duplex receptacles counted, at 18 in AFF; Sheet E-103 shows three on this wall. Photo 7.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Room 3.12, south wall: two duplex receptacles counted, at 18 in AFF. Add one.</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.3" data-lesson-title="Data Center Spaces and the Site Survey" data-group-num="3" data-group-title="The Site Survey and the RFI" data-num="530.3.9" data-title="Sorting what the survey finds">
+  <p class="crumb">Lesson 530.3 &middot; Section 3 The Site Survey and the RFI</p>
+  <h2><span class="tnum">530.3.9</span> Sorting what the survey finds</h2>
+  <p class="lead-in">Each finding gets one primary class, and that class decides what happens to it next.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The classes of survey finding, and what happens to each.</caption>
+      <thead><tr>
+        <th scope="col">Class</th><th scope="col">What it is</th><th scope="col">What happens to it</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Field differs from the drawings</th><td>The building as it stands does not match what the drawings, or a note on them, show</td><td>A request for information to the design team, through the channel the contract names. The affected work waits for the answer</td></tr>
+        <tr><th scope="row">Drawings do not meet the owner standard</th><td>The field matches the drawings, but what is drawn falls short of the owner standard</td><td>A request for information as well. Where an owner standard ranks itself above the drawings and requires an RFI when two documents conflict, the drawings cannot simply be built</td></tr>
+        <tr><th scope="row">Site constraint</th><td>A condition that limits how, when or where the work is done, while the drawings are not in error: working hours, access, protection of finishes, occupied areas, lead times</td><td>Into the work plan and the schedule; to the project manager where it affects cost or time</td></tr>
+        <tr><th scope="row">Observation</th><td>A fact worth recording that needs no action: work by another trade not yet started, a condition that matches both the drawings and the standard</td><td>Recorded, with no action; checked again on a later visit where it may change</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Start with one question: does the building match the drawings? If not, it is a field difference. If it does, ask whether what is drawn meets the owner standard. If it does not, the finding goes to an RFI as a drawing that does not meet the owner standard. A finding that changes only how or when the work is done is a site constraint, and one that changes nothing is an observation.</p>
+
+  <p>Where two classes apply, note the second in the entry&rsquo;s notes column: an outlet drawn behind fixed casework, in a room open only after hours, is a field difference, with the access hours noted as a site constraint.</p>
+
+  <p>Open each card.</p>
+  <div class="revealset gate"><div class="cards stack">
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Glazed wall where an outlet is drawn</span><span class="rcard-sub">Mercer Avenue Clinic, Consult Room 3.20</span><span class="rcard-detail" hidden><p><b>Field differs from the drawings.</b> The wall is built as glazing, so the outlet cannot be installed as drawn. Where it goes instead is the designer&rsquo;s decision.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Lighting drawn and installed at 30 foot-candles (fc)</span><span class="rcard-sub">Mercer Avenue Clinic, TR 3A</span><span class="rcard-detail" hidden><p><b>Drawings do not meet the owner standard.</b> The installed fixtures match the lighting note. The clinic&rsquo;s owner standard requires 50 fc, so the drawing falls short of the standard and goes to an RFI.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Service elevator reserved until 10 AM</span><span class="rcard-sub">Mercer Avenue Clinic, building management rule</span><span class="rcard-detail" hidden><p><b>Site constraint.</b> Cable deliveries are scheduled after 10 AM. Nothing on the drawings is in error.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Ceiling grid hung, tiles not yet in</span><span class="rcard-sub">Mercer Avenue Clinic, Level 3 corridor</span><span class="rcard-detail" hidden><p><b>Observation.</b> Work by another trade in progress, with no action needed. Check it again on the next visit, when the tiles will limit access above the ceiling.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">No-coring slab under a drawn floor box</span><span class="rcard-sub">Mercer Avenue Clinic, Exam Room 3.16</span><span class="rcard-detail" hidden><p><b>Field differs from the drawings.</b> The drawing cores a floor box through a slab that is marked post-tensioned, no coring without the engineer&rsquo;s approval. Whether the box moves, is fed another way or is cored with approval is a design answer.</p></span></button>
+  </div></div>
+
+  <div class="cyu gate" data-answer="0" data-fb="A laboratory wing open to contractors only with an escort on Tuesdays and Thursdays limits when the work can be done, and nothing on the drawings is in error: a site constraint, which goes into the plan and schedule. The building matches the drawings, so it is not a field difference. Nothing in the finding says the drawn tray route falls short of the owner standard. It changes how the work is planned, so it is more than an observation.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A survey finds that a laboratory wing can be entered by contractors only with an escort on Tuesdays and Thursdays. The drawings route a cable tray through the wing. Which class is the finding?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Site constraint, for the work plan and schedule</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Field differs from the drawings, for an RFI</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Drawings do not meet the owner standard, for an RFI</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Observation, no action</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+
+  <div class="cyu gate" data-answer="2" data-fb="The ceiling is built as drawn, so the field matches the drawings; the drawing itself puts a lay-in ceiling in a room where the clinic&rsquo;s owner standard forbids a false ceiling. That is a drawing that does not meet the owner standard, and it goes to an RFI. It is not a field difference, because the building matches the drawing. It is neither a constraint nor an observation, because the drawn work does not comply.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">At the Mercer Avenue Clinic, TR 3B is drawn with a lay-in tile ceiling, and the ceiling is installed that way. The clinic&rsquo;s owner standard allows no false ceiling in a telecommunications room. Which class is the finding?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Field differs from the drawings</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Site constraint</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Drawings do not meet the owner standard</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Observation, no action</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.3" data-lesson-title="Data Center Spaces and the Site Survey" data-group-num="3" data-group-title="The Site Survey and the RFI" data-num="530.3.10" data-title="Writing a request for information">
+  <p class="crumb">Lesson 530.3 &middot; Section 3 The Site Survey and the RFI</p>
+  <h2><span class="tnum">530.3.10</span> Writing a request for information</h2>
+  <p class="lead-in">A request for information asks the design team one question about the documents, in writing, with everything the designer needs to answer it.</p>
+
+  <p>A <span class="keyterm">request for information</span> (RFI) is the contract&rsquo;s route for a question the documents do not answer: two documents disagree, a drawing cannot be built as shown, or something needed is missing. It goes from the contractor to the design team through the channel the contract sets, usually the general contractor, who logs it and forwards it. The answer comes back in writing. The work is built to that answer and to any revised sheet that comes with it.</p>
+
+  <h3>What goes in an RFI</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The fields of a request for information.</caption>
+      <thead><tr>
+        <th scope="col">Field</th><th scope="col">What it holds</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Number, date, project</th><td>The RFI&rsquo;s own number in the project log, the date sent, the project name and number</td></tr>
+        <tr><th scope="row">To and from</th><td>The design team, through the general contractor; the person and company asking</td></tr>
+        <tr><th scope="row">Reference</th><td>Every document involved: sheet and detail numbers, revision, specification section and clause</td></tr>
+        <tr><th scope="row">Condition</th><td>What the documents show and what the building shows, with the measured values and photographs from the survey</td></tr>
+        <tr><th scope="row">Question</th><td>One question, worded so that it can be answered</td></tr>
+        <tr><th scope="row">Proposed solution</th><td>Optional. A suggestion the designer may accept, change or reject, marked as a suggestion</td></tr>
+        <tr><th scope="row">Impact and date needed</th><td>Which work is held until the answer arrives, and by when the answer is needed to keep the schedule</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; The condition behind one RFI (Mercer Avenue Clinic, hypothetical)</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 280" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Two plans of Consult Room 3.20 side by side: on the left as drawn, with an outlet on a solid north wall; on the right as built, with the north wall built as glazing and no place for the outlet. A full text description follows.">
+    <text x="24" y="24" font-size="16" font-weight="700" fill="#611940">As drawn and as built: Consult Room 3.20</text>
+    <text x="60" y="56" font-size="14" font-weight="700" fill="#26282E">As drawn, Sheet T-103 Rev 2</text>
+    <rect x="60" y="70" width="340" height="180" fill="#ffffff" stroke="#26282E" stroke-width="4"/>
+    <polygon points="230,76 220,92 240,92" fill="#ffffff" stroke="#26282E" stroke-width="1.6"/>
+    <text x="250" y="92" font-size="13" fill="#26282E">3A-PP01-044, 18 in AFF</text>
+    <text x="70" y="112" font-size="13" fill="#5A5D66">north wall, gypsum</text>
+    <text x="160" y="170" font-size="13" fill="#26282E">Consult 3.20</text>
+    <text x="520" y="56" font-size="14" font-weight="700" fill="#26282E">As built, survey photo 14</text>
+    <rect x="520" y="70" width="340" height="180" fill="#ffffff" stroke="#26282E" stroke-width="4"/>
+    <rect x="520" y="66" width="340" height="10" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="605" y1="66" x2="605" y2="76" stroke="#26282E" stroke-width="2"/>
+    <line x1="690" y1="66" x2="690" y2="76" stroke="#26282E" stroke-width="2"/>
+    <line x1="775" y1="66" x2="775" y2="76" stroke="#26282E" stroke-width="2"/>
+    <text x="530" y="100" font-size="13" fill="#26282E">north wall built as full-height glazing</text>
+    <text x="530" y="118" font-size="13" fill="#A4262C">no place for the outlet as drawn</text>
+    <text x="620" y="170" font-size="13" fill="#26282E">Consult 3.20</text>
+    <text x="60" y="272" font-size="13" fill="#5A5D66">The question goes to the designer: where does the outlet go?</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>Two plans of the same room, side by side.</p>
+    <p>Left, titled As drawn, Sheet T-103 Rev 2: a rectangular room labeled Consult 3.20 with heavy walls. A triangle on the north wall is labeled 3A-PP01-044, 18 in AFF. The wall is labeled north wall, gypsum.</p>
+    <p>Right, titled As built, survey photo 14: the same room, with the north wall drawn as a blue strip divided by mullions, labeled north wall built as full-height glazing. A red label reads no place for the outlet as drawn.</p>
+    <p>A note along the bottom reads: The question goes to the designer: where does the outlet go?</p>
+  </details>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>An RFI written from that finding (Mercer Avenue Clinic, hypothetical).</caption>
+      <thead><tr>
+        <th scope="col">Field</th><th scope="col">Entry</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">RFI</th><td>Number 017, sent 2026-04-14, Mercer Avenue Clinic, project MAC-26-003</td></tr>
+        <tr><th scope="row">To / from</th><td>Design team, through the general contractor / site lead, telecommunications contractor</td></tr>
+        <tr><th scope="row">Reference</th><td>Sheet T-103, Revision 2, outlet 3A-PP01-044; Sheet A-103, Revision 2, Consult Room 3.20</td></tr>
+        <tr><th scope="row">Condition</th><td>T-103 shows outlet 3A-PP01-044 on the north wall of Consult Room 3.20 at 18 in AFF. The wall is built as full-height glazing in an aluminum frame from grid C to D (survey of 2026-04-13, entry 6, photo 14). There is no solid wall on the room&rsquo;s north side to mount the outlet on.</td></tr>
+        <tr><th scope="row">Question</th><td>Where is outlet 3A-PP01-044 to be located?</td></tr>
+        <tr><th scope="row">Proposed solution</th><td>Suggestion only: relocate it to the east wall of the room, 2 ft from the north corner, at 18 in AFF.</td></tr>
+        <tr><th scope="row">Impact and date needed</th><td>Rough-in for this outlet is held. Answer needed by 2026-04-24 to keep the Level 3 cabling schedule</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>What makes a good question</h3>
+  <ul>
+    <li><strong>One question per RFI.</strong> Two questions in one RFI are answered, logged and closed together. The second is often missed.</li>
+    <li><strong>Answerable as asked.</strong> &ldquo;Where is the outlet to be located?&rdquo; can be answered. &ldquo;Please advise&rdquo; asks the designer to work out the question first.</li>
+    <li><strong>Not already answered.</strong> Check the drawings, the specification and previous RFI answers first. An RFI whose answer is already in the documents still has to be logged, answered and closed by the design team.</li>
+    <li><strong>Facts, not blame.</strong> State the condition and the reference; leave out who caused it.</li>
+  </ul>
+
+  <div class="note warn"><div class="nt">What not to do while the answer is pending</div>
+    <p><strong>Do not proceed on an assumption.</strong> Work built to a guess may have to be removed when the answer differs. The cost of removing it usually falls on the contractor who built it. <strong>Do not redesign in the field.</strong> Moving an outlet, rerouting a pathway or changing a cable type is the designer&rsquo;s decision, because it can affect other trades, the code and the owner&rsquo;s standard. A proposed solution in the RFI is the place for your suggestion. Owner standards often state this directly: where documents conflict, submit an RFI and do not proceed with the affected work until it is answered.</p></div>
+
+  <h3>After the answer</h3>
+  <p>The general contractor keeps an RFI log: number, subject, date sent, date answered, and the answer. Check the log for open RFIs before planning each stretch of work. When an answer arrives, read it against the question: it may answer only part of the question, or change something else. Mark the answer on the working drawings at the affected location with the RFI number, brief the crew that will do the work, and keep the written answer with the job file. Where the answer comes with a revised sheet, the revised sheet replaces the old one in the set. Check the sheet index and the revision again. An answer that would add cost or time goes to the project manager before the work starts: a design answer is not by itself an instruction to spend more.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="A useful RFI names the documents, states the condition with its evidence and asks one question the designer can answer. An RFI that cites the sheet but reads &ldquo;Please advise on the floor box&rdquo; still gives the designer no question to answer. Coring a foot from the drawn position is a decision on a structural slab, and it belongs to the engineer, not the field. Combining the question with an unrelated receptacle count means two questions in one RFI.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">The survey finds the slab under a drawn floor box stamped &ldquo;post-tensioned &mdash; no coring&rdquo;. Which is the right next step?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Send an RFI citing the sheet and the slab marking, reading &ldquo;Please advise on the floor box&rdquo;</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Core the slab a foot from the drawn position and record it on the as-built drawing</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Send one RFI citing the sheet and photos, asking about the floor box and a receptacle count elsewhere</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Send an RFI citing the sheet, slab marking and photos, asking where the outlet is to be provided</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="530.3" data-lesson-title="Data Center Spaces and the Site Survey" data-group-num="4" data-group-title="Wrapping Up" data-num="530.3.11" data-title="What you covered">
+  <p class="crumb">Lesson 530.3 &middot; Section 4 Wrapping Up</p>
+  <h2><span class="tnum">530.3.11</span> What you covered</h2>
+  <p class="lead-in">Name each data center space and the cable between them, plan a cabinet for weight, air and access, and check the drawings against the building before asking the designer, in writing, what cannot be built.</p>
+
+  <p>TIA-942 names the spaces of a data center, and a data hall plan shows them through its labels, FRONT arrows and sheet notes. The <strong>entrance room</strong> takes the provider cables. The <strong>MDA</strong> holds the main cross-connect and core equipment. An optional <strong>IDA</strong> holds an intermediate cross-connect. Each <strong>HDA</strong> holds the horizontal cross-connect for a group of rows, like a telecommunications room. An optional <strong>ZDA</strong> is a point along the horizontal cabling with no cross-connect. The <strong>EDA</strong> cabinets hold the servers. Trace a link from the EDA: horizontal cable to its HDA, through a ZDA where there is one, then backbone to the MDA, through an IDA where there is one. Name every space and cable.</p>
+
+  <p>Rows face front to front across a <strong>cold aisle</strong> with perforated tiles and back to back across a <strong>hot aisle</strong>. <strong>Cold-aisle containment</strong> closes the supply aisle and the room runs warm; <strong>hot-aisle containment</strong> closes the exhaust aisle and the room stays cool. Both depend on closing every gap: blanking panels, seals, grommets.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Rack elevation rules.</caption>
+      <thead><tr>
+        <th scope="col">Concern</th><th scope="col">Rule</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Weight</th><td>Heaviest at the bottom; total checked against cabinet and floor ratings</td></tr>
+        <tr><th scope="row">Airflow</th><td>Front to back, cold aisle to hot aisle; every empty position blanked</td></tr>
+        <tr><th scope="row">Cabling</th><td>Patch panels at the cable entry; a manager between panel and switch; PDUs vertical at the rear</td></tr>
+        <tr><th scope="row">Service access</th><td>Clearance front and rear; growth kept in one block; nothing that must come out to reach something else</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The <strong>mobile infrastructure rack</strong> is a 42U training rack holding servers, switches, routers, PDUs and a UPS, the component types a production data center spreads across its EDAs, distribution areas, entrance room and electrical room. The same elevation rules apply to it.</p>
+
+  <p>A <strong>site survey</strong> checks the building against the current drawings and the owner standard before work starts. Measure what the drawing dimensions, to stated faces and heights, twice where it matters; count what the drawing counts; look above the ceiling. Record each finding with its location, value and unit, what the drawing shows, and a photo reference. Give it its primary class, and note any second class in the entry&rsquo;s notes column. A <strong>field difference</strong> from the drawings and a <strong>drawing that does not meet the owner standard</strong> each go to an RFI. A <strong>site constraint</strong> limits how or when the work is done and goes into the plan. An <strong>observation</strong> is recorded with no action. An <strong>RFI</strong> carries its number, the references, the condition with measurements, one answerable question, an optional suggestion and the impact. While it is pending, the affected work does not proceed on an assumption and is not redesigned in the field.</p>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete — continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again — this does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct>=90) msg.textContent='Outstanding — you are working at field-standard level and are ready for the lab.';
+      else if(pct>=75) msg.textContent='Strong work. Revisit anything you missed and you will be field-ready.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the cards and applied scenarios to close the gaps.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+</body>
+</html>
