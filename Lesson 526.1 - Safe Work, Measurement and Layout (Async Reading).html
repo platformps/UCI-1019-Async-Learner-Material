@@ -1,0 +1,2327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 526 (M06) - Construction Fundamentals for Low Voltage Technicians
+  Lesson 526.1 - Safe Work, Measurement and Layout (Async Reading)
+  VERSION: v0.1.0  (2026-11-01)  DRAFT - for review
+
+  CHANGES IN v0.1.0
+  First issue. Built new for UCI 1019; no earlier version exists.
+  Edited in place (file name kept, coordinator) for review round 1
+  (LP1 57 wording + 6 structural; CR1 19); see BUILD FLAGS at the end.
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox) reused verbatim from
+  UCI-1019_M530_Lesson-530.1_Async-Reading_v1.0.6.html, which carries the
+  engine of UCI-2107.1_M529_Lesson-529.6_Async-Reading_v0.2.0.html. Appended
+  after it, unchanged from that page: the 2026 brand layer
+  (FORMAT-SPEC_Async-Reading_2026-Addendum_v0.1.0_DRAFT.md section 3) and the
+  .calc component sheet (worked-arithmetic panel). Logo: inline Slate SVG.
+
+  OBJECTIVES, one verb each, from the module plan v0.1.0 section 3,
+  Lesson 526.1 (learner-facing wording, codes removed).
+    Read       a work order, its revision, and its limits      6.1.1, 6.8.1
+    Inspect    PPE, tools, and the bay before work             6.1.2, 6.1.6
+    Complete   a job hazard analysis for wall work              6.1.3
+    Identify   every power source that affects the bay          6.2.1
+    Verify     a meter on a known source before and after       6.2.3, 6.2.4
+    Locate     the SDS and manufacturer instructions            6.8.2
+    Convert    fractional dimensions and units                  6.3.1
+    Measure    the bay against the drawings                     6.3.2, 6.4.4
+    Mark       outlet, box, pathway, device positions           6.4.1-6.4.3
+    Calculate  a material takeoff for the bay                   6.3.5
+    Raise      an RFI against a drawing conflict                6.4.5, 6.8.3
+    Verify     an AI-produced takeoff against your own          6.3.6
+  Objectives are the module plan's approved wording, unchanged except for the
+  serial comma and the PPE expansion (coordinator ruling after LP1/CR1).
+  Topics follow the objective order: RFI (526.1.13) before the AI check
+  (526.1.14).
+
+  TOPIC OUTLINE
+    Section 1  Before Work Starts
+      526.1.1   The work order and its limits            entry point; Read
+      526.1.2   Inspecting before work                   Inspect
+      526.1.3   The job hazard analysis                  Complete
+      526.1.4   Safety data sheets and installation
+                instructions                             Locate
+    Section 2  Power and the Meter
+      526.1.5   Power sources near a work area           Identify
+      526.1.6   Setting up the meter                     Verify
+      526.1.7   Prove, test, prove again                 Verify
+    Section 3  Measuring and Converting
+      526.1.8   Reading a tape measure                   Measure, Convert
+      526.1.9   Fractions, decimals and units            Convert
+    Section 4  Layout, Takeoff, and RFIs
+      526.1.10  Measuring against the drawings           Measure
+      526.1.11  Marking a layout                         Mark
+      526.1.12  Material takeoff and cable length        Calculate
+      526.1.13  Requests for information                 Raise
+      526.1.14  Checking an AI takeoff                   Verify (AI)
+    Section 5  Wrapping Up
+      526.1.15  What you covered                         summary
+
+  ACTIVITY GATES: 16 - 13 single-answer checks, 1 matching, 1 ordering,
+    1 acknowledgement.
+  DIAGRAMS: 4 original SVG, each with a full text description (PoE pin
+    pairs; tape blade; center cross and clearance; parts of a cable length).
+  IMAGES: none.
+
+  Build flags, decisions, assumptions, the list of every check question and
+  worked example, and the audit results are in the BUILD FLAGS comment at the
+  end of this file.
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 526.1 - Safe Work, Measurement and Layout &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Construction Fundamentals</b> &middot; Lesson 526.1 - Safe Work, Measurement and Layout</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Construction Fundamentals for Low Voltage Technicians</p>
+      <h2 id="ovh" tabindex="-1">Lesson 526.1 - Safe Work, Measurement and Layout</h2>
+      <p class="lead-in">How the site lead clears an installer to work at a wall, and how the installer measures, marks, and takes off a layout before the first cut.</p>
+
+      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. Before production rough-in starts on Level 2, the owner, Calder Regional Services, requires an installation mock-up of the typical Level 2 work area. Kestrel builds it on five free-standing training walls. Each wall has two faces, each face has two bays, and each bay is one installer&rsquo;s work area. The owner&rsquo;s representative inspects every bay before any panel is cut.</p>
+
+      <p>D. Okafor, the Kestrel site lead, releases an installer for wall work after seeing an inspection of the installer&rsquo;s equipment and bay, a hazard analysis of the wall tasks, and a meter proved on a live source before and after a test. A released installer surveys the bay, marks its layout in pencil, takes off its material, and writes up what the drawings get wrong or leave out.</p>
+
+      <p>The worked examples on this page use dimensions and documents from other jobs, not the values of any bay on the mock-up.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>Before Work Starts.</b> The work order, the pre-work inspection, the job hazard analysis, and product documents.</li>
+        <li><b>Power and the Meter.</b> Power sources near a work area, meter set-up, and proving a circuit dead.</li>
+        <li><b>Measuring and Converting.</b> Reading a tape, and converting fractions, decimals, and units.</li>
+        <li><b>Layout, Takeoff, and RFIs.</b> Measuring and marking a layout, the takeoff, the request for information, and the AI check.</li>
+        <li><b>Wrapping Up.</b> A summary of each section.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>5</b><span>Sections</span></div>
+        <div class="ov-stat"><b>15</b><span>Topics</span></div>
+        <div class="ov-stat"><b>16</b><span>Activities</span></div>
+        <div class="ov-stat"><b>4</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the documents and the equipment</h3>
+      <p>The project documents named on this page are the <strong>Training Wall Drawing Set</strong> (sheets TW-001 to TW-401) and the owner&rsquo;s <strong>Telecommunications Design and Installation Standard, mock-up edition</strong>, which numbers its clauses by section, for example 27 05 00 4.5. Both are fictional documents written for the mock-up. Where this page states what a clause requires, the requirement comes from the owner&rsquo;s standard, not from a published code.</p>
+      <p>Where the drawings conflict with another document or with the site, or leave out a dimension the work needs, the contractor writes a <strong>request for information</strong> (RFI): a written question to the owner&rsquo;s representative, answered in writing. Topic 526.1.13 covers how to write one.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or go to any topic
+         from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks &mdash; a
+         knowledge check, a matching exercise, or an ordering exercise.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. The lesson takes ~85&ndash;95 min, including the activities.
+         The header and the contents list show your progress through the lesson.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching and ordering activities every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description. Each table has column headings and a caption.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 526.1</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="1" data-group-title="Before Work Starts" data-num="526.1.1" data-title="The work order and its limits">
+  <p class="crumb">Lesson 526.1 &middot; Section 1 Before Work Starts</p>
+  <h2><span class="tnum">526.1.1</span> The work order and its limits</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 526.1</span>
+    <h3>Safe Work, Measurement and Layout</h3>
+    <p>Before an installer cuts a panel, the site lead releases the installer and the owner&rsquo;s representative releases the layout. The first two sections cover the installer&rsquo;s release; the next two cover the layout.</p>
+    <p class="lb-meta"><b>5</b> sections &nbsp;&middot;&nbsp;
+       <b>15</b> topics &nbsp;&middot;&nbsp;
+       <b>16</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 526.1 you will be able to</div>
+    <ul>
+      <li><b>Read</b> a work order, its revision, and its limits before starting work.</li>
+      <li><b>Inspect</b> personal protective equipment (PPE), tools, and the bay before work, and record the result.</li>
+      <li><b>Complete</b> a task hazard analysis for wall work.</li>
+      <li><b>Identify</b> every power source that affects the bay.</li>
+      <li><b>Verify</b> a meter on a known source, test, and verify it again.</li>
+      <li><b>Locate</b> the safety data sheet and manufacturer instructions for a material.</li>
+      <li><b>Convert</b> fractional dimensions and units from a drawing.</li>
+      <li><b>Measure</b> the bay and compare it with the drawing.</li>
+      <li><b>Mark</b> outlet, box, pathway, and device positions to the drawing.</li>
+      <li><b>Calculate</b> a material takeoff for the bay.</li>
+      <li><b>Raise</b> a request for information against a drawing conflict.</li>
+      <li><b>Verify</b> an AI-produced takeoff against your own.</li>
+    </ul></div>
+
+  <p class="lead-in">A work order tells an installer what to do, where, under which rules, and at what point to stop and wait for approval.</p>
+
+  <p>On a Kestrel job, a <span class="keyterm">work order</span> is the site lead&rsquo;s written instruction for one piece of work. Its number goes on every record made under it.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The parts of a Kestrel work order and what each one tells the installer.</caption>
+      <thead><tr>
+        <th scope="col">Part</th><th scope="col">What it gives you</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Task</th><td>The job in one or two sentences</td></tr>
+        <tr><th scope="row">Scope</th><td>A numbered list of what you do. Work outside the scope needs another work order</td></tr>
+        <tr><th scope="row">Limits</th><td>The rules that apply while you work: protective equipment, access, power, tools, and who may do what</td></tr>
+        <tr><th scope="row">Hold point</th><td>The stage at which work stops until a named person inspects the work and releases you</td></tr>
+        <tr><th scope="row">Documents</th><td>Each drawing set, standard, and record the work depends on, with the revision or the clauses that apply</td></tr>
+        <tr><th scope="row">Project facts</th><td>Values that belong to this job only: a numbering rule, a position, a measured height</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>The revision</h3>
+  <p>Each reissue of a sheet carries a new <span class="keyterm">revision</span>, shown in the sheet&rsquo;s title block. A work order names the revision it was written against. Before you work from a sheet, compare the revision in its title block with the revision the work order names. If they differ, stop and ask the site lead (in class, your instructor acts as site lead) which governs: a layout marked from a superseded sheet is rework.</p>
+
+  <h3>Limits and hold points</h3>
+  <p>A <span class="keyterm">limit</span> applies for as long as you work under the order. A <span class="keyterm">hold point</span> is a single stage: you stop there, call the named person, and wait. That person inspects the work, then releases you to go on or holds the work and tells you what to correct.</p>
+  <p>On the mock-up, the owner&rsquo;s standard sets three hold points for every bay (27 05 00 4.3): the marked layout, before any panel is cut; the electrical metallic tubing (EMT) pathway, before cable is pulled; and the completed bay, at handover. The first one comes before the cut because a pencil mark can be erased and a hole in a panel cannot.</p>
+  <p>Each work order also states its own hold point. Read it and record it, in the work order&rsquo;s own words, before you start.</p>
+
+  <p>This excerpt comes from a work order for another job.</p>
+  <div class="figure">
+    <div class="cap">Example &mdash; work order excerpt, Mercer Avenue Clinic (hypothetical)</div>
+    <p><strong>Task.</strong> Mount the wall cabinet in Storage 1.06.</p>
+    <p><strong>Scope.</strong> 1. Fasten the backboard to the studs. 2. Hang the cabinet on the backboard with its top 7 ft above the floor.</p>
+    <p><strong>Limits.</strong> Work only between 7:00 and 3:30, while the clinic is closed to patients. Keep the corridor clear: store no material in it.</p>
+    <p><strong>Hold point.</strong> Call the general contractor&rsquo;s superintendent to inspect the backboard fastening before you hang the cabinet.</p>
+    <p style="margin-bottom:0"><strong>Documents.</strong> Sheet T-401, Revision 2.</p>
+  </div>
+
+  <div class="cyu gate" data-answer="1" data-fb="Work stops before the cabinet is hung until the superintendent inspects the backboard fastening, so that entry is the hold point. Keeping the corridor clear is a limit: it applies for the whole job. Hanging the cabinet with its top 7 ft above the floor is part of the scope. Sheet T-401, Revision 2 names a document and its revision.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which entry in the Mercer Avenue Clinic excerpt is a hold point?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Keep the corridor clear</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Call the superintendent to inspect the backboard fastening before the cabinet is hung</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Hang the cabinet with its top 7 ft above the floor</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Sheet T-401, Revision 2</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="1" data-group-title="Before Work Starts" data-num="526.1.2" data-title="Inspecting before work">
+  <p class="crumb">Lesson 526.1 &middot; Section 1 Before Work Starts</p>
+  <h2><span class="tnum">526.1.2</span> Inspecting before work</h2>
+  <p class="lead-in">You inspect every item before you use it and record its condition as found.</p>
+
+  <p>A pre-work inspection covers your personal protective equipment (PPE), your tools, and the work area. You check each item at its <span class="keyterm">check points</span>: the places where a fault makes it unsafe or unreliable. You record the condition you found and whether the item is <strong>serviceable</strong> or <strong>reported</strong>.</p>
+
+  <p><strong>As found</strong> means what you saw, not what the item should be. On a step ladder, &ldquo;rails straight, feet and rivets intact&rdquo; and &ldquo;one rail split below the second step&rdquo; are conditions. &ldquo;OK&rdquo; is not: it records no check point.</p>
+
+  <p>Set an unserviceable item apart, label it with the fault, and report it. Do not repair it. The site lead decides whether it is repaired, replaced, or tagged out of service.</p>
+
+  <p>Each item has its own check points. On a multimeter they are the lead insulation, the probe tips, the case and input jacks, and the category (CAT) rating printed on the meter.</p>
+
+  <h3>Checking a level</h3>
+  <p>Place the level on a flat surface and note where the bubble sits, then turn the level end for end in the same place. On a true level the bubble does not move. If it moves, the vial is out of true. Every mark drawn with that level is out by the same error.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The entry gives the condition as found, the fault and where it is, and the item is set apart, labeled, and reported. &ldquo;Serviceable&rdquo; ignores a fault that exposes the conductors. Taping the cut is a repair, which the installer does not make. &ldquo;OK&rdquo; records no check point.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Inspecting an extension cord before use, you find the outer jacket cut through near the plug, with the inner insulation showing. What do you record and do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Serviceable: the cord still powers a tool</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Reported: jacket cut through near the plug, inner insulation exposed; set apart and labeled</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Serviceable, after wrapping the cut in electrical tape</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>OK</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="1" data-group-title="Before Work Starts" data-num="526.1.3" data-title="The job hazard analysis">
+  <p class="crumb">Lesson 526.1 &middot; Section 1 Before Work Starts</p>
+  <h2><span class="tnum">526.1.3</span> The job hazard analysis</h2>
+  <p class="lead-in">A job hazard analysis lists each task, what in it can hurt someone, what prevents that, and what makes the installer stop.</p>
+
+  <p>You write a <span class="keyterm">job hazard analysis</span> (JHA), also called a task hazard analysis, before the work starts. It takes the work one task at a time. For each task it gives a hazard, a control, and, where the analysis asks for one, a stop condition.</p>
+  <ul>
+    <li><strong>Hazard.</strong> The cause and the harm it does: &ldquo;a rack tips when a caster catches a floor box: the rack falls on a person.&rdquo; A single word such as &ldquo;tipping&rdquo; names neither.</li>
+    <li><strong>Control.</strong> An action, a setup, or a piece of equipment that removes the hazard or stops it reaching anyone. Each control answers the hazard beside it. &ldquo;Be careful&rdquo; and &ldquo;work safely&rdquo; change nothing about the task, so they are not controls.</li>
+    <li><strong>Stop condition.</strong> Something you can see, hear, or feel that makes you stop the task and call the site lead. &ldquo;Stop if it is unsafe&rdquo; names no sign, so it is not a stop condition.</li>
+  </ul>
+
+  <p>The analysis draws on the work order&rsquo;s tasks and tools, the manufacturers&rsquo; instructions, and the owner&rsquo;s standard. On the mock-up, clauses 27 05 00 4.5 and 4.6 set the rules for screws in the panels and for cable in the cavity between the wall&rsquo;s two faces.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Example JHA row for a task that is not wall work: moving an equipment rack on casters across a room.</caption>
+      <thead><tr>
+        <th scope="col">Task</th><th scope="col">Hazard</th><th scope="col">Control</th><th scope="col">Stop condition</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Move a rack on casters across the room</th><td>A caster catches the edge of a floor box: the rack tips and falls on a person. A foot is under the base as the rack rolls: the caster crushes the toes.</td><td>Two people move the rack, one at each end, on a route clear of floor boxes. Each keeps both feet clear of the base.</td><td>A caster stops or the rack leans; a person steps into the route.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Match each hazard to the control that addresses it. None of these tasks is wall work.</p>
+  <div class="match gate" data-left="Hazard" data-right="Control that addresses it">
+    <div class="pair" data-left="Cable laid across a walkway: a person trips over it" data-right="Route the cable along the wall, clear of the walkway"></div>
+    <div class="pair" data-left="A full box of cable lifted from the floor and carried across the room: the lifter strains their back" data-right="Slide the box onto a cart and wheel it"></div>
+    <div class="pair" data-left="Sharp cable tie tails left on a finished bundle: they cut the next hand that reaches past" data-right="Cut each tail off with a flush-cutting tool"></div>
+    <div class="pair" data-left="A cable reel that keeps spinning after each pull: loose cable piles up on the floor" data-right="Mount the reel on a stand with a brake"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="1" data-group-title="Before Work Starts" data-num="526.1.4" data-title="Safety data sheets and installation instructions">
+  <p class="crumb">Lesson 526.1 &middot; Section 1 Before Work Starts</p>
+  <h2><span class="tnum">526.1.4</span> Safety data sheets and installation instructions</h2>
+  <p class="lead-in">A chemical product comes with a safety data sheet. A hardware product comes with installation instructions. You find either one from the name on the product.</p>
+
+  <p>A <span class="keyterm">safety data sheet</span> (SDS) is the manufacturer&rsquo;s document on the hazards and safe handling of a chemical product: a cable-pulling lubricant, a cleaning solvent, a firestop sealant. The Hazard Communication Standard of the Occupational Safety and Health Administration (OSHA) sets the same 16 numbered sections, in the same order, for every SDS.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>SDS sections an installer opens most often.</caption>
+      <thead><tr>
+        <th scope="col">Section</th><th scope="col">Title</th><th scope="col">What you look up there</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">1</th><td>Identification</td><td>Product name, manufacturer, and emergency phone number. The product name confirms that the sheet belongs to the product in your hand</td></tr>
+        <tr><th scope="row">2</th><td>Hazard identification</td><td>The product&rsquo;s hazards, signal word, and pictograms</td></tr>
+        <tr><th scope="row">4</th><td>First-aid measures</td><td>What to do after contact with the eyes or skin, after breathing it in, or after swallowing it</td></tr>
+        <tr><th scope="row">8</th><td>Exposure controls and personal protection</td><td>The protective equipment the manufacturer specifies</td></tr>
+        <tr><th scope="row">16</th><td>Other information</td><td>The date the sheet was prepared or last revised</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Read the manufacturer&rsquo;s name and the product name from the container or the package. Then find the SDS in the site&rsquo;s SDS binder or library, on the manufacturer&rsquo;s website, or on the distributor&rsquo;s product page. Check that the name in Section 1 matches the container: two products from one manufacturer can have different hazards. Record where you found the SDS: a web address, the binder, or the package insert.</p>
+
+  <p><span class="keyterm">Installation instructions</span> come with hardware such as a bracket, a box, or a raceway fitting. They give the opening size or a cut-out template, the wall thickness the product is rated for, the fasteners, and the steps. They come as a package insert, a template on the package, or a document on the manufacturer&rsquo;s website.</p>
+  <p>On the mock-up, the owner&rsquo;s standard gives material data: a table of product sizes for layout and for the material <span class="keyterm">takeoff</span>, the list of material a piece of work needs (27 05 00 4.8). Where a product on site differs from that table, the product&rsquo;s own data governs. The clause also requires the contractor to report the difference by request for information (RFI): a written question to the owner&rsquo;s representative, answered in writing. The product&rsquo;s data comes from the manufacturer&rsquo;s instructions.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="First-aid measures, including eye contact, are in Section 4 of every SDS. Section 2 identifies the hazards, Section 8 gives exposure controls and protective equipment, and Section 16 gives the preparation or revision date. Section 8 tells you how to avoid eye contact, not what to do after it.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A drop of a cleaning solvent splashes into a coworker&rsquo;s eye. Which section of the solvent&rsquo;s SDS states what to do after eye contact?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Section 2, Hazard identification</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Section 8, Exposure controls and personal protection</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Section 16, Other information</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Section 4, First-aid measures</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="2" data-group-title="Power and the Meter" data-num="526.1.5" data-title="Power sources near a work area">
+  <p class="crumb">Lesson 526.1 &middot; Section 2 Power and the Meter</p>
+  <h2><span class="tnum">526.1.5</span> Power sources near a work area</h2>
+  <p class="lead-in">Before work starts at a wall, the installer lists every power source near it and decides which ones can reach the work.</p>
+
+  <p>The mock-up walls carry no wiring of their own, but a cord can run along the floor beside a wall or into its cavity. A screw point or a saw blade that goes through a hardboard panel enters that cavity, where the installer cannot see.</p>
+
+  <h3>What counts as a power source</h3>
+  <p>Receptacles, floor boxes, power strips, extension cords, and equipment with a power cord all count. So does <strong>Power over Ethernet</strong> (PoE) equipment: a switch or an injector that puts direct current (DC) voltage on a data cable to power a camera, an access point, or a phone. A data cable can carry power.</p>
+
+  <h3>Identify by looking</h3>
+  <p>Identify each source without touching, testing, or moving it. For each source, record what it is, where it is, and what you see: a load plugged in, an indicator lit, or nothing plugged in. Only the site lead plugs a source in, unplugs it, or switches it.</p>
+
+  <h3>Which sources affect the work area</h3>
+  <p>A source <span class="keyterm">affects</span> a bay when the source or its cord lies in the floor space where the installer stands to work at that bay, or when a cord from it runs onto the wall or into the wall&rsquo;s cavity. A screw point or a blade can reach a cord in the cavity; a ladder or a dropped tool can damage one on the floor. A receptacle across the aisle with nothing plugged into it is a source near the wall, but it affects no bay.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The power strip&rsquo;s cord crosses the floor in front of the bay, where the installer stands, so that source affects the bay. The receptacle across the aisle has nothing plugged in and no cord near the wall. The switch and all its cables stay at the rack. The laptop charger&rsquo;s cord stays on the table.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You are listing the power sources near a training wall. Which of these sources affects your bay?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>A receptacle on the room wall across the aisle, with nothing plugged in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A power strip under a nearby table, its cord running across the floor in front of your bay to a laptop</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A network switch in the rack, plugged into the rack&rsquo;s own receptacle, with no cable from it running to the walls</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A laptop charger plugged in at a learner table, its cord lying on the table</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="2" data-group-title="Power and the Meter" data-num="526.1.6" data-title="Setting up the meter">
+  <p class="crumb">Lesson 526.1 &middot; Section 2 Power and the Meter</p>
+  <h2><span class="tnum">526.1.6</span> Setting up the meter</h2>
+  <p class="lead-in">A meter reads voltage correctly only with its leads in the right jacks and the function set for the kind of voltage. It is safe to use only on a circuit within its rating.</p>
+
+  <h3>Leads and jacks</h3>
+  <p>For a voltage measurement, the black lead goes in the jack marked <strong>COM</strong> (common) and the red lead in the jack marked <strong>V</strong>. With a lead in the current jack, marked <strong>A</strong> or mA, the meter has almost no resistance between its probes. Touching the probes across a live circuit can blow the meter&rsquo;s fuse or damage the meter.</p>
+
+  <h3>The function</h3>
+  <p>The voltage positions on the rotary switch are marked with a V and a symbol:</p>
+  <ul>
+    <li><strong>AC volts</strong> &mdash; a V with a wavy line (&#8767;). A building receptacle supplies alternating current (AC).</li>
+    <li><strong>DC volts</strong> &mdash; a V with a solid line over a dashed line (&#9107;). A battery and a PoE source deliver direct current (DC). A low-voltage power supply can deliver either: 24 V AC transformers are common. Set the function from the voltage and the symbol on the source&rsquo;s label.</li>
+  </ul>
+  <p>On the AC volts function, many meters read a DC source as 0 V or close to it. A wrong function can make a live circuit look dead.</p>
+  <p>An <strong>auto-ranging</strong> meter chooses its own range once the function is set. On a manual-ranging meter, choose a range above the voltage you expect. On DC volts, a minus sign before the reading means the red probe is on the negative side. The value without the sign is the voltage.</p>
+
+  <h3>The category rating</h3>
+  <p>Every meter and lead set carries a <span class="keyterm">measurement category</span> (CAT) rating and a voltage, for example CAT II 300 V. The category states how close to the building&rsquo;s electrical service the meter can be used.</p>
+  <ul>
+    <li><strong>CAT II</strong> &mdash; equipment plugged into a receptacle, and the receptacle.</li>
+    <li><strong>CAT III</strong> &mdash; the building&rsquo;s distribution: panels, feeders, and fixed wiring.</li>
+    <li><strong>CAT IV</strong> &mdash; the origin of the installation: the service entrance and the utility meter.</li>
+  </ul>
+  <p>A meter often carries more than one rating, such as CAT III 600 V and CAT II 1000 V; each rating is a separate limit. Where the meter and its leads differ, the lower rating applies. When you inspect a meter, record every category and voltage printed on it.</p>
+
+  <h3>Where a PoE source puts its voltage</h3>
+  <p>An Ethernet cable has eight conductors in four twisted pairs, ending on pins 1 to 8 of its connector. A PoE source puts DC voltage between two pairs of pins: pins 1 and 2 against pins 3 and 6 (Alternative A), pins 4 and 5 against pins 7 and 8 (Alternative B), or both on a four-pair source. A <span class="keyterm">breakout</span> is a small board with an Ethernet jack and a screw terminal for each of its eight pins, so that a meter probe can reach each conductor.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; The PoE pin pairs on an eight-terminal breakout</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 290" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Eight screw terminals numbered 1 to 8, with Alternative A brackets joining terminals 1 and 2 and terminals 3 and 6, and Alternative B brackets joining terminals 4 and 5 and terminals 7 and 8. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">The pin pairs that carry PoE voltage</text>
+    <text x="24" y="84" font-size="14" font-weight="700" fill="#611940">Alternative A</text>
+    <line x1="165" y1="100" x2="245" y2="100" stroke="#611940" stroke-width="2.4"/>
+    <line x1="165" y1="100" x2="165" y2="120" stroke="#611940" stroke-width="2.4"/>
+    <line x1="245" y1="100" x2="245" y2="120" stroke="#611940" stroke-width="2.4"/>
+    <text x="168" y="92" font-size="13" fill="#611940">pins 1 and 2</text>
+    <line x1="325" y1="66" x2="325" y2="120" stroke="#611940" stroke-width="2.4"/>
+    <line x1="565" y1="66" x2="565" y2="120" stroke="#611940" stroke-width="2.4"/>
+    <line x1="325" y1="66" x2="565" y2="66" stroke="#611940" stroke-width="1.4" stroke-dasharray="6 4"/>
+    <text x="575" y="70" font-size="13" fill="#611940">pins 3 and 6 (not 4 or 5)</text>
+    <rect x="140" y="120" width="50" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="220" y="120" width="50" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="300" y="120" width="50" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="380" y="120" width="50" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="460" y="120" width="50" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="540" y="120" width="50" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="620" y="120" width="50" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="700" y="120" width="50" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="160" y="146" font-size="15" font-weight="700" fill="#26282E">1</text>
+    <text x="240" y="146" font-size="15" font-weight="700" fill="#26282E">2</text>
+    <text x="320" y="146" font-size="15" font-weight="700" fill="#26282E">3</text>
+    <text x="400" y="146" font-size="15" font-weight="700" fill="#26282E">4</text>
+    <text x="480" y="146" font-size="15" font-weight="700" fill="#26282E">5</text>
+    <text x="560" y="146" font-size="15" font-weight="700" fill="#26282E">6</text>
+    <text x="640" y="146" font-size="15" font-weight="700" fill="#26282E">7</text>
+    <text x="720" y="146" font-size="15" font-weight="700" fill="#26282E">8</text>
+    <line x1="405" y1="160" x2="405" y2="180" stroke="#724DFD" stroke-width="2.4"/>
+    <line x1="485" y1="160" x2="485" y2="180" stroke="#724DFD" stroke-width="2.4"/>
+    <line x1="405" y1="180" x2="485" y2="180" stroke="#724DFD" stroke-width="2.4"/>
+    <text x="404" y="198" font-size="13" fill="#724DFD">pins 4 and 5</text>
+    <line x1="645" y1="160" x2="645" y2="180" stroke="#724DFD" stroke-width="2.4"/>
+    <line x1="725" y1="160" x2="725" y2="180" stroke="#724DFD" stroke-width="2.4"/>
+    <line x1="645" y1="180" x2="725" y2="180" stroke="#724DFD" stroke-width="2.4"/>
+    <text x="644" y="198" font-size="13" fill="#724DFD">pins 7 and 8</text>
+    <text x="24" y="184" font-size="14" font-weight="700" fill="#724DFD">Alternative B</text>
+    <text x="24" y="240" font-size="14" fill="#26282E">The voltage is between the two pairs of one alternative: probe pin 1 against pin 3, or pin 4 against pin 7.</text>
+    <text x="24" y="264" font-size="14" fill="#26282E">Two pins of the same pair, such as 1 and 2, read 0 V against each other. A four-pair source puts voltage on both alternatives.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled The pin pairs that carry PoE voltage. It shows eight square screw terminals in a row, numbered 1 to 8 from left to right.</p>
+    <p>Above the row, labeled Alternative A, two brackets are drawn. One joins terminals 1 and 2 and is labeled pins 1 and 2. The other rises from terminals 3 and 6 only, joined by a dashed line high above terminals 4 and 5, and is labeled pins 3 and 6 (not 4 or 5).</p>
+    <p>Below the row, labeled Alternative B, two brackets are drawn. One joins terminals 4 and 5 and is labeled pins 4 and 5. The other joins terminals 7 and 8 and is labeled pins 7 and 8.</p>
+    <p>Two lines of text under the diagram read: The voltage is between the two pairs of one alternative: probe pin 1 against pin 3, or pin 4 against pin 7. Two pins of the same pair, such as 1 and 2, read 0 V against each other. A four-pair source puts voltage on both alternatives.</p>
+  </details>
+
+  <h3>A meter can read 0 V on a working PoE source</h3>
+  <p>A PoE source built to the Institute of Electrical and Electronics Engineers (IEEE) 802.3 standard applies only a small detection voltage to the cable, to test for a powered device on the far end. It applies full power only once it detects one. With no device connected, a meter on a working source reads about 0 V, or a small value that flickers while the source tests for a device. A <em>passive</em> injector applies its voltage whether or not a device is connected. The source&rsquo;s label gives its rated output.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="The supply&rsquo;s label says 24 V DC, so the meter goes on DC volts with the black lead in COM and the red lead in V. On AC volts, many meters read a DC source as about 0, so a live output can look dead. Measure resistance only on a circuit with no power on it. With the red lead in the current jack, the meter is close to a short circuit across the supply.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You are about to read the output terminals of a 24 V DC power supply that feeds a camera. How do you set up the meter?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>AC volts, black lead in COM, red lead in V</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Resistance, black lead in COM, red lead in V</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>DC volts, black lead in COM, red lead in V</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>DC volts, black lead in COM, red lead in A</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="2" data-group-title="Power and the Meter" data-num="526.1.7" data-title="Prove, test, prove again">
+  <p class="crumb">Lesson 526.1 &middot; Section 2 Power and the Meter</p>
+  <h2><span class="tnum">526.1.7</span> Prove, test, prove again</h2>
+  <p class="lead-in">A reading of 0 V shows that a circuit is dead only if the same meter reads a live source correctly immediately before and immediately after it.</p>
+
+  <p>A broken lead, a wrong function, a probe on the plastic of a terminal, or a failing meter battery can each make a live circuit read 0 V. The sequence called <span class="keyterm">prove, test, prove again</span> &mdash; also called <em>test before touch</em> &mdash; rules out each of these failures.</p>
+  <ol>
+    <li><strong>Prepare.</strong> Inspect the leads and probes, put them in COM and V, and select the function.</li>
+    <li><strong>Prove.</strong> Place the probes on a <span class="keyterm">known live source</span>: the circuit itself before it is isolated, or a separate source of the same kind of voltage, such as a tool battery for a DC circuit. The meter must show the source&rsquo;s voltage; the site lead gives you anything you need to judge the reading. On a PoE source, probe every combination the source can use &mdash; pin 1 against pin 3, then pin 4 against pin 7 &mdash; and read aloud each one that shows voltage. Where more than one does, use the first one you found for the rest of the sequence.</li>
+    <li><strong>Isolate.</strong> The site lead switches off or unplugs the circuit and tags it. You do not change the power state.</li>
+    <li><strong>Test.</strong> Place the probes on the isolated circuit and read the value aloud. Where you proved on the circuit itself, use the same terminals.</li>
+    <li><strong>Prove again.</strong> Read the same known source again with the same function: the restored circuit on the same terminals, or the same separate source. If the meter reads the live voltage again, it was working during the test. The test reading then describes the circuit.</li>
+  </ol>
+  <p>Read each value aloud as the display shows it. Write the values down after the second proving, once you have stepped back with the probes clear of the circuit.</p>
+
+  <div class="note warn"><div class="nt">When a reading is wrong</div>
+    <p><strong>The meter reads 0 V on a source that should be live.</strong> Stop. Do not go on to the test: an unproved meter cannot show that anything is dead. Check the leads, the jacks, the function, and the probe contact, then prove again. If it still reads 0 V, tell the site lead.</p>
+    <p style="margin-bottom:0"><strong>The meter reads a voltage on the isolated circuit.</strong> Stop. Keep your hands and the probes away from the circuit and report the reading to the site lead exactly as the display shows it, even a few millivolts. The site lead decides what the reading means. Treat the circuit as live until the site lead has found and cleared the cause.</p>
+  </div>
+
+  <h3>On a building power circuit</h3>
+  <p>A building power circuit, such as a 120 V receptacle circuit, is confirmed dead in the same way, with one change of order: the circuit is locked out first, and the meter is proved on a separate live source. On this project, only a qualified electrician carries it out. The electrician:</p>
+  <ul>
+    <li>switches off the circuit&rsquo;s breaker, then locks and tags it under the site&rsquo;s lockout/tagout procedure;</li>
+    <li>selects a multimeter and leads rated CAT II or higher, at a voltage no lower than the circuit&rsquo;s, and sets the meter to <strong>AC volts</strong>;</li>
+    <li>proves the meter on a known live source of the same voltage, such as a receptacle on another circuit;</li>
+    <li>tests the locked-out circuit at the point of work between each pair of conductors: hot to neutral, hot to ground, and neutral to ground;</li>
+    <li>proves the meter again on the same known source.</li>
+  </ul>
+  <p>A non-contact voltage detector cannot prove a circuit dead: it can stay silent beside a live conductor.</p>
+  <p>Before you work near the circuit, confirm with the site lead that the lock and tag are in place and that the electrician has completed the sequence.</p>
+
+  <p>A site lead is about to switch off a 24 V DC power supply so that an installer can work on the cable it feeds. The supply, while it is on, is the known live source. Put the installer&rsquo;s steps in order.</p>
+  <div class="order gate">
+    <div class="step" data-pos="1">Inspect the leads and set the meter to DC volts</div>
+    <div class="step" data-pos="2">Read the supply&rsquo;s output terminals while the supply is live</div>
+    <div class="step" data-pos="3">Wait while the site lead switches off the supply and tags it</div>
+    <div class="step" data-pos="4">Read the same output terminals with the supply off</div>
+    <div class="step" data-pos="5">Wait while the site lead removes the tag and switches the supply back on</div>
+    <div class="step" data-pos="6">Read the same output terminals with the supply live again</div>
+  </div>
+
+  <div class="cyu gate" data-answer="2" data-fb="With a camera connected and running, a PoE source puts voltage on at least one of the two combinations, so 0 V on both means the meter or its setup is at fault. Stop, check the leads, the jacks, the function, and the probe contact, and prove again; tell the site lead if it still reads 0 V. Recording the 0 V readings as a proving accepts a meter that has not been proved, and the test depends on a proved meter. Pins 1 and 2 are the same pair and read 0 V against each other on any source. With a camera running on the source, the meter does not read 0 V on both combinations.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You are proving the meter on a PoE source with a camera connected and running. You probe pin 1 against pin 3, then pin 4 against pin 7. Both read 0.00 V. What do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Record both readings and tell the site lead the meter is proved</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Prove on pins 1 and 2 instead</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Stop, check the leads, jacks, function, and probe contact, and prove again before going on</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Continue: 0 V on both combinations is normal for a PoE source</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="3" data-group-title="Measuring and Converting" data-num="526.1.8" data-title="Reading a tape measure">
+  <p class="crumb">Lesson 526.1 &middot; Section 3 Measuring and Converting</p>
+  <h2><span class="tnum">526.1.8</span> Reading a tape measure</h2>
+  <p class="lead-in">A tape divides each inch into sixteenths. The length of each mark tells you which fraction it is.</p>
+
+  <p>On most construction tapes, each inch carries 15 marks between its numbered ends. The longest mark between two numbers is the half inch. The next longest are the quarters, then the eighths, and the shortest are the sixteenths. Some tapes also mark thirty-seconds along the first foot.</p>
+
+  <p>To read a length, take the last whole inch the end of the object has passed, then count sixteenths from it to the end of the object, and reduce the fraction. Eleven sixteenths past 13 reads 13 11/16 in. Six sixteenths past 14 reads 14 6/16, which reduces to 14 3/8 in.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; Two inches of tape blade, with two example readings</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 270" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A tape blade from 13 to 15 inches with sixteenth-inch marks, the half, quarter, eighth and sixteenth marks labeled, and two readings marked: A at 14 3/8 inches and B at 13 11/16 inches. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Reading a tape to the sixteenth of an inch</text>
+    <rect x="130" y="80" width="680" height="80" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+    <g stroke="#26282E" stroke-width="1.6">
+      <line x1="150" y1="80" x2="150" y2="140"/><line x1="470" y1="80" x2="470" y2="140"/><line x1="790" y1="80" x2="790" y2="140"/>
+      <line x1="310" y1="80" x2="310" y2="125"/><line x1="630" y1="80" x2="630" y2="125"/>
+      <line x1="230" y1="80" x2="230" y2="115"/><line x1="390" y1="80" x2="390" y2="115"/><line x1="550" y1="80" x2="550" y2="115"/><line x1="710" y1="80" x2="710" y2="115"/>
+      <line x1="190" y1="80" x2="190" y2="105"/><line x1="270" y1="80" x2="270" y2="105"/><line x1="350" y1="80" x2="350" y2="105"/><line x1="430" y1="80" x2="430" y2="105"/>
+      <line x1="510" y1="80" x2="510" y2="105"/><line x1="590" y1="80" x2="590" y2="105"/><line x1="670" y1="80" x2="670" y2="105"/><line x1="750" y1="80" x2="750" y2="105"/>
+      <line x1="170" y1="80" x2="170" y2="96"/><line x1="210" y1="80" x2="210" y2="96"/><line x1="250" y1="80" x2="250" y2="96"/><line x1="290" y1="80" x2="290" y2="96"/>
+      <line x1="330" y1="80" x2="330" y2="96"/><line x1="370" y1="80" x2="370" y2="96"/><line x1="410" y1="80" x2="410" y2="96"/><line x1="450" y1="80" x2="450" y2="96"/>
+      <line x1="490" y1="80" x2="490" y2="96"/><line x1="530" y1="80" x2="530" y2="96"/><line x1="570" y1="80" x2="570" y2="96"/><line x1="610" y1="80" x2="610" y2="96"/>
+      <line x1="650" y1="80" x2="650" y2="96"/><line x1="690" y1="80" x2="690" y2="96"/><line x1="730" y1="80" x2="730" y2="96"/><line x1="770" y1="80" x2="770" y2="96"/>
+    </g>
+    <text x="139" y="156" font-size="16" font-weight="700" fill="#26282E">13</text>
+    <text x="459" y="156" font-size="16" font-weight="700" fill="#26282E">14</text>
+    <text x="779" y="156" font-size="16" font-weight="700" fill="#26282E">15</text>
+    <path d="M590 74 L582 58 L598 58 Z" fill="#611940"/>
+    <text x="560" y="50" font-size="14" font-weight="700" fill="#611940">A: 14 3/8 in</text>
+    <path d="M370 74 L362 58 L378 58 Z" fill="#611940"/>
+    <text x="330" y="50" font-size="14" font-weight="700" fill="#611940">B: 13 11/16 in</text>
+    <g stroke="#5A5D66" stroke-width="1">
+      <line x1="170" y1="160" x2="170" y2="182"/><line x1="190" y1="160" x2="190" y2="204"/><line x1="230" y1="160" x2="230" y2="226"/><line x1="310" y1="160" x2="310" y2="248"/>
+    </g>
+    <text x="176" y="186" font-size="13" fill="#26282E">1/16 in: shortest mark</text>
+    <text x="196" y="208" font-size="13" fill="#26282E">1/8 in</text>
+    <text x="236" y="230" font-size="13" fill="#26282E">1/4 in</text>
+    <text x="316" y="252" font-size="13" fill="#26282E">1/2 in: longest mark between the inch numbers</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Reading a tape to the sixteenth of an inch. It shows a length of tape blade with the inch numbers 13, 14 and 15. Between each pair of inch numbers there are 15 marks of four lengths.</p>
+    <p>Below the first inch, four leader lines point to the first mark of each length after 13 and are labeled: 1/16 in, the shortest mark; 1/8 in; 1/4 in; and 1/2 in, the longest mark between the inch numbers.</p>
+    <p>Two pointers sit above the blade: B, labeled B: 13 11/16 in, at the eleventh mark after 13, and A, labeled A: 14 3/8 in, at the sixth mark after 14.</p>
+  </details>
+
+  <h3>Using the tape</h3>
+  <ul>
+    <li><strong>Hook or push.</strong> Hook the end over an edge to measure from that edge, or push it against a surface for an inside measurement. The hook slides by about its own thickness, out when hooked and in when pushed, so the zero is correct both ways. The movement is deliberate. A bent hook, or one that moves farther than its own thickness on loose rivets, gives a false zero.</li>
+    <li><strong>Start from the 1 in mark.</strong> Where the hook cannot catch, hold the 1 in mark on the reference edge and subtract 1 in from the reading. Note the 1 in start beside the reading, so the extra inch does not stay in the figure.</li>
+    <li><strong>Read square.</strong> A blade held at an angle to the edge reads long.</li>
+    <li><strong>Return it slowly.</strong> A blade that snaps back can bend the hook.</li>
+  </ul>
+
+  <div class="cyu gate" data-answer="0" data-fb="22 &minus; 3/16 = 21 16/16 &minus; 3/16 = 21 13/16 in; 13/16 does not reduce, because 13 is odd. 21 13/32 in counts thirty-seconds instead of sixteenths. 21 3/4 in is 4/16 short of 22, not 3/16. 22 3/16 in adds the 3/16 instead of subtracting it.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">The end of a box lies 3/16 in short of the 22 in mark on the tape. What is the reading?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>21 13/16 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>21 13/32 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>21 3/4 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>22 3/16 in</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="3" data-group-title="Measuring and Converting" data-num="526.1.9" data-title="Fractions, decimals, and units">
+  <p class="crumb">Lesson 526.1 &middot; Section 3 Measuring and Converting</p>
+  <h2><span class="tnum">526.1.9</span> Fractions, decimals, and units</h2>
+  <p class="lead-in">Do layout arithmetic in sixteenths, or in thirty-seconds where halving an odd number of sixteenths calls for them, and write each result in lowest terms.</p>
+
+  <h3>Lowest terms</h3>
+  <p>A fraction is in <span class="keyterm">lowest terms</span> when the top and bottom numbers have no common factor other than 1. Divide both by 2 until the top number is odd: 10/16 is 5/8, and 12/16 is 3/4.</p>
+
+  <h3>Adding, subtracting, and halving</h3>
+  <p>Put every fraction over the same bottom number: 16, or 32 where halving has produced thirty-seconds. Add or subtract the whole inches and the fractions separately. Carry or borrow one inch in the same unit as the fractions &mdash; 16/16 in sixteenths, 32/32 in thirty-seconds &mdash; then reduce. To halve a dimension, turn it into sixteenths and divide by 2. Where the number of sixteenths is odd, the half comes out in thirty-seconds.</p>
+  <p>A position on a drawing is usually the center of a box. Its top edge is the center plus half the box&rsquo;s height; its bottom edge is the center minus half the height.</p>
+
+  <div class="calc">
+    <table>
+      <caption>Worked example in sixteenths. A box 2 3/4 in high is centered 12 1/2 in above a reference line, and a partition top is 96 in above the same line. Find the top edge of the box and its distance below the partition top.</caption>
+      <thead><tr><th scope="col">Step</th><th scope="col">Working</th></tr></thead>
+      <tbody>
+        <tr><td>Half the box height</td><td class="n">2 3/4 = 44/16; 44/16 &divide; 2 = 22/16 = 1 6/16 in</td></tr>
+        <tr><td>Center plus half the height</td><td class="n">12 8/16 + 1 6/16 = 13 14/16 = 13 7/8 in</td></tr>
+        <tr><td>Partition top minus the box top (borrow one inch as 16/16)</td><td class="n">95 16/16 &minus; 13 14/16 = 82 2/16 = 82 1/8 in</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="calc">
+    <table>
+      <caption>Worked example in thirty-seconds: the clearance between a box 3 5/16 in wide and a line 5 1/4 in from the box&rsquo;s center.</caption>
+      <thead><tr><th scope="col">Step</th><th scope="col">Working</th></tr></thead>
+      <tbody>
+        <tr><td>Half the box width (53 sixteenths is odd)</td><td class="n">3 5/16 = 53/16; 53/16 &divide; 2 = 53/32 = 1 21/32 in</td></tr>
+        <tr><td>Center-to-line distance in thirty-seconds</td><td class="n">5 1/4 = 5 8/32 in</td></tr>
+        <tr><td>Subtract (borrow one inch as 32/32)</td><td class="n">4 40/32 &minus; 1 21/32 = 3 19/32 in</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>On a tape that marks only sixteenths, 3 19/32 in falls just past 3 9/16 in (18/32).</p>
+
+  <h3>Feet and inches, decimals, and metric</h3>
+  <p>To convert inches to feet and inches, divide by 12: the whole number is the feet, and the remainder is the inches. 82 1/8 in is 6 ft 10 1/8 in, because 6 ft is 72 in.</p>
+  <p>To convert a decimal to sixteenths, multiply the decimal part by 16 and round to the nearest whole number: 7.3 in gives 0.3 &times; 16 = 4.8, so about 7 5/16 in. Say &ldquo;about&rdquo; when you round.</p>
+  <p>One inch is exactly 25.4 mm. A product 400 mm wide is 400 &divide; 25.4 = about 15.75 in; 0.75 &times; 16 = 12, so about 15 12/16, or 15 3/4 in. The owner&rsquo;s standard gives the 90 m limit on a <span class="keyterm">permanent link</span>, the installed cable from the outlet to the patch panel, as 295 ft (27 15 00 2.2).</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="Half of 4 1/8 in is 66/16 &divide; 2 = 33/16 = 2 1/16 in, and 50 12/16 + 2 1/16 = 52 13/16 in. 54 7/8 in adds the whole height instead of half of it. 52 7/8 in rounds half the height up to 2 1/8. 48 11/16 in subtracts the half height, which gives the bottom edge.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A plate 4 1/8 in high is centered 50 3/4 in above a reference line. How far above the line is its top edge?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>54 7/8 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>52 7/8 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>48 11/16 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>52 13/16 in</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="4" data-group-title="Layout, Takeoff, and RFIs" data-num="526.1.10" data-title="Measuring against the drawings">
+  <p class="crumb">Lesson 526.1 &middot; Section 4 Layout, Takeoff, and RFIs</p>
+  <h2><span class="tnum">526.1.10</span> Measuring against the drawings</h2>
+  <p class="lead-in">Before a layout is marked, the installer measures the work area and compares each measurement with the dimension the drawings give.</p>
+
+  <p>The owner&rsquo;s standard requires the contractor to verify dimensions and conditions on site before installation and to report differences from the drawings in writing (27 05 00 1.2). On the mock-up, sheet TW-001, general note 2, marks the drawing set as a provisional issue: it takes the panels and the screws that hold them to the frame from a site measurement, and the overall wall from the wall maker&rsquo;s quote. The note requires you to verify every dimension on your wall before you cut, and to report a difference by RFI before you work around it.</p>
+
+  <h3>The reference edges</h3>
+  <p>Every position on a layout is measured from fixed reference edges, called the <span class="keyterm">datum</span>. On the mock-up, sheet TW-001, note 3, sets it. The <span class="keyterm">panel field</span> is the area the panels cover on a face. <strong>x</strong> is measured from the left edge of the bay, and <strong>y</strong> from the bottom of the panel field, as seen by a person standing in front of the face. A position written &ldquo;x, y&rdquo; on the drawings is the center of the box or plate.</p>
+  <p>Measure every position from the datum, not from the last mark. Three marks chained one from another, each 1/16 in off in the same direction, put the third mark 3/16 in out. Measured from the datum, each carries only its own error.</p>
+
+  <h3>Tolerance and the statement</h3>
+  <p>A <span class="keyterm">tolerance</span> is the band on either side of a drawing dimension within which a measured value is accepted. A width drawn as 48 in with a tolerance of &plusmn;1/4 in accepts any measured value from 47 3/4 to 48 1/4 in. Compare each measurement with its drawing dimension and state one of these:</p>
+  <ul>
+    <li><strong>Agrees</strong> &mdash; the measured value lies within the tolerance of the drawing value.</li>
+    <li><strong>Differs</strong> &mdash; it lies outside. A difference between the drawings and the site is a subject for an RFI.</li>
+    <li><strong>Not given</strong> &mdash; the drawings give no value for it. Record what you measured. A dimension the work depends on and the drawings leave out is also a subject for an RFI.</li>
+  </ul>
+  <p>Write each measured value beside the dimension it checks, at the time you take it.</p>
+
+
+  <div class="cyu gate" data-answer="0" data-fb="The tolerance is &plusmn;1/8 in, so the accepted band runs from 29 7/8 to 30 1/8 in. 30 3/16 in is 3/16 in over the drawing value, outside the band, so the statement is &ldquo;differs&rdquo;. A &plusmn;1/4 in band would accept it, but that is not the tolerance given. The drawing gives a value, so &ldquo;not given&rdquo; does not apply. Rounding the measurement to the nearest 1/4 in changes the measurement instead of comparing it.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A height is drawn as 30 in, with a tolerance of &plusmn;1/8 in. You measure 30 3/16 in. What do you state?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Differs: it is 3/16 in over, outside the tolerance</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Agrees: it is within 1/4 in of the drawing</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Not given</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Agrees: 30 3/16 in rounds to 30 1/4 in</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="4" data-group-title="Layout, Takeoff, and RFIs" data-num="526.1.11" data-title="Marking a layout">
+  <p class="crumb">Lesson 526.1 &middot; Section 4 Layout, Takeoff, and RFIs</p>
+  <h2><span class="tnum">526.1.11</span> Marking a layout</h2>
+  <p class="lead-in">A layout is a set of pencil marks that puts each position from the drawings on the panel, where the installer will later cut and fasten.</p>
+
+  <h3>The center cross</h3>
+  <p>Each box or bracket is marked at its center with a <span class="keyterm">center cross</span>: a horizontal arm and a vertical arm crossing at the position. Draw the horizontal arm along the top edge of the level with the bubble centered in the middle vial, so the arm is <strong>level</strong>. Draw the vertical arm along the level&rsquo;s edge with the bubble centered in the end vial, so the arm is <strong>plumb</strong>. The installer later squares the box to these arms.</p>
+  <p>Mark in pencil only. Erase a wrong mark completely before drawing the correct one: an installer can mistake a faint old mark for the cut line. Mark a pathway, such as a raceway, as a line between two points, each measured from the datum.</p>
+  <p>A <span class="keyterm">reserved zone</span> is an area kept clear for later work. The drawings show it hatched or outlined and labeled. Mark nothing in it.</p>
+
+  <h3>From the center to an edge</h3>
+  <p>The drawings give centers; the product data gives sizes. Find an edge by adding or subtracting half the size. The <span class="keyterm">clearance</span> between a box and a fixed line, such as a panel edge, is the distance from the center to that line minus half the box&rsquo;s size across it: half its width for a plumb line, half its height for a level line.</p>
+  <p>A <span class="keyterm">panel screw</span>, one of the four screws that hold a panel to the frame, is a point, not a line. Take two measurements from the center of the mark: across, with the tape held level, to the point directly above or below the screw; and up or down, with the tape held plumb, to the height of the screw. Subtract half the box&rsquo;s width from the measurement across, and half its height from the measurement up or down. The screw may lie beside the box, above or below it, or off a corner. Take the larger of the two results as the clearance; off a corner, the screw lies slightly farther from the box than that figure.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; A center cross and its clearance, worked on a practice board</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 420" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A practice board 30 inches wide and 40 inches high with a panel screw at x 12, y 36, a center cross at x 9 1/2, y 26 with the outline of a box 3 3/8 inches wide and 4 1/2 inches high around it, the two measurements from the cross to the screw, a reserved zone, and the clearance worked out beside the board. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Center cross, box outline and clearance (example)</text>
+    <rect x="80" y="50" width="240" height="320" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+    <circle cx="176" cy="82" r="5" fill="#26282E"/>
+    <rect x="142.5" y="144" width="27" height="36" fill="none" stroke="#26282E" stroke-width="1.2" stroke-dasharray="5 3"/>
+    <line x1="140" y1="162" x2="172" y2="162" stroke="#611940" stroke-width="2.2"/>
+    <line x1="156" y1="146" x2="156" y2="178" stroke="#611940" stroke-width="2.2"/>
+    <line x1="156" y1="162" x2="176" y2="162" stroke="#5A5D66" stroke-width="1.4" stroke-dasharray="3 3"/>
+    <line x1="176" y1="162" x2="176" y2="82" stroke="#5A5D66" stroke-width="1.4" stroke-dasharray="3 3"/>
+    <text x="182" y="176" font-size="13" fill="#26282E">across 2 1/2</text>
+    <text x="182" y="126" font-size="13" fill="#26282E">up 10</text>
+    <rect x="200" y="290" width="100" height="64" fill="none" stroke="#A4262C" stroke-width="1.6" stroke-dasharray="6 4"/>
+    <text x="206" y="318" font-size="13" fill="#A4262C">Reserved zone:</text>
+    <text x="214" y="336" font-size="13" fill="#A4262C">no marks</text>
+    <line x1="80" y1="392" x2="156" y2="392" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="80" y1="384" x2="80" y2="400" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="156" y1="384" x2="156" y2="400" stroke="#26282E" stroke-width="1.2"/>
+    <text x="164" y="397" font-size="13" fill="#26282E">x 9 1/2 from the left edge</text>
+    <line x1="56" y1="370" x2="56" y2="162" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="48" y1="370" x2="64" y2="370" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="48" y1="162" x2="64" y2="162" stroke="#26282E" stroke-width="1.2"/>
+    <text x="16" y="270" font-size="13" fill="#26282E">y 26</text>
+    <text x="186" y="78" font-size="13" fill="#5A5D66">panel screw, x 12, y 36</text>
+    <text x="360" y="80" font-size="14" font-weight="700" fill="#611940">Datum</text>
+    <text x="360" y="100" font-size="14" fill="#26282E">x from the left edge of the board, y from its bottom edge.</text>
+    <text x="360" y="136" font-size="14" font-weight="700" fill="#611940">The mark</text>
+    <text x="360" y="156" font-size="14" fill="#26282E">Center cross at x 9 1/2, y 26: horizontal arm level, vertical arm plumb.</text>
+    <text x="360" y="176" font-size="14" fill="#26282E">The dashed outline is the box, 3 3/8 in wide and 4 1/2 in high.</text>
+    <text x="360" y="194" font-size="14" fill="#26282E">The outline is not marked on the board.</text>
+    <text x="360" y="212" font-size="14" font-weight="700" fill="#611940">The clearance to the panel screw</text>
+    <text x="360" y="232" font-size="14" fill="#26282E">Half the box: width 3 3/8 &#247; 2 = 1 11/16 in; height 4 1/2 &#247; 2 = 2 1/4 in</text>
+    <text x="360" y="252" font-size="14" fill="#26282E">Across, tape level: 12 &#8722; 9 1/2 = 2 1/2; less 1 11/16 = 13/16 in</text>
+    <text x="360" y="272" font-size="14" fill="#26282E">Up, tape plumb: 36 &#8722; 26 = 10; less 2 1/4 = 7 3/4 in</text>
+    <text x="360" y="292" font-size="14" font-weight="700" fill="#26282E">Clearance: the larger figure, 7 3/4 in</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Center cross, box outline and clearance (example). On the left is a gray practice board. A dot near the top of the board marks a panel screw, labeled panel screw, x 12, y 36.</p>
+    <p>A center cross is drawn on the board, with a dashed rectangle around it for the box outline. A dimension below the board runs from the board&rsquo;s left edge to the center of the cross and is labeled x 9 1/2 from the left edge. A dimension on the left runs from the bottom edge of the board up to the center of the cross and is labeled y 26. From the center of the cross, a dashed line runs level to the point directly below the screw, labeled across 2 1/2, and a second dashed line runs plumb from there up to the screw, labeled up 10. In the lower right of the board, a dashed red rectangle is labeled Reserved zone: no marks.</p>
+    <p>Text beside the board reads: Datum: x from the left edge of the board, y from its bottom edge. The mark: Center cross at x 9 1/2, y 26: horizontal arm level, vertical arm plumb. The dashed outline is the box, 3 3/8 in wide and 4 1/2 in high. The outline is not marked on the board. The clearance to the panel screw: Half the box: width 3 3/8 divided by 2 = 1 11/16 in; height 4 1/2 divided by 2 = 2 1/4 in. Across, tape level: 12 minus 9 1/2 = 2 1/2; less 1 11/16 = 13/16 in. Up, tape plumb: 36 minus 26 = 10; less 2 1/4 = 7 3/4 in. Clearance: the larger figure, 7 3/4 in.</p>
+  </details>
+
+  <h3>Why the owner&rsquo;s standard keeps cuts away from edges and screws</h3>
+  <p>On the mock-up, clause 27 05 00 4.5 of the owner&rsquo;s standard keeps every cut and fastener at least 2 in from a panel edge, a panel joint, or a panel screw. The EMT and the raceway may cross a panel joint or the top edge of the panel field where sheet TW-201 shows them; their strap and base screws stay 2 in clear. A screw close to the edge of a hardboard panel can split the edge out. A box fastened over a panel screw covers it, so the panel cannot come off the frame until the box comes off. Where a drawn position leaves a clearance under 2 in, the drawing conflicts with the standard. Raise the conflict by RFI.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="Across: half of 3 1/8 in is 50/16 &divide; 2 = 25/16 = 1 9/16 in, and 4 1/2 &minus; 1 9/16 = 4 8/16 &minus; 1 9/16 = 2 15/16 in. Up: 1 in less half the height, 2 in, is below zero, so the figure across is the larger. 1 3/8 in subtracts the whole width instead of half of it. 6 1/16 in adds the half width, which measures to the far edge of the box. 2 7/8 in rounds the half width up to 1 5/8 in.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A box 3 1/8 in wide and 4 in high is centered 4 1/2 in to one side of a panel screw and 1 in below it. What is the clearance between the box and the screw?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>1 3/8 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>6 1/16 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>2 15/16 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>2 7/8 in</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="4" data-group-title="Layout, Takeoff, and RFIs" data-num="526.1.12" data-title="Material takeoff and cable length">
+  <p class="crumb">Lesson 526.1 &middot; Section 4 Layout, Takeoff, and RFIs</p>
+  <h2><span class="tnum">526.1.12</span> Material takeoff and cable length</h2>
+  <p class="lead-in">A takeoff lists the material a piece of work needs, line by line, with the quantity, the unit, and the document that gives each figure.</p>
+
+  <p>You work a <span class="keyterm">material takeoff</span> from the documents. Each line names one item, gives its quantity and unit, and cites its <strong>reference</strong>: the sheet and note, the schedule row, or the clause that sets the figure. A line without a reference cannot be checked.</p>
+
+  <ul>
+    <li><strong>Counted items</strong> (each) come from the <span class="keyterm">schedule</span> (the drawing set&rsquo;s table of elements and their positions), the elevations, and the fittings each typical detail calls for.</li>
+    <li><strong>Rule-based items</strong> come from a clause that sets a number per element, such as screws per box.</li>
+    <li><strong>Lengths</strong> (inches or feet) come from your own layout arithmetic along the pathway.</li>
+  </ul>
+  <p>Along a pathway with bends, add the straight lengths between the points the documents give. A tube that runs 5 in from a box to a first bend, 7 in to a second bend, then 9 in to its end is 5 + 7 + 9 = 21 in long.</p>
+  <p>Keep the unit the takeoff asks for: a length in feet on a line that asks for inches is a wrong line.</p>
+
+  <h3>Fasteners at a maximum spacing</h3>
+  <p>A rule such as &ldquo;one fastener at each end and at no more than 20 in centers&rdquo; is counted in two steps. Divide the length by the maximum spacing and round <em>up</em> to get the number of spaces. Add one to get the number of fasteners. A raceway 52 in long gives 52 &divide; 20 = 2.6, so 3 spaces and 4 fasteners, about 17 5/16 in apart. Rounding down would leave a space longer than the rule allows.</p>
+
+  <h3>Cable length</h3>
+  <p>On the mock-up, owner&rsquo;s standard 27 05 00 4.7 sets a cable&rsquo;s cut length as the sum of six parts. Three carry the cable from the box to the rack: the run on the wall from the top of the box to the top of the panel field, the rise to the ladder, and the run along the ladder to the rack. The other three are the slack, the drop at the rack, and the service loop. The <span class="keyterm">slack</span> is spare cable left at the box. The <span class="keyterm">drop</span> is the length from the ladder down to the patch panel. The <span class="keyterm">service loop</span> is spare cable coiled on the ladder at the rack end. The figure shows the six parts on a mock-up wall built for another project, with that project&rsquo;s allowances.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; The parts of a cable length, Mercer Avenue Clinic mock-up (hypothetical)</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 340" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="An elevation of a cable from an outlet box on a mock-up wall, up to the top of the panel field, up to a cable ladder, along the ladder to a rack, and down to a patch panel, with the slack at the box and the service loop on the ladder, each part numbered and labeled with its length. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Six parts of a cable length (example values)</text>
+    <rect x="60" y="64" width="760" height="18" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="330" y="60" font-size="13" fill="#5A5D66">cable ladder</text>
+    <rect x="70" y="130" width="140" height="180" fill="#ffffff" stroke="#26282E" stroke-width="1.6"/>
+    <text x="78" y="326" font-size="13" fill="#5A5D66">panel field</text>
+    <rect x="128" y="236" width="24" height="30" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="140" y1="236" x2="140" y2="130" stroke="#611940" stroke-width="3"/>
+    <line x1="140" y1="130" x2="140" y2="82" stroke="#611940" stroke-width="3"/>
+    <line x1="140" y1="73" x2="760" y2="73" stroke="#611940" stroke-width="3"/>
+    <circle cx="174" cy="262" r="12" fill="none" stroke="#611940" stroke-width="2.4"/>
+    <circle cx="690" cy="98" r="14" fill="none" stroke="#611940" stroke-width="2.4"/>
+    <rect x="730" y="110" width="80" height="200" fill="#ffffff" stroke="#26282E" stroke-width="1.6"/>
+    <rect x="740" y="190" width="60" height="16" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="760" y1="82" x2="760" y2="190" stroke="#611940" stroke-width="3"/>
+    <text x="746" y="326" font-size="13" fill="#5A5D66">rack</text>
+    <text x="224" y="184" font-size="13" fill="#26282E">1  Run on the wall, box top to top of panel field: 30 in</text>
+    <text x="222" y="266" font-size="13" fill="#26282E">4  Slack at the box: 18 in</text>
+    <text x="224" y="112" font-size="13" fill="#26282E">2  Rise to the ladder: 14 in</text>
+    <text x="300" y="140" font-size="13" fill="#26282E">3  Run along the ladder to the rack: 31 ft 4 in</text>
+    <text x="500" y="250" font-size="13" fill="#26282E">5  Drop at the rack: 8 ft</text>
+    <text x="520" y="104" font-size="13" fill="#26282E">6  Service loop: 15 ft</text>
+    <text x="650" y="186" font-size="13" fill="#5A5D66">patch panel</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Six parts of a cable length (example values). It shows the panel field of a wall on the left, a rack on the right, and a cable ladder running across the top from above the wall to above the rack.</p>
+    <p>A cable leaves an outlet box and runs up to the top of the panel field: part 1, Run on the wall, box top to top of panel field: 30 in. It rises to the ladder: part 2, Rise to the ladder: 14 in. It runs along the ladder to the rack: part 3, Run along the ladder to the rack: 31 ft 4 in. A small coil beside the box is part 4, Slack at the box: 18 in. The cable drops from the ladder to a patch panel in the rack: part 5, Drop at the rack: 8 ft. A coil on the ladder near the rack is part 6, Service loop: 15 ft.</p>
+  </details>
+
+  <div class="calc">
+    <table>
+      <caption>Worked cut length for the cable in the figure. The clinic&rsquo;s standard sets the allowances in this example. Each project&rsquo;s standard sets its own.</caption>
+      <thead><tr><th scope="col">Part, and where the figure comes from</th><th scope="col">Length</th></tr></thead>
+      <tbody>
+        <tr><td>1 Run on the wall: top of the panel field minus the box top, from the elevation</td><td class="n">30 in</td></tr>
+        <tr><td>2 Rise to the ladder, measured</td><td class="n">14 in</td></tr>
+        <tr><td>3 Run along the ladder, measured: 31 ft 4 in = 31 &times; 12 + 4</td><td class="n">376 in</td></tr>
+        <tr><td>4 Slack at the box, from the clinic standard</td><td class="n">18 in</td></tr>
+        <tr><td>5 Drop at the rack, from the clinic standard: 8 ft</td><td class="n">96 in</td></tr>
+        <tr><td>6 Service loop, from the clinic standard: 15 ft</td><td class="n">180 in</td></tr>
+        <tr class="tot"><td>Total: 714 in &divide; 12 = 59 ft, remainder 6 in</td><td class="n">714 in = 59 ft 6 in</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Add the parts in inches, then convert the total to feet and inches. Check the total against the length limit: 714 in is about 18 m, well inside the 90 m limit on a permanent link.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="75 &divide; 18 = 4.17. Rounding up gives 5 spaces, and one fastener more than the spaces gives 6 fasteners, about 15 in apart. 5 fasteners would make 4 spaces of 18 3/4 in, longer than the 18 in maximum. 4 fasteners rounds 4.17 down to 4 and lists the spaces as fasteners, which leaves 3 spaces of 25 in. 3 fasteners leaves 2 spaces of 37 1/2 in.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A raceway base 75 in long is fastened with one fastener at each end and at no more than 18 in centers. How many fasteners does the takeoff list?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>5</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>6</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>4</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>3</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="4" data-group-title="Layout, Takeoff, and RFIs" data-num="526.1.13" data-title="Requests for information">
+  <p class="crumb">Lesson 526.1 &middot; Section 4 Layout, Takeoff, and RFIs</p>
+  <h2><span class="tnum">526.1.13</span> Requests for information</h2>
+  <p class="lead-in">A request for information puts a question about the documents in writing, to the person who can answer it, before the affected work goes ahead.</p>
+
+  <p>An RFI goes from the contractor to the owner&rsquo;s representative or the designer. The owner&rsquo;s standard requires one where two documents conflict (27 05 00 1.1) and where a product differs from the standard&rsquo;s material data (4.8). Clause 1.2 requires differences between the drawings and the site to be reported in writing; on the mock-up, sheet TW-001, note 2, names the RFI as the way to report them. For a conflict, clause 1.1 also stops the affected work until the answer arrives. Raise a missing dimension that the work depends on the same way.</p>
+
+  <h3>The fields of an RFI</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The fields of an RFI and what each one carries.</caption>
+      <thead><tr>
+        <th scope="col">Field</th><th scope="col">What it carries</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Number, date, To, From</th><td>The number from the project&rsquo;s numbering rule, the date, the recipient, and you</td></tr>
+        <tr><th scope="row">Subject</th><td>The element or dimension, in a few words</td></tr>
+        <tr><th scope="row">Drawing reference</th><td>The sheet, and the note, row, or dimension on it</td></tr>
+        <tr><th scope="row">Measured condition</th><td>Your measured value with its unit, or what the documents leave out</td></tr>
+        <tr><th scope="row">Question</th><td>One question, naming the element or dimension, that the reader can answer with a value or a decision</td></tr>
+        <tr><th scope="row">Proposed resolution</th><td>The value or the action you propose, consistent with what you measured</td></tr>
+        <tr><th scope="row">Impact</th><td>The work that waits for the answer</td></tr>
+        <tr><th scope="row">Response needed by</th><td>The date by which the work needs the answer</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="figure">
+    <div class="cap">Example &mdash; RFI on the Mercer Avenue Clinic (hypothetical)</div>
+    <p><strong>Subject.</strong> Data outlet height, Reception 1.02.</p>
+    <p><strong>Measured condition.</strong> Sheet T-201 shows outlet 1.02-A 18 in above the finished floor. A counter 40 in high covers that wall.</p>
+    <p><strong>Question.</strong> Is outlet 1.02-A to be mounted 48 in above the finished floor, above the counter, or at 18 in, behind it?</p>
+    <p><strong>Proposed resolution.</strong> Mount outlet 1.02-A 48 in above the finished floor, centered on the counter.</p>
+    <p style="margin-bottom:0"><strong>Impact.</strong> The box and cable for outlet 1.02-A wait for the answer.</p>
+  </div>
+
+  <div class="cyu gate" data-answer="3" data-fb="The question names the surface box and its height, and the owner&rsquo;s representative can answer it with a value. The question about the handrail contractor&rsquo;s installation asks about another trade&rsquo;s work, not what to build here. Asking for a site meeting asks for a meeting, not a value or a decision. Asking whether the dimensions are correct invites a yes or a no that does not say where to put the box.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A sheet shows a surface box at 34 in above the floor, but a handrail runs along the wall at that height. Which question belongs in the RFI?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Is the handrail shown on sheet T-201 at the height the handrail contractor installed?</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Can the owner&rsquo;s representative meet on site to review the surface box and the handrail?</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Are the dimensions on sheet T-201 correct for the surface box and the handrail?</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Is the surface box to be centered 30 in above the floor, below the handrail, instead of 34 in?</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="4" data-group-title="Layout, Takeoff, and RFIs" data-num="526.1.14" data-title="Checking an AI takeoff">
+  <p class="crumb">Lesson 526.1 &middot; Section 4 Layout, Takeoff, and RFIs</p>
+  <h2><span class="tnum">526.1.14</span> Checking an AI takeoff</h2>
+  <p class="lead-in">An AI tool can produce a takeoff in seconds. The installer who submits a takeoff answers for every figure in it.</p>
+
+  <p>A general-purpose AI assistant, such as Microsoft Copilot, has not read the project&rsquo;s drawings or the owner&rsquo;s standard unless the prompt includes them. Its reply reads the same whether a figure is right or wrong.</p>
+
+  <p>A takeoff from an AI tool can use a common product size instead of the specified one, round a length or give it in another unit, apply a per-element rule to the wrong elements, or add an item the drawings do not show.</p>
+
+  <h3>The check</h3>
+  <ol>
+    <li>Finish your own takeoff first, with a reference on every line.</li>
+    <li>Put the project&rsquo;s own data in the prompt &mdash; the schedule rows, the material data, the line names &mdash; and ask for each line&rsquo;s quantity and unit. Keep the prompt and the whole reply as they were.</li>
+    <li>Compare the reply with your takeoff line by line. List every line where the quantity or the unit differs.</li>
+    <li>For each difference, open the reference and decide which figure is right: yours, the tool&rsquo;s, or neither. Where neither is right, record the correct figure. Where your own figure is wrong, correct it and record the original.</li>
+  </ol>
+  <p>The reference decides each difference. A figure is not right because the tool produced it, or because you did.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="The line asks for inches, and 58 in is the length from the layout, so your figure is right. 4.8 ft is about 57 5/8 in, so the tool has rounded the length as well as changing the unit. A takeoff line in the wrong unit is a difference to record even when the lengths are close. 4 ft 10 in is the same length as 58 in, but in the wrong unit for this line.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A takeoff line asks for the surface raceway length in inches. Your layout gives 58 in, and your takeoff says 58 in. The AI tool&rsquo;s reply says 4.8 ft. Which figure is right?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Yours: 58 in, in the unit the line asks for</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The tool&rsquo;s: 4.8 ft is the same length</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Neither: the line should read 4 ft 10 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Both: there is no difference to record</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.1" data-lesson-title="Safe Work, Measurement and Layout" data-group-num="5" data-group-title="Wrapping Up" data-num="526.1.15" data-title="What you covered">
+  <p class="crumb">Lesson 526.1 &middot; Section 5 Wrapping Up</p>
+  <h2><span class="tnum">526.1.15</span> What you covered</h2>
+  <p class="lead-in">The site lead releases an installer for wall work after an inspection, a hazard analysis, and a proved meter. The owner&rsquo;s representative releases a layout after the installer measures and marks it and the representative inspects it.</p>
+
+  <h3>Before work starts</h3>
+  <p>Check the <strong>revision</strong> a work order names against each sheet&rsquo;s title block, and record the <strong>hold point</strong> the work order states. Record each item&rsquo;s condition as found, then &ldquo;serviceable&rdquo; or &ldquo;reported&rdquo;. Give each task in a <strong>job hazard analysis</strong> a hazard with its harm and a control that addresses it. An <strong>SDS</strong> gives first aid in Section 4.</p>
+
+  <h3>Power and the meter</h3>
+  <p>A source <strong>affects</strong> a bay when it or its cord lies where the installer stands, or a cord runs onto the wall or into its cavity. Set the function from the source&rsquo;s label: <strong>DC volts</strong> for a battery, PoE, or a DC supply. <strong>Prove, test, prove again</strong> with the same function: a test reading counts only between two good provings on the same known source. On a building power circuit, a qualified electrician applies lockout/tagout, then proves the meter, tests, and proves again with the meter set to AC volts.</p>
+
+  <h3>Measuring and converting</h3>
+  <p>The length of a tape mark shows whether it is a half, a quarter, an eighth, or a sixteenth. Work in sixteenths or thirty-seconds, borrow in the same unit, and reduce to <strong>lowest terms</strong>.</p>
+
+  <h3>Layout, takeoff, and RFIs</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The layout work in order, and the rule that governs each step.</caption>
+      <thead><tr>
+        <th scope="col">Step</th><th scope="col">Rule</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Measure against the drawings</th><td>Measure from the datum; state &ldquo;agrees&rdquo;, &ldquo;differs&rdquo;, or &ldquo;not given&rdquo; against the tolerance</td></tr>
+        <tr><th scope="row">Mark</th><td>A level and plumb center cross at each position, in pencil; nothing in a reserved zone; clearance = center to the line minus half the width</td></tr>
+        <tr><th scope="row">Take off</th><td>Quantity, unit, and reference on every line; spaces rounded up, and fasteners one more than the spaces; cable length as the sum of its six parts</td></tr>
+        <tr><th scope="row">Raise an RFI</th><td>One question that names the element and can be answered with a value or a decision</td></tr>
+        <tr><th scope="row">Check an AI takeoff</th><td>Your own takeoff first; compare line by line; the reference decides each difference</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete — continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again — this does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct>=90) msg.textContent='Outstanding — you are working at field-standard level and are ready for the lab.';
+      else if(pct>=75) msg.textContent='Strong work. Revisit anything you missed and you will be field-ready.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the cards and applied scenarios to close the gaps.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+<!--
+BUILD FLAGS - UCI 1019 Lesson 526.1 Async Reading v0.1.0 DRAFT, 2026-11-01
+(Module 526, Construction Fundamentals; built under the delegated mode, brief
+Planning/_AGENT-BRIEF_M526-Readings.md). This comment is visible in the page
+source, so it carries no answer-key value.
+
+SOURCES READ
+- Module plan v0.1.0 DRAFT s1-s6; GLAB 526.1.1 lab, record, guide, release
+  sheet, rehearsal; ALAB 526.1.2 lab, record, guide, key sheet, rehearsal;
+  the two work orders for the lesson's labs; owner standard mock-up
+  edition; drawing set Rev 0 sheets TW-001 to TW-401 (all opened).
+
+DECISIONS TAKEN
+- Five sections, 15 topics; topics follow the module plan's objective order.
+- No drawing-set image used: the elevations and bay schedule show graded
+  positions. All four figures are original SVG with values from other jobs.
+- Worked examples use the hypothetical Mercer Avenue Clinic (and its
+  mock-up) and a generic practice board.
+- Project documents named: the Training Wall Drawing Set (TW-001 notes 2
+  and 3; TW-201 once) and the owner standard (27 05 00 1.1, 1.2, 4.3, 4.5,
+  4.6, 4.7, 4.8; 27 15 00 2.2). No lab, record, work order number or quiz
+  named.
+- Held back because they are graded entries or withheld by the lab design:
+  the safe-work work order's limits; the drawing-set revision; the JHA
+  entries for the five wall tasks; the station voltage and any no-voltage
+  threshold; the meter model and its printed ratings; the product facts
+  the documents step asks for; all bay positions, product sizes,
+  allowances, spacings and counts from the layout lab.
+- Stated because the labs state it and the reading teaches the method: the
+  prove/test/prove-again sequence and its fallback form; that PoE is DC on
+  pins 1 and 2 against 3 and 6, or 4 and 5 against 7 and 8; the "affects
+  the bay" rule; the clearance rule of 27 05 00 4.5; that each work order
+  states its own hold point, to be read and recorded before work starts
+  (the safe-work release's own hold point is not stated).
+- The shell script is byte-identical to the pattern page (format spec). Its
+  result messages (LP1 S6) never render here; fix in the reference engine.
+- Activity count 16, counted as on the 530.1 pattern page (acknowledgement
+  included). Serial comma; American spelling.
+
+ASSUMPTIONS (not in the module plan)
+- The learner reads this page before Day 1.
+- IEC 61010 CAT descriptions, the OSHA HazCom 16-section SDS, IEEE 802.3
+  detection, 25.4 mm per inch, and the tape and level checks are general
+  knowledge, not from a project file. CAT ratings on the page are examples,
+  not the wall meter's.
+- In class, the instructor acts as site lead (stated once on the page).
+
+CONFLICTS FOUND
+- Resolved 2026-11-01: the record's tape check reads "Hook: bent, or moves farther than its own thickness".
+- Module plan objective says "task hazard analysis"; the lab and record say
+  "job hazard analysis (JHA)". Page uses JHA and names the other term.
+
+CHECK QUESTIONS AND ACTIVITIES (for the quiz writer; do not repeat)
+- 526.1.1 CYU: which entry of a Mercer Clinic work-order excerpt is the hold
+  point (superintendent inspects the backboard fastening).
+- 526.1.2 CYU: extension cord with the jacket cut near the plug: reported,
+  set apart, labeled.
+- 526.1.3 Matching: cable across a walkway / route along the wall; box of
+  cable carried / cart; tie tails / flush-cut; spinning reel / braked stand.
+- 526.1.4 CYU: SDS section for first aid after eye contact (Section 4).
+- 526.1.5 CYU: which source affects the bay (power strip whose cord crosses
+  the floor in front of the bay).
+- 526.1.6 CYU: meter set-up for a 24 V DC supply (DC volts, COM and V).
+- 526.1.7 Ordering: six steps of prove/test/prove again on a 24 V DC supply.
+- 526.1.7 CYU: proving on a PoE source with a camera running, pins 1-3 and
+  4-7 both read 0.00 V: stop, check, prove again.
+- 526.1.8 CYU: 3/16 in short of the 22 in mark = 21 13/16 in.
+- 526.1.9 CYU: plate 4 1/8 in high centered at 50 3/4 in: top 52 13/16 in.
+- 526.1.10 CYU: drawn 30 in +/-1/8, measured 30 3/16: differs.
+- 526.1.11 CYU: box 3 1/8 x 4 in, 4 1/2 in across and 1 in below a panel screw: 2 15/16 in.
+- 526.1.12 CYU: raceway 75 in, ends plus max 18 in centers: 6 fasteners.
+- 526.1.13 CYU: best RFI question (surface box drawn at 34 in, handrail at
+  that height; move to 30 in?).
+- 526.1.14 CYU: takeoff asks inches; yours 58 in, AI 4.8 ft: yours.
+- 526.1.15 acknowledgement.
+
+WORKED EXAMPLES (for the quiz writer; do not repeat)
+- 526.1.1 Mercer Clinic work-order excerpt.
+- 526.1.2 Step-ladder conditions (rails straight; rail split).
+- 526.1.3 JHA row: move a rack on casters across a room.
+- 526.1.6 PoE pin-pair diagram (pin 1 vs 3, pin 4 vs 7); CAT II 300 V,
+  CAT III 600 V and CAT II 1000 V as example ratings.
+- 526.1.8 Tape readings 13 11/16 in and 14 3/8 in.
+- 526.1.9 Box 2 3/4 in high at 12 1/2 in: top 13 7/8 in; 96 in minus
+  13 7/8 = 82 1/8 in = 6 ft 10 1/8 in; box 3 5/16 wide, line 5 1/4 in from
+  center: 3 19/32 in; 7.3 in = about 7 5/16 in; 400 mm = about 15 3/4 in.
+- 526.1.10 Chained marks 3 x 1/16 = 3/16 in; 48 in +/-1/4 band.
+- 526.1.11 Practice board: cross at x 9 1/2, y 26; box 3 3/8 x 4 1/2; panel
+  screw at x 12, y 36; across 13/16, up 7 3/4; clearance 7 3/4 in.
+- 526.1.12 Raceway 52 in at max 20 in centers: 4 fasteners, about 17 5/16 in apart; pathway with
+  bends 5 + 7 + 9 = 21 in; Mercer mock-up cable 714 in = 59 ft 6 in.
+- 526.1.13 Mercer RFI: outlet 1.02-A behind a 40 in counter; propose 48 in.
+
+KEY CHECK
+- Checked against the ALAB 526.1.2 instructor guide answer key and Layout
+  Release and Key Sheet: no match.
+- Checked against the GLAB 526.1.1 instructor guide answer key and Safe
+  Work Release Sheet: no match.
+
+REVIEW
+- Round 1 (LP1 57 wording + 6 structural; CR1 19): applied with the
+  coordinator's rulings; LP1 #4 and #41 skipped by ruling.
+- Round 2 (LP2 39 wording + 3 structural; CR2 8): applied 2026-11-01.
+  Prove/test/prove again holds for both station arrangements (circuit as
+  known source, or a separate source such as a tool battery; prove again on
+  the same source). No station card: the site lead gives what the learner
+  needs; no voltage or threshold. Site lead named at first use. Each work
+  order's own hold point added (generic only; its content removed after
+  round 2 because it matched a graded key entry). Ready-made record entries replaced (step
+  ladder, other CAT ratings, extension-cord check). PoE figure redrawn
+  (3 and 6 bracket clear of 4 and 5; "pins 1 and 2" notation). Option C of
+  the power-source check ruled out by its text. Takeoff defined in 526.1.4.
+  Tape hook taught once (526.1.8).
+- Deck alignment (coordinator, after round 2): low-voltage supplies may be
+  AC or DC (function from the label); IEEE 802.3 PoE applies a small
+  detection voltage before full power. 526.1.6 text, its check feedback
+  and the summary line changed; answer keys unchanged. LP2 #4 applied as a within-page topic
+  reference. Review stopped after round 2.
+
+UNVERIFIED
+- Not opened in a browser. Glyphs U+2393 and U+223F may not render in every
+  font.
+
+AUDITS (final build)
+- audit_html.py: FAIL (0), WARN (0). 8244 words, ~74 min at 112 wpm before
+  activities.
+- contrast_audit.py as written: FAIL (1), .order .step.picked .seq scored
+  against the legacy amber token (known tool limitation; the brand layer
+  sets White on #8A4B00, 6.8:1). With later token definitions winning:
+  FAIL (0). REPORT (83) unresolvable containers, as on the 530.1 page.
+- 2026-11-01 (round 4): post-review check fixes (F1-11, F1-12, F1-14, F1-21); not re-reviewed.
+- 2026-11-01: drawing set Rev 1 (24 × 32 panels, Toolkit quote) propagated; not re-reviewed.
+- 2026-11-01: Rev 1 consistency check findings applied (CHK_Rev1-Propagation); not re-reviewed.
+- 2026-11-02: drawing set Rev 2 (measured: panels 60 × 80 cm, 23 5/8 × 31 1/2 in; four screws 2 1/2 in from the sides and 5/8 in from top and bottom; 5/8 in rail gap; floor 6 7/8 in). Not re-reviewed. 'Panel bolt' to 'panel screw' in 526.1.11; the generic practice-board bolt-line example kept (change table s9 item 3).
+- 2026-11-02: Rev 2 review fixes (LP1 Rev2, CHK Rev2) applied. Not re-reviewed.
+- 2026-11-02: Rev 2 confirmation fixes (LP2 Rev2, 9 findings) applied.
+-->
+</body>
+</html>

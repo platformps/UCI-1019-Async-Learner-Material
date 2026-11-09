@@ -1,0 +1,2179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 526 (M06) - Construction Fundamentals for Low Voltage Technicians
+  Lesson 526.2 - Fasteners, Boxes and Outlet Supports (Async Reading)
+  VERSION: v0.1.0  (2026-11-01)  DRAFT - for review
+
+  CHANGES IN v0.1.0
+  First issue. Built new for UCI 1019; no earlier version exists.
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox) reused verbatim from
+  UCI-1019_M530_Lesson-530.1_Async-Reading_v1.0.6.html, which carries the
+  UCI-2107.1_M529_Lesson-529.6 engine, the 2026 brand layer (FORMAT-SPEC 2026
+  addendum v0.1.0, section 3) and the .calc component sheet. Nothing in them
+  edited. Logo: inline Slate SVG, as on the pattern page.
+
+  OBJECTIVES, the module plan v0.1.0 section 3 wording for Lesson 526.2
+  (coordinator ruling after LP1/CR1), serial comma added.
+    Select             a bit, fastener, and anchor for a substrate and a load
+    Install and remove screws and hollow-wall anchors on the practice panel
+    Cut                a practice outlet opening and fit a bracket with the
+                       jab saw, hole saw, and drill/driver
+    Replace            a wall panel
+    Cut                a flush outlet opening from a template
+    Install            a low-voltage retrofit bracket
+    Mount              a box with a plaster ring to the specified projection
+    Distinguish        a low-voltage bracket from a box with a plaster ring
+    Install            a surface box with protected cable entries
+
+  TOPIC OUTLINE
+    Section 1  Fasteners and Anchors
+      526.2.1   What a hardboard panel can hold          entry point
+      526.2.2   Screws, bits, and drives
+      526.2.3   Hollow-wall anchors
+      526.2.4   Selecting for a substrate and a load
+    Section 2  Tools, Openings, and Panels
+      526.2.5   Drill/driver, impact driver, and hole saw
+      526.2.6   Cutting an opening from a template
+      526.2.7   Replacing a wall panel
+    Section 3  Outlet Supports and Boxes
+      526.2.8   The low-voltage retrofit bracket
+      526.2.9   The box with a plaster ring, and its projection
+      526.2.10  Bracket or box: telling them apart
+      526.2.11  The surface box and its cable entry
+    Section 4  Wrapping Up
+      526.2.12  What you covered                         summary
+
+  ACTIVITY GATES: 14 - 1 card set, 10 single-answer checks, 1 matching,
+    1 ordering, 1 acknowledgement.
+  DIAGRAMS: 3 original SVG, each with a full text description.
+  BUILD NOTES, OPEN ITEMS: see the BUILD FLAGS comment at the end of the file.
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 526.2 - Fasteners, Boxes and Outlet Supports &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Construction Fundamentals</b> &middot; Lesson 526.2 - Fasteners, Boxes and Outlet Supports</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Construction Fundamentals for Low Voltage Technicians</p>
+      <h2 id="ovh" tabindex="-1">Lesson 526.2 - Fasteners, Boxes and Outlet Supports</h2>
+      <p class="lead-in">Fastening to a thin panel with an open cavity behind it: a retrofit bracket fits into an opening cut in the panel, and the other outlet supports screw to its face.</p>
+
+      <p>Kestrel Communications is the telecommunications contractor on project HSOC-26-014, the Harlow Street Operations Center. Kestrel&rsquo;s site lead directs the crew on the mock-up. Before production rough-in starts on Level 2, the owner, Calder Regional Services, requires an installation mock-up of the typical Level 2 work area. The mock-up is built on five free-standing training walls. Each bay of a wall stands for one work area. Each bay carries three data outlets: a flush outlet in an opening cut in a finished wall, a second outlet on a box with a plaster ring, and a surface outlet fed by surface raceway. A <span class="keyterm">plaster ring</span> is a cover that holds the outlet in front of the box. <span class="keyterm">Surface raceway</span> is a channel with a snap-on cover, fixed to the face of the wall. The owner&rsquo;s representative inspects the supports of the flush outlet and the surface outlet before any cable is pulled to them.</p>
+
+      <p>The mock-up walls are not built like the walls of the building. Each face is a set of brown hardboard panels screwed to an aluminum frame, with an open cavity behind them and no studs. A screw point or a saw blade that passes through the panel enters a cavity that carries cable. Each bay&rsquo;s upper panel starts as a <span class="keyterm">practice panel</span>: installers practice fastening and cutting on it, then replace it with a fresh panel.</p>
+
+      <p>Worked examples on this page use products and dimensions chosen to show a method. On the mock-up, the figures come from the project documents and from the <span class="keyterm">product cards</span>, the printed cards set out on site that give each product&rsquo;s name and figures.</p>
+
+      <p>The reading and its activities take ~85&ndash;95 min.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>Fasteners and Anchors.</b> What a hardboard panel can hold; screws, bits, and drives; hollow-wall anchors; and selecting a fastener for a substrate and a load.</li>
+        <li><b>Tools, Openings, and Panels.</b> The drill/driver, the impact driver, and the hole saw; cutting an opening from a template with a jab saw; replacing a panel on the frame.</li>
+        <li><b>Outlet Supports and Boxes.</b> The low-voltage retrofit bracket, the box with a plaster ring and its projection, how to tell the two apart, and the surface box with its cable entry.</li>
+        <li><b>Wrapping Up.</b> The whole lesson in one place.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>4</b><span>Sections</span></div>
+        <div class="ov-stat"><b>12</b><span>Topics</span></div>
+        <div class="ov-stat"><b>14</b><span>Activities</span></div>
+        <div class="ov-stat"><b>3</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the standards and the documents</h3>
+      <p>The rules for fastening to the mock-up come from the owner&rsquo;s <strong>Telecommunications Design and Installation Standard, mock-up edition</strong>, clause 27 05 00 4.5, and its material data in clause 27 05 00 4.8. The <strong>Training Wall Drawing Set</strong> shows the walls: sheet TW-001 carries the general notes and the legend, TW-201 the wall faces, and TW-301 the typical details of each outlet support. The manufacturer&rsquo;s data governs every product figure, such as a bit size, a grip range (the range of board thickness an anchor is made to set in), a load rating, a box depth, or a ring raise, and every cutting template.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or move to any topic from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks &mdash; a
+         knowledge check, a set of cards to open, a matching exercise, or an ordering exercise.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. Your progress through the lesson is shown in the header and
+         in the contents list.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching and ordering activities every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description, and tables have headings and captions that read correctly aloud.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 526.2</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="526.2" data-lesson-title="Fasteners, Boxes and Outlet Supports" data-group-num="1" data-group-title="Fasteners and Anchors" data-num="526.2.1" data-title="What a hardboard panel can hold">
+  <p class="crumb">Lesson 526.2 &middot; Section 1 Fasteners and Anchors</p>
+  <h2><span class="tnum">526.2.1</span> What a hardboard panel can hold</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 526.2</span>
+    <h3>Fasteners, Boxes and Outlet Supports</h3>
+    <p>Every outlet support on the mock-up is fixed to a thin hardboard panel with an open cavity behind it.</p>
+    <p class="lb-meta"><b>4</b> sections &nbsp;&middot;&nbsp;
+       <b>12</b> topics &nbsp;&middot;&nbsp;
+       <b>14</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 526.2 you will be able to</div>
+    <ul>
+      <li><b>Select</b> a bit, fastener, and anchor for a substrate and a load.</li>
+      <li><b>Install and remove</b> screws and hollow-wall anchors on the practice panel.</li>
+      <li><b>Cut</b> a practice outlet opening and fit a bracket with the jab saw, hole saw, and drill/driver.</li>
+      <li><b>Replace</b> a wall panel.</li>
+      <li><b>Cut</b> a flush outlet opening from a template.</li>
+      <li><b>Install</b> a low-voltage retrofit bracket.</li>
+      <li><b>Mount</b> a box with a plaster ring to the specified projection.</li>
+      <li><b>Distinguish</b> a low-voltage bracket from a box with a plaster ring.</li>
+      <li><b>Install</b> a surface box with protected cable entries.</li>
+    </ul></div>
+
+  <p class="lead-in">The mock-up panels are thin hardboard with an open cavity behind them, and no stud or blocking.</p>
+
+  <p><span class="keyterm">Hardboard</span> is a dense, thin sheet of wood fiber pressed under heat. On the mock-up, each panel measures 60 cm by 80 cm (23 5/8 in by 31 1/2 in) and is held to the aluminum frame by four panel screws, one near each corner. Behind each panel is the cavity between the wall&rsquo;s two faces. Cable runs through that cavity, bundled and tied to the frame&rsquo;s horizontal members. It leaves through the open top of the frame to the <span class="keyterm">cable ladder</span>, the open tray that runs above the walls.</p>
+
+  <p>The threads of a screw grip only the panel&rsquo;s thickness, so a screw that keeps turning after its head seats tears out the threads it has cut in the panel and leaves a stripped hole. The point of the screw comes out in the cavity, where it can reach a cable. A device that hangs off the panel levers against the few threads that hold it.</p>
+
+  <h3>The owner&rsquo;s rules for fastening to the panels</h3>
+  <p>Clause 27 05 00 4.5 of the owner&rsquo;s standard, mock-up edition, sets these rules:</p>
+  <ul>
+    <li>Boxes, brackets, straps, and raceway bases are fixed with <strong>pan-head or washer-head screws</strong>.</li>
+    <li>Each screw is <strong>short enough that its point stays clear of cable</strong> in the cavity.</li>
+    <li>A <strong>hollow-wall anchor or a through-bolt</strong> is used only where a screw strips its hole, or to mount a device heavier than a box or a plate.</li>
+    <li><strong>No fastener goes into the aluminum frame.</strong></li>
+    <li><strong>No cut or fastener falls within 2 in of a panel edge or a panel screw.</strong></li>
+  </ul>
+
+  <p>A <span class="keyterm">through-bolt</span> passes through a drilled hole in the panel and is held by a washer and nut on the cavity side. Its hole is sized for the bolt to pass through freely. General note 5 on sheet TW-001 calls the <span class="keyterm">plate</span> in this rule a backplate: a flat mounting plate, such as a camera mounting plate.</p>
+
+  <p>General note 4 on sheet TW-001 applies the 2 in rule at a <span class="keyterm">panel joint</span>, the frame rail between the upper and lower panels. Electrical metallic tubing (EMT) and raceway may cross a joint where sheet TW-201 shows them, but their strap and base screws stay 2 in clear of the panel edges and panel screws. A <span class="keyterm">one-hole strap</span> is a formed metal strap that wraps over the EMT and is fixed to the wall by a single screw through its one hole; clause 27 05 00 4.8 sets one screw per strap.</p>
+
+  <p>A <span class="keyterm">pan head</span> is a low dome with a flat underside. A <span class="keyterm">washer head</span> carries a built-in washer. Both press flat on the face of the panel and spread the clamping force over a ring of material around the hole. A flat head is tapered underneath and is made to sit in a countersunk hole. In a thin sheet that taper works as a wedge, which can split the surface or pull the head through it.</p>
+
+  <p>Material near a panel edge breaks out more readily than material in the middle of the sheet. The frame stands behind every panel edge. Each panel screw threads into a nut in the frame&rsquo;s channel. A fastener close to an edge or a panel screw can reach the aluminum.</p>
+
+  <h3>Screw length</h3>
+  <p>The mock-up work orders put a figure on &ldquo;short enough&rdquo;: a screw is <strong>no longer than the panel thickness plus 1/2 in</strong>. The length of a pan-head or washer-head screw is measured from under the head to the point, so a screw within the limit leaves no more than 1/2 in of its length behind the panel. If a panel measures 3/8 in thick, the longest screw allowed is 7/8 in. On the mock-up, the panel thickness is given for each wall. Use that figure before you choose a screw.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; A screw in a mock-up panel, in section</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:760px" viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Section through a hardboard panel with a pan-head screw whose length is the panel thickness plus 1/2 inch, its point stopping short of a cable bundle tied to a frame member in the cavity. A full text description follows.">
+    <text x="24" y="26" font-size="16" font-weight="700" fill="#611940">A screw in a mock-up panel, in section</text>
+    <text x="120" y="66" font-size="14" fill="#5A5D66">Room side</text>
+    <text x="470" y="66" font-size="14" fill="#5A5D66">Cavity</text>
+    <rect x="300" y="50" width="24" height="250" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+    <text x="262" y="318" font-size="13" fill="#26282E">hardboard panel</text>
+    <rect x="286" y="150" width="14" height="40" rx="3" fill="#26282E"/>
+    <line x1="300" y1="170" x2="362" y2="170" stroke="#26282E" stroke-width="6"/>
+    <polygon points="362,166 372,170 362,174" fill="#26282E"/>
+    <text x="70" y="166" font-size="13" fill="#26282E">pan-head screw,</text>
+    <text x="70" y="184" font-size="13" fill="#26282E">head flat on the panel</text>
+    <line x1="210" y1="174" x2="284" y2="170" stroke="#8C8F96" stroke-width="1"/>
+    <line x1="300" y1="110" x2="324" y2="110" stroke="#611940" stroke-width="1.4"/>
+    <line x1="300" y1="102" x2="300" y2="118" stroke="#611940" stroke-width="1.4"/>
+    <line x1="324" y1="102" x2="324" y2="118" stroke="#611940" stroke-width="1.4"/>
+    <line x1="372" y1="102" x2="372" y2="118" stroke="#611940" stroke-width="1.4"/>
+    <line x1="324" y1="110" x2="372" y2="110" stroke="#611940" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="262" y="92" font-size="13" fill="#611940">panel thickness</text>
+    <text x="378" y="114" font-size="13" fill="#611940">+ 1/2 in at most</text>
+    <line x1="300" y1="226" x2="372" y2="226" stroke="#26282E" stroke-width="1.2"/>
+    <polygon points="300,226 308,222 308,230" fill="#26282E"/>
+    <polygon points="372,226 364,222 364,230" fill="#26282E"/>
+    <text x="336" y="250" font-size="13" fill="#26282E">maximum screw length,</text>
+    <text x="336" y="268" font-size="13" fill="#26282E">measured from under the head</text>
+    <rect x="560" y="140" width="34" height="30" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="604" y="152" font-size="13" fill="#26282E">frame member</text>
+    <circle cx="528" cy="158" r="9" fill="#71E2FD" stroke="#26282E" stroke-width="1.2"/>
+    <circle cx="540" cy="172" r="9" fill="#71E2FD" stroke="#26282E" stroke-width="1.2"/>
+    <circle cx="524" cy="178" r="9" fill="#71E2FD" stroke="#26282E" stroke-width="1.2"/>
+    <ellipse cx="545" cy="160" rx="34" ry="24" fill="none" stroke="#26282E" stroke-width="1.2" stroke-dasharray="3 3"/>
+    <text x="470" y="232" font-size="13" fill="#26282E">cable, tied to the frame member</text>
+    <text x="392" y="208" font-size="13" fill="#26282E">point clear of the cable</text>
+    <rect x="712" y="50" width="24" height="250" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+    <text x="630" y="318" font-size="13" fill="#5A5D66">other face&rsquo;s panel</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>A section cut through one face of a mock-up wall, read from left to right. On the left is the room side; in the middle, a vertical strip labeled &ldquo;hardboard panel&rdquo;; to its right, the cavity; on the far right, a second vertical strip labeled &ldquo;other face&rsquo;s panel&rdquo;.</p>
+    <p>A pan-head screw is driven through the panel from the room side, its head flat on the panel. A dimension above it marks the panel thickness. Beyond the back of the panel, a dashed extension is labeled &ldquo;plus 1/2 in at most&rdquo;. A dimension below the screw, labeled &ldquo;maximum screw length, measured from under the head&rdquo;, runs from the underside of the head to the point.</p>
+    <p>In the cavity, a bundle of three cables is tied to a frame member. The screw point stops short of the bundle, labeled &ldquo;point clear of the cable&rdquo;.</p>
+  </details>
+
+  <div class="cyu gate" data-answer="3" data-fb="The limit is the panel thickness plus 1/2 in: 5/16 in plus 8/16 in is 13/16 in. Of the screws listed, 1/2 in and 3/4 in are both within it, and 3/4 in is the longer. A 1 in screw is 3/16 in over the limit, and a 1 1/4 in screw is 7/16 in over. Both would put more than 1/2 in of screw into the cavity.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A hardboard panel measures 5/16 in thick. Under the screw-length limit for the panels, which is the longest of these pan-head screws you may use?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>1 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>1/2 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>1 1/4 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>3/4 in</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.2" data-lesson-title="Fasteners, Boxes and Outlet Supports" data-group-num="1" data-group-title="Fasteners and Anchors" data-num="526.2.2" data-title="Screws, bits, and drives">
+  <p class="crumb">Lesson 526.2 &middot; Section 1 Fasteners and Anchors</p>
+  <h2><span class="tnum">526.2.2</span> Screws, bits, and drives</h2>
+  <p class="lead-in">Choose a screw by its head, its length, and its thread. Choose a bit by the hole it makes or the drive it turns.</p>
+
+  <h3>The parts of a screw</h3>
+  <p>A screw has a <strong>head</strong>, a <strong>drive</strong> recessed into the head, a <strong>shank</strong>, a <strong>thread</strong>, and a <strong>point</strong>. Its size is written as a gauge and a length: <strong>#10 &times; 1 in</strong> is a number-ten screw one inch long. The gauge is a number that stands for a diameter: the larger the number, the thicker the screw. Gauges #6, #8, and #10 are common in low-voltage work. The thread stands out from a solid <span class="keyterm">core</span>, also called the root.</p>
+
+  <p>The thread suits a screw to a material:</p>
+  <ul>
+    <li>A <strong>wood screw</strong> has a coarse thread for solid wood and wood products.</li>
+    <li>A <strong>sheet-metal screw</strong> has a sharper thread that runs up to the head, for sheet metal, plastics, and other thin sheet material.</li>
+    <li>A <strong>self-drilling screw</strong> carries a small drill point ahead of its thread and makes its own hole in light-gauge steel, such as a steel stud.</li>
+    <li>A <strong>machine screw</strong> threads into a tapped hole or a nut. A plaster ring is held to its box by two machine screws that thread into tapped holes in the box.</li>
+  </ul>
+
+  <p>On the mock-up panels, choose from the screws set out on site: clause 27 05 00 4.5 sets their head, and the work orders their length.</p>
+
+  <h3>Drives and driver bits</h3>
+  <p>The drive is the shape of the recess: Phillips (a cross), square (also called Robertson), star (often sold as Torx), and slotted. A driver bit fits one drive and one size: a #2 Phillips bit fits most #8 Phillips screws; a #1 fits smaller screws. A bit of the wrong type or size, or a worn one, rides up out of the recess under torque. That fault is called <span class="keyterm">cam-out</span>. It damages the head and the bit.</p>
+
+  <h3>Drill bits and the holes they make</h3>
+  <p>A <span class="keyterm">pilot hole</span> is drilled before a screw is driven, so that the screw goes in straight and does not split the material. It is smaller than the thread and about the size of the core, so the threads cut into the material around the hole. A drill/driver drills a pilot hole with a twist drill bit; an impact driver drills one with a hex-shank drill bit. A <span class="keyterm">clearance hole</span> is the size of the thread or larger, so the screw passes through freely. The mounting holes in a box or a bracket flange are clearance holes; the screw holds in the material behind them. The hole for an anchor is sized to the anchor, not the screw. The anchor&rsquo;s packaging gives the size.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Bits a low-voltage installer uses, and what each is for.</caption>
+      <thead><tr>
+        <th scope="col">Bit</th><th scope="col">What it does</th><th scope="col">Typical use</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Twist drill bit</th><td>Drills a round hole in wood, plastic, hardboard, and thin metal</td><td>Pilot holes; anchor holes; holes through a box back</td></tr>
+        <tr><th scope="row">Masonry bit</th><td>Chips its way into a concrete wall, block, or brick with a carbide tip; used in a <span class="keyterm">hammer drill</span>, a drill that hammers the bit as it turns</td><td>Holes for masonry anchors and masonry screws</td></tr>
+        <tr><th scope="row">Step bit</th><td>Cuts a clean round hole in sheet metal and plastic with a cone of graduated steps</td><td>Enlarging a <span class="keyterm">knockout</span>, a removable disc in a box wall; a hole in a metal plate</td></tr>
+        <tr><th scope="row">Hole saw</th><td>Cuts a large round hole with a toothed cup, held on center by a pilot bit; the cup mounts on an arbor, the shank that fits the chuck</td><td>A round hole for a cable entry or a device</td></tr>
+        <tr><th scope="row">Driver bit</th><td>Turns a screw by its drive</td><td>Every screw; matched to the drive and its size</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The size of a pilot or anchor hole comes from the product: the screw&rsquo;s packaging or a pilot-hole chart from its maker, and the anchor&rsquo;s packaging or data sheet. A self-drilling screw and a self-drilling anchor need no drilled hole. When you record a selection, record where each figure came from: the product name, and whether the figure was on the packaging or the data sheet.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="A pilot hole is about the size of the screw&rsquo;s core, smaller than its thread, so that the thread cuts into the material around the hole and holds. A hole as large as the thread is a clearance hole: the screw would pass through it and hold in nothing. The head plays no part in sizing a pilot hole. A self-drilling screw needs no pilot hole, because it drills its own.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which statement about the pilot hole for a screw is correct?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>It is the same size as the screw&rsquo;s thread, so the screw turns into it freely.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>It is sized to the screw&rsquo;s head, so the head sinks flush with the surface.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>It is about the size of the screw&rsquo;s core, so the thread cuts into the material around it.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>It is drilled only for self-drilling screws, which cannot start a hole of their own.</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.2" data-lesson-title="Fasteners, Boxes and Outlet Supports" data-group-num="1" data-group-title="Fasteners and Anchors" data-num="526.2.3" data-title="Hollow-wall anchors">
+  <p class="crumb">Lesson 526.2 &middot; Section 1 Fasteners and Anchors</p>
+  <h2><span class="tnum">526.2.3</span> Hollow-wall anchors</h2>
+  <p class="lead-in">A hollow-wall anchor holds in a thin board with empty space behind it. Each type is made for a stated range of board thickness and rated for a load in a named material.</p>
+
+  <p>Where there is no stud, blocking, or solid material behind a board, a screw holds only in the board. A <span class="keyterm">hollow-wall anchor</span> spreads the load over more of the board: it expands in the hole, cuts a coarse thread into the board, or opens out behind it. The types differ in the hole they need, the load they carry, and whether they can be taken out again from the room side.</p>
+
+  <p>Open each card.</p>
+  <div class="revealset gate"><div class="cards stack">
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Plastic expansion anchor</span><span class="rcard-sub">a ribbed plastic sleeve that spreads as the screw goes in</span><span class="rcard-detail" hidden><p>Pushed or tapped into a drilled hole of the size printed on its packaging. A thin rim at its outer end, the <span class="keyterm">flange</span>, stops it at the face of the board. When the anchor is set, the flange lies flush on the face. The screw spreads the sleeve against the sides of the hole and, in a hollow board, against its back edge. It carries light loads.</p><p><b>Removal.</b> With the screw backed out, the sleeve can usually be pulled from the hole on the room side.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Self-drilling threaded anchor</span><span class="rcard-sub">a coarse-threaded body that drives straight into the board</span><span class="rcard-detail" hidden><p>Driven into the board with a driver bit, without a drilled hole, until its flange, the rim at its head, lies flush on the face of the board. Its wide thread cuts into the board, and the screw then threads into the anchor&rsquo;s center. It is made for gypsum board of the thicknesses on its packaging.</p><p><b>Removal.</b> It unscrews from the room side, as it went in.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Sleeve anchor (often sold as a molly bolt)</span><span class="rcard-sub">a metal sleeve whose legs fold up behind the board</span><span class="rcard-detail" hidden><p>Set in a drilled hole. Tightening its screw draws the back of the sleeve forward, so the legs fold and clamp against the back of the board. Each size suits one range of board thickness, printed on the packaging.</p><p><b>Removal.</b> The screw comes out and goes back in. The sleeve stays clamped in the board.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Spring-wing toggle bolt</span><span class="rcard-sub">folding wings that spring open behind the board</span><span class="rcard-detail" hidden><p>The wings fold flat to pass through a large drilled hole and spring open in the cavity. Tightening the bolt pulls them against the back of the board. It typically carries heavier loads than an expansion or threaded anchor in the same board.</p><p><b>Removal.</b> Once the bolt is removed, the wings drop into the cavity.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Strap toggle</span><span class="rcard-sub">a metal channel held behind the board by plastic straps</span><span class="rcard-detail" hidden><p>The channel passes through a drilled hole and is drawn flat against the back of the board by its straps. Once the channel is seated, the installer snaps the straps off at the face of the board. The screw then threads into the channel. The channel stays in place when the screw is removed.</p><p><b>Removal.</b> The channel cannot be taken back out through the hole from the room side.</p></span></button>
+  </div></div>
+
+  <h3>Grip range and load rating</h3>
+  <p>The grip range is the range of board thickness the anchor is made to set in. In a board thinner than the range, an anchor that clamps behind the board has too far to travel and does not tighten against it. In a board thicker than the range, it cannot reach through to open behind the board.</p>
+
+  <p>The <span class="keyterm">load rating</span> is the load the anchor carries in a named material, usually gypsum board of a stated thickness. A rating belongs to the material it was tested in and does not carry over to another one. Some packages print the load at which the anchor failed in testing, with a factor to divide it by; others print the working load. Check which figure the package gives before you compare it with the load the anchor must carry.</p>
+
+  <h3>Anchors on the mock-up</h3>
+  <p>The mock-up work orders allow only anchors that can be removed from the room side and leave nothing loose in the cavity behind the panels. Of the five types above, the plastic expansion anchor and the self-drilling threaded anchor meet that rule. A sleeve anchor and a strap toggle stay in the panel, and the wings of a spring-wing toggle bolt drop into the cavity. A part that drops behind a panel lies among the cable in the cavity, where it can be reached only by taking the panel off. To remove an anchor, back the screw out with a screwdriver, then unscrew or draw the anchor out of its hole. If an anchor will not come out, leave it in place and tell the site lead. Do not push it through the panel: that drops it loose in the cavity.</p>
+
+  <p>Anchor packaging rates an anchor in the materials it was tested in, usually gypsum board, and gives no rating to carry over to the hardboard panels. On the mock-up panels, clause 27 05 00 4.5 decides when an anchor is used, the work orders limit the choice to anchors removed from the room side, and the anchor&rsquo;s grip range must include the panel thickness.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="The wings of a spring-wing toggle bolt fold to pass through the hole and spring open behind the board, so when the bolt is removed the wings drop into the cavity. A self-drilling threaded anchor unscrews from the room side. A plastic expansion anchor can usually be drawn out of its hole once the screw is out. The sleeve of a sleeve anchor stays clamped in the board, so nothing falls into the cavity, but the sleeve cannot be taken out from the room side.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which anchor leaves part of itself loose in the cavity when its bolt or screw is removed?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Spring-wing toggle bolt</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Self-drilling threaded anchor</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Plastic expansion anchor</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Sleeve anchor</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.2" data-lesson-title="Fasteners, Boxes and Outlet Supports" data-group-num="1" data-group-title="Fasteners and Anchors" data-num="526.2.4" data-title="Selecting for a substrate and a load">
+  <p class="crumb">Lesson 526.2 &middot; Section 1 Fasteners and Anchors</p>
+  <h2><span class="tnum">526.2.4</span> Selecting for a substrate and a load</h2>
+  <p class="lead-in">Name the substrate and what lies behind it, weigh the load, apply the project&rsquo;s rules, then read the product data.</p>
+
+  <p>The <span class="keyterm">substrate</span> is the material a fastener goes into. The same box needs a different fastener on a wood stud, on gypsum board between studs, on a concrete block wall, and on a mock-up panel. Selection runs in the same order every time:</p>
+
+  <ol>
+    <li><strong>The substrate.</strong> Its material, its thickness, and what is behind it: a stud, blocking, an open cavity, or solid masonry.</li>
+    <li><strong>The load.</strong> The weight of the item and of anything it will carry, such as cable or a device fitted later. Note the direction as well. A load that pulls down along the face of the wall is a <span class="keyterm">shear</span> load. A load that pulls the fastener straight out of the wall is a <span class="keyterm">tension</span> load, often called pull-out. A device that stands off the wall puts both on its top fasteners.</li>
+    <li><strong>The project&rsquo;s rules.</strong> The owner&rsquo;s standard and the drawing notes may limit the fastener type, its length, or where it goes. On the mock-up panels, clause 27 05 00 4.5 decides whether a screw or an anchor is used.</li>
+    <li><strong>The product.</strong> From its packaging or data sheet: the type, the length, the grip range, the rating in this substrate, and the bit size.</li>
+    <li><strong>The source.</strong> Record the product name, and whether each figure came from the packaging or the data sheet.</li>
+  </ol>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Common substrates in a building, and what holds in each.</caption>
+      <thead><tr>
+        <th scope="col">Substrate</th><th scope="col">What holds</th><th scope="col">Bit</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Wood stud, blocking, or plywood</th><td>A wood screw into the solid wood; no anchor</td><td>Pilot bit from the screw&rsquo;s chart</td></tr>
+        <tr><th scope="row">Light-gauge steel stud</th><td>A self-drilling screw through the steel; no anchor</td><td>None; the screw drills its own hole</td></tr>
+        <tr><th scope="row">Gypsum board with nothing behind it</th><td>A hollow-wall anchor whose grip range covers the board and whose rating in that board covers the load</td><td>The size the anchor&rsquo;s packaging gives, or none for a self-drilling anchor</td></tr>
+        <tr><th scope="row">Concrete wall, block, or brick</th><td>A masonry anchor or a masonry screw</td><td>A masonry bit of the size on the anchor&rsquo;s packaging, in a hammer drill</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="figure">
+    <div class="cap">Worked selection &mdash; an enclosure on a gypsum wall</div>
+    <p><strong>The situation.</strong> A wall-mounted enclosure of about 12 lb goes on 1/2 in gypsum board. It has four mounting holes. A stud finder shows a wood stud behind one of them and an open cavity behind the other three.</p>
+    <p><strong>The hole over the stud.</strong> A wood screw long enough to pass through the enclosure back and the board into the stud, driven in a pilot hole sized from the screw maker&rsquo;s chart. No anchor.</p>
+    <p><strong>The other three holes.</strong> A hollow-wall anchor whose grip range includes 1/2 in. Its working load in 1/2 in gypsum board, with the margin its maker states, must cover the share of the enclosure&rsquo;s weight that each of the three anchors carries. The enclosure stands off the wall, so its top fasteners carry pull-out as well as shear. The bit is the size on the anchor&rsquo;s packaging.</p>
+    <p style="margin-bottom:0"><strong>The record.</strong> Each fastener, its bit, and its source: the product name, and the packaging or data sheet it came from.</p>
+  </div>
+
+  <p>Match each situation to the selection that fits it.</p>
+  <div class="match gate" data-left="Substrate and load" data-right="Selection">
+    <div class="pair" data-left="A cable-management bracket on a wood stud" data-right="Wood screw into the stud, in a pilot hole from the screw&rsquo;s chart; no anchor"></div>
+    <div class="pair" data-left="A wall cabinet on a concrete block wall" data-right="Masonry anchor or masonry screw, in a hole drilled with a masonry bit"></div>
+    <div class="pair" data-left="A box on a light-gauge steel stud" data-right="Self-drilling screw through the steel; no anchor and no drilled hole"></div>
+    <div class="pair" data-left="A heavy shelf bracket on gypsum board, with no stud behind it" data-right="Toggle-type anchor whose grip range covers the board and whose rating covers the load"></div>
+  </div>
+
+  <div class="cyu gate" data-answer="2" data-fb="A sleeve anchor clamps by folding its legs against the back of the board. Its grip range is 1/4 in to 1/2 in. A 3/4 in board is thicker than that, so the legs cannot reach through to fold behind it. The fix is an anchor whose grip range includes 3/4 in. Nothing on the packaging supports a reduced rating outside the range: the anchor does not set at all. A larger hole only loosens the sleeve in the board. The tool that drives the screw does not change how far the sleeve reaches.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A sleeve anchor&rsquo;s packaging gives a grip range of 1/4 in to 1/2 in. The board it is to go in is 3/4 in thick. What follows?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>It sets, but carries half its rated load.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>It sets if the hole is drilled one size larger than the packaging gives.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>It cannot reach through to set behind the board; an anchor whose range includes 3/4 in is needed.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>It sets if the screw is driven with an impact driver.</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.2" data-lesson-title="Fasteners, Boxes and Outlet Supports" data-group-num="2" data-group-title="Tools, Openings, and Panels" data-num="526.2.5" data-title="Drill/driver, impact driver, and hole saw">
+  <p class="crumb">Lesson 526.2 &middot; Section 2 Tools, Openings, and Panels</p>
+  <h2><span class="tnum">526.2.5</span> Drill/driver, impact driver, and hole saw</h2>
+  <p class="lead-in">Both cordless tools drive screws. The drill/driver has a clutch that stops it at a set torque; the impact driver has none.</p>
+
+  <div class="compare">
+    <div><h3>Drill/driver</h3><ul class="clean">
+      <li>A keyless chuck holds round-shank drill bits, hex-shank bits, and hole-saw arbors.</li>
+      <li>A numbered <span class="keyterm">clutch</span> ring sets a torque. When the screw reaches that torque, the clutch slips with a clicking sound and the bit stops turning the screw.</li>
+      <li>A drill setting on the same ring bypasses the clutch, for drilling.</li>
+      <li>A speed switch gives a low range, with more torque, for driving and for large cutters, and a high range for small drill bits.</li>
+    </ul></div>
+    <div><h3>Impact driver</h3><ul class="clean">
+      <li>A quick-release collet takes 1/4 in hex-shank bits only.</li>
+      <li>When the screw resists, a hammer inside strikes rapid rotational blows. The tool gives more torque than a drill/driver of the same battery voltage.</li>
+      <li>No clutch: it keeps turning until the trigger is released.</li>
+      <li>Loud in use. The mock-up work orders require hearing protection for both installers at a wall while an impact driver is running.</li>
+    </ul></div>
+  </div>
+
+  <h3>Driving into a thin panel</h3>
+  <p>In hardboard, a screw strips when its head has seated and the tool keeps turning it. With a drill/driver, start on a low clutch number and raise it one step at a time until the clutch slips just as the head seats, then finish the screw by hand with a screwdriver. With an impact driver, release the trigger as the head touches the panel. Set a powered tool down only after it has stopped turning.</p>
+
+  <p>To remove a screw, set the tool to reverse, or turn it out by hand with a screwdriver. Under clause 27 05 00 4.5 and the mock-up work orders, back out a screw that has stripped its hole and set a removable hollow-wall anchor in its place.</p>
+
+  <h3>The hole saw</h3>
+  <p>A <span class="keyterm">hole saw</span> is a toothed steel cup fitted to an <span class="keyterm">arbor</span>, the shank that goes in the chuck. A pilot bit through the center of the arbor stands out beyond the teeth. The size of the hole is stamped on the cup.</p>
+  <ul>
+    <li>Fit the saw to the arbor and the arbor to the drill/driver on its drill setting, in the low speed range.</li>
+    <li>Set the pilot bit on the center mark. The pilot enters the panel first and holds the saw on center as the teeth start to cut.</li>
+    <li>Hold the saw square to the panel so that the whole rim of teeth cuts at once. A tilted saw cuts on one side and wanders.</li>
+    <li>Ease the pressure as the teeth break through, so they do not tear the back of the panel or leave a ragged edge.</li>
+    <li>The plug stays in the cup. Remove it with the drill/driver stopped.</li>
+  </ul>
+
+  <div class="cyu gate" data-answer="1" data-fb="A screw that turns without tightening after its head has seated has torn its threads out of the panel: the hole is stripped. Clause 27 05 00 4.5 then allows a hollow-wall anchor in that hole. A low clutch setting stops the screw before its head seats; it does not let the screw spin. A pilot hole that is too small makes a screw harder to drive; it does not leave the screw loose. A screw placed 2 in clear of every panel edge and panel screw, as clause 27 05 00 4.5 requires, does not reach the frame, which stands behind the panel edges and panel screws.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You drive a pan-head screw into a mock-up panel. The head seats, but the screw keeps turning and the head never tightens on the panel. What has happened?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The clutch is set too low for the screw.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The screw has stripped its hole in the panel.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The pilot hole is too small for the screw.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The screw point has reached the aluminum frame.</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.2" data-lesson-title="Fasteners, Boxes and Outlet Supports" data-group-num="2" data-group-title="Tools, Openings, and Panels" data-num="526.2.6" data-title="Cutting an opening from a template">
+  <p class="crumb">Lesson 526.2 &middot; Section 2 Tools, Openings, and Panels</p>
+  <h2><span class="tnum">526.2.6</span> Cutting an opening from a template</h2>
+  <p class="lead-in">An opening is traced from the manufacturer&rsquo;s template and cut to the line.</p>
+
+  <p>A flush outlet in a finished wall sits in an opening cut to fit its bracket. The bracket&rsquo;s manufacturer prints a <span class="keyterm">template</span>, a full-size outline of the opening, on the packaging or on a sheet. The owner&rsquo;s standard gives a nominal opening for the flush outlet in clause 27 05 00 4.8, and says the opening is cut to the bracket&rsquo;s template. Where a product differs from that nominal opening, the product&rsquo;s own data governs.</p>
+
+  <h3>Tracing</h3>
+  <p>Hold the template on the panel with its center lines on the center mark of the outlet&rsquo;s position, square to the bay&rsquo;s edges. Set a level against the template&rsquo;s long side and turn the template until the bubble is centered, so that the outline is plumb. Trace the outline in pencil.</p>
+
+  <h3>Cutting with a jab saw</h3>
+  <p>A <span class="keyterm">jab saw</span>, also called a drywall saw or keyhole saw, has a narrow, pointed blade with coarse teeth. The point lets it start its own cut, a <span class="keyterm">plunge cut</span>: push it through the panel just inside the traced line, then saw along the line, holding the blade square to the face of the panel. Keep your free hand out of the saw&rsquo;s path, including the stretch of line ahead of the blade.</p>
+
+  <p>Behind the panel is the cavity, with cable tied to the frame and the back of the other face&rsquo;s panel beyond it. An outlet support on the other face may already stand in the cavity opposite yours. Insert the blade only as deep as the cut needs. The owner&rsquo;s representative sets a maximum blade depth for each wall and marks it with tape on the blade of the saw used at that wall, measured from the face of the panel. Keep the tape outside the face of the panel.</p>
+
+  <h3>Fitting</h3>
+  <p>Hold the bracket in the opening to test the fit. Where it binds, trim the edge with the saw, a little at a time, and try it again. Stop trimming as soon as it seats. An opening cut larger than the bracket&rsquo;s flange leaves a gap that the flange cannot cover. The only repair is a new panel.</p>
+
+  <p>Put these steps in order, from the first to the last.</p>
+  <div class="order gate">
+    <div class="step" data-pos="1">Set the template on the center mark, square to the bay&rsquo;s edges</div>
+    <div class="step" data-pos="2">Trace the outline in pencil</div>
+    <div class="step" data-pos="3">Push the saw point through the panel inside the line</div>
+    <div class="step" data-pos="4">Saw along the traced line</div>
+    <div class="step" data-pos="5">Hold the bracket in the opening to test the fit</div>
+    <div class="step" data-pos="6">Trim the edge where the bracket binds, then seat it</div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.2" data-lesson-title="Fasteners, Boxes and Outlet Supports" data-group-num="2" data-group-title="Tools, Openings, and Panels" data-num="526.2.7" data-title="Replacing a wall panel">
+  <p class="crumb">Lesson 526.2 &middot; Section 2 Tools, Openings, and Panels</p>
+  <h2><span class="tnum">526.2.7</span> Replacing a wall panel</h2>
+  <p class="lead-in">A panel comes off the frame only when nothing is fastened in it and no cable passes through it.</p>
+
+  <p>Each panel is held to the frame by four <span class="keyterm">panel screws</span>, one near each corner. Each screw threads into a <span class="keyterm">channel nut</span>, a nut that slides in a channel of the aluminum frame. A panel that has been cut and fastened can be taken down and a fresh one fitted in its place.</p>
+
+  <h3>Before the panel comes down</h3>
+  <p>General note 11 on sheet TW-001 sets the condition: replace a panel only when no cable passes through it, and remove first any raceway that crosses a panel joint. Every box, screw, and anchor fastened in the panel comes out before the panel screws do.</p>
+
+  <h3>Holding the panel</h3>
+  <p>One person holds the panel flat against the frame with both hands for the whole swap. The other removes and fits the screws. Both wear gloves against the panel&rsquo;s edges. The two top screws carry the panel&rsquo;s weight while the two bottom screws come out, so the top screws come out last. The two lift the panel off the frame together.</p>
+
+  <h3>Fitting the fresh panel</h3>
+  <ul>
+    <li>The holder sets the fresh panel against the frame with its screw holes in line with the screw positions.</li>
+    <li><strong>Start every screw by hand.</strong> A screw started at an angle cross-threads in the nut and jams; turning it by hand for the first few turns shows that it is running true.</li>
+    <li>A channel nut can slide along its channel away from its screw hole while a panel is off. Slide it back into line before you start that screw.</li>
+    <li>Tighten every screw once all of them are started.</li>
+    <li>Check the result: the panel sits flush against the frame with no gap, and it does not move when pressed at each corner. If a corner moves, tighten its screw again.</li>
+  </ul>
+
+  <p>The site lead inspects a fresh panel once it is seated and firm. Do not mark, cut, or fasten anything on it before that inspection.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="General note 11 on sheet TW-001 says to replace a panel only when no cable passes through it, and to remove first any raceway that crosses a panel joint. The raceway and its cable come off before any panel screw. Taking the upper panel&rsquo;s screws out first would leave the panel hanging on the raceway. The note does not direct cutting the raceway at the joint. Loosening the lower panel does not free the joint.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">An upper panel has to be replaced. A length of surface raceway runs from it across the joint onto the lower panel. What do you do first?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Remove the upper panel&rsquo;s top screws</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Cut the raceway at the panel joint</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Loosen the lower panel&rsquo;s screws as well</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Remove the raceway that crosses the joint</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.2" data-lesson-title="Fasteners, Boxes and Outlet Supports" data-group-num="3" data-group-title="Outlet Supports and Boxes" data-num="526.2.8" data-title="The low-voltage retrofit bracket">
+  <p class="crumb">Lesson 526.2 &middot; Section 3 Outlet Supports and Boxes</p>
+  <h2><span class="tnum">526.2.8</span> The low-voltage retrofit bracket</h2>
+  <p class="lead-in">A retrofit bracket mounts an outlet in a wall that is already finished. It goes in from the room side, and nothing is fixed behind the wall first.</p>
+
+  <p>A <span class="keyterm">low-voltage retrofit bracket</span>, also sold as an old-work or low-voltage mounting bracket, is an open frame with no back. Its <span class="keyterm">flange</span> lies on the room side of the wall and covers the cut edge of the opening. Behind the wall, two <span class="keyterm">clamp tabs</span> swing out and draw up against the back of the wall as their screws are turned. The faceplate screws to the bracket&rsquo;s flange. A one-gang bracket takes one faceplate the size of a single device.</p>
+
+  <p>The cable comes out of the cavity through the bracket&rsquo;s open back. The bracket encloses nothing. It is made for low-voltage cabling such as data and communications cable; power wiring is terminated in a box.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; A retrofit bracket in a cut opening, in section</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:760px" viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Section through a panel with a low-voltage retrofit bracket in a cut opening: flange on the room side, clamp tabs gripping the back of the panel, open back toward the cavity, and faceplate shown dashed. A full text description follows.">
+    <text x="24" y="26" font-size="16" font-weight="700" fill="#611940">A retrofit bracket in a cut opening, in section</text>
+    <text x="120" y="66" font-size="14" fill="#5A5D66">Room side</text>
+    <text x="520" y="66" font-size="14" fill="#5A5D66">Cavity</text>
+    <rect x="360" y="50" width="16" height="74" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+    <rect x="360" y="216" width="16" height="84" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+    <text x="388" y="296" font-size="13" fill="#26282E">panel</text>
+    <rect x="346" y="108" width="14" height="124" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="376" y1="126" x2="410" y2="126" stroke="#26282E" stroke-width="2"/>
+    <line x1="376" y1="214" x2="410" y2="214" stroke="#26282E" stroke-width="2"/>
+    <line x1="360" y1="126" x2="376" y2="126" stroke="#26282E" stroke-width="2"/>
+    <line x1="360" y1="214" x2="376" y2="214" stroke="#26282E" stroke-width="2"/>
+    <rect x="376" y="104" width="10" height="20" fill="#71E2FD" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="376" y="216" width="10" height="20" fill="#71E2FD" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="326" y="96" width="10" height="148" fill="none" stroke="#5A5D66" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <text x="70" y="104" font-size="13" fill="#26282E">faceplate, fitted later,</text>
+    <text x="70" y="122" font-size="13" fill="#26282E">screws to the flange</text>
+    <line x1="226" y1="112" x2="324" y2="120" stroke="#8C8F96" stroke-width="1"/>
+    <text x="70" y="186" font-size="13" fill="#26282E">flange on the room side</text>
+    <text x="70" y="204" font-size="13" fill="#26282E">covers the cut edge</text>
+    <line x1="220" y1="192" x2="344" y2="196" stroke="#8C8F96" stroke-width="1"/>
+    <text x="430" y="110" font-size="13" fill="#26282E">clamp tab grips the back of the panel</text>
+    <line x1="428" y1="106" x2="388" y2="112" stroke="#8C8F96" stroke-width="1"/>
+    <text x="430" y="248" font-size="13" fill="#26282E">clamp tab, drawn up by its screw</text>
+    <line x1="428" y1="244" x2="388" y2="228" stroke="#8C8F96" stroke-width="1"/>
+    <text x="430" y="178" font-size="13" fill="#26282E">open back: cable passes</text>
+    <text x="430" y="196" font-size="13" fill="#26282E">through from the cavity</text>
+    <line x1="412" y1="150" x2="520" y2="150" stroke="#611940" stroke-width="2"/>
+    <polygon points="412,150 422,145 422,155" fill="#611940"/>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>A section cut through a panel, with the room side on the left and the cavity on the right. The panel is drawn as a vertical strip with a gap in the middle: the cut opening.</p>
+    <p>The bracket sits in the opening. Its flange lies on the room side of the panel, overlapping the panel above and below the opening, labeled &ldquo;flange on the room side covers the cut edge&rdquo;. Its sides pass through the opening into the cavity, with no back. Behind the panel, a clamp tab above and a clamp tab below press against the back of the panel, labeled &ldquo;clamp tab grips the back of the panel&rdquo; and &ldquo;clamp tab, drawn up by its screw&rdquo;.</p>
+    <p>A dashed outline in front of the flange is labeled &ldquo;faceplate, fitted later, screws to the flange&rdquo;. An arrow from the cavity points into the open back, labeled &ldquo;open back: cable passes through from the cavity&rdquo;.</p>
+  </details>
+
+  <h3>The rated thickness</h3>
+  <p>Each bracket is made for a range of wall thickness, printed on its packaging. In a wall thinner than the range, the tabs draw up to the end of their travel without reaching the back of the wall, and the bracket stays loose. In a wall thicker than the range, the tabs cannot swing out behind it. Where the tabs do not grip a mock-up panel, the bracket is fixed instead with pan-head screws through its flange into the panel. The owner&rsquo;s representative states which method each wall of the mock-up uses.</p>
+
+  <h3>A sound installation</h3>
+  <ul>
+    <li><strong>The opening.</strong> Cut to the template, with no gap or overcut showing beyond the flange.</li>
+    <li><strong>Plumb.</strong> The side of the flange is plumb by a level.</li>
+    <li><strong>Seated.</strong> The flange lies flush on the face of the panel all the way around, and the bracket does not move when pressed.</li>
+    <li><strong>Tightened by hand.</strong> Clamp screws turned with a screwdriver until the tabs grip. A powered tool can drive them past the point of grip and crack the panel or the bracket.</li>
+  </ul>
+
+  <div class="cyu gate" data-answer="0" data-fb="Clamp tabs that keep traveling without tightening have nothing to press against: the panel is thinner than the bracket&rsquo;s rated range, so the tabs reach the end of their travel short of its back face. An opening cut too small stops the bracket from seating at all. A bracket upside down still clamps. Clamp screws thread into the tabs, so no pilot hole is involved.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A bracket is seated in its opening. Its clamp screws turn freely, but the tabs never tighten against the back of the panel. What is the likely cause?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The panel is thinner than the bracket&rsquo;s rated thickness range.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The opening is cut too small for the bracket.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The bracket is fitted upside down.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The clamp screws need pilot holes.</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.2" data-lesson-title="Fasteners, Boxes and Outlet Supports" data-group-num="3" data-group-title="Outlet Supports and Boxes" data-num="526.2.9" data-title="The box with a plaster ring, and its projection">
+  <p class="crumb">Lesson 526.2 &middot; Section 3 Outlet Supports and Boxes</p>
+  <h2><span class="tnum">526.2.9</span> The box with a plaster ring, and its projection</h2>
+  <p class="lead-in">A plaster ring sets how far in front of the box the faceplate sits. In a building, that distance matches the wall finish. On the mock-up, the box depth and the raise together set how far the outlet stands out from the panel.</p>
+
+  <p>A <span class="keyterm">4 in square box</span> is a steel box whose face measures about 4 in on each side. Common depths are 1 1/2 in and 2 1/8 in. Its sides and back carry <span class="keyterm">knockouts</span>, discs partly cut through so that one can be removed for a conduit connector or a cable clamp. Two corners carry tapped ears for the screws of a cover.</p>
+
+  <p>A <span class="keyterm">plaster ring</span>, also called a mud ring, is a cover for the front of the box. It reduces the box opening to the size of one device, for a one-gang ring, or two devices, for a two-gang ring. Its raised collar holds the faceplate a set distance in front of the box. That distance, from the face of the box to the face of the ring, is the ring&rsquo;s <span class="keyterm">raise</span>. Rings are made in a series of raises, commonly from 1/4 in to 1 1/4 in. The ring fits the box with two machine screws.</p>
+
+  <h3>In a building</h3>
+  <p>Before the wall is closed, the installer fixes the box to a stud or to a <span class="keyterm">box bracket</span>, a metal bracket that spans between studs. The ring then goes on the box. The finish, such as 5/8 in gypsum board, is then cut around the ring. The raise is chosen to equal the finish thickness, so the face of the ring sits flush with the finished wall and the faceplate seats flat against it. Conduit can enter the box through a knockout. A box with a ring serves where the cable arrives in conduit, and where the outlet carries power wiring.</p>
+
+  <h3>On the mock-up</h3>
+  <p>The box is screwed to the face of the panel through its back, as details 2 and 5 on sheet TW-301 show, and the ring goes on the front of the box. Nothing surrounds the ring, so its face stands out from the panel. The <span class="keyterm">projection</span> is the distance from the face of the panel to the face of the ring, measured square to the panel. With the box flat on the panel, the projection is the box depth plus the ring raise. Both depend on the product: read the box depth and the ring raise from the product cards on site. Clause 27 05 00 4.8 gives the owner&rsquo;s value for the mock-up, a one-gang ring with a 1/2 in raise on the second data outlet box. Where a product differs from 4.8, its own data governs the calculation.</p>
+
+  <h3>Mounting the box</h3>
+  <p>The box is fixed with two screws (clause 27 05 00 4.8) through its back (TW-301, detail 5). Hold the box on its mark with a level on its top edge, center the bubble, and mark the two screw holes through the box back. Drill the pilot holes and drive the two screws. If the bubble has moved, loosen one screw, turn the box until the bubble is centered, and tighten the screw again. Then fit the ring to the front of the box with its two screws.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; The same box and ring in a building and on the mock-up, in section</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:900px" viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Two sections side by side. Left: in a building, a box fixed to framing with its plaster ring passing through the gypsum board, ring face flush with the finished wall. Right: on the mock-up, a box screwed to the panel face with the ring on its front, the projection dimensioned as box depth plus ring raise. A full text description follows.">
+    <text x="24" y="26" font-size="16" font-weight="700" fill="#611940">The same box and ring in a building and on the mock-up</text>
+    <text x="40" y="60" font-size="14" font-weight="700" fill="#26282E">In a building</text>
+    <text x="480" y="60" font-size="14" font-weight="700" fill="#26282E">On the mock-up</text>
+    <line x1="450" y1="44" x2="450" y2="320" stroke="#8C8F96" stroke-width="1"/>
+    <rect x="220" y="140" width="80" height="100" fill="#ffffff" stroke="#26282E" stroke-width="1.6"/>
+    <text x="232" y="196" font-size="13" fill="#26282E">box</text>
+    <text x="230" y="270" font-size="13" fill="#26282E">box fixed to framing</text>
+    <text x="230" y="288" font-size="13" fill="#26282E">behind the board</text>
+    <rect x="190" y="80" width="30" height="80" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="190" y="220" width="30" height="80" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="190" y="160" width="30" height="60" fill="#71E2FD" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="190" y1="80" x2="190" y2="300" stroke="#611940" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="40" y="104" font-size="13" fill="#26282E">gypsum board</text>
+    <line x1="132" y1="100" x2="188" y2="110" stroke="#8C8F96" stroke-width="1"/>
+    <text x="40" y="186" font-size="13" fill="#26282E">ring, raise =</text>
+    <text x="40" y="204" font-size="13" fill="#26282E">board thickness</text>
+    <line x1="146" y1="192" x2="188" y2="192" stroke="#8C8F96" stroke-width="1"/>
+    <text x="40" y="276" font-size="13" fill="#611940">ring face flush with</text>
+    <text x="40" y="294" font-size="13" fill="#611940">the finished wall</text>
+    <rect x="800" y="80" width="18" height="220" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="760" y="318" font-size="13" fill="#26282E">panel</text>
+    <rect x="720" y="140" width="80" height="100" fill="#ffffff" stroke="#26282E" stroke-width="1.6"/>
+    <text x="732" y="196" font-size="13" fill="#26282E">box</text>
+    <rect x="690" y="160" width="30" height="60" fill="#71E2FD" stroke="#26282E" stroke-width="1.2"/>
+    <text x="660" y="236" font-size="13" fill="#26282E">ring</text>
+    <line x1="690" y1="110" x2="800" y2="110" stroke="#611940" stroke-width="1.4"/>
+    <line x1="690" y1="102" x2="690" y2="118" stroke="#611940" stroke-width="1.4"/>
+    <line x1="800" y1="102" x2="800" y2="118" stroke="#611940" stroke-width="1.4"/>
+    <text x="664" y="94" font-size="13" fill="#611940">projection, square to the panel</text>
+    <line x1="720" y1="268" x2="800" y2="268" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="720" y1="260" x2="720" y2="276" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="800" y1="260" x2="800" y2="276" stroke="#26282E" stroke-width="1.2"/>
+    <text x="726" y="292" font-size="13" fill="#26282E">box depth</text>
+    <line x1="690" y1="268" x2="720" y2="268" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="690" y1="260" x2="690" y2="276" stroke="#26282E" stroke-width="1.2"/>
+    <text x="640" y="292" font-size="13" fill="#26282E">raise</text>
+    <text x="480" y="150" font-size="13" fill="#26282E">projection =</text>
+    <text x="480" y="168" font-size="13" fill="#26282E">box depth + raise</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>Two sections, side by side, with the room side to the left in each.</p>
+    <p>Left, labeled &ldquo;in a building&rdquo;: a box labeled &ldquo;box fixed to framing behind the board&rdquo;. Gypsum board stands in front of the box, cut around the plaster ring. The ring passes through the board, and its face lines up with the face of the board along a dashed line. Labels read &ldquo;gypsum board&rdquo;; &ldquo;ring, raise equals board thickness&rdquo;; and &ldquo;ring face flush with the finished wall&rdquo;.</p>
+    <p>Right, labeled &ldquo;on the mock-up&rdquo;: a vertical panel with the box fixed to its face on the room side, and the ring on the front of the box. Nothing surrounds the ring. A dimension below runs from the panel face to the box front, labeled &ldquo;box depth&rdquo;, and on from the box front to the ring face, labeled &ldquo;raise&rdquo;. A dimension above runs from the panel face to the ring face, labeled &ldquo;projection, square to the panel&rdquo;. A note reads &ldquo;projection equals box depth plus raise&rdquo;.</p>
+  </details>
+
+  <div class="calc">
+    <table>
+      <caption>Worked projection for a box and ring on a panel face. These are not the mock-up&rsquo;s products.</caption>
+      <thead><tr><th scope="col">Item, and where the figure comes from</th><th scope="col">Inches</th></tr></thead>
+      <tbody>
+        <tr><td>Box depth (the box&rsquo;s packaging)</td><td class="n">1 1/2</td></tr>
+        <tr><td>Ring raise (the ring&rsquo;s packaging)</td><td class="n">5/8</td></tr>
+        <tr><td>Sum: 1 1/2 is 1 4/8; 1 4/8 + 5/8 = 1 9/8 = 2 1/8</td><td class="n">&nbsp;</td></tr>
+        <tr class="tot"><td>Expected projection</td><td class="n">2 1/8</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Measuring the projection</h3>
+  <p>Hold the end of the tape on the face of the ring and the blade square to the panel, then read the distance at the panel face. Box depth and ring raise are nominal figures, so a measured projection can differ slightly from the expected one. The tolerance is the one set for the job. Beyond it, look for a box or ring other than the one on the product cards, a box not flat on the panel, or a ring not seated on its box.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The ring stands on the front of the box, and the box stands on the panel, so the two add: 2 1/8 in plus 3/4 in is 2 7/8 in. 2 1/8 in leaves out the ring. 1 3/8 in subtracts the raise instead of adding it. 3 1/8 in adds 1 in for the ring, not 3/4 in.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A 4 in square box 2 1/8 in deep is screwed flat to a panel face, and a ring with a 3/4 in raise is fitted to it. What projection do you expect to measure?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>2 1/8 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>2 7/8 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>1 3/8 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>3 1/8 in</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.2" data-lesson-title="Fasteners, Boxes and Outlet Supports" data-group-num="3" data-group-title="Outlet Supports and Boxes" data-num="526.2.10" data-title="Bracket or box: telling them apart">
+  <p class="crumb">Lesson 526.2 &middot; Section 3 Outlet Supports and Boxes</p>
+  <h2><span class="tnum">526.2.10</span> Bracket or box: telling them apart</h2>
+  <p class="lead-in">Both supports take the same faceplate. They differ in when they go in, what they are fixed to, and what they enclose.</p>
+
+  <p>Both present a one-gang opening to the room. On site, installers may call either one a mud ring. The drawings and the owner&rsquo;s standard keep the names apart. The legend on sheet TW-001 shows the retrofit bracket as its own symbol. The identification list on that sheet names the second data outlet as a 4 in square box with a one-gang plaster ring.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>A low-voltage retrofit bracket and a box with a plaster ring, compared.</caption>
+      <thead><tr>
+        <th scope="col">Feature</th><th scope="col">Low-voltage retrofit bracket</th><th scope="col">Box with a plaster ring</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">When it goes in</th><td>After the wall is finished</td><td>Before the wall is closed, in a building</td></tr>
+        <tr><th scope="row">What holds it</th><td>The wall itself: clamp tabs behind it, or screws through the flange</td><td>A stud or a box bracket in a building; on the mock-up, screws through its back into the panel</td></tr>
+        <tr><th scope="row">Its back</th><td>Open to the cavity</td><td>Closed: the box is an enclosure</td></tr>
+        <tr><th scope="row">How cable or conduit enters</th><td>Cable from the cavity, through the open back</td><td>Through a knockout, with a conduit connector or a cable clamp</td></tr>
+        <tr><th scope="row">What the faceplate screws to</th><td>The bracket&rsquo;s flange</td><td>The plaster ring</td></tr>
+        <tr><th scope="row">What sets the faceplate&rsquo;s position</th><td>The flange, which lies on the wall face</td><td>The ring&rsquo;s raise</td></tr>
+        <tr><th scope="row">Power wiring</th><td>Low-voltage cable only</td><td>Serves power or low-voltage wiring</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The choice follows from the wall and the cable. A wall already finished, with no access behind it, takes a bracket, or a surface box if the wall cannot be cut. A wall still open, or a cable arriving in conduit, takes a box with a ring set to the finish.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="The wall is finished and can be cut only at the outlet, the cable is data only, and the outlet is to be flush: that is the job a low-voltage retrofit bracket is made for. A box with a plaster ring is fixed to framing before the wall is closed, so it would mean opening the wall. A plaster ring needs a box to screw to. A box with a blank cover holds no faceplate for a data outlet.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A flush data outlet is to be added to a finished gypsum wall in an occupied office. The wall may be cut only at the outlet. Which support fits the job?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>A 4 in square box with a plaster ring, fixed to the nearest stud</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A plaster ring screwed directly to the gypsum board</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A 4 in square box with a blank cover</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A low-voltage retrofit bracket</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.2" data-lesson-title="Fasteners, Boxes and Outlet Supports" data-group-num="3" data-group-title="Outlet Supports and Boxes" data-num="526.2.11" data-title="The surface box and its cable entry">
+  <p class="crumb">Lesson 526.2 &middot; Section 3 Outlet Supports and Boxes</p>
+  <h2><span class="tnum">526.2.11</span> The surface box and its cable entry</h2>
+  <p class="lead-in">Where a wall cannot be opened, the outlet sits on its surface and the cable arrives in raceway. The cable enters the surface box through one prepared opening.</p>
+
+  <p>A <span class="keyterm">surface box</span> mounts on the face of the wall and holds the outlet there. It is made as part of a raceway series. The raceway&rsquo;s fittings are shaped to meet the entries of boxes in the same series. Detail 4 on sheet TW-301 calls for a surface box of the same series as the raceway, with a fitting matched to the box. On the mock-up, the surface raceway is non-metallic under clause 27 05 00 4.4, and sheet TW-001 calls for a plastic surface box.</p>
+
+  <h3>Entries</h3>
+  <p>A surface box carries several possible entries on its sides, top, and bottom. On a plastic box each is a <span class="keyterm">breakout</span>, a section molded thin at its edges so that it can be snapped or cut out. A metal box has knockouts instead. You open only the entry the raceway meets, and every other entry stays closed. An open entry with no raceway in it leaves a hole into the box, beside the outlet.</p>
+
+  <h3>A protected entry</h3>
+  <p>A cable is drawn across the edge of the entry as it is pulled, then rests on that edge. A breakout leaves a ragged edge and thin slivers of plastic, called flash or burrs, which can cut into the cable&rsquo;s jacket. A <span class="keyterm">protected entry</span> is one whose edge has been made smooth. Cut the burrs away with a deburring tool or a utility knife, cutting away from your hand, until you feel no burr or sharp edge under your fingertip. The raceway fitting then covers the entry.</p>
+
+  <h3>Fixing</h3>
+  <p>Clause 27 05 00 4.8 sets two screws for each surface box, and the screws follow the same rules as any fastener in the panels: pan-head or washer-head, within the length limit, and 2 in clear of every panel edge and panel screw. Set the box level by a level on its top edge, with the opened entry facing the raceway.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="Only the entry the raceway meets is opened, and its edge is made smooth so the cable cannot be cut on it. The other entries stay closed. Opening a second entry leaves a hole into the box beside the outlet. A breakout edge left as it snapped keeps its burrs, and the fitting covers the edge without smoothing it. Opening every entry and taping the unused ones leaves the box open behind the tape.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A raceway will meet a plastic surface box from the left. How are the box&rsquo;s entries prepared?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Open the left and top entries, so the cable can be fed either way.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Open the left entry and leave its edge as it breaks; the fitting covers it.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Open the left entry, smooth its edge, and leave every other entry closed.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Open every entry, then tape over the ones not used.</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.2" data-lesson-title="Fasteners, Boxes and Outlet Supports" data-group-num="4" data-group-title="Wrapping Up" data-num="526.2.12" data-title="What you covered">
+  <p class="crumb">Lesson 526.2 &middot; Section 4 Wrapping Up</p>
+  <h2><span class="tnum">526.2.12</span> What you covered</h2>
+  <p class="lead-in">Fasten into a thin panel with nothing behind it, cut to the line, replace a panel safely, and set each outlet support the way its type requires.</p>
+
+  <p>Clause 27 05 00 4.5 of the owner&rsquo;s standard requires <strong>pan-head or washer-head screws</strong> in the <strong>hardboard</strong> panels, short enough that the point stays clear of cable in the cavity. The mock-up work orders set that limit at the panel thickness plus 1/2 in. An anchor or through-bolt is used only where a screw strips or the device is heavier than a box or a plate. Nothing goes into the frame, and no cut or fastener comes within 2 in of a panel edge or a panel screw.</p>
+
+  <p>A <strong>pilot hole</strong> is about the size of the screw&rsquo;s core. A <strong>hollow-wall anchor</strong> is chosen by its grip range and its rating in the material it was tested in. On the mock-up, only the plastic expansion and self-drilling threaded types, which come out from the room side, are used.</p>
+
+  <p>The <strong>drill/driver</strong> has a clutch. With the <strong>impact driver</strong>, release the trigger as the screw head touches the panel. An opening is traced from the <strong>manufacturer&rsquo;s template</strong>, started with a plunge cut inside the line, and trimmed only where the bracket binds. A panel comes off only with nothing fastened in it and no cable through it, and every screw of the fresh panel is started by hand.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The three outlet supports of a mock-up bay.</caption>
+      <thead><tr>
+        <th scope="col">Support</th><th scope="col">How it is fixed</th><th scope="col">What is checked</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Low-voltage retrofit bracket, in a cut opening</th><td>Clamp tabs gripping the back of the panel, or pan-head screws through the flange</td><td>Opening cut to the template with no gap beyond the flange; flange plumb, flush, and firm</td></tr>
+        <tr><th scope="row">4 in square box with a plaster ring</th><td>Two screws through the box into the panel; the ring on two machine screws</td><td>Level; ring seated; projection, measured square to the panel, against box depth plus raise from the product cards</td></tr>
+        <tr><th scope="row">Surface box</th><td>Two screws through the box into the panel</td><td>Level; only the raceway&rsquo;s entry opened, its edge smooth; every other entry closed</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A <strong>retrofit bracket</strong> goes into a finished wall and has an open back. A <strong>box with a plaster ring</strong> is an enclosure fixed before the wall is closed. On the mock-up the box stands on the panel face, so the ring face stands out from the panel by the box depth plus the ring&rsquo;s raise.</p>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete — continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again — this does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct>=90) msg.textContent='Outstanding — you are working at field-standard level and are ready for the lab.';
+      else if(pct>=75) msg.textContent='Strong work. Revisit anything you missed and you will be field-ready.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the cards and applied scenarios to close the gaps.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+</body>
+</html>
+<!--
+BUILD FLAGS - Lesson 526.2 Async Reading v0.1.0 DRAFT, 2026-11-01 (UCI 1019, Module 526)
+
+Basis
+- Agent brief _AGENT-BRIEF_M526-Readings.md. Module plan v0.1.0 sections 1-4 (Lesson 526.2
+  objectives; D-526-05, -06, -08, -10, -14, -16; rules 4.4.2, 4.4.5). GLAB 526.2.1 and ALAB 526.2.2
+  packages v0.1.0 DRAFT (lab, HO, guide, key sheets, rehearsals v0.4.1 and v0.3.2). KC-2612,
+  KC-2613. Owner standard mock-up edition 27 05 00 4.4, 4.5, 4.8. Drawing set Rev 0 PNGs opened:
+  TW-001 (notes 4, 5, 11; legend), TW-201, TW-301 (details 1, 2, 4), TW-401.
+- Shell copied from UCI-1019_M530_Lesson-530.1_Async-Reading_v1.0.6.html: styles (engine, 2026
+  brand layer, .calc sheet) and script byte-identical (checked by diff); header title and
+  version badge changed only.
+
+Objectives (internal crosswalk)
+- Plan wording restored after LP1/CR1 (coordinator ruling): Select (6.5.1); Install and remove
+  (6.5, L02; the plan's parenthetical "(no bolted sets or nails, D-526-16)" dropped, internal code);
+  Cut practice opening (6.6.2-6.6.3, L13); Replace (D-526-16); Cut flush opening (6.6.2); Install
+  bracket (6.6.3); Mount box with ring (6.6.4); Distinguish (6.6 notes); Install surface box
+  (6.6.5). Serial comma added to the plan's lists. "Practice panel" defined in the overview.
+
+Decisions
+- No bay position, practice-layout position, DEMO band, bolt position or key figure is used. Every
+  number on the page was grepped against the two keys, KC-2612 and KC-2613: none matches a graded
+  position, mark or figure. Worked figures are hypothetical and labeled as such.
+- Selection examples and the matching pairs checked against GLAB 526.2.1 - Practice and Panel
+  Inspection Sheet: no match. The gypsum example is a 12 lb enclosure on 1/2 in board.
+- The screw-length figure (panel thickness + 1/2 in) is attributed to "the mock-up work orders"
+  (KC-2613 Project facts); the owner's standard 4.5 states only "short enough".
+- Work orders named generically, never by number; no lab, record, quiz or wall data card named.
+  Project documents named: owner's standard (clauses), drawing set sheets and notes.
+- Blade depth taught as "where a maximum depth is set for a wall, tape on the blade marks it",
+  without naming the wall data card.
+- Hearing protection mentioned once, as a work-order rule tied to the impact driver; no PPE theory.
+- Spring toggles, sleeve anchors and strap toggles taught as types; the mock-up rule (removable
+  from the room side, nothing loose in the cavity) is stated, consistent with the GLAB 526.2.1 guide.
+
+Assumptions not in the module plan (general trade facts, stated as such)
+- Hardboard composition; pan, washer and flat head behavior in thin sheet; edge breakout.
+- Screw notation, gauges #6/#8/#10; #2 Phillips fits most #8 Phillips screws; cam-out.
+- Pilot hole about core size; clearance hole; bit types; masonry bit in a hammer drill.
+- Anchor types and removal behavior (plastic expansion and self-drilling threaded come out from the
+  room side; sleeve stays; spring-toggle wings drop; strap-toggle channel stays). Some packages
+  print failure load with a factor.
+- Drill/driver clutch, drill setting, two speed ranges; impact driver 1/4 in hex collet, no
+  clutch, more torque than a drill/driver of the same battery size.
+- Hole saw practice (pilot first, square, ease at break-through, plug out with the tool stopped).
+- 4 in square box depths 1 1/2 and 2 1/8 in common; ring raises commonly 1/4 to 1 1/4 in; ring on
+  two machine screws into tapped ears; in production the raise equals the finish thickness.
+- Retrofit bracket: open back, clamp tabs, rated thickness range, not for power wiring.
+- Top panel bolts removed last because they carry the panel (the lab sets the order; the reason is
+  the reading's); start bolts by hand to avoid cross-threading.
+
+Unverified
+- Not opened in a browser (a headless Chrome screenshot did not run here). SVG text positions
+  checked by coordinate arithmetic only; all SVGs are 1:1 (min-width = viewBox width), text 13 px
+  or more.
+- Panel thickness unknown: the 3/8 in example and the 5/16 in check are hypothetical. Checked
+  against GLAB 526.2.1 - Practice and Panel Inspection Sheet and ALAB 526.2.2 - Inspection and Key
+  Sheet: no match. Re-check once the panel thickness is known.
+- Bracket model, surface-box series and box depth on site unknown; the page names none.
+
+Conflicts and items for the coordinator
+1. The Distinguish objective is taught as ruled by the coordinator. Checked against ALAB 526.2.2 -
+   Inspection and Key Sheet: no match with any check question.
+2. The screw-length limit the page states was found in KC-2613 only, not in KC-2612 or the owner's
+   standard. The coordinator is adding it to KC-2612.
+3. TW-001 note 5 says "heavier than a box or backplate"; owner's standard 4.5 says "a box or a
+   plate". The reading follows 4.5.
+4. Objectives: restored to the plan wording in review round 1 (see the head comment).
+
+Check questions and worked examples (for the quiz writer: no quiz item may repeat these)
+- Check 526.2.1: longest pan-head screw allowed in a 5/16 in panel (3/4 in, of 1, 1/2, 1 1/4, 3/4).
+- Check 526.2.2: which statement about a pilot hole is correct (about core size).
+- Card set 526.2.3: five anchor types (plastic expansion, self-drilling threaded, sleeve, spring
+  toggle, strap toggle), with removal.
+- Check 526.2.3: which anchor leaves part loose in the cavity (spring-wing toggle).
+- Matching 526.2.4: bracket on wood stud; cabinet on concrete block; box on light-gauge steel stud;
+  heavy shelf on gypsum without a stud.
+- Check 526.2.4: sleeve anchor with 1/4 to 1/2 in grip offered for a 3/4 in board.
+- Check 526.2.5: screw keeps turning after the head seats (stripped hole).
+- Ordering 526.2.6: six steps of cutting an opening from a template and seating a bracket.
+- Check 526.2.7: raceway across the panel joint, what first (remove the raceway; TW-001 note 11).
+- Check 526.2.8: clamp tabs never tighten (panel thinner than the rated range).
+- Check 526.2.9: projection of a 2 1/8 in box with a 3/4 in raise ring (2 7/8 in).
+- Check 526.2.10: flush data outlet in a finished occupied gypsum wall (retrofit bracket).
+- Check 526.2.11: raceway meets a plastic surface box from the left (open, smooth, others closed).
+- Worked example 526.2.1: 3/8 in panel, 7/8 in maximum screw.
+- Worked example 526.2.2: size notation #10 x 1 in.
+- Worked example 526.2.4: 12 lb enclosure on 1/2 in gypsum, stud behind one of four holes.
+- Worked example 526.2.9: 1 1/2 in box + 5/8 in raise = 2 1/8 in projection.
+
+Counts: 4 sections, 12 topics, 14 activities (1 card set, 10 single-answer checks, 1 matching,
+1 ordering, 1 acknowledgement), 3 diagrams. Answer keys in order: D C A C B D A B D C.
+Reading time: ~7,700 words of prose, ~69 min by audit_html.py at 112 wpm; stated as ~60-75 min.
+
+Self-check
+- audit_html.py: run 1 FAIL 0, WARN 5 (four 'concrete' as emphasis, one 47-word sentence); fixed;
+  final run FAIL 0, WARN 0.
+- contrast_audit.py as written: FAIL 1, the known engine-amber rule .order .step.picked .seq
+  scored against the legacy token; the brand layer overrides it (White on #8A4B00, 6.8:1).
+  REPORT 83 (unresolvable containers, as on the pattern page).
+- Self-read against STYLE-RULES and the CLAUDE.md patterns: bolted "and" clauses split, two
+  count-announcing headings renamed, "which is why" and "no one" removed, EMT expanded at first use.
+- Not yet reviewed: language pass, cold read and provenance check are owed to fresh reviewers.
+
+Review round 1 (2026-11-01): LP1 61 wording + 5 structural; CR1 16 (0 blocking, 7 should fix,
+9 minor). Applied with the coordinator's rulings: objectives restored to the plan wording; box
+leveling given its own subsection ("Mounting the box", GLAB S4 and ALAB Step 5 method) with the
+two-screw count (S3, S4, CR8); removable anchor types named and sleeve feedback corrected (CR1);
+through-bolt and plate defined (CR2, CR14); faceplate wording aligned with the lab (CR3); ring raise read from the
+product cards, 4.8 given as the owner's value (CR4); 2 in rule taught from TW-001 note 4, the 4.5
+exception left out because it does not match note 4 (CR5); site lead introduced in the overview
+(S2, CR6); bracket-fixing method by the owner's representative (CR9); hold point limited to the
+flush and surface outlets (CR10); TW-001 identification list (CR11); TW-001 plastic surface box
+(CR12); "can reach" (CR13); terms defined before use (CR15: plaster ring, knockout, arbor, box
+bracket, cable ladder, surface raceway, panel joint, hammer drill, practice panel); overview
+paragraph 3 and the banner's contents sentence cut (S1); activity count kept at 14, counted as on
+the 530.1 pattern page, acknowledgement included (S5); blade-depth actor "the owner's
+representative", from KC-2613 (KC-2612 and the GLAB lab name none) (LP42); screw-length sentence
+kept as "the mock-up work orders" (KC-2612 gains the figure, coordinator); serial comma applied
+throughout, section and topic titles included (lesson name kept as named); wall, board, panel
+aligned in 526.2.8. LP wording findings 1-61 applied, except LP3 and LP7 (their sentences were cut
+under S1) and LP42 (actor changed per ruling). LP12, 13 and 51 applied with quotation marks.
+Two long sentences created by the fixes split. audit_html.py after the round: FAIL 0, WARN 0.
+contrast_audit.py: FAIL 1 (known engine-amber rule), REPORT 83. Numbers re-checked against both
+keys, KC-2612 and KC-2613: no match.
+
+Review round 2, final (2026-11-01): LP2 34 wording + 5 structural; CR2 15 (0 blocking, 4 should
+fix, 11 minor). Applied with the coordinator's rulings: impact driver drills a pilot hole with a
+hex-shank drill bit (CR2 1; GLAB S4 now drills pilots); hardboard rating paragraph, bounded (no
+rating carries over to hardboard; 4.5, removal from the room side and grip range govern),
+checked against GLAB 526.2.1 - Practice and Panel Inspection Sheet: no match (CR2 2); anchor flange (CR2 3);
+one-hole strap with 4.8's one screw (CR2 4); plunge cut named; "offer" replaced in text and the
+ordering step; template square to the bay's edges; panel thickness "given for each wall" (no
+instruction to measure); projection table shows 1 9/8 = 2 1/8, nominal figures and "the
+tolerance set for the job"; summary screw-length source corrected; ring-face sum corrected;
+"product cards" defined once in the overview and used for the site; plate attributed to TW-001
+note 5; stripped hole to 4.5 and the work orders; TW-301 detail 5 for the box-back screws;
+blade depth set for every wall; two feedback absolutes bounded; plaster ring, grip range and
+clearance defined or avoided before first use (S1); the thin-panel holding claim kept once
+before the first activity (S5); thread type for the panels tied to the screws set out on site
+(CR2 8, without naming the key). Skipped: LP2 6 and S2, S3 (objectives are approved plan
+wording); LP2 15 replaced by a claim bounded to the anchor in the check; LP2 26 and 33 use
+"product cards", per ruling; S4 time statement left at ~60-75 min (prose ~72 min after
+cutting the summary). Not changed, for the coordinator: GLAB 526.2.1 S4 still ends 'Write "none"
+for the bit size' although S4 now drills pilot holes. audit_html.py FAIL 0, WARN 0, 8118 words
+(~72 min). contrast_audit.py FAIL 1 (known engine-amber rule), REPORT 83. Numbers re-checked
+against both keys, KC-2612 and KC-2613: no match. Review stopped.
+- 2026-11-01 (round 4): post-review check fixes (F1-14); not re-reviewed.
+- 2026-11-01: drawing set Rev 1 (24 × 32 panels, Toolkit quote) propagated; not re-reviewed. Panel 1/8 in
+  per the quote; the 3/8 in example and 5/16 in check stay hypothetical (check no longer says "mock-up").
+- 2026-11-02: drawing set Rev 2 (measured: panels 60 × 80 cm, 23 5/8 × 31 1/2 in; four screws 2 1/2 in from the sides and 5/8 in from top and bottom; 5/8 in rail gap; floor 6 7/8 in). Not re-reviewed.
+- 2026-11-02: Rev 2 review fixes (LP1 Rev2, CHK Rev2) applied. Not re-reviewed.
+-->

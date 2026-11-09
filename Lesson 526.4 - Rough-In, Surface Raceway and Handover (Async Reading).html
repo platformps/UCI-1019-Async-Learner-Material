@@ -1,0 +1,2255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 526 (M06) - Construction Fundamentals for Low Voltage Technicians
+  Lesson 526.4 - Rough-In, Surface Raceway and Handover (Async Reading)
+  VERSION: v0.1.0  (2026-11-01)  DRAFT - for review
+  The full build comment (changes, objectives, outline, gates, check questions
+  and worked examples, build notes, conflicts, open items, audits) is at the
+  end of this file, before </body>, as the module 526 reading brief requires.
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 526.4 - Rough-In, Surface Raceway and Handover &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Construction Fundamentals</b> &middot; Lesson 526.4 - Rough-In, Surface Raceway and Handover</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Construction Fundamentals for Low Voltage Technicians</p>
+      <h2 id="ovh" tabindex="-1">Lesson 526.4 - Rough-In, Surface Raceway and Handover</h2>
+      <p class="lead-in">Running network cable inside a wall and on its face, fitting a camera mounting plate, and handing a finished work area to the trades that follow.</p>
+
+      <p>Calder Regional Services, the owner of the Harlow Street Operations Center, requires an installation mock-up before production rough-in starts on Level 2. Kestrel Communications builds the mock-up on five training walls. Each wall is divided into bays, and each bay stands for one typical Level 2 work area. The owner&rsquo;s representative inspects every bay at handover. Production rough-in on Level 2 waits for the representative&rsquo;s written approval of the mock-up.</p>
+
+      <p>The worked examples on this page use other walls and another building. The mock-up&rsquo;s figures are in its project documents. The <strong>drawing set</strong> is the Training Wall Drawing Set, sheets TW-001 to TW-401. The <strong>owner&rsquo;s standard</strong> is Calder Regional Services&rsquo; telecommunications design and installation standard, mock-up edition, cited on this page by clause number, such as 27 05 00 4.7. A <strong>work order</strong> is Kestrel&rsquo;s job ticket for one task: the work, its limits, and the project facts it needs. The lesson takes ~85&ndash;95 min, including the activities.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>Concealed Cable in a Wall Cavity.</b> What rough-in leaves behind, cutting a cable to length, drawing it through a closed wall, protecting it, and leaving slack and labels at both ends.</li>
+        <li><b>Surface Raceway.</b> Where raceway on the face of a wall is used, its parts, cutting and fixing the base to a screw plan, and laying the cable and closing the raceway.</li>
+        <li><b>The Camera Mounting Plate.</b> Drilling a plate from a manufacturer&rsquo;s template, and inspecting a mount for alignment and fixing.</li>
+        <li><b>Recording and Handing Over.</b> The as-built record, open items, the handoff note, and a daily report drafted with an artificial intelligence (AI) assistant.</li>
+        <li><b>Wrapping Up.</b> The whole lesson in one place.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>5</b><span>Sections</span></div>
+        <div class="ov-stat"><b>13</b><span>Topics</span></div>
+        <div class="ov-stat"><b>17</b><span>Activities</span></div>
+        <div class="ov-stat"><b>4</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the standards and the documents</h3>
+      <p>The owner&rsquo;s standard and the drawing set govern the mock-up. The owner&rsquo;s values may be stricter than those in the published standards.</p>
+      <p>ANSI/TIA-568, from the American National Standards Institute (ANSI) and the Telecommunications Industry Association (TIA), sets installation limits for the cable itself, such as its bend radius and pulling tension. The cable maker&rsquo;s data sheet gives the diameter that the bend radius is calculated from. Product figures in the worked examples are examples only: the product&rsquo;s own data governs.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or go to any topic from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks &mdash; a
+         knowledge check, a set of cards to open, or a matching exercise.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. Your progress through the lesson is shown in the header and
+         in the contents list.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching activity every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description, and tables have headings and captions that read correctly aloud.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 526.4</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="526.4" data-lesson-title="Rough-In, Surface Raceway and Handover" data-group-num="1" data-group-title="Concealed Cable in a Wall Cavity" data-num="526.4.1" data-title="Where rough-in ends">
+  <p class="crumb">Lesson 526.4 &middot; Section 1 Concealed Cable in a Wall Cavity</p>
+  <h2><span class="tnum">526.4.1</span> Where rough-in ends</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 526.4</span>
+    <h3>Rough-In, Surface Raceway and Handover</h3>
+    <p>This lesson covers a network cable concealed in a wall, a second cable in surface raceway, the camera mounting plate, the inspection of a mount, and the handover records.</p>
+    <p class="lb-meta"><b>5</b> sections &nbsp;&middot;&nbsp;
+       <b>13</b> topics &nbsp;&middot;&nbsp;
+       <b>17</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 526.4 you will be able to</div>
+    <ul>
+      <li><b>Route</b> network cable through the cavity to the flush outlet.</li>
+      <li><b>Protect</b> cable entries and edges.</li>
+      <li><b>Leave</b> service slack and identify both cable ends.</li>
+      <li><b>Install</b> a surface raceway drop with box, fittings, and cover.</li>
+      <li><b>Mount</b> a camera mounting plate from the manufacturer template.</li>
+      <li><b>Inspect</b> alignment and fixing of a mount.</li>
+      <li><b>Record</b> the bay as built and hand it over.</li>
+      <li><b>Write</b> a daily report.</li>
+    </ul></div>
+
+  <p class="lead-in">Rough-in is the stage at which cable and its supports go into a building before the walls are finished, the devices are fitted, or any cable is terminated.</p>
+
+  <p>The rough-in installer leaves every outlet cable in a known state for the crew that terminates it: run to its pathway, cut to the length the termination needs, labeled at both ends, and protected wherever it bends or crosses an edge. The installer replaces a cable left short or damaged with a new pull. An unlabeled cable has to be traced before it can be matched to its outlet at the rack.</p>
+
+  <p>On the Harlow Street mock-up, each bay holds four <span class="keyterm">elements</span>, each with a code. C1 is the camera box. D1, the <span class="keyterm">flush data outlet</span>, is a low-voltage bracket in an opening cut in the panel. D2, the <span class="keyterm">surface data outlet</span>, is a plastic box on the panel&rsquo;s face. D3, the second data outlet, is a box left empty at this stage. Two network cables serve the bay. The cable to D1 runs concealed inside the wall, and the cable to D2 runs in raceway on the panel&rsquo;s face.</p>
+
+  <p>Both cables leave the wall at the open top of its frame. They wait there, coiled and labeled, for the crew that carries them along the <span class="keyterm">cable ladder</span>, the open rack of rungs above the walls, to the mobile infrastructure rack (MIR) and terminates them. The MIR holds the <span class="keyterm">patch panels</span> where the cables are terminated.</p>
+
+  <p>Open each card.</p>
+  <div class="revealset gate"><div class="cards stack">
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Cavity</span><span class="rcard-sub">the closed space inside a wall</span><span class="rcard-detail" hidden><p>In a building partition, the space between the studs, closed by the wallboard on both sides. On the mock-up, the space between the hardboard panels of a wall&rsquo;s two faces, with the aluminum frame around it.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Fish tape</span><span class="rcard-sub">a steel tape that draws cable through a closed space</span><span class="rcard-detail" hidden><p>A flat steel tape on a reel, stiff enough to be pushed through a cavity or a conduit. The installer pushes it through, fastens the cable to its head, and draws it back with the cable behind it.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Footage marks</span><span class="rcard-sub">lengths printed on the cable jacket</span><span class="rcard-detail" hidden><p>A length printed along the jacket at a fixed interval, usually every foot. The difference between the marks at the two ends of a cut cable is the cable&rsquo;s length.</p><p><b>Read the jacket before you rely on the marks.</b> On some cables the marks count down, on some the interval is 2 ft, and some print meters.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Slack</span><span class="rcard-sub">working cable left at the outlet</span><span class="rcard-detail" hidden><p>The length of cable left beyond the outlet opening or the box entry, for the technician who terminates the cable. The owner&rsquo;s standard sets the length.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Service loop</span><span class="rcard-sub">a reserve of cable at the rack end</span><span class="rcard-detail" hidden><p>A longer length stored on the cable ladder at the rack end, so that the cable can be terminated again without a new pull. Owner&rsquo;s standard 27 15 00 3.1 sets it.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Hold point</span><span class="rcard-sub">a stage where work stops for inspection</span><span class="rcard-detail" hidden><p>A stage at which the installer stops and calls the owner&rsquo;s representative. Work resumes only when the representative has inspected the work and released it.</p><p><b>On the mock-up,</b> owner&rsquo;s standard 27 05 00 4.3 sets three hold points: the marked layout, before any panel is cut; the camera&rsquo;s electrical metallic tubing (EMT) pathway, before any cable is pulled into it; and the completed bay, at handover. A work order, Kestrel&rsquo;s job ticket for one task, can add its own.</p></span></button>
+  </div></div>
+
+  <div class="cyu gate" data-answer="1" data-fb="Rough-in leaves the cable unterminated, labeled at both ends, with slack, and coiled. A jack is the terminating crew&rsquo;s work, fitted after the run has been inspected. A label at one end leaves the other end unidentified among other coils. A cable cut flush at the outlet has no slack to terminate.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A rough-in installer finishes a concealed run to a flush outlet. In which state does the installer leave the cable?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Terminated on a jack at the outlet, with the far end coiled at the top of the wall</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Unterminated, labeled at both ends, with slack at the outlet and the far end coiled at the top of the wall</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Unterminated, labeled at the outlet end, with the far end coiled at the top of the wall</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Unterminated, cut flush with the outlet opening, and labeled at the far end</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.4" data-lesson-title="Rough-In, Surface Raceway and Handover" data-group-num="1" data-group-title="Concealed Cable in a Wall Cavity" data-num="526.4.2" data-title="Cutting a cable to length">
+  <p class="crumb">Lesson 526.4 &middot; Section 1 Concealed Cable in a Wall Cavity</p>
+  <h2><span class="tnum">526.4.2</span> Cutting a cable to length</h2>
+  <p class="lead-in">A rough-in cable is cut from the cable carton, the 1,000 ft box the cable is supplied in, before it goes into the wall, so its length is calculated from the route it will take.</p>
+
+  <p>The length is the sum of six parts. On the mock-up, each face of a wall carries a <span class="keyterm">panel field</span>: the area the panels cover, whose top is the top edge of the upper panels. The run on the wall ends at the top of the panel field, and the rise starts there. Positions on the mock-up are given as x and y in inches: x from the left edge of the bay, y from the bottom of the panel field.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The six parts of a rough-in cable&rsquo;s length, and where each figure comes from.</caption>
+      <thead><tr>
+        <th scope="col">Part</th><th scope="col">From where to where</th><th scope="col">Source of the figure</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Run on the wall</th><td>From the outlet to the top of the wall, or of the panel field on the mock-up</td><td>The drawing: the outlet position and the wall height</td></tr>
+        <tr><th scope="row">Slack</th><td>Beyond the outlet opening</td><td>The owner&rsquo;s standard</td></tr>
+        <tr><th scope="row">Rise</th><td>From the top of the wall, or of the panel field, to the cable pathway</td><td>Measured on site, or posted by the site lead (the contractor&rsquo;s supervisor)</td></tr>
+        <tr><th scope="row">Route</th><td>Along the pathway to the rack</td><td>Measured on site, or posted by the site lead</td></tr>
+        <tr><th scope="row">Drop</th><td>From the pathway down to the patch panel</td><td>The owner&rsquo;s standard</td></tr>
+        <tr><th scope="row">Service loop</th><td>The reserve stored at the rack end</td><td>The owner&rsquo;s standard</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Work every part in inches, add them, and convert the total to feet and inches. Round the length you cut up to the next whole foot: a cable a few inches too long is usable; a cable a few inches short is not. An outlet cable is never spliced, so the installer replaces a short cable with a new length from the carton.</p>
+
+  <h3>A worked length, Mercer Avenue Clinic</h3>
+  <p>The Mercer Avenue Clinic is a hypothetical building with its own owner&rsquo;s standard. An outlet in an exam room is centered 18 in above the floor in a wall 9 ft 6 in high. That owner requires 18 in of slack at the outlet, a 7 ft drop at the telecommunications room, and a 15 ft service loop. The site lead measures a 14 in rise from the top of the wall to the J-hook pathway and a 58 ft route along that pathway to the room. A J-hook pathway is a line of open hooks that carry cable above the ceiling.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; The six parts of one run (Mercer Avenue Clinic, hypothetical, not to scale)</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:900px" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="An elevation, not to scale, of one cable run in a hypothetical clinic: the run up the wall from the outlet, the slack at the outlet, the rise to the pathway, the route along the pathway, the drop at the rack, and the service loop. A full text description follows.">
+    <text x="24" y="26" font-size="16" font-weight="700" fill="#611940">One run, six parts</text>
+    <line x1="40" y1="330" x2="880" y2="330" stroke="#26282E" stroke-width="2"/>
+    <text x="40" y="350" font-size="13" fill="#5A5D66">floor</text>
+    <rect x="90" y="120" width="40" height="210" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="40" y="112" font-size="13" fill="#5A5D66">wall, 9 ft 6 in high</text>
+    <rect x="124" y="292" width="12" height="16" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+    <text x="146" y="324" font-size="13" fill="#26282E">outlet at 18 in</text>
+    <path d="M136,300 C160,300 168,286 160,276" fill="none" stroke="#611940" stroke-width="3"/>
+    <text x="172" y="284" font-size="13" fill="#611940">slack 18 in</text>
+    <line x1="112" y1="300" x2="112" y2="120" stroke="#611940" stroke-width="3"/>
+    <text x="146" y="214" font-size="13" fill="#611940">run on the wall 96 in</text>
+    <line x1="112" y1="120" x2="112" y2="80" stroke="#611940" stroke-width="3"/>
+    <text x="146" y="104" font-size="13" fill="#611940">rise 14 in</text>
+    <line x1="112" y1="80" x2="740" y2="80" stroke="#611940" stroke-width="3"/>
+    <text x="360" y="70" font-size="13" fill="#611940">route along the pathway 58 ft</text>
+    <rect x="720" y="170" width="70" height="160" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="800" y="200" font-size="13" fill="#26282E">rack</text>
+    <line x1="740" y1="80" x2="740" y2="196" stroke="#611940" stroke-width="3"/>
+    <rect x="726" y="196" width="58" height="14" fill="#ffffff" stroke="#26282E" stroke-width="1.2"/>
+    <text x="800" y="216" font-size="13" fill="#26282E">patch panel</text>
+    <text x="560" y="150" font-size="13" fill="#611940">drop 7 ft</text>
+    <circle cx="790" cy="100" r="18" fill="none" stroke="#611940" stroke-width="3"/>
+    <text x="760" y="56" font-size="13" fill="#611940">service loop 15 ft</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is an elevation, not to scale. On the left, a wall labeled wall, 9 ft 6 in high stands on the floor, with an outlet labeled outlet at 18 in and a curl of cable labeled slack 18 in.</p>
+    <p>A plum line, the cable, runs up the wall, labeled run on the wall 96 in, then above it, labeled rise 14 in, and right along the pathway, labeled route along the pathway 58 ft. Above a blue rack on the right it drops to a patch panel, labeled drop 7 ft. A loop above the rack is labeled service loop 15 ft.</p>
+  </details>
+
+  <div class="calc">
+    <table>
+      <caption>Worked length of the run to the exam room outlet, Mercer Avenue Clinic.</caption>
+      <thead><tr><th scope="col">Part, and where the figure comes from</th><th scope="col">Length</th></tr></thead>
+      <tbody>
+        <tr><td>Run on the wall: top of the wall 114 in, less the outlet height 18 in (drawing)</td><td class="n">96 in</td></tr>
+        <tr><td>Slack at the outlet (owner&rsquo;s standard)</td><td class="n">18 in</td></tr>
+        <tr><td>Rise to the pathway (measured)</td><td class="n">14 in</td></tr>
+        <tr><td>Route along the pathway, 58 ft (measured)</td><td class="n">696 in</td></tr>
+        <tr><td>Drop at the rack, 7 ft (owner&rsquo;s standard)</td><td class="n">84 in</td></tr>
+        <tr><td>Service loop, 15 ft (owner&rsquo;s standard)</td><td class="n">180 in</td></tr>
+        <tr class="tot"><td>Total: 1,088 in = 90 ft 8 in; cut length rounded up</td><td class="n">91 ft</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>On the mock-up, the parts are the same and the figures differ. The work order names the source of each figure.</p>
+
+  <h3>Cutting by the footage marks</h3>
+  <p>Cable is cut at a <span class="keyterm">pull point</span>, the place where the cable cartons stand.</p>
+  <ol>
+    <li>Draw the free end from the carton and cut it square at a footage mark. Note that mark as the <strong>start mark</strong>.</li>
+    <li>Draw cable from the carton, counting the marks, until the difference from the start mark equals your rounded length.</li>
+    <li>Cut at that mark and note it as the <strong>end mark</strong>.</li>
+    <li>Before you leave the pull point, fix one label within ~6 in of one end, flat and facing out. On a concealed run, that end stays at the top as the coil end. On a surface drop, label the first end you cut: it goes into the outlet box.</li>
+  </ol>
+  <p>At the clinic, the footage marks on the cable in use count down. The installer cuts the free end at the 1,240 ft mark and the other end at 1,240 &minus; 91 = 1,149 ft. The two marks are the evidence of the length installed: an inspector reads them at the two ends of the cable without uncoiling it.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="The total, 47 ft 7 in, rounds up to 48 ft. Where the marks count up, the end mark is the start mark plus the length: 327 + 48 = 375. A cut at 374 rounds the total down, which leaves the cable 7 in short. A cut at 376 adds a foot the calculation does not call for. A cut at 279 subtracts the length, as you would where the marks count down.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Your six parts add up to 47 ft 7 in. The footage marks on the cable count up, and you cut the free end square at the 327 ft mark. At which mark do you cut the other end?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>375 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>374 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>376 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>279 ft</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.4" data-lesson-title="Rough-In, Surface Raceway and Handover" data-group-num="1" data-group-title="Concealed Cable in a Wall Cavity" data-num="526.4.3" data-title="Drawing a cable through a closed wall">
+  <p class="crumb">Lesson 526.4 &middot; Section 1 Concealed Cable in a Wall Cavity</p>
+  <h2><span class="tnum">526.4.3</span> Drawing a cable through a closed wall</h2>
+  <p class="lead-in">The fish tape goes in at the outlet opening and comes out at the open top of the wall. You then draw the cable back down behind it.</p>
+
+  <p>A tape pushed up from the outlet opening can come out anywhere along the open top and still be reached. A cable dropped from the top has to find an opening a few inches across.</p>
+
+  <h3>The method</h3>
+  <ol>
+    <li><strong>Push the fish tape</strong> in through the outlet opening and straight up the cavity until its head comes out at the top of the frame.</li>
+    <li><strong>Fasten the cable to the head.</strong> Use the end without a label. The end labeled at the pull point stays at the top as the coil end. Tape the cable end to the head of the fish tape, wrapping the adhesive tape smooth so that the joint cannot catch on a frame member or on another cable.</li>
+    <li><strong>Draw the fish tape back</strong> through the opening, feeding the cable in at the top as it goes. Keep the cable off the frame&rsquo;s edge where it passes over.</li>
+    <li><strong>Free the end.</strong> Draw the cable end out through the opening and take the tape off it.</li>
+  </ol>
+
+  <p>If the tape or the cable stops, it has met something: a frame member, another cable, the back of a box. Draw it back a few inches and try again on a slightly different line. Pulling harder against an obstruction can scrape the jacket or drag another bay&rsquo;s cable with it.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; A concealed cable from the outlet to the coil, in section</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:900px" viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A section through a wall showing a cable entering the cavity through the outlet bracket, rising to a tie on the top frame member, crossing the top of the frame under edge protection, and ending in a coil, with a screw point from the other face projecting into the cavity. A full text description follows.">
+    <text x="24" y="26" font-size="16" font-weight="700" fill="#611940">A concealed cable, outlet to coil</text>
+    <rect x="300" y="50" width="420" height="18" fill="#ffffff" stroke="#26282E" stroke-width="1.6"/>
+    <text x="730" y="64" font-size="13" fill="#26282E">cable ladder</text>
+    <rect x="380" y="104" width="140" height="12" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="536" y="114" font-size="13" fill="#26282E">top frame member</text>
+    <rect x="380" y="116" width="8" height="290" fill="#E9DCCB" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="512" y="116" width="8" height="290" fill="#E9DCCB" stroke="#26282E" stroke-width="1.2"/>
+    <text x="210" y="160" font-size="13" fill="#5A5D66">room side</text>
+    <text x="210" y="178" font-size="13" fill="#5A5D66">panel, your face</text>
+    <text x="536" y="178" font-size="13" fill="#5A5D66">panel, other face</text>
+    <text x="436" y="400" font-size="13" fill="#5A5D66">cavity</text>
+    <rect x="368" y="318" width="12" height="56" fill="#E7FD82" stroke="#26282E" stroke-width="1.4"/>
+    <text x="196" y="300" font-size="13" fill="#26282E">outlet bracket in a cut opening</text>
+    <line x1="300" y1="306" x2="370" y2="320" stroke="#5A5D66" stroke-width="1"/>
+    <path d="M300,388 C330,388 344,362 362,350 L392,346 C410,344 420,330 420,310 L420,98 L470,98 C520,98 560,96 590,90" fill="none" stroke="#611940" stroke-width="3"/>
+    <text x="196" y="408" font-size="13" fill="#611940">slack at the outlet, end taped</text>
+    <rect x="412" y="124" width="16" height="7" fill="#26282E"/>
+    <line x1="430" y1="128" x2="560" y2="150" stroke="#5A5D66" stroke-width="1"/>
+    <text x="566" y="154" font-size="13" fill="#26282E">tie to the top frame member</text>
+    <rect x="408" y="92" width="60" height="10" fill="#71E2FD" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="440" y1="92" x2="420" y2="82" stroke="#5A5D66" stroke-width="1"/>
+    <text x="196" y="82" font-size="13" fill="#26282E">edge protection over the frame</text>
+    <circle cx="630" cy="88" r="30" fill="none" stroke="#611940" stroke-width="3"/>
+    <rect x="652" y="102" width="34" height="16" fill="#ffffff" stroke="#611940" stroke-width="1.2"/>
+    <text x="700" y="114" font-size="13" fill="#26282E">coil, taped, labeled, unterminated</text>
+    <line x1="470" y1="236" x2="512" y2="236" stroke="#A4262C" stroke-width="3"/>
+    <text x="536" y="232" font-size="13" fill="#A4262C">screw point from the other face:</text>
+    <text x="536" y="250" font-size="13" fill="#A4262C">must stay clear of the cable</text>
+    <text x="196" y="232" font-size="13" fill="#26282E">cable, no sag, outlet to tie</text>
+    <line x1="340" y1="236" x2="416" y2="236" stroke="#5A5D66" stroke-width="1"/>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is a section through a wall. The panel of your face is on the left, the panel of the other face on the right, the cavity between them, a gray top frame member across the top, and a cable ladder above.</p>
+    <p>A plum line, the cable, starts in front of the left panel with a curve labeled slack at the outlet, end taped, passes through a bracket labeled outlet bracket in a cut opening, and rises up the cavity, labeled cable, no sag, outlet to tie. A black block below the frame member is labeled tie to the top frame member. A blue sleeve where the cable crosses the frame is labeled edge protection over the frame. The cable ends in a circle labeled coil, taped, labeled, unterminated.</p>
+    <p>A red line projects from the right panel toward the cable, labeled screw point from the other face: must stay clear of the cable.</p>
+  </details>
+
+  <h3>Dressing the cable in the cavity</h3>
+  <p>Once the end is out of the opening, take up the cable from the top until it has no sag between the outlet and the top of the frame. Leave a gentle curve behind the outlet bracket instead of pulling the cable tight against it. Keep the slack at the outlet: do not draw it back through the opening. Then tie it to a frame member with a hook-and-loop tie. Owner&rsquo;s standard 27 05 00 4.6 requires cable in the cavity to be bundled by route and tied to the frame&rsquo;s horizontal members. Clause 4.5 allows no fastener to be driven into the frame; a tie around a frame member is not a fastener.</p>
+
+  <p>The cavity holds the work of more than one bay. Cables, brackets, and box backs from the other face sit within inches of your cable. Do not touch, move, or pull a cable that serves another outlet. If you disturb one, report it.</p>
+
+  <h3>Screw points</h3>
+  <p>The boxes and brackets on both faces are screwed into the panels. Each screw point ends in the cavity. Owner&rsquo;s standard 27 05 00 4.5 limits screw length so that the point stays clear of cable in the cavity. A slack cable can bow across to a point. A point resting on a jacket can cut through it when the cable is drawn again, or when a panel is taken off. Taking up the sag holds the cable on its line. A flashlight check shows whether any point touches it: shine the light down the cavity along the cable, from the tie to the outlet, and note every place where a screw point touches the jacket. The remedy for a point that touches is a shorter screw. The cable installer reports the contact and where it is; the trade that fixed the screw replaces it.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="You report a screw point touching the cable, with its location, whether or not the cable has sag. Taking up the sag holds the cable on its line but does not move it off a point already resting on it. The terminating crew does not open the cavity, so the point would stay against the jacket. Cutting the cable back changes its length without moving it away from the point.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Your cable runs from the outlet to the tie with no sag. During the flashlight check, you see a screw point from the other face resting on the jacket about 10 in below the tie. What do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Report no contact, because the cable has no sag</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Leave it for the crew that terminates the cable</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Cut the cable back and draw it tighter</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Report the contact and where it is</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.4" data-lesson-title="Rough-In, Surface Raceway and Handover" data-group-num="1" data-group-title="Concealed Cable in a Wall Cavity" data-num="526.4.4" data-title="Protecting entries, edges, and the jacket">
+  <p class="crumb">Lesson 526.4 &middot; Section 1 Concealed Cable in a Wall Cavity</p>
+  <h2><span class="tnum">526.4.4</span> Protecting entries, edges, and the jacket</h2>
+  <p class="lead-in">A network cable is damaged where it bends too tightly, where it bears on an edge, and where something presses into its jacket.</p>
+
+  <p>A four-pair cable carries its signal on pairs twisted at set rates and held at set spacing inside the jacket. Its transmission performance depends on that geometry. Damage that leaves the copper intact can still change that geometry.</p>
+
+  <h3>Bend radius</h3>
+  <p>ANSI/TIA-568 sets the minimum inside bend radius of an installed four-pair Unshielded Twisted-Pair (U/UTP) cable at <strong>four times the cable&rsquo;s outside diameter</strong>. The diameter is on the cable maker&rsquo;s data sheet. For a cable with a 0.30 in outside diameter, the radius is 4 &times; 0.30 = 1.2 in, so the tightest bend allowed is a curve about 2.4 in across. A concealed run bends in two places: where it turns out of the outlet opening, and where it turns over the top of the frame.</p>
+
+  <p>A <span class="keyterm">kink</span> is a fold sharp enough to crease the jacket. It is damage even after the cable is straightened.</p>
+
+  <h3>Pulling tension</h3>
+  <p>ANSI/TIA-568 limits the pulling tension on a four-pair cable to 25 lbf (110 N). Pulling a cable through a snag can exceed that limit. A cable stretched that way does not recover the original twist of its pairs. Free a snag where it happens.</p>
+
+  <h3>Edges</h3>
+  <p>A cable that bears on an edge can wear through when it moves. On a concealed run, keep the cable off two edges: the cut edge of the panel around the outlet opening, and the top edge of the frame where the cable crosses it. At the outlet, the cable passes through the middle of the bracket opening without touching the cut panel edge. At the top, fit a short length of <span class="keyterm">split loom</span>, a flexible tube slit along its length, around the cable where it crosses the frame. In a building, a bushing or grommet does the same job where a cable passes through a metal opening.</p>
+
+  <h3>Ties</h3>
+  <p>A tie pulled tight enough to press into the jacket deforms the pairs under it. Pull a hook-and-loop tie snug and no tighter.</p>
+
+  <p>Match each source of damage to the practice that prevents it.</p>
+  <div class="match gate" data-left="Source of damage" data-right="Practice that prevents it">
+    <div class="pair" data-left="The cable bearing on the top edge of the frame" data-right="Split loom fitted around the cable where it crosses the frame"></div>
+    <div class="pair" data-left="The cable rubbing on the cut edge of the panel" data-right="The cable passed through the middle of the bracket opening"></div>
+    <div class="pair" data-left="A tie pressing into the jacket" data-right="A hook-and-loop tie pulled snug and no tighter"></div>
+    <div class="pair" data-left="A screw point resting on the jacket in the cavity" data-right="A screw short enough for its point to stay clear of the cable"></div>
+    <div class="pair" data-left="A tight turn out of the outlet opening" data-right="A turn with an inside radius of at least four cable diameters"></div>
+  </div>
+
+  <div class="cyu gate" data-answer="3" data-fb="ANSI/TIA-568 sets the minimum inside bend radius of an installed four-pair U/UTP cable at four times its outside diameter: 4 &times; 0.22 = 0.88 in. One diameter, 0.22 in, is the radius allowed for a patch cord, not an installed cable. Two diameters make 0.44 in. The figure 1.76 in is the width across a bend at the minimum radius, not the radius.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A cable&rsquo;s data sheet gives an outside diameter of 0.22 in. What is the smallest inside bend radius allowed for it once installed?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>0.22 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>0.44 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>1.76 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>0.88 in</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+
+
+<section class="topic" data-lesson-num="526.4" data-lesson-title="Rough-In, Surface Raceway and Handover" data-group-num="1" data-group-title="Concealed Cable in a Wall Cavity" data-num="526.4.5" data-title="Slack and identification at both ends">
+  <p class="crumb">Lesson 526.4 &middot; Section 1 Concealed Cable in a Wall Cavity</p>
+  <h2><span class="tnum">526.4.5</span> Slack and identification at both ends</h2>
+  <p class="lead-in">The outlet end of a rough-in cable has working slack. Both ends carry the same machine-printed identifier.</p>
+
+  <h3>Slack at the outlet</h3>
+  <p>The slack is measured from the outlet opening, or from the box entry, to the cable end. Slack that is too short cannot be drawn out far enough to strip and terminate. Slack that is too long has to be folded into the box behind the jack. The owner&rsquo;s standard sets the length: on the mock-up, clause 27 05 00 4.7. Tape the end so that the conductors stay clean and the jacket cannot slide back.</p>
+
+  <h3>The coil at the far end</h3>
+  <p>The far end waits as a coil: even loops, taped at several points, its end taped and unterminated. The coil stays where the work order puts it until the run is inspected. Sheet TW-301, detail 6, of the drawing set shows the cable end at the ladder.</p>
+
+  <h3>Identifiers</h3>
+  <p>Owner&rsquo;s standard 27 05 53 2.1 requires a machine-printed label at both ends of every cable. On the mock-up, clause 2.2 sets the identifier: the bay followed by the element the cable serves. W5-1R-D2, for example, identifies the cable to the surface data outlet in the right bay of Face 1 of wall W5. The terminating crew uses the identifier to find the right coil at the ladder and the right port at the rack. A label at one end only leaves the other end unidentified.</p>
+
+  <p>Place each label so that it can be read without handling the cable:</p>
+  <ul>
+    <li>within ~6 in of its end, as the work orders require;</li>
+    <li>flat, wrapped so that the identifier faces out;</li>
+    <li>clear of the tape that seals the end;</li>
+    <li>on the outside of the coil, at the coil end.</li>
+  </ul>
+
+  <div class="cyu gate" data-multi="true" data-answer="0,4" data-fb="A label passes when it is machine-printed, carries the identifier of the element the cable serves, sits within ~6 in of its end, lies flat facing out, and is not covered by tape. A and E meet every condition. A marker on the jacket is not machine-printed. A label under the sealing tape cannot be read until the tape comes off. A cable to D1 labeled D2 sends the terminating crew to the wrong outlet.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A cable serves the flush outlet D1 in bay W2-2R. Which of these labels meet the labeling requirements above?</p>
+    <p class="multi-note">Select all that apply, then submit.</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Machine-printed W2-2R-D1, 4 in from the outlet end, flat, facing out</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>W2-2R-D1 written in marker on the jacket, 4 in from the coil end</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Machine-printed W2-2R-D1, under the tape that seals the outlet end</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Machine-printed W2-2R-D2, 5 in from the coil end, flat, facing out</button>
+    <button class="opt"><span class="mk" aria-hidden="true">E</span>Machine-printed W2-2R-D1, 5 in from the coil end, flat, facing out on the outside of the coil</button>
+    <div class="btn-row"><button class="btn cyu-submit" type="button">Submit</button></div>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.4" data-lesson-title="Rough-In, Surface Raceway and Handover" data-group-num="2" data-group-title="Surface Raceway" data-num="526.4.6" data-title="Cable on the face of a wall">
+  <p class="crumb">Lesson 526.4 &middot; Section 2 Surface Raceway</p>
+  <h2><span class="tnum">526.4.6</span> Cable on the face of a wall</h2>
+  <p class="lead-in">Surface raceway carries cable on the face of a finished wall, where the wall cannot be opened or a concealed run cannot reach the outlet.</p>
+
+  <p>A block wall or a concrete wall has no cavity. A finished wall in an occupied building may have a cavity that the owner will not allow to be opened. In either case the outlet becomes a surface box, fed by raceway fixed to the wall.</p>
+
+  <p>Surface raceway is a channel in two parts that snap together over the cable, with fittings and boxes made to match it. On the Harlow Street project it is non-metallic: owner&rsquo;s standard 27 05 00 4.4 names plastic surface raceway for the mock-up&rsquo;s surface drop.</p>
+
+  <p>Open each card.</p>
+  <div class="revealset gate"><div class="cards stack">
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Base</span><span class="rcard-sub">the channel screwed to the wall</span><span class="rcard-detail" hidden><p>The back half of the raceway, fixed to the wall with screws through its center line. The cable lies in it. Its edges carry the lips that the cover snaps onto.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Cover</span><span class="rcard-sub">the front half, snapped on over the cable</span><span class="rcard-detail" hidden><p>The front half, cut to the same length as the base and snapped onto it along its full length. It holds the cable in the base and can be taken off again.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Box of the same series</span><span class="rcard-sub">the outlet the raceway feeds</span><span class="rcard-detail" hidden><p>A surface box made for the raceway, with an entry the base seats into. The maker&rsquo;s data gives the <span class="keyterm">entry allowance</span>: how far the base enters the box. A box and raceway from different series may not fit.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">End fitting</span><span class="rcard-sub">closes the open end of a run</span><span class="rcard-detail" hidden><p>A fitting that covers the cut end of the base and the cover where the raceway stops, with an opening the cable leaves through.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">Elbows and couplings</span><span class="rcard-sub">for a turn or a joint</span><span class="rcard-detail" hidden><p>Every change of direction takes an elbow, made for an inside corner, an outside corner, or a turn across the face of the wall. A coupling covers the joint where two lengths meet.</p></span></button>
+  </div></div>
+
+  <h3>Fill</h3>
+  <p>The maker publishes a fill table for each raceway size: the number of cables of a given diameter it holds. Beyond that number, the cables press against the cover, which may then spring off.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="A block wall has no cavity, so its outlet is a surface box fed by raceway. A partition still open on one side takes a concealed run. Cable above a ceiling runs on J-hooks or in tray, not in surface raceway. The camera box is fed by the electrical metallic tubing the drawings show.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which of these takes surface raceway?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>An outlet in a new stud partition with one side not yet boarded</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A run of cable above an accessible ceiling</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>An outlet on a concrete block wall in an occupied office</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A camera box fed by electrical metallic tubing on the drawings</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.4" data-lesson-title="Rough-In, Surface Raceway and Handover" data-group-num="2" data-group-title="Surface Raceway" data-num="526.4.7" data-title="Cutting the raceway and planning its screws">
+  <p class="crumb">Lesson 526.4 &middot; Section 2 Surface Raceway</p>
+  <h2><span class="tnum">526.4.7</span> Cutting the raceway and planning its screws</h2>
+  <p class="lead-in">The base and the cover are cut to the length of the run, the base is set plumb on its line, and its screws go at positions planned before the drill comes out.</p>
+
+  <h3>Cut length</h3>
+  <p>The <span class="keyterm">raceway cut length</span> is the distance from the top of the box to the end of the run, plus the entry allowance. The cover is cut to the same length as the base. Cut both at the bench, square, against a stop, with the part clamped. Then deburr the cut ends. A burr catches the cover as it snaps on and can nick a cable laid over it.</p>
+  <p>The <span class="keyterm">factory end</span> of each part, the end you did not cut, goes into the box, where it seats cleanly in the entry. The cut end goes to the open end of the run, under the end fitting.</p>
+
+  <h3>Line and plumb</h3>
+  <p>Seat the base in the box, then set it plumb with a level held along it. Check the line where the run ends, against the position on the drawing. A base that leans from the box drifts off its line as it rises.</p>
+
+  <h3>The screw rule</h3>
+  <p>On the mock-up, the base is fixed by screws on its center line that meet three conditions. Clause 27 05 00 4.8 of the owner&rsquo;s standard sets the spacing and clause 4.5 the clearance; the work order adds the 4 in end limit.</p>
+  <ul>
+    <li>One screw within 4 in of each end of the base. At the bottom, measure from the top of the box, where the base leaves it. An unfixed end lifts and lets the cover spring off.</li>
+    <li>No more than 16 in between neighboring screws. A longer span bows away from the panel.</li>
+    <li>Every screw 2 in or more from a panel edge or a <span class="keyterm">panel screw</span>: one of the four screws, one near each corner, that hold a panel to the frame. A screw near a panel edge can break out of the panel. A screw near a panel screw can strike that screw or the frame behind it. Owner&rsquo;s standard 27 05 00 4.5 allows no fastener in the frame.</li>
+  </ul>
+  <p>Work the plan before you drill. List the bands where no screw can go, place a screw near each end outside them, then fill the gaps so that no span exceeds 16 in. Drill a pilot hole at each position with the bit named on the <span class="keyterm">raceway product card</span>. That card gives the raceway series, its pilot bit, its screws, and its entry allowance. Drive each screw on a low clutch setting. An over-driven screw can crack a plastic base or strip its hole in a hardboard panel.</p>
+
+  <h3>A worked screw plan</h3>
+  <p>The example wall is not the mock-up. Its panel field is 96 in high, made of two panels that meet at y 48. Its panel screws lie off the raceway line. The box top is at y 14, and the raceway product card gives an entry allowance of 1/2 in.</p>
+
+  <div class="calc">
+    <table>
+      <caption>Cut length and screw plan for the example wall.</caption>
+      <thead><tr><th scope="col">Figure, and how it is found</th><th scope="col">Value</th></tr></thead>
+      <tbody>
+        <tr><td>Cut length: top of the field 96, less the box top 14, plus the entry allowance 1/2</td><td class="n">82 1/2 in</td></tr>
+        <tr><td>No screw: less than 2 in from the joint at y 48</td><td class="n">between y 46 and 50</td></tr>
+        <tr><td>No screw: less than 2 in from the top edge at y 96</td><td class="n">above y 94</td></tr>
+        <tr><td>Bottom screw: within 4 in of the box top at y 14, where the base leaves the box</td><td class="n">y 14 to 18</td></tr>
+        <tr><td>Top screw: within 4 in of the base&rsquo;s top end at y 96, and clear of the top edge</td><td class="n">y 92 to 94</td></tr>
+        <tr class="tot"><td>Plan, bottom up; spans 16, 12, 15, 16, 16 in</td><td class="n">y 17, 33, 45, 60, 76, 92</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; The screw plan on the example wall, in elevation</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:900px" viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="An elevation of the example wall, 96 in high with a panel joint at 48 in, showing a raceway from a box at 14 in to the top of the panel field, the two bands where no screw may go, and six screws at 17, 33, 45, 60, 76 and 92 in. A full text description follows.">
+    <text x="24" y="26" font-size="16" font-weight="700" fill="#611940">Example wall: raceway from y 14 to y 96</text>
+    <rect x="220" y="40" width="200" height="288" fill="#E9DCCB" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="220" y1="184" x2="420" y2="184" stroke="#26282E" stroke-width="2"/>
+    <rect x="220" y="178" width="200" height="12" fill="#A4262C" fill-opacity="0.25"/>
+    <rect x="220" y="40" width="200" height="6" fill="#A4262C" fill-opacity="0.25"/>
+    <rect x="309" y="40" width="12" height="246" fill="#ffffff" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="298" y="286" width="34" height="14" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="340" y="298" font-size="13" fill="#26282E">box, top at y 14</text>
+    <text x="150" y="44" font-size="13" fill="#26282E">y 96</text>
+    <text x="150" y="188" font-size="13" fill="#26282E">y 48</text>
+    <text x="150" y="290" font-size="13" fill="#26282E">y 14</text>
+    <text x="150" y="332" font-size="13" fill="#26282E">y 0</text>
+    <text x="24" y="188" font-size="13" fill="#5A5D66">panel joint</text>
+    <circle cx="315" cy="277" r="4" fill="#611940"/>
+    <circle cx="315" cy="229" r="4" fill="#611940"/>
+    <circle cx="315" cy="193" r="4" fill="#611940"/>
+    <circle cx="315" cy="148" r="4" fill="#611940"/>
+    <circle cx="315" cy="100" r="4" fill="#611940"/>
+    <circle cx="315" cy="52" r="4" fill="#611940"/>
+    <line x1="430" y1="277" x2="470" y2="277" stroke="#5A5D66" stroke-width="1"/>
+    <text x="476" y="281" font-size="13" fill="#611940">screw y 17</text>
+    <line x1="430" y1="229" x2="470" y2="229" stroke="#5A5D66" stroke-width="1"/>
+    <text x="476" y="233" font-size="13" fill="#611940">screw y 33</text>
+    <line x1="430" y1="193" x2="470" y2="199" stroke="#5A5D66" stroke-width="1"/>
+    <text x="476" y="203" font-size="13" fill="#611940">screw y 45</text>
+    <line x1="430" y1="148" x2="470" y2="148" stroke="#5A5D66" stroke-width="1"/>
+    <text x="476" y="152" font-size="13" fill="#611940">screw y 60</text>
+    <line x1="430" y1="100" x2="470" y2="100" stroke="#5A5D66" stroke-width="1"/>
+    <text x="476" y="104" font-size="13" fill="#611940">screw y 76</text>
+    <line x1="430" y1="52" x2="470" y2="56" stroke="#5A5D66" stroke-width="1"/>
+    <text x="476" y="60" font-size="13" fill="#611940">screw y 92</text>
+    <text x="600" y="172" font-size="13" fill="#A4262C">shaded: no screw</text>
+    <text x="600" y="190" font-size="13" fill="#A4262C">between y 46 and 50, at the joint</text>
+    <text x="600" y="44" font-size="13" fill="#A4262C">above y 94, at the top edge</text>
+    <text x="600" y="250" font-size="13" fill="#26282E">spans: 16, 12, 15, 16, 16 in</text>
+    <text x="600" y="268" font-size="13" fill="#26282E">none over 16 in</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is an elevation of the example wall, drawn to scale: the panel field from y 0 to y 96, with a panel joint at y 48. A box labeled box, top at y 14 sits low on the wall, and a white raceway rises from it to the top of the panel field.</p>
+    <p>Two red-shaded bands mark where no screw may go: between y 46 and 50, at the joint, and above y 94, at the top edge. Six plum dots mark the screws: screw y 17, screw y 33, screw y 45, screw y 60, screw y 76, screw y 92. A note reads spans: 16, 12, 15, 16, 16 in, none over 16 in.</p>
+  </details>
+
+  <p>The span from y 33 to y 45 is the shortest because the screw at y 45 has to stay below the band at the joint.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="On this wall, no screw goes between y 38 and y 42, or above y 78. The bottom screw falls between y 10 and 14, and the top screw between y 76 and 78. Plan A meets every condition, with spans of 16, 16, 15, and 16 in. Plan B puts a screw at y 41, inside the band at the joint. Plan C has a 20 in span from y 11 to y 31. Plan D ends at y 75, 5 in from the top of the base.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another wall, the panels meet at y 40 and the top edge is at y 80; the panel screws lie off the raceway line. A base runs from a box top at y 10 to y 80. Which screw plan meets the screw rule?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>y 13, 29, 45, 60, 76</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>y 12, 26, 41, 56, 71, 77</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>y 11, 31, 45, 60, 76</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>y 14, 29, 37, 52, 67, 75</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.4" data-lesson-title="Rough-In, Surface Raceway and Handover" data-group-num="2" data-group-title="Surface Raceway" data-num="526.4.8" data-title="Laying the cable and closing the raceway">
+  <p class="crumb">Lesson 526.4 &middot; Section 2 Surface Raceway</p>
+  <h2><span class="tnum">526.4.8</span> Laying the cable and closing the raceway</h2>
+  <p class="lead-in">The cable goes into the box first, then into the base, and the cover goes on only when the cable lies flat and clear of the lips the cover snaps onto.</p>
+
+  <h3>The cable and its length</h3>
+  <p>A surface drop&rsquo;s cable is cut by the same six-part method. The run on the wall becomes the <strong>raceway run</strong>, from the top of the box to the top of the wall (on the mock-up, the panel field), and the slack lies in the box.</p>
+
+  <h3>Closing the raceway</h3>
+  <ol>
+    <li><strong>Slack into the box.</strong> Pass the labeled end into the box through its top entry until the slack the owner&rsquo;s standard requires lies between the entry and the end. Tape the end clear of the label, and fold the slack into the box.</li>
+    <li><strong>Lay the cable flat</strong> in the base from the box to the top, in the middle of the channel, clear of the lips at both edges.</li>
+    <li><strong>Photograph it.</strong> Once the cover is on, a photograph is the only record of how the cable lies in the base.</li>
+    <li><strong>Snap the cover on from the bottom up</strong>, pressing it home along its full length. Check that both ends of the cover sit flush with the ends of the base.</li>
+    <li><strong>Fit the end fitting</strong> at the top, with the cable passing out through it.</li>
+  </ol>
+  <p>Above the raceway, the cable is finished as a concealed cable is: edge protection where it crosses the top of the frame, then a coil, taped, labeled, and left unterminated.</p>
+
+  <div class="note warn"><div class="nt">A cable on the lip is a crushed cable</div><p>The cover snaps onto the base along both edges. A cable lying across a lip when the cover snaps on is pinched where it crosses the lip. The cover hides the damage until the cable fails a test.</p></div>
+
+  <div class="cyu gate" data-answer="0" data-fb="The cover snaps onto lips along both edges of the base, so a cable that lies across a lip is pinched where the cover closes on it. Extra slack folds into the box and does not reach the run. Screws too far apart let the base bow; they do not press on the cable. A missing end fitting flattens nothing.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">With the cover off again, you find the cable flattened along a few inches halfway up the run. What caused it?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The cable lay across a lip of the base when the cover snapped on</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The slack folded into the box was too long</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The screws were more than 16 in apart</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The end fitting was left off</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.4" data-lesson-title="Rough-In, Surface Raceway and Handover" data-group-num="3" data-group-title="The Camera Mounting Plate" data-num="526.4.9" data-title="Drilling a plate from a manufacturer&rsquo;s template">
+  <p class="crumb">Lesson 526.4 &middot; Section 3 The Camera Mounting Plate</p>
+  <h2><span class="tnum">526.4.9</span> Drilling a plate from a manufacturer&rsquo;s template</h2>
+  <p class="lead-in">A camera maker supplies a full-size paper template of the camera&rsquo;s mounting base. The holes are drilled where the template marks them.</p>
+
+  <p>On the mock-up, the camera box is a 4 in round weatherproof box at the end of the camera&rsquo;s pathway. The <span class="keyterm">camera mounting plate</span> is a 4 in round weatherproof blank cover for that box, drilled to the camera maker&rsquo;s template and fixed to the box with the cover&rsquo;s own screws. Sheet TW-401, note 5, of the drawing set calls for the plate on the camera box, drilled from the manufacturer&rsquo;s template, and leaves the camera to a later stage.</p>
+
+  <p>The template marks the camera&rsquo;s screw holes, a cable hole where the camera needs one, and an <span class="keyterm">orientation mark</span>, which fixes which way the camera faces. Most templates also carry a printed dimension or a scale bar for checking the print.</p>
+
+  <h3>Check the print before you drill</h3>
+  <p>A template is only correct at full size. A printer set to fit the page shrinks it, and every hole moves toward the center. The person who prints the template prints it at 100% and measures its printed dimension or scale bar with a tape measure. On the mock-up, the instructor prints and checks each copy. A print that does not measure true is not used.</p>
+
+  <p>The <span class="keyterm">blank-cover card</span> at the drilling place gives two sizes. The first is the drill size for the screw holes: a clearance size, which lets the camera&rsquo;s screws pass through without threading into the holes. The second is the step-bit size for the cable hole, or &ldquo;no cable hole&rdquo;.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; An example template taped to a blank cover</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:900px" viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A 4 in round blank cover with two cover-screw holes at its rim, and an example paper template taped over it showing two screw holes, a cable hole, an orientation mark at the top edge, and a printed check dimension. A full text description follows.">
+    <text x="24" y="26" font-size="16" font-weight="700" fill="#611940">Example template on a 4 in round blank cover</text>
+    <circle cx="180" cy="160" r="100" fill="#F0F0F0" stroke="#26282E" stroke-width="2"/>
+    <circle cx="118" cy="98" r="5" fill="#ffffff" stroke="#26282E" stroke-width="1.4"/>
+    <circle cx="242" cy="222" r="5" fill="#ffffff" stroke="#26282E" stroke-width="1.4"/>
+    <circle cx="180" cy="160" r="72" fill="none" stroke="#5A5D66" stroke-width="1.4" stroke-dasharray="6 4"/>
+    <circle cx="130" cy="130" r="6" fill="#ffffff" stroke="#611940" stroke-width="2"/>
+    <circle cx="230" cy="190" r="6" fill="#ffffff" stroke="#611940" stroke-width="2"/>
+    <circle cx="180" cy="160" r="16" fill="#ffffff" stroke="#611940" stroke-width="2"/>
+    <polygon points="180,66 172,80 188,80" fill="#611940"/>
+    <line x1="130" y1="214" x2="230" y2="214" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="130" y1="208" x2="130" y2="220" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="230" y1="208" x2="230" y2="220" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="300" y1="77" x2="380" y2="77" stroke="#5A5D66" stroke-width="1"/>
+    <text x="388" y="81" font-size="13" fill="#26282E">cover-screw holes, for the cover&rsquo;s own screws</text>
+    <line x1="196" y1="72" x2="380" y2="105" stroke="#5A5D66" stroke-width="1"/>
+    <text x="388" y="109" font-size="13" fill="#26282E">orientation mark: this edge is the top; write TOP here</text>
+    <line x1="238" y1="190" x2="380" y2="140" stroke="#5A5D66" stroke-width="1"/>
+    <text x="388" y="144" font-size="13" fill="#26282E">screw holes: center-punch, then drill to the blank-cover card&rsquo;s size</text>
+    <line x1="196" y1="160" x2="380" y2="175" stroke="#5A5D66" stroke-width="1"/>
+    <text x="388" y="179" font-size="13" fill="#26282E">cable hole: step bit, to the size on the card</text>
+    <line x1="230" y1="214" x2="380" y2="214" stroke="#5A5D66" stroke-width="1"/>
+    <text x="388" y="218" font-size="13" fill="#26282E">printed check dimension: measure it before you drill</text>
+    <text x="388" y="254" font-size="13" fill="#5A5D66">Example only. The camera maker&rsquo;s template governs.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram shows a 4 in round gray blank cover with a small hole at its rim at the top left and another at the bottom right, labeled cover-screw holes, for the cover&rsquo;s own screws. A dashed circle outlines an example template.</p>
+    <p>Two small circles on a diagonal are labeled screw holes: center-punch, then drill to the blank-cover card&rsquo;s size. A larger center circle is labeled cable hole: step bit, to the size on the card. A triangle at the top edge is labeled orientation mark: this edge is the top; write TOP here. A dimension line between the screw holes is labeled printed check dimension: measure it before you drill. A note reads Example only. The camera maker&rsquo;s template governs.</p>
+  </details>
+
+  <h3>Drilling the plate</h3>
+  <p>Wear eye and hearing protection while you drill.</p>
+  <ol>
+    <li><strong>Note the camera box&rsquo;s cover-screw holes.</strong> Before drilling, look at the camera box and note where its cover-screw holes sit. The cover fits its box only with its screw holes over those holes.</li>
+    <li><strong>Hold the work.</strong> Turn the cover front face up, with its screw holes at the same positions as the box&rsquo;s cover-screw holes. Keep it turned that way and screw it to a scrap backer board through its screw holes, so that it cannot spin on the bit.</li>
+    <li><strong>Place the template.</strong> Tape it centered on the front face, with its orientation mark at 12 o&rsquo;clock, the point of the rim farthest from you.</li>
+    <li><strong>Center-punch each hole.</strong> The dimple keeps the bit from wandering on the smooth metal face.</li>
+    <li><strong>Drill the screw holes</strong> at the size on the blank-cover card.</li>
+    <li><strong>Cut the cable hole</strong>, where the template marks one, with a <span class="keyterm">step bit</span>: a cone-shaped bit that cuts a round hole in thin sheet metal one diameter step at a time. Stop at the step for the size on the blank-cover card.</li>
+    <li><strong>Write TOP.</strong> Before the template comes off, write TOP with a fine marker on the front face at the edge where the orientation mark sits.</li>
+    <li><strong>Free the plate.</strong> Take the template off and unscrew the cover from the backer board.</li>
+    <li><strong>Deburr every hole on both faces.</strong> A burr on the back keeps the plate from sitting flat on the box. A burr in the cable hole can cut the camera cable that passes through it.</li>
+  </ol>
+
+  <h3>Fixing the plate</h3>
+  <p>Hold the plate on the box with TOP up, line its screw holes up with the box&rsquo;s cover-screw holes, and drive the cover screws until the plate sits flat with no gap. Owner&rsquo;s standard 27 05 53 2.2 puts the camera box&rsquo;s label on the box itself. The plate carries no second label.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="A print that measures short of its printed dimension has been scaled, so every hole on it has moved. Have it printed again at 100% and measured before anyone drills from it. A shortfall of 1/16 in on 2 3/4 in is a scaling error of about 2%, not a measuring tolerance. Moving holes by eye does not restore the template&rsquo;s spacing. Enlarging the holes to make the camera fit leaves its screws loose in them.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A template prints the distance between its two screw holes as 2 3/4 in. On your print, the two holes measure 2 11/16 in apart. What do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Drill to the print: 1/16 in is within drilling tolerance</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Center-punch each hole 1/32 in farther out than the print shows</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Do not drill: have the template printed again at 100% and measured</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Drill to the print and enlarge the holes until the camera fits</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.4" data-lesson-title="Rough-In, Surface Raceway and Handover" data-group-num="3" data-group-title="The Camera Mounting Plate" data-num="526.4.10" data-title="Inspecting the alignment and fixing of a mount">
+  <p class="crumb">Lesson 526.4 &middot; Section 3 The Camera Mounting Plate</p>
+  <h2><span class="tnum">526.4.10</span> Inspecting the alignment and fixing of a mount</h2>
+  <p class="lead-in">An inspector checks a mount on two counts: whether it sits where and how the drawing puts it, and whether it is held so that it stays there.</p>
+
+  <div class="compare">
+    <div><h3>Alignment</h3><ul class="clean">
+      <li>Its position against the drawing, on both axes, within the tolerance the work order sets.</li>
+      <li>Its orientation: the plate&rsquo;s TOP at the top.</li>
+      <li>Level, where the work order asks for it.</li>
+    </ul></div>
+    <div><h3>Fixing</h3><ul class="clean">
+      <li>Every screw present.</li>
+      <li>Every screw tight, with none stripped or spinning.</li>
+      <li>The plate flat on the box, with no gap and no rock when pressed.</li>
+      <li>The box itself firm on the panel.</li>
+    </ul></div>
+  </div>
+
+  <p>A mount can pass one count and fail the other. A plate level and on its position with one screw missing is aligned and not fixed. A plate fixed tight and flat with TOP at the bottom is fixed and not aligned: the camera mounted on it will sit half a turn from its intended position.</p>
+
+  <h3>Measuring a position</h3>
+  <p>Positions on the drawing set are measured to the center of a box or bracket, in the x and y set out under &ldquo;Cutting a cable to length&rdquo;. A tape measure reaches an edge, not a center. Measure to both edges on the axis you are reading, the left and right edges for x and the bottom and top edges for y, and take the point halfway between them. For a 4 in square box whose left edge measures x 3 7/8 and right edge x 7 7/8, the center is at x 5 7/8. The same method finds the center of a bracket or a surface box, and the center line of a tube or a raceway. Read each edge to the nearest 1/8 in.</p>
+
+  <h3>Deviation and tolerance</h3>
+  <p>The <span class="keyterm">deviation</span> on each axis is the measured position minus the drawing&rsquo;s position, with its sign: plus is right or up, minus is left or down. A tolerance of 3/8 in accepts any deviation from &minus;3/8 to +3/8 in. A position with a deviation over the tolerance on either axis is a <span class="keyterm">position outside the tolerance</span>. Report it.</p>
+
+  <div class="calc">
+    <table>
+      <caption>Worked deviation for an element drawn at x 6, y 60, with a tolerance of 3/8 in.</caption>
+      <thead><tr><th scope="col">Axis: drawn, measured</th><th scope="col">Deviation</th></tr></thead>
+      <tbody>
+        <tr><td>x: drawn 6, measured 5 3/4</td><td class="n">&minus;1/4 in</td></tr>
+        <tr><td>y: drawn 60, measured 60 3/8</td><td class="n">+3/8 in</td></tr>
+        <tr class="tot"><td>Neither deviation is over 3/8 in</td><td class="n">within the tolerance</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>A deviation of exactly 3/8 in is within a tolerance of 3/8 in. A deviation of 1/2 in is not.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The center is halfway between the edges: x 14 1/2, halfway from 12 1/2 to 16 1/2, and y 19 7/8, halfway from 17 7/8 to 21 7/8. The deviations are x +1/2 in and y &minus;1/8 in, so the x deviation is over 3/8 in and the position is outside the tolerance. Option A misses the x deviation. Option C takes the bottom edge as the center. Option D takes the left edge as the center.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A 4 in square box is drawn centered at x 14, y 20, with a tolerance of 3/8 in. You measure its left and right edges at x 12 1/2 and x 16 1/2, and its bottom and top edges at y 17 7/8 and y 21 7/8. What do you report?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Within the tolerance on both axes</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Outside the tolerance: x +1/2 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Outside the tolerance: y &minus;2 1/8 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Outside the tolerance: x &minus;1 1/2 in</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.4" data-lesson-title="Rough-In, Surface Raceway and Handover" data-group-num="4" data-group-title="Recording and Handing Over" data-num="526.4.11" data-title="As built, open items, and the handoff note">
+  <p class="crumb">Lesson 526.4 &middot; Section 4 Recording and Handing Over</p>
+  <h2><span class="tnum">526.4.11</span> As built, open items, and the handoff note</h2>
+  <p class="lead-in">An as-built record gives each installed element&rsquo;s measured position beside its position on the drawing.</p>
+
+  <p>Each position is entered as measured, with its deviation and its sign. A position outside the tolerance is reported as it stands, not rounded onto the drawing.</p>
+
+  <h3>The handover hold point</h3>
+  <p>Owner&rsquo;s standard 27 05 00 4.3 makes the completed bay a hold point. At handover the installer presents the bay to the owner&rsquo;s representative. The presentation is not an inspection. After presenting, the installer makes no change to the bay. The representative then inspects the bay against the acceptance checks the work order lists. The representative records each change named at the presentation. The representative releases a bay when every check is met, or when each check not met has been corrected or entered as an open item.</p>
+  <p>Before presenting, the installer makes the same checks as a <span class="keyterm">self-inspection</span>, marking each one met, not met, or not applicable. &ldquo;Not applicable&rdquo; belongs only on a check that names bays other than yours. An acceptance check not met and not corrected is an <span class="keyterm">open item</span>. At the presentation, the installer names each position outside the tolerance and each open item.</p>
+
+  <h3>The handoff note</h3>
+  <p>The handoff note tells the next trades what they find at each item of the work area: what is installed, what is labeled, and what is left for them. It lists every position outside the tolerance and every open item, with what each needs. The examples below come from a ceiling access point at the Mercer Avenue Clinic.</p>
+
+  <p>Open each card.</p>
+  <div class="revealset gate"><div class="cards stack">
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">An item complete for the next trade</span><span class="rcard-sub">what is installed, what is labeled, and what is left</span><span class="rcard-detail" hidden><p>&ldquo;Access point bracket AP-3.07: installed on the ceiling grid and labeled. Left: the access point itself.&rdquo;</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">A cable left for termination</span><span class="rcard-sub">where its ends are and what they need</span><span class="rcard-detail" hidden><p>&ldquo;Cable 3A-PP02-007: run from AP-3.07 along the J-hook pathway, labeled at both ends, coiled at the telecommunications room, unterminated. Left: termination and test at both ends.&rdquo;</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">A position outside the tolerance</span><span class="rcard-sub">stated with its measured position and its deviation</span><span class="rcard-detail" hidden><p>&ldquo;AP-3.07 bracket: measured at x 59 in, y 132 in from the room&rsquo;s reference corner, against x 50 in, y 132 in on the ceiling plan; deviation x +9 in, where a grid tee is in the way. Position outside the tolerance; needs the designer&rsquo;s acceptance.&rdquo;</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">An open item</span><span class="rcard-sub">the check not met, and what it needs</span><span class="rcard-detail" hidden><p>&ldquo;Label missing from the AP-3.07 bracket. Open item; needs a printed label.&rdquo;</p></span></button>
+  </div></div>
+
+  <div class="cyu gate" data-answer="3" data-fb="An acceptance check not met is an open item, and the handoff note lists it with what it needs: here, a printed label for the surface box. Leaving it out hides it from the representative and the next trade. Marking the check met because the cables are labeled misstates the self-inspection: the box label is a separate requirement. A missing label is not a position outside the tolerance, which concerns where an element is.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">During your self-inspection you find that the label is missing from a surface box. Both ends of its cable are labeled, and there is no spare label at the wall. What goes in the handoff note?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Nothing: the cable labels identify the box</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The labels check marked met, because the cable is labeled</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A position outside the tolerance for the surface box</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>An open item: surface box label missing, needs a printed label</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.4" data-lesson-title="Rough-In, Surface Raceway and Handover" data-group-num="4" data-group-title="Recording and Handing Over" data-num="526.4.12" data-title="A daily report drafted with an AI assistant">
+  <p class="crumb">Lesson 526.4 &middot; Section 4 Recording and Handing Over</p>
+  <h2><span class="tnum">526.4.12</span> A daily report drafted with an AI assistant</h2>
+  <p class="lead-in">A daily report is the contractor&rsquo;s dated record of one day&rsquo;s work on site. Every statement in it comes from what the writer saw and noted that day.</p>
+
+  <p>The site lead, the project manager, and the owner read daily reports. When a dispute arises over a delay, a quantity, or an inspection, the parties read the reports again as evidence. Kestrel&rsquo;s daily report carries eight headings, set in the work order: date; project and location; work completed; materials used; inspections and hold points; problems and delays; safety; and work planned for the next day.</p>
+
+  <h3>Field notes come first</h3>
+  <p>The report is written from <span class="keyterm">field notes</span>: short entries made during the day, as things happen, with times, quantities, results, and problems. Notes written from memory at the end of the day often lose the times and the figures.</p>
+
+  <h3>What an AI assistant does with the notes</h3>
+  <p>An AI assistant such as Microsoft Copilot turns notes into sentences under the headings it is given. It writes the likeliest text for each heading. Likely text is not always text the notes support. Check its draft for four faults:</p>
+  <ul>
+    <li><strong>A fact added</strong> that is not in the notes: a quantity, a time, a test result, an inspection passed.</li>
+    <li><strong>A heading filled with a general statement</strong> where the notes say nothing, such as &ldquo;No safety incidents occurred.&rdquo;</li>
+    <li><strong>A fact dropped</strong>, often a problem or a delay.</li>
+    <li><strong>A meaning changed</strong>: an approximate figure stated as exact, a bay held stated as released.</li>
+  </ul>
+
+  <h3>The method</h3>
+  <ol>
+    <li>In one prompt, give the assistant your field notes and the headings, and ask for a daily report under those headings.</li>
+    <li>Keep your prompt as you sent it, and the assistant&rsquo;s whole draft as it was produced.</li>
+    <li>Read the draft one sentence at a time against your notes. Remove every fact the notes do not support. Add every fact from the notes that the draft left out.</li>
+    <li>Record each change you made and the reason for it.</li>
+  </ol>
+
+  <div class="figure">
+    <div class="cap">Field notes, Mercer Avenue Clinic (hypothetical)</div>
+    <p style="margin-bottom:0">Mar 10. Mercer Ave Clinic, Level 3 east wing, Rooms 3.14&ndash;3.16. Ran 6 cables, labeled both ends, coiled at telecom room TR 3A, not terminated. Used about 410 ft from carton 2. 3.15 bracket loose, refitted, about 15 min lost. 10:40 layout hold point inspected, released. Ladder inspected before use; glasses on all day. Tomorrow: surface raceway, Room 3.17.</p>
+  </div>
+
+  <div class="cyu gate" data-multi="true" data-answer="2,3" data-fb="C and D are not supported by the notes. The notes record no test, so &ldquo;passed testing&rdquo; is a fact the assistant added. The notes record a loose bracket and about 15 minutes lost, so &ldquo;no problems or delays&rdquo; drops a fact and states its opposite. A, B, E, and F each match a line of the notes; B keeps the notes&rsquo; &ldquo;about&rdquo; as &ldquo;approximately&rdquo;.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">An AI assistant drafted these sentences from the field notes above. Which sentences do you change before the report goes out?</p>
+    <p class="multi-note">Select all that apply, then submit.</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Six cables were run to Rooms 3.14 to 3.16, labeled at both ends, and left coiled and unterminated at TR 3A.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Approximately 410 ft of cable was used from carton 2.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>All six outlets passed testing.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>No problems or delays were encountered.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">E</span>The layout hold point was inspected and released at 10:40.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">F</span>Work planned for tomorrow: surface raceway in Room 3.17.</button>
+    <div class="btn-row"><button class="btn cyu-submit" type="button">Submit</button></div>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="526.4" data-lesson-title="Rough-In, Surface Raceway and Handover" data-group-num="5" data-group-title="Wrapping Up" data-num="526.4.13" data-title="What you covered">
+  <p class="crumb">Lesson 526.4 &middot; Section 5 Wrapping Up</p>
+  <h2><span class="tnum">526.4.13</span> What you covered</h2>
+  <p class="lead-in">Cut each cable to a calculated length, run it on its route, protect it where it bends or crosses an edge, label both ends, fix each mount where the drawing puts it, and hand the work area over with records that state what is there.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The lesson in one table.</caption>
+      <thead><tr>
+        <th scope="col">Work</th><th scope="col">What it takes</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Concealed cable</th><td>Fish tape up from the outlet opening, cable drawn down with no sag to a tie on a frame member; a flashlight check for screw points.</td></tr>
+        <tr><th scope="row">Protection</th><td>An inside bend radius of at least four cable diameters; split loom at the frame-top crossing; hook-and-loop ties pulled snug.</td></tr>
+        <tr><th scope="row">Length</th><td>Six parts, rounded up to the next whole foot; cut by the footage marks and labeled at the pull point.</td></tr>
+        <tr><th scope="row">Cable ends</th><td>Slack at the outlet, end taped; a machine-printed identifier within ~6 in of each end; the far end coiled and unterminated.</td></tr>
+        <tr><th scope="row">Surface drop</th><td>Base and cover cut to the span plus the entry allowance; base plumb, screwed to the screw rule; cable flat, clear of the lips; cover snapped on; end fitting at the top.</td></tr>
+        <tr><th scope="row">Camera mounting plate</th><td>Cover turned to the box&rsquo;s cover-screw holes; template at full size; holes drilled to the blank-cover card; TOP written before the template comes off; every hole deburred.</td></tr>
+        <tr><th scope="row">Inspecting a mount</th><td>Alignment: position, orientation, and level. Fixing: every screw present and tight, the plate flat. Deviation: the measured center minus the drawn position, with its sign.</td></tr>
+        <tr><th scope="row">Handover</th><td>As-built positions as measured; a self-inspection; a presentation, then the inspection; a handoff note with every position outside the tolerance and every open item.</td></tr>
+        <tr><th scope="row">Daily report</th><td>The AI draft checked sentence by sentence against the field notes. Unsupported facts out, omitted facts in, each change recorded with its reason.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete — continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again — this does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct>=90) msg.textContent='Outstanding — you are working at field-standard level and are ready for the lab.';
+      else if(pct>=75) msg.textContent='Strong work. Revisit anything you missed and you will be field-ready.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the cards and applied scenarios to close the gaps.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 526 (M06) - Construction Fundamentals for Low Voltage Technicians
+  Lesson 526.4 - Rough-In, Surface Raceway and Handover (Async Reading)
+  VERSION: v0.1.0  (2026-11-01)  DRAFT - review stopped after round 2
+
+  CHANGES IN v0.1.0
+  First issue. Built new for UCI 1019; no earlier version exists. Two review
+  rounds applied in place (file name kept); see REVIEW ROUNDS below.
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox) reused verbatim from
+  UCI-1019_M530_Lesson-530.1_Async-Reading_v1.0.6.html (itself verbatim from
+  UCI-2107.1_M529_Lesson-529.6_Async-Reading_v0.2.0.html), with the 2026 brand
+  layer and the .calc component sheet appended after it, both copied verbatim
+  from the same page. Logo: inline Slate SVG, copied from that page.
+
+  OBJECTIVES, one verb each, from module plan v0.1.0 section 3, Lesson 526.4.
+    Route     network cable through a wall cavity to a flush outlet   6.7.1-6.7.3
+    Protect   cable entries and edges                                  6.7.2, 6.10.3
+    Leave     service slack and identify both ends of a cable          6.7.4, 6.10.4
+    Install   a surface raceway drop with its box, fittings, and cover 6.10.1-6.10.5
+    Mount     a camera mounting plate from the manufacturer's template 6.5.2
+    Inspect   the alignment and fixing of a mount                      6.5.5
+    Record    a work area as built and hand it over                    6.7.5, 6.8.4-6.8.6
+    Write     a daily report with an AI assistant, recording what the
+              AI produced and what you changed                         6.8.4 (AI)
+  Objectives restored to the plan wording on 2026-11-01 (serial comma only), as for the other three readings. Serial comma used throughout.
+
+  TOPIC OUTLINE (cutting moved ahead of fishing in round 2, to follow the
+  work order's order)
+    Section 1  Concealed Cable in a Wall Cavity
+      526.4.1   Where rough-in ends                         entry point; 6.7
+      526.4.2   Cutting a cable to length                   6.7.4 (length)
+      526.4.3   Drawing a cable through a closed wall       6.7.1-6.7.3
+      526.4.4   Protecting entries, edges, and the jacket   6.7.2, 6.10.3
+      526.4.5   Slack and identification at both ends       6.7.4, 6.10.4
+    Section 2  Surface Raceway
+      526.4.6   Cable on the face of a wall                 6.10.1
+      526.4.7   Cutting the raceway and planning its screws 6.10.2
+      526.4.8   Laying the cable and closing the raceway    6.10.3-6.10.5
+    Section 3  The Camera Mounting Plate
+      526.4.9   Drilling a plate from a manufacturer's template   6.5.2
+      526.4.10  Inspecting the alignment and fixing of a mount    6.5.5
+    Section 4  Recording and Handing Over
+      526.4.11  As built, open items, and the handoff note  6.7.5, 6.8.5-6.8.6
+      526.4.12  A daily report drafted with an AI assistant 6.8.4 (AI)
+    Section 5  Wrapping Up
+      526.4.13  What you covered                            summary
+
+  ACTIVITY GATES: 17 - 3 card sets, 10 single-answer checks, 2 multiple-answer
+    checks, 1 matching, 1 acknowledgement (counted as on the 530.1 page).
+  DIAGRAMS: 4 original SVG, each with a full text description (cavity section;
+    six parts of one run; screw plan on the example wall; example template on a
+    blank cover). No images; no images/ folder.
+  READING TIME: ~85-95 min, stated in the overview (changed from ~60-75 on 2026-11-01). audit_html.py counts 8,228
+    words of prose (~73 min at its 112 wpm), including feedback strings and
+    text descriptions. The released 530 pages run 7,068-7,786. Word-count
+    estimate only; not timed with a reader.
+
+  CHECK QUESTIONS AND WORKED EXAMPLES (for the quiz writer: no graded quiz item
+  may repeat one of these)
+    526.4.1  Cards: cavity, fish tape, footage marks, slack, service loop, hold point.
+    526.4.1  CYU: state a concealed cable is left in at rough-in (B).
+    526.4.2  Worked: Mercer Avenue Clinic run, six parts summed and rounded up;
+             cut by footage marks counting down.
+    526.4.2  CYU: six parts total 47 ft 7 in, marks counting up from 327 -
+             end mark 375 (A).
+    526.4.3  Method: fish tape pushed up from the outlet opening, unlabeled end
+             taped to it, cable drawn down.
+    526.4.3  CYU: screw point resting on the cable - report the contact and
+             where (D).
+    526.4.4  Worked: bend radius for a 0.30 in cable = 1.2 in.
+    526.4.4  Matching: five damage sources to five protective practices.
+    526.4.4  CYU: minimum installed bend radius for a 0.22 in cable (D).
+    526.4.5  CYU (multi): which of five labels for W2-2R-D1 pass (A, E).
+    526.4.6  Cards: base, cover, box of the same series, end fitting, elbows and
+             couplings.
+    526.4.6  CYU: which takes surface raceway - block wall in an occupied
+             office (C).
+    526.4.7  Worked: example wall 96 in high, joint y 48, box top y 14 - cut
+             length and a six-screw plan.
+    526.4.7  CYU: which of four screw plans meets the rule on an 80 in wall (A).
+    526.4.8  CYU: cable flattened halfway up the run - lay across a lip (A).
+    526.4.9  Method: cover turned to the camera box's screw corners before the
+             template is placed.
+    526.4.9  CYU: template prints short of its printed dimension - do not drill,
+             have it reprinted at 100% (C).
+    526.4.10 Worked: center halfway between two edges; deviation for an element
+             drawn x 6, y 60 - within the tolerance.
+    526.4.10 CYU: 4 in box drawn x 14, y 20, both edges given - outside, x (B).
+    526.4.11 Cards: four handoff-note entries for access point AP-3.07 and its
+             cable, Mercer Avenue Clinic (measured position and signed deviation).
+    526.4.11 CYU: missing surface box label - open item (D).
+    526.4.12 Field notes, Mercer Avenue Clinic, Mar 10.
+    526.4.12 CYU (multi): AI draft sentences to change (C, D).
+    526.4.13 Summary table: nine rows, one per piece of work.
+  Answer positions (single): A x3, B x2, C x2, D x3; multi 0,4 and 2,3.
+
+  BUILD NOTES - what is asserted, and what is not
+  - No graded lab answer appears on the page. Every number on the page was
+    checked against the ALAB 526.4.1 Rough-In Inspection Sheet, the ALAB
+    526.4.2 Surface Drop Inspection Sheet, the ALAB 526.4.3 Handover and Key
+    Sheet, and the ALAB 526.4.2 lab's own worked example: no match for any
+    graded position, length, cut, screw point or total. Two no-screw band
+    limits on walls that are not the mock-up share a number with a key
+    value; both are band edges, not positions or screw points. The worked
+    examples use the hypothetical Mercer Avenue Clinic and example walls.
+  - Mock-up values stated on the page are rules the learner already holds in
+    the work orders: the screw rule (4 in, 16 in, 2 in), the 3/8 in
+    tolerance, the ~6 in label distance. The owner's slack, drop and loop
+    figures are not stated; the page points to 27 05 00 4.7 and the work order.
+  - Owner's standard clauses cited: 27 05 00 4.3, 4.4, 4.5, 4.6, 4.7, 4.8;
+    27 05 53 2.1, 2.2; 27 15 00 3.1. Drawing set: TW-301 detail 6, TW-401
+    note 5 (stated only as far as the note goes).
+  - ANSI/TIA-568 claims: installed four-pair U/UTP minimum inside bend
+    radius 4 x outside diameter; patch cord 1 x (feedback only); pulling
+    tension 25 lbf (110 N); no splices in horizontal cabling. From general
+    knowledge of ANSI/TIA-568.2-D and 568.1-D; not checked against a
+    purchased copy. No clause numbers cited.
+  - Plate method follows ALAB 526.4.3 Step 2 and KC-2617 as revised: the
+    cover is turned to C1's screw corners before the template is placed;
+    TOP is written before the template comes off; deburring follows.
+  - Handover follows KC-2617 and ALAB 526.4.3: the walk is a presentation
+    only; no change after presenting; the inspection follows the walk.
+  - Kestrel daily-report headings from KC-2617 project facts. Microsoft
+    Copilot named as an example AI assistant (the lab uses it).
+
+  CONFLICTS FOUND, NOT RESOLVED HERE
+  - Resolved: the ALAB 526.4.1 bend criterion now reads "~2 in across (an
+    inside radius of four times the cable's diameter)", which agrees with the
+    TIA rule taught here.
+  - KC-2616 and ALAB 526.4.2 attribute the 4 in end limit to the work order;
+    owner's standard 4.8 says only "1 at each end". The page follows the lab.
+
+  OPEN, AND NOT RESOLVED HERE
+  - Not opened in a browser. Checked with audit_html.py and contrast_audit.py
+    and by reading the source.
+  - Engine score messages unchanged; this page has no score ring.
+  - The MIR acronym is expanded and used once more in the same paragraph.
+
+  REVIEW ROUNDS
+  - Round 1 (LP1 48 + 5 structural; CR1 16), applied with the coordinator's
+    rulings: coordinates and panel field defined at first use; run to the top
+    of the panel field; centers from both edges; blank-cover and raceway
+    product cards; "n/a" rule; documents and work order defined; carton for
+    the cable's packaging; labels within ~6 in; frame-fastener clause 4.5;
+    one verb for the cover (snaps on). Skipped: LP 8 (plan objective wording
+    held), LP 44(c) ("items" as in KC-2617), LP S4 (17 activities, counted as
+    on the 530.1 page).
+  - Round 2 (LP2 37 + 3 structural; CR2 15: 1 blocking, 4 should fix, 10
+    minor), applied with the coordinator's rulings: plate orientation to the
+    camera box's screw corners, with the reason (blocking); cutting topic
+    moved ahead of fishing, with labeling at the cut; handover as a
+    presentation, inspection after; handoff example with measured position
+    and signed deviation; blank-cover card sentence split to match its count
+    and moved before the figure; eye and hearing protection before the
+    drilling steps; panel field defined before the six-part table; elements
+    C1, D1, D2, D3, cable ladder, MIR and patch panel defined in 526.4.1;
+    "cable carton, the 1,000 ft box the cable is supplied in"; instructor
+    prints and checks the template; a tie is not a fastener; TW-401 note 5
+    stated as written; footage check re-cut to 47 ft 7 in; keep the prompt;
+    hold point names the camera's EMT pathway; band rule stated as "less than
+    2 in" / "between". LP2 wording findings applied, except: LP2 #2 reworded
+    to "Product figures in the worked examples" (the page no longer gives a
+    raceway dimension or drill size); #27 and #35 superseded by CR2 #4 and
+    the coordinator's handoff ruling; #31 kept the defined term ("is a
+    position outside the tolerance") rather than delete it. Key values
+    removed from this comment. Length: overview paragraph 2, the template
+    list, the summary rows and four feedback strings shortened. Review
+    stopped after this round.
+
+  AUDITS (v0.1.0, after review round 2)
+  - audit_html.py: FAIL (0), WARN (0); 8,228 words of prose (~73 min).
+  - contrast_audit.py as written: FAIL (1), the engine rule
+    .order .step.picked .seq scored against the legacy amber token (the tool
+    keeps the first token definition); the brand layer overrides it, and this
+    page has no ordering activity. With later token definitions winning:
+    FAIL (0). REPORT (83) lines are unresolvable containers.
+  - Engine style and script blocks byte-identical to the 530.1 v1.0.6 page.
+  2026-11-01: stated lesson time changed from ~60-75 min to ~85-95 min (prose ~73 min by audit_html.py plus 17 activities).
+- 2026-11-01 (round 4): post-review check fixes (F3-3, F3-19); not re-reviewed.
+- 2026-11-02: drawing set Rev 2 (measured: panels 60 × 80 cm, 23 5/8 × 31 1/2 in; four screws 2 1/2 in from the sides and 5/8 in from top and bottom; 5/8 in rail gap; floor 6 7/8 in). Not re-reviewed. Here: 'panel bolt' -> 'panel screw' (4 places).
+- 2026-11-02 (Eldad): 'makes or records' aligned to 'records' (526.4.9 handover paragraph). Not re-reviewed.
+- 2026-11-02: Rev 2 review fixes (LP1 Rev2, CHK Rev2) applied. Not re-reviewed.
+- 2026-11-03: 'taut' removed (5 places in text, figure label and long description, CYU stem, option A and feedback, summary table) to match ALAB 526.4.1 Step 5: no sag in the cavity, a gentle curve behind the outlet bracket, not pulled tight against it. Not re-reviewed.
+- 2026-11-06: 3/4 in EMT standard (JTA owner; Eldad) and C1 = 4 in round weatherproof box (WRB575G) with a 3/4 in compression connector into its top hub. Planning/UCI-1019_M526_EMT-3-4-and-C1-Change-Table_v0.1.0_DRAFT.md governs. Not re-reviewed.
+- 2026-11-06: confirmation-round fixes applied (CF EMT-3-4-and-C1). Not re-reviewed.
+-->
+
+</body>
+</html>
