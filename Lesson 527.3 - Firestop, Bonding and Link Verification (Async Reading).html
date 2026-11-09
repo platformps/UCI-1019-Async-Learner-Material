@@ -1,0 +1,2355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 527 (M07) - Structured Cabling Techniques and Troubleshooting
+  Lesson 527.3 - Firestop, Bonding and Link Verification (Async Reading)
+  VERSION: v0.1.0  (2026-11-08)  DRAFT - for review
+
+  CHANGES IN v0.1.0
+  First issue. Built new for UCI 1019; no earlier version exists.
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox) reused verbatim from
+  UCI-1019_M526_Lesson-526.1_Async-Reading_v0.1.0_DRAFT.html, which carries
+  the engine of UCI-2107.1_M529_Lesson-529.6_Async-Reading_v0.2.0.html.
+  Appended after it, unchanged from that page: the 2026 brand layer
+  (FORMAT-SPEC_Async-Reading_2026-Addendum_v0.1.0_DRAFT.md section 3) and the
+  .calc component sheet. Appended new: a .cli console sheet recoloured to the
+  2026 palette (structure as the 2107.1 Module 529 .cli sheet; Slate title
+  bar with White text, Slate output on White, Plum command, Cloud read-back
+  strip). Logo: inline Slate SVG.
+
+  OBJECTIVES, one verb each, from the module plan v0.1.0 section 3,
+  Lesson 527.3 (learner-facing wording, word for word).
+    Identify     the limits of a training firestop assembly       7.8.1
+    Install      a firestop system to its listed instructions
+                 and inspect it                                   7.8.2, 7.8.3, 7.8.6
+    Install      a rack bond to the busbar and verify it          7.8.4, 7.8.5, 7.8.6
+    Connect      a laptop to the network through your link        7.5.1-7.5.3
+    Verify       reachability with ping and traceroute            7.5.3, 7.5.4
+    Distinguish  a cabling fault from a network or service fault  7.5.5
+    Record       the topology, commands, and results              7.5.6
+  Two objectives carry two verbs, as the labs and the plan state them
+  (plan section 3, marked there and held for Eldad).
+
+  TOPIC OUTLINE
+    Section 1  Firestopping a Penetration
+      527.3.1   Rated walls and the openings in them       entry point; Install (firestop)
+      527.3.2   Listed systems and the system drawing     Install (firestop)
+      527.3.3   What a training penetration shows         Identify
+      527.3.4   Packing putty and inspecting it           Install and inspect
+    Section 2  Bonding the Rack
+      527.3.5   The bonding network in a telecommunications room   Install (bond)
+      527.3.6   Crimping, landing, and torquing a bond    Install (bond)
+      527.3.7   Measuring a bond                          verify (bond)
+    Section 3  Proving a Link on the Network
+      527.3.8   From the outlet to the switch             Connect
+      527.3.9   What the laptop reports                   Connect
+      527.3.10  Ping and trace                            Verify
+      527.3.11  Cabling or network                        Distinguish
+      527.3.12  Recording the path and the results        Record
+    Section 4  Wrapping Up
+      527.3.13  What you covered                          summary
+
+  ACTIVITY GATES: 15 - 12 single-answer checks, 1 reveal-card set,
+    1 matching, 1 acknowledgement.
+  DIAGRAMS: 3 original SVG, each with a full text description (sleeved
+    penetration sealed at both ends; bonding chain and racks; the path from
+    a laptop to a trace target with what each check covers).
+  IMAGES: none.
+
+  Build flags, decisions, assumptions, the list of every check question and
+  worked example, and the audit results are in the BUILD FLAGS comment at the
+  end of this file.
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 527.3 - Firestop, Bonding and Link Verification &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+<style>
+  /* Console transcript component sheet, recoloured to the 2026 palette.
+     Structure as the .cli sheet of the 2107.1 Module 529 pages; appended
+     after the brand layer. Slate title bar with White text (14.7:1), Slate
+     output on White, Plum command, #5A5D66 prompt (6.6:1), Cloud read-back
+     strip with Slate text (12.9:1). */
+  .cli{background:#FFFFFF;border:1.6px solid #26282E;border-radius:8px;margin:18px 0;overflow:hidden}
+  .cli .cli-ttl{background:#26282E;color:#FFFFFF;font-weight:700;font-size:.95rem;padding:9px 14px}
+  .cli .cli-body{overflow-x:auto;padding:12px 14px;background:#FFFFFF}
+  .cli pre{margin:0;min-width:520px;color:#26282E;background:#FFFFFF;
+    font-family:Consolas,ui-monospace,"Liberation Mono",monospace;font-size:.92rem;line-height:1.7}
+  .cli .pr{color:#5A5D66;background:#FFFFFF}
+  .cli .cmd{color:#611940;background:#FFFFFF;font-weight:700}
+  .cli .out{color:#26282E;background:#FFFFFF}
+  .cli .cli-foot{border-top:1px solid #D4D5D8;padding:10px 14px;color:#26282E;font-size:.95rem;background:#F0F0F0}
+  .cli .cli-foot p{margin:0 0 6px}
+  .cli .cli-foot p:last-child{margin-bottom:0}
+  .cli .cli-foot ul{margin:0;padding-left:20px}
+  .cli .cli-foot li{margin:4px 0}
+  .cli .cli-foot code{background:#FFFFFF;color:#26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Structured Cabling</b> &middot; Lesson 527.3 - Firestop, Bonding and Link Verification</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Structured Cabling Techniques and Troubleshooting</p>
+      <h2 id="ovh" tabindex="-1">Lesson 527.3 - Firestop, Bonding and Link Verification</h2>
+      <p class="lead-in">How an installer seals a cable bundle where it passes through a fire-rated wall, bonds a rack to the room&rsquo;s busbar, and proves from a work-area outlet that a link carries traffic on the owner&rsquo;s network.</p>
+
+      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. On Level 2, every cable bundle that crosses the rated corridor wall runs through a steel sleeve. Every rack in telecommunications room 2A is bonded to the room&rsquo;s busbar. Before production work starts, the owner, Calder Regional Services, accepts Kestrel&rsquo;s methods on an installation mock-up: five training walls, each cabled to its own patch panel in a Mobile Infrastructure Rack (MIR).</p>
+
+      <p>The owner&rsquo;s representative watches each installer seal a sleeve and land a bond on bench fixtures. Calder&rsquo;s network team sets up a switch in the MIR for each Kestrel team. The representative then asks for proof, from a laptop plugged into an outlet, that the link reaches the network. D. Okafor, the Kestrel site lead, issues the work orders for the bench work and the network proof.</p>
+
+      <p>The worked examples on this page come from other jobs and other networks, not from the mock-up&rsquo;s fixtures, product data, or network.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>Firestopping a Penetration.</b> Rated walls, listed firestop systems, the limits of a training penetration, and packing and inspecting putty.</li>
+        <li><b>Bonding the Rack.</b> The bonding network in a building, the crimped and bolted bond, and measuring it with a multimeter.</li>
+        <li><b>Proving a Link on the Network.</b> The path from an outlet to the switch, the laptop&rsquo;s link and address, ping and trace, telling a cabling fault from a network fault, and the record.</li>
+        <li><b>Wrapping Up.</b> A summary of each section.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>4</b><span>Sections</span></div>
+        <div class="ov-stat"><b>13</b><span>Topics</span></div>
+        <div class="ov-stat"><b>15</b><span>Activities</span></div>
+        <div class="ov-stat"><b>3</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the documents and the equipment</h3>
+      <p>The owner&rsquo;s <strong>Telecommunications Design and Installation Standard, mock-up edition</strong>, numbers its clauses by section, for example 27 05 26 2.4. Its <strong>cabling addendum</strong> adds clauses A1 to A10. Sheet <strong>T-501</strong> of the project&rsquo;s telecommunications plan set holds the firestop schedule, which matches each penetration to the firestop system that seals it, and the rack bonding detail. All three are fictional documents written for the project. Where this page states what a clause requires, the requirement comes from the owner&rsquo;s documents, not from a published code, unless the page names the code.</p>
+      <p>Product figures such as a putty depth, a torque value, or a crimp pattern come from the manufacturer of the product in use. This page gives none of them.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or go to any topic
+         from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks&mdash;a
+         knowledge check, a set of cards to open, or a matching exercise.
+         Getting a knowledge check wrong never blocks you: the page shows the answer
+         and lets you try again. The lesson takes ~60&ndash;75 min, including the activities.
+         The header and the contents list show your progress through the lesson.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching activity every item is
+         a button, and a screen reader announces each selection as you make it. The page labels right and wrong answers
+         in words as well as by color. Each diagram carries a full text
+         description. Each table has column headings and a caption.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 527.3</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="527.3" data-lesson-title="Firestop, Bonding and Link Verification" data-group-num="1" data-group-title="Firestopping a Penetration" data-num="527.3.1" data-title="Rated walls and the openings in them">
+  <p class="crumb">Lesson 527.3 &middot; Section 1 Firestopping a Penetration</p>
+  <h2><span class="tnum">527.3.1</span> Rated walls and the openings in them</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 527.3</span>
+    <h3>Firestop, Bonding and Link Verification</h3>
+    <p>Three tasks close the cabling of a work area: sealing the sleeve where the cables cross a fire-rated wall, bonding the rack to the room&rsquo;s busbar, and connecting a laptop at an outlet to show that the link reaches the network. Sections 1 to 3 cover the tasks in that order.</p>
+    <p class="lb-meta"><b>4</b> sections &nbsp;&middot;&nbsp;
+       <b>13</b> topics &nbsp;&middot;&nbsp;
+       <b>15</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 527.3 you will be able to</div>
+    <ul>
+      <li><b>Identify</b> the limits of a training firestop assembly.</li>
+      <li><b>Install</b> a firestop system to its listed instructions and inspect it.</li>
+      <li><b>Install</b> a rack bond to the busbar and verify it.</li>
+      <li><b>Connect</b> a laptop to the network through your installed link.</li>
+      <li><b>Verify</b> reachability with ping and traceroute.</li>
+      <li><b>Distinguish</b> a cabling fault from a network or service fault.</li>
+      <li><b>Record</b> the topology, commands, and results.</li>
+    </ul></div>
+
+  <p class="lead-in">Where a cable bundle passes through a fire-rated wall, the installer seals the opening with a tested firestop system.</p>
+
+  <p>A <span class="keyterm">fire-rated assembly</span> is a wall or floor built and tested to hold back fire for a stated time, such as one hour. Each opening cut through it for a pipe, a duct, or a cable bundle is a <span class="keyterm">penetration</span>. An open penetration lets flame and hot gases through the wall. An unsealed sleeve does the same once the cable jackets in it burn away.</p>
+
+  <p>The National Electrical Code (NFPA 70) requires the openings around cables that pass through fire-rated walls and floors to be firestopped by approved methods that keep the assembly&rsquo;s rating (section 800.26 in the 2023 edition, the edition adopted for this project). The <span class="keyterm">authority having jurisdiction</span> (AHJ) is the official who enforces the codes on a project, such as the building or fire inspector.</p>
+
+  <h3>What the owner&rsquo;s standard requires</h3>
+  <p>Clause 27 05 28 3.4 of the owner&rsquo;s standard sets the project&rsquo;s rule for every penetration of a fire-rated wall or floor:</p>
+  <ul>
+    <li>a sleeve where the drawings show one;</li>
+    <li>the firestop system scheduled on sheet T-501, installed to the manufacturer&rsquo;s listed system drawing;</li>
+    <li>a label on each side giving the system number, the installer, and the date;</li>
+    <li>a photograph before the penetration is concealed;</li>
+    <li>inspection by the AHJ before the ceiling is closed;</li>
+    <li>the firestop restored the same day wherever cable is added through an existing penetration.</li>
+  </ul>
+  <p>The drawings say which walls are rated. From the corridor, a rated gypsum wall and a non-rated partition can look the same. On Level 2 of the Harlow Street project, the corridor wall is rated for one hour. The firestop schedule on T-501 tags its sleeved cable penetrations FS-1.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="Only the bundle through the one-hour corridor wall passes through a fire-rated assembly, so only that opening takes a listed firestop system. The office partition is not rated. Cables in J-hooks above a ceiling cross no wall. Cables passing over the top of a partition that stops at the ceiling make no opening in it.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a clinic renovation, the drawings show a one-hour corridor wall and non-rated office partitions. Which of these openings must be sealed with a listed firestop system?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>A hole drilled through a non-rated office partition for two cables</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Cables supported on J-hooks above the ceiling of a single office</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A steel sleeve carrying a cable bundle through the one-hour corridor wall</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Cables passing over the top of an office partition that stops at the ceiling</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.3" data-lesson-title="Firestop, Bonding and Link Verification" data-group-num="1" data-group-title="Firestopping a Penetration" data-num="527.3.2" data-title="Listed systems and the system drawing">
+  <p class="crumb">Lesson 527.3 &middot; Section 1 Firestopping a Penetration</p>
+  <h2><span class="tnum">527.3.2</span> Listed systems and the system drawing</h2>
+  <p class="lead-in">A firestop system keeps its rating only when it is installed as it was tested. The listing records what was tested.</p>
+
+  <p>A <span class="keyterm">firestop system</span> is a tested combination: the wall or floor construction, the penetrating item, the sleeve where one is used, how much of the opening the item fills, and the firestop product with its quantity. A testing laboratory fire-tests the whole combination to the fire-test standard UL 1479 or ASTM E814 and publishes it as a <span class="keyterm">listed system</span>, with a <span class="keyterm">system number</span> and a <span class="keyterm">system drawing</span>.</p>
+
+  <p>The test gives the system an <span class="keyterm">F rating</span>: the time, in hours, for which it kept flame from passing through the opening. On sheet T-501, tag FS-1 is a cable bundle in a steel sleeve through a one-hour gypsum wall, sealed with a system in the W-L-3000 series that has an F rating of one hour.</p>
+
+  <h3>Reading a system number</h3>
+  <p>Read a UL system number part by part, from left to right.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>How the parts of a UL through-penetration system number are read.</caption>
+      <thead><tr>
+        <th scope="col">Part</th><th scope="col">Letter or series</th><th scope="col">Meaning</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">First letter</th><td>F, W, or C</td><td>Floor, wall, or both floors and walls</td></tr>
+        <tr><th scope="row">Second letter</th><td>A or B; J; L</td><td>Concrete floor; concrete wall or masonry wall; framed wall, such as gypsum board on studs</td></tr>
+        <tr><th scope="row">Number series</th><td>1000; 2000; 3000; 4000</td><td>Metallic pipe or conduit; non-metallic pipe; cables; cable tray</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>UL uses further letters and series for other constructions and penetrating items.</p>
+
+  <h3>What the system drawing sets</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The conditions a listed system drawing sets for a sleeved cable penetration.</caption>
+      <thead><tr>
+        <th scope="col">Condition</th><th scope="col">What the drawing states</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Construction</th><td>The wall or floor type, its thickness, and its rating</td></tr>
+        <tr><th scope="row">Penetrating item</th><td>The cable types allowed, and the largest bundle or cable size</td></tr>
+        <tr><th scope="row">Sleeve</th><td>Its material, its largest diameter, and how far it may project from each face</td></tr>
+        <tr><th scope="row">Fill</th><td>How much of the sleeve&rsquo;s cross-section the cables may occupy</td></tr>
+        <tr><th scope="row">Product</th><td>The firestop product by name, and the depth or quantity at each end of the sleeve</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The manufacturer&rsquo;s installation instructions give the method: how to pack the product, how to finish its face, and which conditions to check before starting. A note on T-501 requires the contractor to submit the manufacturer&rsquo;s listed system drawing for each tag before installation.</p>
+
+  <h3>Where no listed system fits</h3>
+  <p>Where a penetration on site does not match the conditions of the scheduled system, the installer does not seal it to the nearest drawing. The contractor reports the difference in writing, as a request for information (RFI), and waits for the answer before sealing the penetration (owner&rsquo;s standard 27 05 00 1.1 and 1.2). The answer may name another listed system, or a written engineering judgment from the firestop manufacturer that the AHJ accepts.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="W is a wall, L a framed wall such as gypsum board on studs, and the 1000 series covers metallic pipe or conduit. A cable bundle is the 3000 series. A floor system starts with F, and a concrete or masonry wall takes the second letter J.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A schedule tags a penetration with a system in the W-L-1000 series. What does the system seal?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>A metallic pipe or conduit through a framed wall</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A cable bundle through a framed wall</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A metallic pipe or conduit through a concrete floor</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A metallic pipe or conduit through a masonry wall</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.3" data-lesson-title="Firestop, Bonding and Link Verification" data-group-num="1" data-group-title="Firestopping a Penetration" data-num="527.3.3" data-title="What a training penetration shows">
+  <p class="crumb">Lesson 527.3 &middot; Section 1 Firestopping a Penetration</p>
+  <h2><span class="tnum">527.3.3</span> What a training penetration shows</h2>
+  <p class="lead-in">A penetration built on a bench shows how the installer works. It does not show that the installation would hold back fire.</p>
+
+  <p>A <span class="keyterm">training penetration</span> is a board with a short steel sleeve set through it and a bundle of cable offcuts through the sleeve. It stands for a sleeved penetration of a rated wall. The board is not a tested wall or floor construction. No listed system covers it, so putty packed into its sleeve carries no fire rating.</p>
+
+  <p>A listed system&rsquo;s rating depends on every condition of its drawing at once. Change one, and the installation is no longer the system that was tested. Open each card for a change that takes a penetration outside its listing.</p>
+
+  <div class="revealset gate"><div class="cards stack">
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">A different wall</span><span class="rcard-sub">the construction does not match</span><span class="rcard-detail" hidden><p>A system tested in a framed gypsum wall says nothing about the same sleeve and putty in a masonry wall, or in a board on a bench. The construction carries part of the rating.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">More cables</span><span class="rcard-sub">the fill exceeds the drawing</span><span class="rcard-detail" hidden><p>A fuller sleeve leaves less room for the product and puts more combustible material in the opening. Where cables are added after the firestop is installed, the installer checks the new fill against the drawing before restoring the firestop.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">A different sleeve</span><span class="rcard-sub">material, diameter, or projection</span><span class="rcard-detail" hidden><p>A larger sleeve, a sleeve of another material, or a sleeve cut flush where the drawing calls for a projection is a condition the test did not cover.</p></span></button>
+    <button class="rcard" aria-expanded="false"><span class="rcard-ttl">A different product or depth</span><span class="rcard-sub">the seal itself</span><span class="rcard-detail" hidden><p>Another manufacturer&rsquo;s putty, or the right putty packed shallower than the drawing&rsquo;s depth, was not tested. Two products with similar names can belong to different systems.</p></span></button>
+  </div></div>
+
+  <h3>What the bench work does show</h3>
+  <p>A bench penetration shows whether the installer reads the system drawing, checks the penetration against its conditions, packs the product to the stated depth with no void, labels both sides, and stops for inspection. An inspector checks a production penetration in the same way.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="Clause 27 05 28 3.4 requires the firestop to be restored the same day wherever cable is added through an existing penetration. The added cables change the fill, so the installer checks the fill against the system drawing before sealing again, and raises an RFI if the sleeve is now fuller than the drawing allows. The existing putty was installed for the old fill. A label written by the first installer does not cover the new work. Waiting for the next AHJ visit leaves the sleeve open past the end of the day.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">An installer pulls four more cables through a firestopped sleeve in a rated wall. What does the owner&rsquo;s standard, with the system drawing, require next?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Nothing: the existing putty still seals the sleeve</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A new label beside the old one, giving the date of the added cables</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Leave the sleeve open until the AHJ next inspects the level</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Check the new fill against the system drawing and restore the firestop the same day</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.3" data-lesson-title="Firestop, Bonding and Link Verification" data-group-num="1" data-group-title="Firestopping a Penetration" data-num="527.3.4" data-title="Packing putty and inspecting it">
+  <p class="crumb">Lesson 527.3 &middot; Section 1 Firestopping a Penetration</p>
+  <h2><span class="tnum">527.3.4</span> Packing putty and inspecting it</h2>
+  <p class="lead-in">The installer packs putty into each end of the sleeve to the depth on the system drawing. The inspector checks depth, contact, and labels on both sides.</p>
+
+  <p>An <span class="keyterm">intumescent putty</span> is a moldable firestop compound that expands when heated. In a fire it swells into the space the burning cable jackets leave. Putty stays soft after installation, so the installer can remove it and pack it again when cables are added. Some firestop sealants cure hard instead; to add a cable, the installer cuts the cured sealant out.</p>
+
+  <p>Read the product&rsquo;s safety data sheet before handling it. It states whether gloves are required.</p>
+
+  <h3>Before packing: check the conditions</h3>
+  <p>Read the system number, the conditions, and the putty depth from the system drawing. Compare each condition with the penetration in front of you, and record for each one whether the penetration meets it. Where a condition is not met, stop and report it. Packing putty does not bring a penetration within a listing it does not match.</p>
+
+  <h3>Packing each end</h3>
+  <ol>
+    <li>Press putty into one end of the sleeve, around and between the cables, until it reaches the depth on the drawing.</li>
+    <li>Work it against the inside of the sleeve and against every cable jacket, leaving no gap or void at the face of the putty. Keep the cables where they lie in the sleeve.</li>
+    <li>Finish the face of the putty as the manufacturer&rsquo;s instructions describe.</li>
+    <li>Repeat at the other end. Sheet T-501, detail 2, shows putty or sealant on both sides of the wall.</li>
+    <li>Fix a label on each side, beside the sleeve, giving the system number, your name as the installer, and the date.</li>
+  </ol>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; A sleeved cable penetration, sealed at both ends</div>
+    <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 380" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Section through a fire-rated wall with a steel sleeve, a cable bundle through it, and putty packed into each end to the depth on the system drawing, with a label on each face of the wall. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">A sleeved cable penetration, sealed at both ends</text>
+    <rect x="400" y="60" width="140" height="270" fill="#F0F0F0" stroke="#A4262C" stroke-width="2.4"/>
+    <text x="404" y="354" font-size="14" font-weight="700" fill="#A4262C">Fire-rated wall</text>
+    <rect x="350" y="165" width="240" height="60" fill="#FFFFFF" stroke="#26282E" stroke-width="2.4"/>
+    <rect x="351" y="166" width="55" height="58" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="534" y="166" width="55" height="58" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="180" y1="180" x2="760" y2="180" stroke="#26282E" stroke-width="2"/>
+    <line x1="180" y1="190" x2="760" y2="190" stroke="#26282E" stroke-width="2"/>
+    <line x1="180" y1="200" x2="760" y2="200" stroke="#26282E" stroke-width="2"/>
+    <line x1="180" y1="210" x2="760" y2="210" stroke="#26282E" stroke-width="2"/>
+    <line x1="351" y1="148" x2="406" y2="148" stroke="#611940" stroke-width="1.6"/>
+    <line x1="351" y1="140" x2="351" y2="156" stroke="#611940" stroke-width="1.6"/>
+    <line x1="406" y1="140" x2="406" y2="156" stroke="#611940" stroke-width="1.6"/>
+    <text x="24" y="128" font-size="14" fill="#611940">Putty depth, from the system drawing</text>
+    <line x1="270" y1="133" x2="370" y2="146" stroke="#611940" stroke-width="1.2"/>
+    <line x1="534" y1="148" x2="589" y2="148" stroke="#611940" stroke-width="1.6"/>
+    <line x1="534" y1="140" x2="534" y2="156" stroke="#611940" stroke-width="1.6"/>
+    <line x1="589" y1="140" x2="589" y2="156" stroke="#611940" stroke-width="1.6"/>
+    <text x="620" y="128" font-size="14" fill="#611940">The same depth at the other end</text>
+    <line x1="660" y1="133" x2="575" y2="146" stroke="#611940" stroke-width="1.2"/>
+    <text x="620" y="100" font-size="14" fill="#26282E">Steel sleeve</text>
+    <line x1="640" y1="106" x2="585" y2="164" stroke="#26282E" stroke-width="1.2"/>
+    <text x="780" y="200" font-size="14" fill="#26282E">Cable bundle</text>
+    <rect x="394" y="250" width="6" height="40" fill="#611940"/>
+    <rect x="540" y="250" width="6" height="40" fill="#611940"/>
+    <text x="24" y="262" font-size="14" fill="#26282E">Putty around and between the cables,</text>
+    <text x="24" y="280" font-size="14" fill="#26282E">no void at its face</text>
+    <line x1="260" y1="262" x2="365" y2="222" stroke="#26282E" stroke-width="1.2"/>
+    <text x="580" y="276" font-size="14" fill="#26282E">Label on each face: system number,</text>
+    <text x="580" y="294" font-size="14" fill="#26282E">installer, and date</text>
+    <line x1="578" y1="272" x2="548" y2="270" stroke="#26282E" stroke-width="1.2"/>
+  </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled A sleeved cable penetration, sealed at both ends. It is a section through a wall labeled Fire-rated wall, drawn as a tall shaded rectangle with a red outline.</p>
+    <p>A steel sleeve, labeled Steel sleeve, passes horizontally through the wall and projects a short distance from each face. A cable bundle, labeled Cable bundle, runs through the sleeve and continues on both sides of the wall.</p>
+    <p>At each end of the sleeve, a shaded block of putty fills the sleeve around and between the cables. A dimension above the left end is labeled Putty depth, from the system drawing; a matching dimension above the right end is labeled The same depth at the other end. A leader to the left block reads Putty around and between the cables, no void at its face.</p>
+    <p>A short bar on each face of the wall, below the sleeve, marks a label, with the note Label on each face: system number, installer, and date.</p>
+  </details>
+
+  <h3>Inspection</h3>
+  <p>Inspection of the sealed penetration is a hold point: after labeling, the installer leaves the putty untouched until the inspector has finished. The inspector measures the depth at each end by pushing a rule into the putty at the sleeve wall, checks that the putty meets the sleeve and every jacket with no gap or void at its face, and reads both labels. The installer then photographs each face with its putty and label, as 27 05 28 3.4 requires before the penetration is concealed.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The inspector judges each side on its own. Side A meets the drawing. Side B shows a void at the face, so side B is not accepted until the installer packs it again and the inspector checks it again. Depth on one side does not make up for a void on the other. A label does not change what the putty shows. The penetration has not failed its listing; the installation is incomplete.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">At inspection, the putty on side A reaches the drawing&rsquo;s depth with no void. On side B it reaches the depth, but a gap shows at the face between two cables. Both labels are correct. What is the finding?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Accepted: both sides reach the depth</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Side B not accepted: the installer packs side B again and calls for a second inspection</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Accepted, with a note on side B&rsquo;s label</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The penetration is outside its listing and needs an RFI</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.3" data-lesson-title="Firestop, Bonding and Link Verification" data-group-num="2" data-group-title="Bonding the Rack" data-num="527.3.5" data-title="The bonding network in a telecommunications room">
+  <p class="crumb">Lesson 527.3 &middot; Section 2 Bonding the Rack</p>
+  <h2><span class="tnum">527.3.5</span> The bonding network in a telecommunications room</h2>
+  <p class="lead-in">Every rack in a telecommunications room is bonded to the room&rsquo;s busbar with a conductor of its own.</p>
+
+  <p><span class="keyterm">Bonding</span> joins metal parts with conductors so that they stay at nearly the same electrical potential. In a building, the telecommunications bonding network runs back to the building&rsquo;s grounding electrode system. A fault current or a surge on a rack, a ladder rack, or a cable tray then has a low-resistance path to ground. No large voltage builds up between two pieces of equipment that a technician can touch at the same time.</p>
+
+  <h3>The chain, from the building to the rack</h3>
+  <p>The owner&rsquo;s standard, section 27 05 26, sets each link in the chain.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The parts of the bonding network in the owner&rsquo;s standard, from the building to the rack.</caption>
+      <thead><tr>
+        <th scope="col">Part</th><th scope="col">Where it is</th><th scope="col">Clause</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Primary bonding busbar (PBB)</th><td>In the equipment room, bonded to the building grounding electrode system at the service equipment by the electrical contractor</td><td>2.1</td></tr>
+        <tr><th scope="row">Telecommunications bonding backbone (TBB)</th><td>A copper conductor from the PBB to each SBB, not smaller than 6 American Wire Gauge (AWG), sized by its length</td><td>2.3</td></tr>
+        <tr><th scope="row">Secondary bonding busbar (SBB)</th><td>In every telecommunications room and in the entrance facility</td><td>2.2</td></tr>
+        <tr><th scope="row">Rack bonding conductor</th><td>From each rack, cabinet, ladder rack, and cable tray section to the SBB: its own 6 AWG copper conductor</td><td>2.4</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Older documents call the PBB the telecommunications main grounding busbar (TMGB) and the SBB the telecommunications grounding busbar (TGB). The owner&rsquo;s cabling addendum applies clause 2.4 to the MIR: clause A10 requires a dedicated 6 AWG copper conductor from the rack to the SBB. The connection between the PBB and the grounding electrode system is the electrical contractor&rsquo;s work. A telecommunications installer does not alter the building&rsquo;s grounding.</p>
+
+  <h3>One conductor for each rack</h3>
+  <p>Clause 2.4 forbids bonding racks to each other in series (&ldquo;daisy-chained&rdquo;). In a series chain, the bond of each rack runs through every rack and every joint before it, so an open joint, or one rack moved and disconnected, leaves every rack beyond it unbonded. With its own conductor, a rack&rsquo;s bond depends only on its own two joints. Sheet T-501, detail 3, shows each rack on its own lug at the SBB.</p>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; From the building&rsquo;s grounding to each rack</div>
+    <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 400" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="The bonding chain from the grounding electrode system to the primary bonding busbar, the bonding backbone, the secondary bonding busbar, and three racks each on its own conductor, beside three racks bonded in series, marked not permitted. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">From the building&#8217;s grounding to each rack</text>
+    <rect x="24" y="56" width="190" height="56" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="36" y="80" font-size="14" font-weight="700" fill="#26282E">Grounding electrode</text>
+    <text x="36" y="100" font-size="14" font-weight="700" fill="#26282E">system</text>
+    <line x1="214" y1="84" x2="300" y2="84" stroke="#26282E" stroke-width="2.4"/>
+    <text x="218" y="132" font-size="13" fill="#5A5D66">electrical contractor</text>
+    <rect x="300" y="56" width="170" height="56" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="312" y="80" font-size="14" font-weight="700" fill="#26282E">PBB</text>
+    <text x="312" y="100" font-size="14" fill="#26282E">equipment room</text>
+    <line x1="470" y1="84" x2="620" y2="84" stroke="#26282E" stroke-width="2.4"/>
+    <text x="478" y="72" font-size="13" fill="#26282E">TBB, sized by length</text>
+    <rect x="620" y="56" width="250" height="56" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="632" y="80" font-size="14" font-weight="700" fill="#26282E">SBB</text>
+    <text x="632" y="100" font-size="14" fill="#26282E">telecommunications room</text>
+    <rect x="640" y="220" width="50" height="110" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="720" y="220" width="50" height="110" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="800" y="220" width="50" height="110" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="646" y="280" font-size="13" fill="#26282E">Rack</text>
+    <text x="726" y="280" font-size="13" fill="#26282E">Rack</text>
+    <text x="806" y="280" font-size="13" fill="#26282E">Rack</text>
+    <line x1="665" y1="220" x2="665" y2="112" stroke="#611940" stroke-width="2.4"/>
+    <line x1="745" y1="220" x2="745" y2="112" stroke="#611940" stroke-width="2.4"/>
+    <line x1="825" y1="220" x2="825" y2="112" stroke="#611940" stroke-width="2.4"/>
+    <circle cx="665" cy="112" r="5" fill="#611940"/>
+    <circle cx="745" cy="112" r="5" fill="#611940"/>
+    <circle cx="825" cy="112" r="5" fill="#611940"/>
+    <text x="600" y="358" font-size="14" font-weight="700" fill="#611940">Each rack: its own 6 AWG conductor</text>
+    <text x="600" y="378" font-size="14" fill="#26282E">and its own lug at the SBB</text>
+    <rect x="60" y="220" width="50" height="110" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="160" y="220" width="50" height="110" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="260" y="220" width="50" height="110" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="66" y="280" font-size="13" fill="#26282E">Rack</text>
+    <text x="166" y="280" font-size="13" fill="#26282E">Rack</text>
+    <text x="266" y="280" font-size="13" fill="#26282E">Rack</text>
+    <line x1="110" y1="236" x2="160" y2="236" stroke="#A4262C" stroke-width="2.4"/>
+    <line x1="210" y1="236" x2="260" y2="236" stroke="#A4262C" stroke-width="2.4"/>
+    <line x1="85" y1="220" x2="85" y2="180" stroke="#A4262C" stroke-width="2.4"/>
+    <text x="96" y="186" font-size="13" fill="#A4262C">to the SBB</text>
+    <text x="40" y="358" font-size="14" font-weight="700" fill="#A4262C">Not permitted: racks bonded in series</text>
+    <text x="40" y="378" font-size="14" fill="#26282E">One open joint unbonds every rack beyond it</text>
+  </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled From the building&rsquo;s grounding to each rack. Across the top, a box labeled Grounding electrode system connects to a box labeled PBB, equipment room, by a line marked electrical contractor. The PBB connects to a box labeled SBB, telecommunications room, by a line marked TBB, sized by length.</p>
+    <p>Below the SBB, three racks each have their own conductor running up to a separate point on the SBB. The note reads Each rack: its own 6 AWG conductor and its own lug at the SBB.</p>
+    <p>On the left, drawn in red, three racks are joined to each other by short jumpers, and only the first rack has a conductor marked to the SBB. The note reads Not permitted: racks bonded in series. One open joint unbonds every rack beyond it.</p>
+  </details>
+
+  <div class="cyu gate" data-answer="2" data-fb="Clause 27 05 26 2.4 gives each rack its own 6 AWG copper conductor to the SBB, and T-501 detail 3 lands each one on its own lug. A jumper from rack to rack is a series bond whatever its size. A larger first conductor still leaves the second and third racks bonded through the first. The ladder rack is bonded in its own right; it is not a path for the racks.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">In a telecommunications room on another project, three racks stand side by side. A crew has run one 6 AWG conductor from the SBB to the first rack and jumpers from the first rack to the second and from the second to the third. Which change meets clause 27 05 26 2.4?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Replace the two jumpers with 6 AWG jumpers</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Replace the conductor to the first rack with a larger one</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Run a separate 6 AWG conductor from each rack to its own lug on the SBB</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Bond each rack to the ladder rack above it</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.3" data-lesson-title="Firestop, Bonding and Link Verification" data-group-num="2" data-group-title="Bonding the Rack" data-num="527.3.6" data-title="Crimping, landing, and torquing a bond">
+  <p class="crumb">Lesson 527.3 &middot; Section 2 Bonding the Rack</p>
+  <h2><span class="tnum">527.3.6</span> Crimping, landing, and torquing a bond</h2>
+  <p class="lead-in">A rack bond has a joint at each end of its conductor. Each joint is a crimped lug, bolted to bare metal and tightened to the manufacturer&rsquo;s torque.</p>
+
+  <p>A <span class="keyterm">lug</span> is a terminal crimped onto the end of the bonding conductor and bolted to the busbar or to the rack. Every figure for the joint comes from the manufacturers of the lug, the crimp tool, and the busbar or bolt hardware. On a job, the installer works from a card or a data sheet that collects them. It gives the lug part number, the crimp tool and die, the number and position of the crimps, and the strip length. It also gives the order of the bolt, washers, and nut, and the torque value.</p>
+
+  <h3>Strip and crimp</h3>
+  <ul>
+    <li><strong>Strip</strong> the conductor to the length the lug manufacturer gives, so that it seats fully in the lug&rsquo;s barrel. Leave no strand outside the barrel.</li>
+    <li><strong>Crimp</strong> with the tool and die the manufacturer names, with the stated number of crimps in the stated positions. A die made for another size can close the barrel too little to grip the conductor. Many dies emboss a code on the barrel, so an inspector can see which die made the crimp.</li>
+    <li><strong>Pull</strong> the lug firmly by hand. It must not move on the conductor.</li>
+  </ul>
+
+  <h3>Land on bare metal</h3>
+  <p>Paint and powder coat insulate. The lug lands on a bonding point of bare metal: a spot on the rack cleared of paint, or a fitting made for the purpose. At the busbar, the lug lands on a position of its own. The bolt, washers, and nut go on in the order the hardware or busbar manufacturer gives.</p>
+
+  <h3>Torque and the torque mark</h3>
+  <p>The <span class="keyterm">torque value</span> is the tightening torque the manufacturer sets for the joint. A torque wrench or torque screwdriver set to that value signals when the joint reaches it. A joint left loose can work looser and rise in resistance. A joint driven past the value can strip a thread or deform the lug.</p>
+  <p>After tightening, the installer draws a <span class="keyterm">torque mark</span>: a paint-marker line across the nut, the washer, and the lug. A nut that turns afterward breaks the line. An inspector sees the break without a tool.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The torque mark was drawn in one line across the nut, the washer, and the lug after tightening. A broken line means the nut has turned since then, so the torque on the joint is no longer known. The mark records movement, not the torque reached, so it cannot show over-tightening. A broken line says nothing about the marker&rsquo;s color or the lug&rsquo;s size.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">At a later inspection of a rack bond, the paint line on the nut no longer lines up with the line on the washer and the lug. What does the broken line show?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The joint was tightened past its torque value</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The nut has turned since the mark was drawn, so the joint&rsquo;s torque is no longer known</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The paint marker was the wrong color for a bonding joint</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The lug is the wrong size for the conductor</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.3" data-lesson-title="Firestop, Bonding and Link Verification" data-group-num="2" data-group-title="Bonding the Rack" data-num="527.3.7" data-title="Measuring a bond">
+  <p class="crumb">Lesson 527.3 &middot; Section 2 Bonding the Rack</p>
+  <h2><span class="tnum">527.3.7</span> Measuring a bond</h2>
+  <p class="lead-in">A multimeter on its resistance range shows whether a bond is continuous. Many handheld meters cannot tell a sound joint from a weak one.</p>
+
+  <p>Measure resistance only on a conductor that is isolated from every other conductor. A bench bonding fixture is connected to nothing else. A bond in service is part of the building&rsquo;s bonding network; measure it only by the procedure the owner or the electrical contractor sets.</p>
+
+  <h3>The method</h3>
+  <ol>
+    <li>Set the multimeter to its lowest resistance range.</li>
+    <li>Touch the two probe tips together and note the reading: the <strong>leads-touched</strong> reading. It is the resistance of the leads and the probe contacts.</li>
+    <li>Hold one probe on bare metal of the rack rail beside the lug and the other on the busbar beside the other lug. Note the reading: the <strong>rail-to-busbar</strong> reading.</li>
+    <li>Subtract the leads-touched reading from the rail-to-busbar reading. The result is the <strong>net</strong> reading.</li>
+  </ol>
+
+  <div class="calc">
+    <table>
+      <caption>Worked net reading for a rack bond on another job, measured on a handheld multimeter.</caption>
+      <thead><tr><th scope="col">Reading</th><th scope="col">Ohms</th></tr></thead>
+      <tbody>
+        <tr><td>Rail to busbar</td><td class="n">0.3 &#937;</td></tr>
+        <tr><td>Less leads touched</td><td class="n">&minus; 0.3 &#937;</td></tr>
+        <tr class="tot"><td>Net</td><td class="n">0.0 &#937;</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>What the reading can show</h3>
+  <p>6 AWG copper has a resistance of about 0.4 thousandths of an ohm per foot, so a 2 ft rack bond conductor measures under one thousandth of an ohm. A sound crimped and bolted joint adds thousandths of an ohm at most. Many handheld multimeters display resistance in steps of 0.1 &#937; on their lowest range; the meter&rsquo;s specification states its resolution. On such a meter, a sound bond and a weak one can both give a net reading of 0.0 &#937; or 0.1 &#937;.</p>
+  <p>The meter does show an open bond: a lug off its bolt or a conductor broken in its barrel gives the meter&rsquo;s over-range reading, shown as <code>OL</code> on many meters.</p>
+
+  <h3>The acceptance figure</h3>
+  <p>An owner, a busbar or lug manufacturer, or an electrical contractor may set an <span class="keyterm">acceptance figure</span>: the largest resistance a bond may show. Where the figure is set in thousandths of an ohm, contractors measure the bond with a low-resistance ohmmeter, which resolves far smaller values than a handheld multimeter. Where a figure is posted, compare the net reading with it and state whether the reading meets it. Where none is posted, record that none is posted. A statement that a bond passes needs a figure to pass against.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="The net reading is 0.5 &#8722; 0.4 = 0.1 &#937;, one step of the meter&rsquo;s resolution. A reading rather than OL shows that the conductor and both joints are continuous. At that resolution the meter cannot show whether the joints are sound, so the reading does not prove a good bond. Nothing in the readings shows the leads are faulty: leads-touched readings of a few tenths of an ohm are the reason the method subtracts them. With no figure posted, there is nothing to pass against.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a handheld meter that resolves 0.1 &#937;, the leads-touched reading is 0.4 &#937; and the rail-to-busbar reading is 0.5 &#937;. No acceptance figure is posted. What do the readings show?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>A net reading of 0.1 &#937;: the bond is continuous, and the meter cannot grade the joints</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A net reading of 0.1 &#937;: the bond passes</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A net reading of 0.9 &#937;: the joints need tightening</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A net reading of 0.1 &#937;: the meter leads are faulty</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.3" data-lesson-title="Firestop, Bonding and Link Verification" data-group-num="3" data-group-title="Proving a Link on the Network" data-num="527.3.8" data-title="From the outlet to the switch">
+  <p class="crumb">Lesson 527.3 &middot; Section 3 Proving a Link on the Network</p>
+  <h2><span class="tnum">527.3.8</span> From the outlet to the switch</h2>
+  <p class="lead-in">Traffic from a laptop at a work-area outlet crosses several cables and ports before it reaches the network. A wiremap test covers some of them. The network checks cover the rest.</p>
+
+  <p>A <span class="keyterm">permanent link</span> is the installed cable from the outlet jack to the patch panel port, with the termination at each end. It excludes patch cords. To reach the network, a laptop also needs a cord from the laptop to the outlet, a patch cord from the panel port to a port on the switch, and the switch port itself. Beyond the switch, the <span class="keyterm">gateway</span> is the router that connects the local network to other networks.</p>
+
+  <h3>What a wiremap test covers</h3>
+  <p>A wiremap and length test runs between the tester&rsquo;s two ends. On a permanent link, a pass shows all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft (cabling addendum A7). The test covers the jacks and the cable between them. The installer tests each cord on its own.</p>
+  <p>No cable test shows whether the switch port is enabled, which network the port belongs to, or whether a server on the network answers. A switch port that is shut down passes no traffic. A port assigned to the wrong network carries traffic to the wrong network. Every cable on the path still tests as a pass. The network checks, run from a laptop, cover the switch port and the network beyond it.</p>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; The path from a laptop to a trace target, and what each check covers</div>
+    <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 360" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Nine elements in a row from a laptop to a trace target, with brackets showing which elements the cord tests, the wiremap test of the permanent link, and each network check cover. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">The path from a laptop to a trace target</text>
+    <rect x="10" y="50" width="96" height="52" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="18" y="81" font-size="13" font-weight="700" fill="#26282E">Laptop</text>
+    <rect x="113" y="50" width="96" height="52" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="121" y="72" font-size="13" font-weight="700" fill="#26282E">Laptop</text>
+    <text x="121" y="91" font-size="13" font-weight="700" fill="#26282E">cord</text>
+    <rect x="216" y="50" width="96" height="52" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="224" y="72" font-size="13" font-weight="700" fill="#26282E">Outlet</text>
+    <text x="224" y="91" font-size="13" font-weight="700" fill="#26282E">jack</text>
+    <rect x="319" y="50" width="96" height="52" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="327" y="72" font-size="13" font-weight="700" fill="#26282E">Installed</text>
+    <text x="327" y="91" font-size="13" font-weight="700" fill="#26282E">cable</text>
+    <rect x="422" y="50" width="96" height="52" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="430" y="72" font-size="13" font-weight="700" fill="#26282E">Panel</text>
+    <text x="430" y="91" font-size="13" font-weight="700" fill="#26282E">port</text>
+    <rect x="525" y="50" width="96" height="52" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="533" y="72" font-size="13" font-weight="700" fill="#26282E">Patch</text>
+    <text x="533" y="91" font-size="13" font-weight="700" fill="#26282E">cord</text>
+    <rect x="628" y="50" width="96" height="52" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="636" y="72" font-size="13" font-weight="700" fill="#26282E">Switch</text>
+    <text x="636" y="91" font-size="13" font-weight="700" fill="#26282E">port</text>
+    <rect x="731" y="50" width="96" height="52" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="739" y="72" font-size="13" font-weight="700" fill="#26282E">Gateway</text>
+    <text x="739" y="91" font-size="13" font-weight="700" fill="#26282E">(router)</text>
+    <rect x="834" y="50" width="96" height="52" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="842" y="72" font-size="13" font-weight="700" fill="#26282E">Trace</text>
+    <text x="842" y="91" font-size="13" font-weight="700" fill="#26282E">target</text>
+    <line x1="113" y1="118" x2="209" y2="118" stroke="#611940" stroke-width="2.4"/>
+    <text x="113" y="138" font-size="13" fill="#611940">cord test</text>
+    <line x1="216" y1="118" x2="518" y2="118" stroke="#611940" stroke-width="2.4"/>
+    <line x1="216" y1="110" x2="216" y2="126" stroke="#611940" stroke-width="2.4"/>
+    <line x1="518" y1="110" x2="518" y2="126" stroke="#611940" stroke-width="2.4"/>
+    <text x="232" y="138" font-size="13" fill="#611940">wiremap test: the permanent link</text>
+    <line x1="525" y1="118" x2="621" y2="118" stroke="#611940" stroke-width="2.4"/>
+    <text x="525" y="138" font-size="13" fill="#611940">cord test</text>
+    <line x1="10" y1="180" x2="724" y2="180" stroke="#724DFD" stroke-width="2.4"/>
+    <text x="14" y="200" font-size="13" fill="#26282E">Link status Up: the laptop and the switch port have a link</text>
+    <line x1="10" y1="230" x2="724" y2="230" stroke="#724DFD" stroke-width="2.4"/>
+    <text x="14" y="250" font-size="13" fill="#26282E">An address from the network: a server answered across the path</text>
+    <line x1="10" y1="280" x2="827" y2="280" stroke="#724DFD" stroke-width="2.4"/>
+    <text x="14" y="300" font-size="13" fill="#26282E">The gateway replies: traffic reaches the router and returns</text>
+    <line x1="10" y1="330" x2="930" y2="330" stroke="#724DFD" stroke-width="2.4"/>
+    <text x="14" y="350" font-size="13" fill="#26282E">The trace reaches the target: traffic crosses the gateway to another network</text>
+  </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled The path from a laptop to a trace target. Nine boxes stand in a row, left to right: Laptop; Laptop cord; Outlet jack; Installed cable; Panel port; Patch cord; Switch port; Gateway (router); Trace target.</p>
+    <p>Below the row, three short brackets show the cable tests. One under Laptop cord reads cord test. One spanning Outlet jack, Installed cable and Panel port reads wiremap test: the permanent link. One under Patch cord reads cord test.</p>
+    <p>Four longer lines below show the network checks, each starting at the laptop. The first two end at the switch port: Link status Up: the laptop and the switch port have a link; and An address from the network: a server answered across the path. The third ends at the gateway: The gateway replies: traffic reaches the router and returns. The fourth ends at the trace target: The trace reaches the target: traffic crosses the gateway to another network.</p>
+  </details>
+
+  <div class="cyu gate" data-answer="3" data-fb="A wiremap test of the permanent link runs from the outlet jack to the patch panel port, so it covers both terminations and the cable between them. The patch cord from the panel port to the switch is outside the permanent link; the installer tests it on its own.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">The permanent link from an outlet to its patch panel port has passed its wiremap test. Which part of the path from a laptop to the switch did that test not cover?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The keystone jack at the outlet</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The termination at the patch panel port</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The installed cable between the outlet and the panel</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The patch cord from the panel port to the switch port</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.3" data-lesson-title="Firestop, Bonding and Link Verification" data-group-num="3" data-group-title="Proving a Link on the Network" data-num="527.3.9" data-title="What the laptop reports">
+  <p class="crumb">Lesson 527.3 &middot; Section 3 Proving a Link on the Network</p>
+  <h2><span class="tnum">527.3.9</span> What the laptop reports</h2>
+  <p class="lead-in">Once the laptop is plugged into the outlet, two Windows commands show whether it has a link to the switch port and which IPv4 address the network supplied.</p>
+
+  <h3>Connecting</h3>
+  <p>The network team assigns the switch port for each panel port. A patch cord runs from the panel port to that switch port and no other: other ports on a switch can carry other networks or the switch&rsquo;s connections to the rest of the network. Test the laptop cord on a wiremap tester before you use it.</p>
+  <p>Turn the laptop&rsquo;s Wi-Fi off before you plug in. With Wi-Fi on, Windows can send the test traffic over Wi-Fi instead of through the link. With Wi-Fi off, the Ethernet adapter is the laptop&rsquo;s only path to the network. Change no other setting: the switch and the network belong to the owner&rsquo;s network team.</p>
+  <p>Run both commands in Windows PowerShell. The prompt, such as <code>PS C:\Users\installer&gt;</code>, shows that PowerShell is waiting for a command.</p>
+
+  <h3>The link: Get-NetAdapter</h3>
+  <div class="cli">
+    <div class="cli-ttl">Get-NetAdapter &mdash; a laptop on another network, Wi-Fi off</div>
+    <div class="cli-body"><pre><span class="pr">PS C:\Users\installer&gt;</span> <span class="cmd">Get-NetAdapter</span>
+
+<span class="out">Name                      InterfaceDescription                    ifIndex Status       MacAddress             LinkSpeed
+----                      --------------------                    ------- ------       ----------             ---------
+Wi-Fi                     Intel(R) Wi-Fi 6 AX201 160MHz                18 Disconnected 00-00-5E-00-53-1A         0 bps
+Ethernet                  Realtek PCIe GbE Family Controller           12 Up           00-00-5E-00-53-2B        1 Gbps</span></pre></div>
+    <div class="cli-foot">
+      <ul>
+        <li><b>Name</b> and <b>InterfaceDescription</b> &mdash; the adapter&rsquo;s name in Windows and its make and model. The wired adapter is usually named Ethernet.</li>
+        <li><b>ifIndex</b> &mdash; a number Windows gives each adapter. <b>MacAddress</b> &mdash; the adapter&rsquo;s hardware address, its Media Access Control (MAC) address.</li>
+        <li><b>Status</b> &mdash; <code>Up</code> when the adapter has a link to the device at the other end of its cable; <code>Disconnected</code> when it has none. <code>Disabled</code> means the adapter is turned off in Windows.</li>
+        <li><b>LinkSpeed</b> &mdash; the speed the adapter and the switch port agreed when the link came up.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>The address: ipconfig /all</h3>
+  <p>When the laptop connects, a <span class="keyterm">Dynamic Host Configuration Protocol</span> (DHCP) server on the network supplies its Internet Protocol version 4 (IPv4) address, its subnet mask, and its default gateway. The <strong>subnet mask</strong> tells the laptop which IPv4 addresses are on its own network. Traffic to any other IPv4 address goes to the <strong>default gateway</strong>.</p>
+  <div class="cli">
+    <div class="cli-ttl">ipconfig /all &mdash; the Ethernet adapter&rsquo;s section, other lines left out</div>
+    <div class="cli-body"><pre><span class="pr">PS C:\Users\installer&gt;</span> <span class="cmd">ipconfig /all</span>
+
+<span class="out">Ethernet adapter Ethernet:
+
+   Description . . . . . . . . . . . : Realtek PCIe GbE Family Controller
+   DHCP Enabled. . . . . . . . . . . : Yes
+   IPv4 Address. . . . . . . . . . . : 10.12.40.57(Preferred)
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . : 10.12.40.1
+   DHCP Server . . . . . . . . . . . : 10.12.10.5</span></pre></div>
+    <div class="cli-foot">
+      <ul>
+        <li><b>DHCP Enabled</b> &mdash; <code>Yes</code> means the adapter is set to ask for its address. The line reads <code>Yes</code> whether or not a server has answered.</li>
+        <li><b>IPv4 Address</b> &mdash; the address the adapter is using, marked <code>(Preferred)</code> by Windows.</li>
+        <li><b>Default Gateway</b> &mdash; the router&rsquo;s IPv4 address on this network.</li>
+        <li><b>DHCP Server</b> &mdash; the IPv4 address of the server that supplied the address. The line appears only when a DHCP server has answered.</li>
+      </ul>
+    </div>
+  </div>
+  <p>Where the adapter asks and no DHCP server answers, Windows gives the adapter an IPv4 address of its own, starting with 169.254, on a line labeled <code>Autoconfiguration IPv4 Address</code>. The <code>Default Gateway</code> line is then blank.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="The DHCP Server line appears only when a server has answered, and it names that server. DHCP Enabled shows the adapter&rsquo;s setting, which reads Yes before any server answers. The Default Gateway line names the router. The Description line names the adapter.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">In the <code>ipconfig /all</code> output above, which line shows that a DHCP server answered the laptop?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span><code>DHCP Enabled. . . : Yes</code></button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span><code>Default Gateway . . . : 10.12.40.1</code></button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span><code>DHCP Server . . . : 10.12.10.5</code></button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span><code>Description . . . : Realtek PCIe GbE Family Controller</code></button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.3" data-lesson-title="Firestop, Bonding and Link Verification" data-group-num="3" data-group-title="Proving a Link on the Network" data-num="527.3.10" data-title="Ping and trace">
+  <p class="crumb">Lesson 527.3 &middot; Section 3 Proving a Link on the Network</p>
+  <h2><span class="tnum">527.3.10</span> Ping and trace</h2>
+  <p class="lead-in">A ping asks one IPv4 address for a reply. A trace lists each router between the laptop and an IPv4 address.</p>
+
+  <h3>Ping</h3>
+  <p>On Windows, <code>ping</code> sends four echo requests, using the Internet Control Message Protocol (ICMP), and prints one line for each request. A summary follows.</p>
+  <div class="cli">
+    <div class="cli-ttl">ping &mdash; a gateway on another job&rsquo;s network replies</div>
+    <div class="cli-body"><pre><span class="pr">PS C:\Users\installer&gt;</span> <span class="cmd">ping 10.12.40.1</span>
+
+<span class="out">Pinging 10.12.40.1 with 32 bytes of data:
+Reply from 10.12.40.1: bytes=32 time&lt;1ms TTL=64
+Reply from 10.12.40.1: bytes=32 time&lt;1ms TTL=64
+Reply from 10.12.40.1: bytes=32 time=1ms TTL=64
+Reply from 10.12.40.1: bytes=32 time&lt;1ms TTL=64
+
+Ping statistics for 10.12.40.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 1ms, Average = 0ms</span></pre></div>
+    <div class="cli-foot">
+      <ul>
+        <li><b>Reply from</b> &mdash; the IPv4 address that answered. <b>bytes=32</b> is the size of the test data. <b>time</b> is the round trip, in milliseconds; <code>time&lt;1ms</code> means under one. Time to live (<b>TTL</b>) is a count that each router on the way lowers by one; it plays no part in these checks.</li>
+        <li><b>Packets</b> &mdash; requests sent, replies received, and requests lost. Record this line.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>Where nothing answers, ping prints <code>Request timed out.</code> for each request. The summary counts every request as lost.</p>
+  <div class="cli">
+    <div class="cli-ttl">ping &mdash; an IPv4 address that does not reply</div>
+    <div class="cli-body"><pre><span class="pr">PS C:\Users\installer&gt;</span> <span class="cmd">ping 10.12.90.44</span>
+
+<span class="out">Pinging 10.12.90.44 with 32 bytes of data:
+Request timed out.
+Request timed out.
+Request timed out.
+Request timed out.
+
+Ping statistics for 10.12.90.44:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),</span></pre></div>
+    <div class="cli-foot"><p>Ping prints no round-trip times, because no reply came back.</p></div>
+  </div>
+  <p>A line that reads <code>Reply from</code>, followed by the laptop&rsquo;s own IPv4 address and <code>Destination host unreachable</code>, means the laptop could not deliver the request. The reply did not come from the address pinged.</p>
+  <p>Windows counts each <code>Destination host unreachable</code> line as a packet received, so the summary can show no loss when nothing answered. Read the reply lines as well as the summary: a reply counts only when it comes from the address pinged.</p>
+  <p>No reply does not prove a device is down. A device&rsquo;s firewall can be set not to answer ping; with its default settings, Windows Defender Firewall blocks ping requests from other computers. A network team names ping targets that are set to answer.</p>
+
+  <h3>Trace</h3>
+  <p>On Windows, the trace command is <code>tracert</code>. It lists each <span class="keyterm">hop</span> on the way to an IPv4 address, numbered from 1: each router the traffic passes through, then the target. The <code>-d</code> option stops Windows from looking up a name for each hop, so the trace shows IPv4 addresses only and finishes sooner.</p>
+  <div class="cli">
+    <div class="cli-ttl">tracert -d &mdash; a target on another network, reached through the gateway</div>
+    <div class="cli-body"><pre><span class="pr">PS C:\Users\installer&gt;</span> <span class="cmd">tracert -d 10.12.90.20</span>
+
+<span class="out">Tracing route to 10.12.90.20 over a maximum of 30 hops
+
+  1    &lt;1 ms    &lt;1 ms    &lt;1 ms  10.12.40.1
+  2     1 ms    &lt;1 ms     1 ms  10.12.90.20
+
+Trace complete.</span></pre></div>
+    <div class="cli-foot">
+      <ul>
+        <li><b>Hop 1</b> &mdash; the gateway, 10.12.40.1: the first router on the way off the laptop&rsquo;s network.</li>
+        <li><b>Hop 2</b> &mdash; the target. The three times on each line are three separate probes to that hop.</li>
+        <li><b>Trace complete.</b> &mdash; the target answered. If the target never answers, the command stops after 30 hops; <kbd>Ctrl</kbd>+<kbd>C</kbd> stops it sooner.</li>
+      </ul>
+    </div>
+  </div>
+  <p>A probe that gets no answer within the time limit shows <code>*</code> in place of its time. Where all three probes to a hop get none, the line ends <code>Request timed out.</code> in place of an address. A target on the laptop&rsquo;s own network appears as hop 1, with no router before it.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="Three reply lines come from 10.12.40.30, the address pinged, so the address replied. One request was lost; record the counts as printed. A lost request does not cancel the replies that came back. The replies name the address pinged, not the laptop. A second ping is not needed: three replies already came back.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A ping to 10.12.40.30 prints three lines that begin <code>Reply from 10.12.40.30: bytes=32</code> and one that reads <code>Request timed out.</code> The summary reads <code>Sent = 4, Received = 3, Lost = 1 (25% loss)</code>. Did the address reply?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Yes: three replies came from the address pinged, and one request was lost</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>No: any lost request means the address did not reply</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>No: the replies came from the laptop itself</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Only if a second ping returns all four replies</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.3" data-lesson-title="Firestop, Bonding and Link Verification" data-group-num="3" data-group-title="Proving a Link on the Network" data-num="527.3.11" data-title="Cabling or network">
+  <p class="crumb">Lesson 527.3 &middot; Section 3 Proving a Link on the Network</p>
+  <h2><span class="tnum">527.3.11</span> Cabling or network</h2>
+  <p class="lead-in">Each check depends on the one before it. The first check that fails shows whether the fault lies in the cabling, which the installer built, or in the network and its services, which the owner&rsquo;s network team runs.</p>
+
+  <p>A <span class="keyterm">cabling fault</span> lies in a cord, a jack, a termination, or the installed cable. A <span class="keyterm">network or service fault</span> lies in the switch, its settings, or a service on the network: the DHCP server, the gateway, or the target. Read the results in the order the laptop produced them.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The order for reading a failed check, and where each result points.</caption>
+      <thead><tr>
+        <th scope="col">First result that fails</th><th scope="col">What still works</th><th scope="col">Where the fault lies</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">No link: Status <code>Disconnected</code></th><td>Nothing is proved past the laptop</td><td>The physical path: the laptop cord, the outlet, the permanent link, the patch cord, or the switch port. Where every cable on that path has passed its test, the fault lies at the switch port, on the network&rsquo;s side</td></tr>
+        <tr><th scope="row">Link up, but no address from the network (169.254), or no reply from the gateway</th><td>The physical path carries a link</td><td>First check that the patch cord sits in the switch port assigned to it. Where it does, the network or a service on it</td></tr>
+        <tr><th scope="row">The gateway replies, but a target does not</th><td>The link, the switch, and the gateway</td><td>Beyond the gateway, or at the target: the network or a service</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Before you name the network, rule out what is in your hands: re-seat each plug, test the laptop cord again, and check the patch cord against the switch port assigned to it. Record what the laptop shows, and report a network or service fault to the network team. Do not change a setting to clear it.</p>
+
+  <p>Match each piece of evidence to what it proves.</p>
+  <div class="match gate" data-left="Evidence" data-right="What it proves">
+    <div class="pair" data-left="A wiremap pass on the permanent link" data-right="Eight conductors continuous, each to the same pin and to no other conductor, within 295 ft"></div>
+    <div class="pair" data-left="Status Up in Get-NetAdapter" data-right="The laptop and the switch port have a link"></div>
+    <div class="pair" data-left="A DHCP Server line in ipconfig /all" data-right="A DHCP server answered across the path"></div>
+    <div class="pair" data-left="Four replies from the gateway" data-right="Traffic reaches the router and comes back"></div>
+    <div class="pair" data-left="A trace that ends at the target" data-right="Traffic crosses the gateway to another network"></div>
+  </div>
+
+  <div class="cyu gate" data-answer="0" data-fb="The link is up, a DHCP server answered, and the gateway replies, so the laptop cord, the outlet, the permanent link, the patch cord, the switch port, and the gateway all carry traffic. The first failed check is the target, beyond the gateway: a network or service fault, reported to the network team. No cable test is needed to place it, because the gateway&rsquo;s replies crossed every cable on the path.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">At an outlet on another project, the laptop shows Status <code>Up</code>, an IPv4 address with a <code>DHCP Server</code> line, and four replies from the gateway. A ping to the target the network team named gets no reply: all four lines read <code>Request timed out.</code> Where does the evidence point?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The network or a service, beyond the gateway or at the target</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The cabling: the permanent link</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The cabling: the laptop cord</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Nowhere yet: the patch cord needs a wiremap test first</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.3" data-lesson-title="Firestop, Bonding and Link Verification" data-group-num="3" data-group-title="Proving a Link on the Network" data-num="527.3.12" data-title="Recording the path and the results">
+  <p class="crumb">Lesson 527.3 &middot; Section 3 Proving a Link on the Network</p>
+  <h2><span class="tnum">527.3.12</span> Recording the path and the results</h2>
+  <p class="lead-in">A verification record lets a reader who was not at the outlet check each entry against a screenshot.</p>
+
+  <p>The record holds the topology, the commands, and the results.</p>
+  <ul>
+    <li><strong>Topology.</strong> Each element of the path, in order from the laptop to the address traced, with its identifier, port, or IPv4 address.</li>
+    <li><strong>Commands.</strong> Each command as typed, with its options: <code>tracert -d</code>, not &ldquo;trace&rdquo;.</li>
+    <li><strong>Results.</strong> Each reading as the output shows it, with a screenshot of the whole output, from the command to its summary line. On Windows, <kbd>Windows</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> takes a screenshot.</li>
+  </ul>
+  <p>Enter a failed check as the screen shows it, and go on to the next check. Keep the reading apart from the conclusion: the reading is what the screen showed, and the conclusion names the side it points to and the reading that decides it. Note anything done again, and why.</p>
+
+  <p>This record comes from a verification on another job.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Example &mdash; topology recorded at outlet 1.06-C, Mercer Avenue Clinic (hypothetical).</caption>
+      <thead><tr>
+        <th scope="col">Order</th><th scope="col">Element</th><th scope="col">Identifier, port, or address</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">1</th><td>Laptop</td><td>Installer&rsquo;s laptop, Wi-Fi off</td></tr>
+        <tr><th scope="row">2</th><td>Laptop cord</td><td>~7 ft, wiremap pass</td></tr>
+        <tr><th scope="row">3</th><td>Outlet</td><td>1.06-C</td></tr>
+        <tr><th scope="row">4</th><td>Permanent link</td><td>1.06-C to panel 1A-PP03, port 11</td></tr>
+        <tr><th scope="row">5</th><td>Panel port</td><td>1A-PP03, port 11</td></tr>
+        <tr><th scope="row">6</th><td>Patch cord</td><td>Panel port 11 to switch port 5</td></tr>
+        <tr><th scope="row">7</th><td>Switch and port</td><td>MC-SW02, port 5</td></tr>
+        <tr><th scope="row">8</th><td>Gateway</td><td>10.12.40.1</td></tr>
+        <tr><th scope="row">9</th><td>Address traced</td><td>10.12.90.20</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cyu gate" data-answer="1" data-fb="The record takes the reading as the screenshot shows it: the three counts from the summary line. &ldquo;Gateway OK&rdquo; and &ldquo;Network working&rdquo; are conclusions. Neither can be checked against the screenshot figure by figure. &ldquo;Passed, fast&rdquo; replaces the counts with a judgment.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A ping to the gateway ends with <code>Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),</code>. Which record entry gives the result as the output shows it?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Gateway OK</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Sent 4, Received 4, Lost 0</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Network working</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Passed, fast</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.3" data-lesson-title="Firestop, Bonding and Link Verification" data-group-num="4" data-group-title="Wrapping Up" data-num="527.3.13" data-title="What you covered">
+  <p class="crumb">Lesson 527.3 &middot; Section 4 Wrapping Up</p>
+  <h2><span class="tnum">527.3.13</span> What you covered</h2>
+  <p class="lead-in">A sealed penetration, a bonded rack, and a link proved on the network each leave evidence an inspector can check: labels and photographs, torque marks and meter readings, screenshots and a record.</p>
+
+  <h3>Firestopping a penetration</h3>
+  <p>The installer seals a penetration of a <strong>fire-rated assembly</strong> with the system scheduled on the drawings, installed to the manufacturer&rsquo;s <strong>listed system drawing</strong>. The system holds its rating only where the construction, the penetrating item, the sleeve, the fill, and the product all match that drawing; a bench training penetration matches no listed construction and has no rating. Check each condition before packing, pack <strong>both ends</strong> to the drawing&rsquo;s depth with no void at the face, label each side with the system number, the installer, and the date, and leave the putty untouched until the inspector has checked it.</p>
+
+  <h3>Bonding the rack</h3>
+  <p>Each rack has <strong>its own 6 AWG conductor</strong> to the SBB, never a series chain. Strip, crimp, land on bare metal, and torque to the manufacturer&rsquo;s figures; draw a <strong>torque mark</strong> after tightening. A handheld multimeter shows that a bond is continuous. Subtract the <strong>leads-touched</strong> reading, and compare the net reading with an <strong>acceptance figure</strong> only where one is posted.</p>
+
+  <h3>Proving a link on the network</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The checks on the network, in order, and what each one proves.</caption>
+      <thead><tr>
+        <th scope="col">Check</th><th scope="col">What a pass proves</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row"><code>Get-NetAdapter</code>: Status</th><td>The laptop and the switch port have a link</td></tr>
+        <tr><th scope="row"><code>ipconfig /all</code>: a DHCP Server line</th><td>A DHCP server answered across the path; an address starting with 169.254 means none did</td></tr>
+        <tr><th scope="row"><code>ping</code> the gateway</th><td>Traffic reaches the router and comes back</td></tr>
+        <tr><th scope="row"><code>ping</code> the target; <code>tracert -d</code></th><td>Traffic crosses the gateway; the trace lists each hop</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The first check that fails places the fault: in the cabling, or in the network or a service on it. Record the topology, each command as typed, and each result as shown, with a screenshot of each.</p>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete — continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again — this does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct>=90) msg.textContent='Outstanding — you are working at field-standard level and are ready for the lab.';
+      else if(pct>=75) msg.textContent='Strong work. Revisit anything you missed and you will be field-ready.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the cards and applied scenarios to close the gaps.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+<!--
+BUILD FLAGS - UCI 1019 Lesson 527.3 Async Reading v0.1.0 DRAFT, 2026-11-08
+(Module 527, Structured Cabling Techniques and Troubleshooting; built under
+the delegated mode, brief Planning/_AGENT-BRIEF_M527-Readings.md). This
+comment is visible in the page source, so it carries no answer-key value.
+
+SOURCES READ
+- CLAUDE.md; STYLE-RULES.md (twice); style profile v1.4 lines 1-250; format
+  spec v1.0 and 2026 addendum; pattern page Lesson 526.1 v0.1.0 DRAFT.
+- Module plan v0.1.0 DRAFT s1-s6; lab-build brief.
+- GLAB 527.3.1: lab, HO 527.3.1, instructor guide, Station Checklist and Key
+  Sheet. GLAB 527.3.2: lab, HO 527.3.2, instructor guide, Network Card and
+  Key Sheet. Rehearsals not opened (the guides and sheets carry their clocks).
+- Work orders KC-2623, KC-2624; cabling addendum A1-A10; owner standard
+  mock-up edition 27 05 00 1.1/1.2, 27 05 26, 27 05 28, 27 05 53, 27 15 00;
+  plan set Rev 1 sheet T-501 (PNG opened: details 2 and 3, firestop
+  schedule, note). Module 530 plan s6 (UL numbering as taught) and the
+  Lesson 530.2 reading (firestop and bonding terms, for consistency only).
+- Training wall drawing set not used: no wall, bay or outlet position on
+  this page.
+
+DECISIONS TAKEN
+- Four sections, 13 topics, in the plan's objective order (firestop,
+  bond, network). ~60-75 min stated (6,870 prose words, ~61 min at 112 wpm,
+  plus 15 activities).
+- Worked examples from other jobs: a clinic renovation; a hypothetical
+  Mercer Avenue Clinic network (10.12.40.0/24, gateway 10.12.40.1, DHCP
+  server 10.12.10.5, targets 10.12.40.30, 10.12.90.20, 10.12.90.44); MAC
+  addresses from the documentation range 00-00-5E-00-53-xx. No mock-up
+  address, port, switch name, or identifier is used.
+- No product figure anywhere (putty depth, fill, torque, crimp pattern,
+  strip length, acceptance figure), matching the labs and JTA hold H01.
+- Network commands as the lab sets them (Get-NetAdapter, ipconfig /all,
+  ping, tracert -d, PowerShell, Wi-Fi off). Sample output written to the
+  Windows 10/11 formats; the ipconfig sample is an excerpt and says so in
+  its title.
+- The "cabling or network" order is taught as the lab states it, in a table.
+  The three graded situations in HO 527.3.2 Section 10 are not used or
+  paraphrased; the page's own check uses a fourth case (gateway replies,
+  target does not).
+- A .cli console sheet is appended (2026 colours); the 2026 addendum does
+  not cover .cli. Recorded in the head comment. .cli-ttl carries the command
+  with a short description, as on the 529 pages.
+- Project documents named: owner's standard (27 05 00 1.1, 1.2; 27 05 26
+  2.1-2.4; 27 05 28 3.4), cabling addendum (A7, A10), sheet T-501 (details
+  2 and 3, schedule tag FS-1, the submittal note). No lab, record, work order
+  number, or quiz named. "Network team" and "site lead" used as in the
+  labs; D. Okafor named once in the overview.
+- Serial comma; American spelling; times approximate.
+
+HELD BACK BECAUSE THEY ARE GRADED (rule 1)
+- GLAB 527.3.1: every card value (system number, product, depth,
+  conditions, lug, die, crimps, strip, hardware order, torque, acceptance
+  figure); the station's training-penetration condition key; meter
+  readings. None appears.
+- GLAB 527.3.2: situations A, B, C of HO 527.3.2 and their key; the
+  network card values; the default port map (nn -> nn + 12); the LAN port
+  range and gateway (.254). None appears.
+- TAUGHT, FOR ELDAD TO CONFIRM: the GLAB 527.3.1 Limits row (record Section
+  2) grades two facts the lab itself teaches in "The fixtures" and
+  "Firestop terms": the board is not a rated wall, so no fire rating; a
+  listed system's rating holds only where construction, item, sleeve,
+  fill and product match its drawing. The page teaches both facts (topics
+  527.3.2, 527.3.3, summary), as the objective "Identify the limits of a
+  training firestop assembly" requires, without a model answer. Likewise
+  the decision order and the single-hop meaning of a trace (graded in
+  GLAB 527.3.2 Trace and Your result rows) are taught as the lab teaches
+  them; the topology worked example (527.3.12) uses another site but
+  shows the element order the lab's Topology row grades (the order is
+  printed in the lab's own Grading section).
+
+ASSUMPTIONS (not in the module plan)
+- The learner reads this page before the Lesson 527.3 presentation
+  (Day 3), at the tables or at home.
+- General knowledge, not from a project file: NFPA 70 800.26 (2023), the communications counterpart of 300.21 (Chapter 8 applies Chapter 3 only where referenced, 90.3); checked 2026-11-09 against published code commentary
+  requires firestopping of openings around penetrations of rated
+  assemblies (unverified against the printed edition; Chapter 8 cross-
+  reference not cited); UL 1479 / ASTM E814 as the test standards; the
+  F rating definition; UL system-number letters and series (as the Module
+  530 plan teaches them); manufacturer engineering judgments accepted by
+  the AHJ; intumescent putty stays soft and is re-enterable; 6 AWG copper
+  ~0.4 milliohm per foot; handheld meters often resolve 0.1 ohm (hedged:
+  "many", "the specification states"); OL as the over-range indication on
+  many meters; low-resistance ohmmeters for milliohm figures; many crimp
+  dies emboss a code.
+- Windows behavior: Get-NetAdapter default columns; ipconfig /all labels,
+  "(Preferred)", the DHCP Server line shown only after a DHCP lease, and
+  "Autoconfiguration IPv4 Address" for 169.254; ping sends four requests
+  and counts "Destination host unreachable" replies as received; Windows
+  Defender Firewall blocks inbound ping by default; tracert format, three
+  probes, 30-hop maximum, "*" and "Request timed out." Not run on a
+  laptop in this session.
+
+CONFLICTS FOUND (reported, not resolved here)
+- Torque source: cabling addendum A10 says the lug manufacturer's
+  instructions govern the tightening torque; KC-2623 Project facts and the
+  GLAB 527.3.1 guide take the torque value from the hardware or busbar
+  manufacturer. The page says "the manufacturer sets" and names the
+  hardware or busbar manufacturer only for the hardware order.
+- GLAB 527.3.2 (lab and HO): Windows counts "Destination host unreachable"
+  replies as received, so a learner copying the summary can enter
+  Received = 4 with no reply from the address. The lab's command table
+  does not say this; the rubric grades "replied" against the output, so a
+  learner who reads only the summary may lose a point. The page teaches
+  the quirk. Suggest one sentence in the lab's command table.
+- Module plan s6 says readings ~60-90 min; the readings brief says ~60-75.
+  The page states ~60-75.
+
+CHECK QUESTIONS AND ACTIVITIES (for the quiz writer; do not repeat)
+- 527.3.1 CYU: which opening on a clinic renovation needs a listed
+  firestop system (steel sleeve with a cable bundle through the one-hour
+  corridor wall).
+- 527.3.2 CYU: decode a W-L-1000 series system (metallic pipe or conduit
+  through a framed wall).
+- 527.3.3 Reveal cards: four changes that take a penetration outside its
+  listing (different wall; more cables; different sleeve; different
+  product or depth).
+- 527.3.3 CYU: four cables added through a firestopped sleeve (check the
+  new fill against the drawing; restore the same day).
+- 527.3.4 CYU: inspection, side B void at the face (side B not accepted;
+  re-pack and re-inspect).
+- 527.3.5 CYU: three racks daisy-chained from one conductor (separate 6 AWG
+  from each rack to its own lug on the SBB).
+- 527.3.6 CYU: torque mark broken at a later inspection (nut has turned;
+  torque no longer known).
+- 527.3.7 CYU: leads 0.4, rail to busbar 0.5, meter resolves 0.1, no
+  figure posted (net 0.1: continuous, meter cannot grade the joints).
+- 527.3.8 CYU: what a permanent-link wiremap test does not cover (the
+  patch cord from the panel port to the switch port).
+- 527.3.9 CYU: which ipconfig /all line shows a DHCP server answered (DHCP
+  Server line).
+- 527.3.10 CYU: three replies and one timeout from 10.12.40.30, summary
+  3 received / 1 lost (yes, the address replied).
+- 527.3.11 Matching: wiremap pass / eight conductors continuous, same pin,
+  within length; Status Up / link to the switch port; DHCP Server line /
+  a DHCP server answered; four gateway replies / traffic reaches the router
+  and comes back; trace ends at target / traffic crosses the gateway.
+- 527.3.11 CYU: Up, DHCP address, gateway replies, target times out
+  (network or service, beyond the gateway or at the target).
+- 527.3.12 CYU: which record entry gives a ping result as shown (Sent 4,
+  Received 4, Lost 0).
+- 527.3.13 acknowledgement.
+- Answer positions: C A D B C B A D C A A B.
+
+WORKED EXAMPLES (for the quiz writer; do not repeat)
+- 527.3.1 Owner standard 27 05 28 3.4 list; Harlow Street corridor wall,
+  one hour, FS-1.
+- 527.3.2 T-501 FS-1: W-L-3000 series, F rating one hour; system-number
+  decoding table; system-drawing conditions table.
+- 527.3.4 Figure: sleeved penetration with putty both ends, depth from the
+  drawing, label each face.
+- 527.3.5 Bonding chain table (PBB, TBB, SBB, rack conductor) and figure
+  (own conductor per rack vs series chain).
+- 527.3.7 Net reading: rail to busbar 0.3, leads 0.3, net 0.0 ohm; 2 ft of
+  6 AWG under one milliohm.
+- 527.3.9 Get-NetAdapter (Wi-Fi Disconnected 0 bps; Ethernet Up 1 Gbps);
+  ipconfig /all excerpt (10.12.40.57, 255.255.255.0, gateway 10.12.40.1,
+  DHCP server 10.12.10.5).
+- 527.3.10 ping 10.12.40.1 (4/4/0); ping 10.12.90.44 (4/0/4, timed out);
+  tracert -d 10.12.90.20 (hop 1 10.12.40.1, hop 2 target).
+- 527.3.11 Decision table (no link; link up but 169.254 or no gateway
+  reply; gateway replies, target does not).
+- 527.3.12 Topology at Mercer outlet 1.06-C: laptop, ~7 ft cord, outlet
+  1.06-C, permanent link to 1A-PP03 port 11, panel port, patch cord to
+  switch port 5, MC-SW02 port 5, gateway 10.12.40.1, traced 10.12.90.20.
+
+KEY CHECK
+- Grepped the page for W#-#L/R bay identifiers, P#-## panel ports, .254,
+  192.168, ports 13-24, module and item codes, KC numbers: no bay, panel
+  port, LAN range, gateway or key value from the GLAB 527.3.1 or 527.3.2
+  keys. Mercer panel port 11 -> switch port 5 does not follow the default
+  map (nn + 12).
+
+UNVERIFIED
+- Not opened in a browser. Windows sample output not reproduced on a
+  laptop. NFPA 70 800.26 wording not checked against the printed 2023
+  edition.
+- Not reviewed: no language pass or cold read by a fresh reviewer yet;
+  the drafting agent's self-check only.
+
+AUDITS (final build)
+- audit_html.py: FAIL (0), WARN (0). 6,873 words, ~61 min at 112 wpm before
+  activities. (First run: FAIL 0, WARN 3; two long sentences split, one
+  'concrete or masonry' reworded.)
+- contrast_audit.py as written: FAIL (1), .order .step.picked .seq scored
+  against the legacy amber token (known tool limitation; the brand layer
+  sets White on #8A4B00, 6.8:1; the page has no ordering activity). With
+  later token definitions winning: FAIL (0). REPORT (83) unresolvable
+  containers, as on the 526.1 and 530.1 pages.
+
+2026-11-08 LP1 (content): 37 applied (several reworded from the table), 0 held; firestop schedule now defined at first use (T-501 sentence), later definition dropped.
+2026-11-08 LP2 (content): 24 applied (4 reworded from the table), 3 held (section 300.21 citation, unconfirmed; 15 activities, which matches the 15 gates including the completion button; Windows ping summary ends with a comma, as printed).
+- 2026-11-08 final consolidation: item 48, A7 pass wording "all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft" (paragraph and matching pair); one generic 'crew' made 'installer'. audit_html.py 0 FAIL, 0 WARN.
+-->
+</body>
+</html>

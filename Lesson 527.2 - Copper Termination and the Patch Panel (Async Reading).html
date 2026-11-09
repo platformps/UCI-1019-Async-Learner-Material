@@ -1,0 +1,2226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 527 (M07) - Structured Cabling Techniques and Troubleshooting
+  Lesson 527.2 - Copper Termination and the Patch Panel (Async Reading)
+  VERSION: v0.1.0  (2026-11-08)  DRAFT - for review
+
+  CHANGES IN v0.1.0
+  First issue. Built new for UCI 1019; no earlier version exists.
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox) reused verbatim from
+  UCI-1019_M526_Lesson-526.1_Async-Reading_v0.1.0_DRAFT.html, which carries the
+  engine of UCI-2107.1_M529_Lesson-529.6_Async-Reading_v0.2.0.html. Appended
+  after it, unchanged from that page: the 2026 brand layer
+  (FORMAT-SPEC_Async-Reading_2026-Addendum_v0.1.0_DRAFT.md section 3) and the
+  .calc component sheet (not used on this page; kept so the head stays
+  identical). Logo: inline Slate SVG.
+
+  OBJECTIVES, one verb each, from the module plan v0.1.0 section 3,
+  Lesson 527.2 (the labs' wording, codes removed).
+    Select     a plug, a jack, and a panel for the cable        7.4.1
+    Strip      a cable jacket without nicking a conductor       7.4.2
+    Build      a T568B patch cord                               7.4.4
+    Test       a patch cord with a wiremap tester               7.4.5
+    Terminate  a keystone jack at each outlet                   7.4.3
+    Label      outlets and cable ends                           7.1.6, 7.4.6
+    Mount      a patch panel in a rack                          7.1.1, 4.7
+    Terminate  your cables on the patch panel                   7.4.3
+    Dress      cable through the rack's managers                7.1.2-7.1.5
+    Label      patch panel ports and cable ends                 7.1.6, 7.4.6
+    Verify     each permanent link with a wiremap tester        7.4.5, 7.4.6
+
+  TOPIC OUTLINE
+    Section 1  The Link and Its Parts
+      527.2.1   The permanent link                         entry point; Verify (context)
+      527.2.2   Twisted-pair cable and its markings        Select
+      527.2.3   Matching the plug, the jack, and the
+                panel to the cable                         Select
+    Section 2  Terminating Copper
+      527.2.4   T568B and T568A                            Build, Terminate
+      527.2.5   Stripping and the pair twist               Strip
+      527.2.6   Crimping an RJ-45 plug                     Build
+      527.2.7   Punching down a keystone jack              Terminate (outlet, panel)
+    Section 3  Wiremap Testing
+      527.2.8   What a wiremap tester reports              Test, Verify
+      527.2.9   Testing a cord and a permanent link        Test, Verify
+    Section 4  The Patch Panel at the Rack
+      527.2.10  Patch panels and the rack                  Mount
+      527.2.11  Dressing cable to the panel                Dress
+      527.2.12  Labeling the port, the outlet, and the
+                cable                                      Label (both); AI check
+    Section 5  Wrapping Up
+      527.2.13  What you covered                           summary
+
+  ACTIVITY GATES: 14 - 12 single-answer checks, 1 matching, 1 acknowledgement.
+  DIAGRAMS: 4 original SVG, each with a full text description (permanent
+    link and channel; T568B/T568A pin assignments; three wiremaps; bend
+    radius and gauge).
+  IMAGES: none.
+
+  Build flags, decisions, assumptions, the list of every check question and
+  worked example, and the audit results are in the BUILD FLAGS comment at the
+  end of this file.
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 527.2 - Copper Termination and the Patch Panel &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Structured Cabling</b> &middot; Lesson 527.2 - Copper Termination and the Patch Panel</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Structured Cabling Techniques and Troubleshooting</p>
+      <h2 id="ovh" tabindex="-1">Lesson 527.2 - Copper Termination and the Patch Panel</h2>
+      <p class="lead-in">How an installer puts a plug or a jack on each end of a copper cable, mounts and labels a patch panel, and proves each finished link with a wiremap tester.</p>
+
+      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. The owner, Calder Regional Services, has approved the rough-in of the installation mock-up on five training walls. In the cabling phase, every outlet cable runs along the cable ladder to the Mobile Infrastructure Rack (MIR), which stands in for the Level 2 telecommunications room. Each wall&rsquo;s team owns one patch panel in that rack.</p>
+
+      <p>D. Okafor, the Kestrel site lead, sets the condition for the owner&rsquo;s walk-through. Each cable ends on a jack at its outlet and on a port of its team&rsquo;s panel, with both ends wired to the same scheme and labeled. Every link passes a wiremap test before the owner&rsquo;s representative walks the cabling.</p>
+
+      <p>The worked examples on this page use cables, products, and labels from other jobs, not the values of any bay or port on the mock-up.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>The Link and Its Parts.</b> The permanent link, twisted-pair cable and its markings, and matching a plug, a jack, and a panel to the cable.</li>
+        <li><b>Terminating Copper.</b> The T568B assignment, stripping and the pair twist, crimping a plug, and punching down a keystone jack.</li>
+        <li><b>Wiremap Testing.</b> The faults a wiremap tester reports, and testing a cord or a permanent link.</li>
+        <li><b>The Patch Panel at the Rack.</b> Mounting a panel, dressing cable to it, and labeling the port, the outlet, and the cable.</li>
+        <li><b>Wrapping Up.</b> A summary of each section.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>5</b><span>Sections</span></div>
+        <div class="ov-stat"><b>13</b><span>Topics</span></div>
+        <div class="ov-stat"><b>14</b><span>Activities</span></div>
+        <div class="ov-stat"><b>4</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the documents and the equipment</h3>
+      <p>Two project documents govern the work on this page. The owner&rsquo;s <strong>Telecommunications Design and Installation Standard, mock-up edition</strong>, numbers its clauses by section, for example 27 05 53 2.1. The <strong>HSOC-26-014 Owner Telecommunications Standard - Cabling Addendum</strong> adds clauses A1 to A10 for the cabling. Both are fictional documents written for the mock-up. Where this page states what a clause requires, the requirement is the owner&rsquo;s; the clause may be stricter than the published standard it draws on.</p>
+      <p>The owner&rsquo;s cabling addendum gives no strip length, trim method, or termination tool. The manufacturer of each plug, jack, or panel sets them for its own product. A <strong>wiremap tester</strong> checks that each conductor is continuous, reaches the right pin, and touches no other conductor. It verifies a link but does not certify it: certification takes a certification tester, which measures the link&rsquo;s transmission performance.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or go to any topic
+         from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks &mdash; a
+         knowledge check or a matching exercise.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. The lesson takes ~60&ndash;75 min, including the activities.
+         The header and the contents list show your progress through the lesson.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching activity every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description. Each table has column headings and a caption.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 527.2</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="527.2" data-lesson-title="Copper Termination and the Patch Panel" data-group-num="1" data-group-title="The Link and Its Parts" data-num="527.2.1" data-title="The permanent link">
+  <p class="crumb">Lesson 527.2 &middot; Section 1 The Link and Its Parts</p>
+  <h2><span class="tnum">527.2.1</span> The permanent link</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 527.2</span>
+    <h3>Copper Termination and the Patch Panel</h3>
+    <p>A cable that reaches its outlet and its rack connects nothing until both ends are terminated to one scheme. This lesson covers the parts that go on each end of the cable, how an installer terminates them, how the installer mounts, dresses, and labels the patch panel, and how a wiremap tester proves the result.</p>
+    <p class="lb-meta"><b>5</b> sections &nbsp;&middot;&nbsp;
+       <b>13</b> topics &nbsp;&middot;&nbsp;
+       <b>14</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 527.2 you will be able to</div>
+    <ul>
+      <li><b>Select</b> a plug and a jack for a cable&rsquo;s conductor and category, and a patch panel for the jack.</li>
+      <li><b>Strip</b> a cable jacket without nicking a conductor.</li>
+      <li><b>Build</b> a T568B patch cord.</li>
+      <li><b>Test</b> a patch cord with a wiremap tester.</li>
+      <li><b>Terminate</b> a keystone jack at each outlet.</li>
+      <li><b>Label</b> outlets and cable ends to the owner&rsquo;s identification scheme.</li>
+      <li><b>Mount</b> a patch panel in a rack.</li>
+      <li><b>Terminate</b> cables on a patch panel.</li>
+      <li><b>Dress</b> cable to a patch panel through the rack&rsquo;s cable managers.</li>
+      <li><b>Label</b> patch panel ports and cable ends to the owner&rsquo;s identification scheme.</li>
+      <li><b>Verify</b> each permanent link with a wiremap tester.</li>
+    </ul></div>
+
+  <p class="lead-in">The owner accepts cabling one permanent link at a time.</p>
+
+  <p>On the mock-up, each outlet cable runs from its box in the wall, up the cavity, and along the cable ladder to the Mobile Infrastructure Rack (MIR). There it drops to its team&rsquo;s <strong>patch panel</strong>, a panel of numbered ports. The owner&rsquo;s cabling addendum names the pieces of that path.</p>
+  <ul>
+    <li>A <span class="keyterm">permanent link</span> is the installed cable from the outlet jack to the patch panel port, including the termination at each end. It is installed once and stays in place.</li>
+    <li>A <span class="keyterm">patch cord</span> is a short cable with a plug on each end. One connects a device to an outlet; another connects a panel port to a switch port. Patch cords are moved, replaced, and unplugged. They are not part of the permanent link.</li>
+    <li>A <span class="keyterm">channel</span> is the whole path a signal travels between two devices: the permanent link and the patch cords at each end.</li>
+  </ul>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; The permanent link inside the channel</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 300" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A device connects by a patch cord to an outlet jack; an installed cable runs from the outlet jack to a patch panel port; a second patch cord connects the panel port to a switch port. A bracket marks the permanent link from jack to port, and a wider bracket marks the channel from device to switch. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">The permanent link inside the channel</text>
+    <line x1="270" y1="70" x2="270" y2="86" stroke="#611940" stroke-width="2.4"/>
+    <line x1="670" y1="70" x2="670" y2="86" stroke="#611940" stroke-width="2.4"/>
+    <line x1="270" y1="70" x2="670" y2="70" stroke="#611940" stroke-width="2.4"/>
+    <text x="300" y="60" font-size="14" font-weight="700" fill="#611940">Permanent link: jack, installed cable, port</text>
+    <rect x="24" y="100" width="130" height="56" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="40" y="124" font-size="14" font-weight="700" fill="#26282E">Device</text>
+    <text x="40" y="144" font-size="13" fill="#5A5D66">laptop or camera</text>
+    <line x1="154" y1="128" x2="230" y2="128" stroke="#26282E" stroke-width="2.4" stroke-dasharray="7 5"/>
+    <text x="160" y="94" font-size="13" fill="#5A5D66">patch cord</text>
+    <rect x="230" y="100" width="80" height="56" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="242" y="124" font-size="14" font-weight="700" fill="#26282E">Outlet</text>
+    <text x="242" y="144" font-size="14" fill="#26282E">jack</text>
+    <line x1="310" y1="128" x2="630" y2="128" stroke="#26282E" stroke-width="4"/>
+    <text x="330" y="186" font-size="13" fill="#5A5D66">installed cable: wall cavity, cable ladder, drop at the rack</text>
+    <rect x="630" y="100" width="80" height="56" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="642" y="124" font-size="14" font-weight="700" fill="#26282E">Panel</text>
+    <text x="642" y="144" font-size="14" fill="#26282E">port</text>
+    <line x1="710" y1="128" x2="786" y2="128" stroke="#26282E" stroke-width="2.4" stroke-dasharray="7 5"/>
+    <rect x="786" y="100" width="130" height="56" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="802" y="124" font-size="14" font-weight="700" fill="#26282E">Switch port</text>
+    <text x="802" y="144" font-size="13" fill="#5A5D66">in the rack</text>
+    <text x="716" y="94" font-size="13" fill="#5A5D66">patch cord</text>
+    <line x1="24" y1="214" x2="24" y2="230" stroke="#26282E" stroke-width="2.4"/>
+    <line x1="916" y1="214" x2="916" y2="230" stroke="#26282E" stroke-width="2.4"/>
+    <line x1="24" y1="230" x2="916" y2="230" stroke="#26282E" stroke-width="2.4"/>
+    <text x="300" y="254" font-size="14" font-weight="700" fill="#26282E">Channel: the permanent link plus the patch cords at each end</text>
+    <text x="24" y="284" font-size="13" fill="#5A5D66">Dashed lines are patch cords, which are moved and replaced. The solid line is installed once and terminated at both ends.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled The permanent link inside the channel. Four boxes sit in a row from left to right, joined by lines. A box labeled Device, laptop or camera, joins a box labeled Outlet jack by a dashed line labeled patch cord. A heavy solid line labeled installed cable: wall cavity, cable ladder, drop at the rack runs from the outlet jack to a box labeled Panel port. A second dashed line labeled patch cord joins the panel port to a box labeled Switch port, in the rack.</p>
+    <p>A bracket above the row spans the outlet jack, the installed cable, and the panel port. It is labeled Permanent link: jack, installed cable, port.</p>
+    <p>A wider bracket below the row spans everything from the device to the switch port. It is labeled Channel: the permanent link plus the patch cords at each end.</p>
+    <p>A note at the bottom reads: Dashed lines are patch cords, which are moved and replaced. The solid line is installed once and terminated at both ends.</p>
+  </details>
+
+  <p>The installer terminates the permanent link twice: once on a <strong>keystone jack</strong> at the outlet, and once on a port of the patch panel. A keystone jack is a jack that snaps into a faceplate. Each termination can carry its own fault, so a test of the link covers both ends and the cable between them. Each patch cord gets its own test before it goes into service.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The permanent link runs from the outlet jack to the patch panel port and includes both terminations, so the jack at the outlet is part of it. The cord from the laptop to the outlet and the cord from the panel to the switch are patch cords: they belong to the channel, not the permanent link. The switch port is equipment at the end of the channel.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which of these is part of the permanent link?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The patch cord from a laptop to the outlet</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The keystone jack at the outlet</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The patch cord from the panel port to the switch</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The switch port</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.2" data-lesson-title="Copper Termination and the Patch Panel" data-group-num="1" data-group-title="The Link and Its Parts" data-num="527.2.2" data-title="Twisted-pair cable and its markings">
+  <p class="crumb">Lesson 527.2 &middot; Section 1 The Link and Its Parts</p>
+  <h2><span class="tnum">527.2.2</span> Twisted-pair cable and its markings</h2>
+  <p class="lead-in">A four-pair cable carries its own description on the jacket: its category, its conductor size, its fire rating, and its footage marks.</p>
+
+  <h3>Four pairs, and why they are twisted</h3>
+  <p>A data cable for an outlet holds eight insulated copper conductors in four <span class="keyterm">pairs</span>. Each pair is two conductors twisted together: one solid-colored and one white with a stripe of the same color. The pairs are blue, orange, green, and brown, so the conductors are named blue and white-blue, orange and white-orange, and so on.</p>
+  <p>Each pair carries its signal as the difference between its two conductors. Noise from outside the cable, and from the signals on the other pairs, reaches both conductors of a tightly twisted pair almost equally, so the difference between them hardly changes. The four pairs are twisted at different rates, so that no two pairs run side by side for long. Signal that leaks from one pair into another is <span class="keyterm">crosstalk</span>. Wherever a pair is untwisted, at a termination or at a damaged point, crosstalk rises.</p>
+
+  <h3>Category</h3>
+  <p>A cable&rsquo;s <span class="keyterm">category</span> is the performance grade it is built and tested to. The owner&rsquo;s standard calls for Category 6 cable in the production building; for the mock-up, the cabling addendum (A2) sets Category 5e. Plugs, jacks, and patch panels carry categories too. A link built from parts of different categories is rated no higher than its lowest-rated part.</p>
+
+  <h3>Reading the jacket</h3>
+  <p>The jacket print states, among other things:</p>
+  <ul>
+    <li>the category, for example CAT 6;</li>
+    <li>the construction, for example <strong>Unscreened Unshielded Twisted-Pair (U/UTP)</strong> cable, which has no foil or braid around the cable or around any pair;</li>
+    <li>the number of pairs, for example 4PR;</li>
+    <li>the <strong>conductor size</strong> in American Wire Gauge (AWG), for example 23 AWG;</li>
+    <li>the fire rating: <strong>Communications Riser (CMR)</strong> for cable rated for vertical runs between floors, or <strong>Communications Plenum (CMP)</strong> for cable rated for air-handling spaces;</li>
+    <li>a <span class="keyterm">footage mark</span>, a printed length in feet, repeated every foot.</li>
+  </ul>
+  <p>In AWG, a <strong>smaller</strong> number means a <strong>thicker</strong> conductor: 22 AWG is thicker than 24 AWG. Footage marks count up along the cable on some boxes and down on others. The length of a piece is the difference between the marks at its two ends: a piece cut at 0846 and at 0836 is 10 ft long, whichever way the marks run.</p>
+
+  <h3>Solid and stranded conductors</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Solid and stranded conductors compared.</caption>
+      <thead><tr>
+        <th scope="col">Conductor</th><th scope="col">What it is</th><th scope="col">Where it is used</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Solid</th><td>One copper wire per conductor. Stiff; loses less signal per foot; breaks if bent back and forth many times</td><td>Permanent links, which are installed once and not moved. Punch-down jacks and panels are made for it</td></tr>
+        <tr><th scope="row">Stranded</th><td>Several fine wires twisted into one conductor. Flexible; loses more signal per foot</td><td>Patch cords, which are plugged, unplugged, and bent in use</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The owner&rsquo;s cabling addendum (A2) sets solid conductors for every permanent link. You can build a cord from solid cable when its plug is rated for solid conductor; the plug&rsquo;s package states which conductor type it is made for.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="In American Wire Gauge, a smaller number means a thicker conductor, so the 23 AWG conductor is the thicker one. The gauge number alone compares the two sizes, so the answer does not depend on the category. The 24 AWG conductor is the thinner of the two. Two different gauge numbers name two different sizes.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">One cable&rsquo;s jacket reads 23 AWG and another&rsquo;s reads 24 AWG. Which has the thicker conductors?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The 23 AWG cable</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The 24 AWG cable</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Neither: both numbers name the same size</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>It depends on the category printed beside the gauge</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.2" data-lesson-title="Copper Termination and the Patch Panel" data-group-num="1" data-group-title="The Link and Its Parts" data-num="527.2.3" data-title="Matching the plug, the jack, and the panel to the cable">
+  <p class="crumb">Lesson 527.2 &middot; Section 1 The Link and Its Parts</p>
+  <h2><span class="tnum">527.2.3</span> Matching the plug, the jack, and the panel to the cable</h2>
+  <p class="lead-in">Before you terminate anything, compare the cable&rsquo;s markings with the manufacturer&rsquo;s figures for each part.</p>
+
+  <p>The manufacturer&rsquo;s package or data sheet states what each part accepts. On the mock-up, a <span class="keyterm">product card</span> for each part carries those figures. Read four things:</p>
+  <ul>
+    <li><strong>Category.</strong> The categories the plug or jack is rated for.</li>
+    <li><strong>Conductor type.</strong> Solid, stranded, or both. A plug&rsquo;s contacts are shaped for one type or made to suit both; a punch-down slot holds a solid conductor and may not hold a stranded one.</li>
+    <li><strong>Conductor size.</strong> A range in AWG, for example 26&ndash;24 AWG.</li>
+    <li><strong>Format.</strong> For a patch panel, the jack it takes: a <strong>keystone</strong> panel takes any keystone jack of the series its card names.</li>
+  </ul>
+  <p>A plug or a jack fits a cable when the cable&rsquo;s category, its conductor type, and its conductor size are all among what the part accepts. A jack fits a panel when the panel takes the jack&rsquo;s format. Where the package gives no figure for an item, record &ldquo;not given&rdquo;; do not supply one from memory.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Example &mdash; three parts checked against a Category 6, solid, 23 AWG cable (another job).</caption>
+      <thead><tr>
+        <th scope="col">Part</th><th scope="col">The card says it accepts</th><th scope="col">Fits?</th><th scope="col">Why</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Plug</th><td>Category 6; stranded; 26&ndash;24 AWG</td><td>No</td><td>Stranded only, and 23 AWG is outside 26&ndash;24</td></tr>
+        <tr><th scope="row">Keystone jack</th><td>Category 6; solid; 26&ndash;22 AWG</td><td>Yes</td><td>Category, type, and size all accepted</td></tr>
+        <tr><th scope="row">Patch panel</th><td>Category 6; keystone jacks</td><td>Yes, for the jack</td><td>The jack is a keystone jack</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Where a part does not fit the cable, tell the Kestrel site lead before you terminate with it.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="The cable is Category 6, solid, 23 AWG. Only the third card accepts all three: Category 6, solid or stranded, and a range of 24&ndash;22 AWG, which includes 23. The first card accepts stranded conductor only. The second lists Category 5e only, not Category 6. The fourth stops at 24 AWG, so a 23 AWG conductor is outside its range.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A cable is Category 6, solid, 23 AWG. Which plug card fits it?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Category 6; stranded; 26&ndash;24 AWG</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Category 5e; solid; 24&ndash;22 AWG</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Category 6; solid or stranded; 24&ndash;22 AWG</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Category 6; solid; 26&ndash;24 AWG</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.2" data-lesson-title="Copper Termination and the Patch Panel" data-group-num="2" data-group-title="Terminating Copper" data-num="527.2.4" data-title="T568B and T568A">
+  <p class="crumb">Lesson 527.2 &middot; Section 2 Terminating Copper</p>
+  <h2><span class="tnum">527.2.4</span> T568B and T568A</h2>
+  <p class="lead-in">A termination scheme assigns each conductor to a pin. Both ends of every link and every cord follow one scheme, so pin 1 at one end reaches pin 1 at the other.</p>
+
+  <p>An RJ-45 plug and jack have eight contacts, pins 1 to 8. Hold a plug with its latch down, its contacts up, and the cable toward you: pin 1 is on the left. The Telecommunications Industry Association (TIA) standard ANSI/TIA-568 gives two assignments, <strong>T568A</strong> and <strong>T568B</strong>. The owner&rsquo;s cabling addendum (A1) sets T568B for every jack, panel port, and patch cord on the mock-up.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; Pin numbers and the two assignments</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 330" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Eight pins numbered 1 to 8 from left to right, with the T568B and T568A conductor for each pin, and brackets showing which pins each pair uses. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Pin numbers and the T568B and T568A assignments</text>
+    <text x="24" y="54" font-size="13" fill="#5A5D66">Plug held latch down, contacts up, cable toward you: pin 1 on the left.</text>
+    <text x="24" y="104" font-size="14" font-weight="700" fill="#26282E">Pin</text>
+    <rect x="120" y="80" width="90" height="36" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="220" y="80" width="90" height="36" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="320" y="80" width="90" height="36" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="420" y="80" width="90" height="36" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="520" y="80" width="90" height="36" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="620" y="80" width="90" height="36" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="720" y="80" width="90" height="36" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="820" y="80" width="90" height="36" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="160" y="104" font-size="15" font-weight="700" fill="#26282E">1</text>
+    <text x="260" y="104" font-size="15" font-weight="700" fill="#26282E">2</text>
+    <text x="360" y="104" font-size="15" font-weight="700" fill="#26282E">3</text>
+    <text x="460" y="104" font-size="15" font-weight="700" fill="#26282E">4</text>
+    <text x="560" y="104" font-size="15" font-weight="700" fill="#26282E">5</text>
+    <text x="660" y="104" font-size="15" font-weight="700" fill="#26282E">6</text>
+    <text x="760" y="104" font-size="15" font-weight="700" fill="#26282E">7</text>
+    <text x="860" y="104" font-size="15" font-weight="700" fill="#26282E">8</text>
+    <text x="24" y="150" font-size="14" font-weight="700" fill="#611940">T568B</text>
+    <text x="165" y="150" font-size="13" text-anchor="middle" fill="#26282E">White-orange</text>
+    <text x="265" y="150" font-size="13" text-anchor="middle" fill="#26282E">Orange</text>
+    <text x="365" y="150" font-size="13" text-anchor="middle" fill="#26282E">White-green</text>
+    <text x="465" y="150" font-size="13" text-anchor="middle" fill="#26282E">Blue</text>
+    <text x="565" y="150" font-size="13" text-anchor="middle" fill="#26282E">White-blue</text>
+    <text x="665" y="150" font-size="13" text-anchor="middle" fill="#26282E">Green</text>
+    <text x="765" y="150" font-size="13" text-anchor="middle" fill="#26282E">White-brown</text>
+    <text x="865" y="150" font-size="13" text-anchor="middle" fill="#26282E">Brown</text>
+    <line x1="165" y1="164" x2="165" y2="178" stroke="#611940" stroke-width="2.4"/>
+    <line x1="265" y1="164" x2="265" y2="178" stroke="#611940" stroke-width="2.4"/>
+    <line x1="165" y1="178" x2="265" y2="178" stroke="#611940" stroke-width="2.4"/>
+    <text x="168" y="196" font-size="13" fill="#611940">orange pair</text>
+    <line x1="365" y1="164" x2="365" y2="210" stroke="#611940" stroke-width="2.4"/>
+    <line x1="665" y1="164" x2="665" y2="210" stroke="#611940" stroke-width="2.4"/>
+    <line x1="365" y1="210" x2="665" y2="210" stroke="#611940" stroke-width="1.4" stroke-dasharray="6 4"/>
+    <text x="372" y="228" font-size="13" fill="#611940">green pair, pins 3 and 6 (around 4 and 5)</text>
+    <line x1="465" y1="164" x2="465" y2="178" stroke="#611940" stroke-width="2.4"/>
+    <line x1="565" y1="164" x2="565" y2="178" stroke="#611940" stroke-width="2.4"/>
+    <line x1="465" y1="178" x2="565" y2="178" stroke="#611940" stroke-width="2.4"/>
+    <text x="474" y="196" font-size="13" fill="#611940">blue pair</text>
+    <line x1="765" y1="164" x2="765" y2="178" stroke="#611940" stroke-width="2.4"/>
+    <line x1="865" y1="164" x2="865" y2="178" stroke="#611940" stroke-width="2.4"/>
+    <line x1="765" y1="178" x2="865" y2="178" stroke="#611940" stroke-width="2.4"/>
+    <text x="772" y="196" font-size="13" fill="#611940">brown pair</text>
+    <text x="24" y="268" font-size="14" font-weight="700" fill="#5A5D66">T568A</text>
+    <text x="165" y="268" font-size="13" text-anchor="middle" fill="#5A5D66">White-green</text>
+    <text x="265" y="268" font-size="13" text-anchor="middle" fill="#5A5D66">Green</text>
+    <text x="365" y="268" font-size="13" text-anchor="middle" fill="#5A5D66">White-orange</text>
+    <text x="465" y="268" font-size="13" text-anchor="middle" fill="#5A5D66">Blue</text>
+    <text x="565" y="268" font-size="13" text-anchor="middle" fill="#5A5D66">White-blue</text>
+    <text x="665" y="268" font-size="13" text-anchor="middle" fill="#5A5D66">Orange</text>
+    <text x="765" y="268" font-size="13" text-anchor="middle" fill="#5A5D66">White-brown</text>
+    <text x="865" y="268" font-size="13" text-anchor="middle" fill="#5A5D66">Brown</text>
+    <text x="24" y="310" font-size="13" fill="#26282E">T568A puts the green pair on pins 1 and 2 and the orange pair on pins 3 and 6. The blue and brown pairs do not move.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Pin numbers and the T568B and T568A assignments. A note under the title reads: Plug held latch down, contacts up, cable toward you: pin 1 on the left.</p>
+    <p>Eight boxes in a row are numbered 1 to 8 from left to right. Under them, the T568B row gives each pin&rsquo;s conductor: pin 1 white-orange, pin 2 orange, pin 3 white-green, pin 4 blue, pin 5 white-blue, pin 6 green, pin 7 white-brown, pin 8 brown.</p>
+    <p>Brackets under the T568B row join pins 1 and 2 as the orange pair, pins 4 and 5 as the blue pair, and pins 7 and 8 as the brown pair. A longer dashed bracket joins pins 3 and 6, passing around pins 4 and 5, labeled green pair, pins 3 and 6 (around 4 and 5).</p>
+    <p>A lower row, in gray, gives T568A: pin 1 white-green, pin 2 green, pin 3 white-orange, pin 4 blue, pin 5 white-blue, pin 6 orange, pin 7 white-brown, pin 8 brown.</p>
+    <p>A note at the bottom reads: T568A puts the green pair on pins 1 and 2 and the orange pair on pins 3 and 6. The blue and brown pairs do not move.</p>
+  </details>
+
+  <p>Pins 3 and 6 carry one pair, whose conductors sit either side of the blue pair. On a plug, laying the conductors in pin order, rather than pair by pair, puts green on pin 6, not on pin 4.</p>
+  <p>A cord terminated to the same scheme at both ends is a <span class="keyterm">straight-through</span> cord: each pin reaches the same pin at the far end. A cord with T568A at one end and T568B at the other swaps the orange and green pairs between its ends. On a link that must be straight-through, that swap is a fault, whichever end used the wrong scheme.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="In T568B the green pair sits on pins 3 and 6: white-green on pin 3, green on pin 6. Pins 1 and 2 carry the orange pair in T568B; the green pair is on pins 1 and 2 only in T568A. Pins 4 and 5 carry the blue pair in both schemes. Pins 3 and 4 belong to two different pairs.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">In T568B, which pins carry the green pair?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Pins 1 and 2</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Pins 3 and 6</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Pins 4 and 5</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Pins 3 and 4</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.2" data-lesson-title="Copper Termination and the Patch Panel" data-group-num="2" data-group-title="Terminating Copper" data-num="527.2.5" data-title="Stripping and the pair twist">
+  <p class="crumb">Lesson 527.2 &middot; Section 2 Terminating Copper</p>
+  <h2><span class="tnum">527.2.5</span> Stripping and the pair twist</h2>
+  <p class="lead-in">Every termination starts with a square cut and a stripped jacket, and ends with each pair twisted as close to its contacts as the part allows.</p>
+
+  <h3>Stripping the jacket</h3>
+  <p>Cut the cable end square with the cable cutter. A cable stripper has a blade set to cut the jacket&rsquo;s thickness: close it on the cable, turn it once around the jacket, and pull the jacket off. The blade scores the jacket without reaching the conductors. A utility knife has no depth stop, so it can cut into the conductors&rsquo; insulation under the jacket.</p>
+  <p>The <strong>strip length</strong> is the length of jacket removed. The manufacturer of the plug or jack sets it, because the strip length decides where the jacket ends: inside a plug, or at the back of a jack. The owner&rsquo;s cabling addendum (A3) gives no figure.</p>
+  <p>Look at the cut edge of the jacket and at each conductor&rsquo;s insulation before you go on. A conductor with nicked or cut insulation can short to its neighbor. A nicked solid conductor can break when it is bent into the part. If you find a nick, cut the end off square and strip again.</p>
+
+  <h3>The pair twist</h3>
+  <p>Untwist each pair only as far as the part needs. The owner&rsquo;s cabling addendum (A3) requires each pair to stay twisted to within <strong>0.5 in (13 mm)</strong> of its termination, the limit ANSI/TIA-568 sets for Category 5e. Long untwisted pairs at a termination add crosstalk that the cable itself does not have.</p>
+  <p>For the same reason, the jacket reaches the back of the jack or sits inside the plug, so that the pairs keep their twist and their position up to the termination. On the mock-up, no more than ~1/4 in of pairs may show between the jacket and the back of a jack.</p>
+
+  <div class="note warn"><div class="nt">Untwisting by spinning the cable</div>
+    <p>Spinning the cable end to loosen its pairs untwists them along the jacket as well, out of sight. Separate each pair by hand, from the end back toward the jacket.</p></div>
+
+  <div class="cyu gate" data-answer="2" data-fb="The addendum allows no more than 0.5 in of untwist at a termination, and 3/4 in is over that, so the orange pair is out of limit. Re-terminate with each pair twisted to within 0.5 in. A passing wiremap does not show untwist: the conductors still reach the right pins. Twisting the pair tighter at the jacket does not shorten its untwisted length at the slots. The other three pairs being within the limit does not excuse the fourth.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">At a keystone jack, the orange pair is untwisted for 3/4 in before its slots. The other three pairs are untwisted for 3/8 in. What does the owner&rsquo;s cabling addendum require?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Nothing more, if the link passes the wiremap test</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Twist the orange pair tighter by hand where it leaves the jacket</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Re-terminate, with every pair twisted to within 0.5 in of its slots</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Nothing more, because three of the four pairs are within the limit</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.2" data-lesson-title="Copper Termination and the Patch Panel" data-group-num="2" data-group-title="Terminating Copper" data-num="527.2.6" data-title="Crimping an RJ-45 plug">
+  <p class="crumb">Lesson 527.2 &middot; Section 2 Terminating Copper</p>
+  <h2><span class="tnum">527.2.6</span> Crimping an RJ-45 plug</h2>
+  <p class="lead-in">A crimped plug makes contact with all eight conductors and holds the cable by its jacket.</p>
+
+  <h3>The parts of the plug</h3>
+  <ul>
+    <li><strong>Contacts.</strong> Eight flat contacts sit in the plug, raised until the plug is crimped. The crimper drives each one down through a conductor&rsquo;s insulation to make contact with the copper.</li>
+    <li><strong>Jacket crimp.</strong> A bar or wedge in the plug body that the crimper presses onto the cable jacket. It holds the cable, so that a pull on the cord does not pull on the conductors.</li>
+    <li><strong>Latch.</strong> The clip on the underside that locks the plug in a jack.</li>
+  </ul>
+
+  <h3>Two plug designs</h3>
+  <p>On a <strong>standard</strong> plug, you trim the conductors straight across to the manufacturer&rsquo;s length before you insert them. They stop inside the plug against its front wall. On a <strong>pass-through</strong> plug, the conductors pass out through the front of the plug; the crimper&rsquo;s blade trims them flush as it crimps, or you trim them afterward, as the manufacturer sets out. Check which kind you hold, and whether your crimper trims pass-through plugs, before you terminate the first end.</p>
+
+  <h3>Terminating one end</h3>
+  <ol>
+    <li>Strip to the plug&rsquo;s strip length and inspect the conductors.</li>
+    <li>Untwist the pairs only as far as you need, and lay the conductors flat and side by side in T568B order, pin 1 to pin 8.</li>
+    <li>On a standard plug, trim the conductors straight across to the manufacturer&rsquo;s length. On a pass-through plug, leave them long and trim them after insertion, as the manufacturer sets out.</li>
+    <li>With the latch down, slide the conductors into the plug until each reaches the front. The jacket must end inside the plug, under the jacket crimp.</li>
+    <li>Check the order through the clear plug body, from the side and from above.</li>
+    <li>Crimp fully: a ratcheting crimper releases only at the end of its stroke.</li>
+  </ol>
+
+  <h3>What to look at</h3>
+  <p>Look at the plug from the side. All eight contacts should sit level, pressed down to the same depth. A contact that stands higher than the others may not have reached its conductor; the wiremap tester then shows an open on that pin. Look along the conductors through the body: the order should match T568B at the front of the plug, where the contacts are.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="The jacket crimp holds the cable only when it presses on the jacket. If the jacket ends before the crimp, the crimp sits on the bare pairs, and a pull on the cord pulls on the conductors at the contacts. Contacts pressed level show a full crimp. Conductor ends visible at the front show that the conductors reached the contacts. The latch position only shows how the plug lies on the table.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which finding at a crimped plug means that a pull on the cord will pull on the conductors?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>All eight contacts sit level from the side</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The conductor ends show at the front of the plug</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The latch is on the underside as the plug lies on the table</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The jacket ends before the jacket crimp, which sits on the bare pairs</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.2" data-lesson-title="Copper Termination and the Patch Panel" data-group-num="2" data-group-title="Terminating Copper" data-num="527.2.7" data-title="Punching down a keystone jack">
+  <p class="crumb">Lesson 527.2 &middot; Section 2 Terminating Copper</p>
+  <h2><span class="tnum">527.2.7</span> Punching down a keystone jack</h2>
+  <p class="lead-in">You terminate a solid cable on a keystone jack without stripping its conductors. The jack then snaps into a faceplate, a cover, or a patch panel.</p>
+
+  <h3>The termination block</h3>
+  <p>The back of a punch-down keystone jack carries a termination block with eight slots. Each slot is an <span class="keyterm">insulation displacement contact</span> (IDC): when a conductor is pressed into it, the slot&rsquo;s two edges cut through the insulation and grip the copper. The conductor keeps its insulation up to the slot.</p>
+  <p>A color label beside the slots shows two rows, one for T568A and one for T568B. <strong>The slot order on the block is usually not the pin order.</strong> Manufacturers arrange the slots so that the two conductors of each pair land side by side, and the arrangement differs from one jack to another. Follow the B row of the label on the jack in your hand, not the pin table and not the layout of another jack. A few jacks terminate without a punch-down tool, by a cap that presses the conductors into place; follow the manufacturer&rsquo;s instructions for those.</p>
+
+  <h3>The punch-down tool</h3>
+  <p>A punch-down tool with a <strong>110 blade</strong> seats a conductor in a 110-style slot. One side of the blade cuts. Hold the cutting side toward the end of the conductor, away from the jack, so that the tool trims the waste end as it seats the conductor. With the cutting side toward the jack, the tool cuts the conductor between the slot and the cable, which leaves only the waste end in the slot.</p>
+
+  <h3>Terminating a jack</h3>
+  <ol>
+    <li>Strip to the jack&rsquo;s strip length and inspect the conductors.</li>
+    <li>Lay each pair into its two slots by the B row of the label, keeping the pair twisted to within 0.5 in of its slots and the jacket at the back of the jack.</li>
+    <li>Seat each conductor with the punch-down tool, cutting side out.</li>
+    <li>Check that each conductor sits at the bottom of its slot and that no trimmed end sticks out.</li>
+    <li>Fit the jack&rsquo;s cap, if it has one, and snap the jack into its faceplate, cover, or panel port until it latches.</li>
+  </ol>
+
+  <div class="cyu gate" data-answer="0" data-fb="The slots on a keystone jack&rsquo;s block are usually not in pin order, and their arrangement differs between manufacturers, so the B row of the color label on the jack in hand decides each slot. Laying the conductors left to right in the plug&rsquo;s pin order puts them in the wrong slots on most jacks. The color of the insulation names the conductor, not its slot. The A row would wire the jack to T568A, against the addendum.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a keystone jack, what tells you which slot each conductor goes in?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The B row of the color label on that jack</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The T568B pin order, laid left to right across the slots</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The color of each conductor&rsquo;s insulation alone</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The A row of the color label on that jack</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.2" data-lesson-title="Copper Termination and the Patch Panel" data-group-num="3" data-group-title="Wiremap Testing" data-num="527.2.8" data-title="What a wiremap tester reports">
+  <p class="crumb">Lesson 527.2 &middot; Section 3 Wiremap Testing</p>
+  <h2><span class="tnum">527.2.8</span> What a wiremap tester reports</h2>
+  <p class="lead-in">A wiremap tester checks each of the eight conductors from one end to the other. Where a conductor does not reach its pin at the far end or touches another conductor, the tester names the fault and the pins.</p>
+
+  <p>The tester has a <strong>main unit</strong> and a <strong>remote</strong>. One goes at each end of the cord or link. The tester checks each conductor between the two units and shows the result as a map of pins 1 to 8 at each end, with a pass or the name of a fault and the pins involved. Most models also report the length of the cable.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The faults a wiremap tester reports.</caption>
+      <thead><tr>
+        <th scope="col">Fault</th><th scope="col">What is wrong</th><th scope="col">Typical cause</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Open</th><td>A conductor not connected end to end</td><td>A conductor not seated in its slot, a contact not pressed down, or a cut conductor</td></tr>
+        <tr><th scope="row">Short</th><td>Two conductors connected to each other</td><td>Nicked insulation, or a trimmed end touching a neighbor</td></tr>
+        <tr><th scope="row">Reversed pair</th><td>The two conductors of one pair swapped at one end</td><td>White-blue and blue laid in each other&rsquo;s places</td></tr>
+        <tr><th scope="row">Crossed pair</th><td>Two pairs swapped at one end</td><td>One end wired to T568A and the other to T568B</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; Three wiremaps</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 340" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Three wiremap displays side by side, each joining pins 1 to 8 at the main unit to pins 1 to 8 at the remote: a pass with every pin straight across, a reversed pair with pins 1 and 2 crossing each other, and a crossed pair with pins 1 and 2 going to 3 and 6. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Three wiremaps: main unit on the left, remote on the right</text>
+    <text x="40" y="62" font-size="14" font-weight="700" fill="#26282E">Pass</text>
+    <text x="340" y="62" font-size="14" font-weight="700" fill="#A4262C">Reversed pair, pins 1 and 2</text>
+    <text x="640" y="62" font-size="14" font-weight="700" fill="#A4262C">Crossed pair, 1-2 with 3-6</text>
+    <text x="40" y="86" font-size="13" fill="#5A5D66">Main</text><text x="200" y="86" font-size="13" fill="#5A5D66">Remote</text>
+    <text x="340" y="86" font-size="13" fill="#5A5D66">Main</text><text x="500" y="86" font-size="13" fill="#5A5D66">Remote</text>
+    <text x="640" y="86" font-size="13" fill="#5A5D66">Main</text><text x="800" y="86" font-size="13" fill="#5A5D66">Remote</text>
+    <text x="50" y="112" font-size="13" fill="#26282E">1</text><text x="50" y="138" font-size="13" fill="#26282E">2</text><text x="50" y="164" font-size="13" fill="#26282E">3</text><text x="50" y="190" font-size="13" fill="#26282E">4</text><text x="50" y="216" font-size="13" fill="#26282E">5</text><text x="50" y="242" font-size="13" fill="#26282E">6</text><text x="50" y="268" font-size="13" fill="#26282E">7</text><text x="50" y="294" font-size="13" fill="#26282E">8</text>
+    <text x="214" y="112" font-size="13" fill="#26282E">1</text><text x="214" y="138" font-size="13" fill="#26282E">2</text><text x="214" y="164" font-size="13" fill="#26282E">3</text><text x="214" y="190" font-size="13" fill="#26282E">4</text><text x="214" y="216" font-size="13" fill="#26282E">5</text><text x="214" y="242" font-size="13" fill="#26282E">6</text><text x="214" y="268" font-size="13" fill="#26282E">7</text><text x="214" y="294" font-size="13" fill="#26282E">8</text>
+    <line x1="66" y1="107" x2="206" y2="107" stroke="#26282E" stroke-width="2"/><line x1="66" y1="133" x2="206" y2="133" stroke="#26282E" stroke-width="2"/><line x1="66" y1="159" x2="206" y2="159" stroke="#26282E" stroke-width="2"/><line x1="66" y1="185" x2="206" y2="185" stroke="#26282E" stroke-width="2"/><line x1="66" y1="211" x2="206" y2="211" stroke="#26282E" stroke-width="2"/><line x1="66" y1="237" x2="206" y2="237" stroke="#26282E" stroke-width="2"/><line x1="66" y1="263" x2="206" y2="263" stroke="#26282E" stroke-width="2"/><line x1="66" y1="289" x2="206" y2="289" stroke="#26282E" stroke-width="2"/>
+    <text x="350" y="112" font-size="13" fill="#26282E">1</text><text x="350" y="138" font-size="13" fill="#26282E">2</text><text x="350" y="164" font-size="13" fill="#26282E">3</text><text x="350" y="190" font-size="13" fill="#26282E">4</text><text x="350" y="216" font-size="13" fill="#26282E">5</text><text x="350" y="242" font-size="13" fill="#26282E">6</text><text x="350" y="268" font-size="13" fill="#26282E">7</text><text x="350" y="294" font-size="13" fill="#26282E">8</text>
+    <text x="514" y="112" font-size="13" fill="#26282E">1</text><text x="514" y="138" font-size="13" fill="#26282E">2</text><text x="514" y="164" font-size="13" fill="#26282E">3</text><text x="514" y="190" font-size="13" fill="#26282E">4</text><text x="514" y="216" font-size="13" fill="#26282E">5</text><text x="514" y="242" font-size="13" fill="#26282E">6</text><text x="514" y="268" font-size="13" fill="#26282E">7</text><text x="514" y="294" font-size="13" fill="#26282E">8</text>
+    <line x1="366" y1="107" x2="506" y2="133" stroke="#A4262C" stroke-width="2.6"/><line x1="366" y1="133" x2="506" y2="107" stroke="#A4262C" stroke-width="2.6"/><line x1="366" y1="159" x2="506" y2="159" stroke="#26282E" stroke-width="2"/><line x1="366" y1="185" x2="506" y2="185" stroke="#26282E" stroke-width="2"/><line x1="366" y1="211" x2="506" y2="211" stroke="#26282E" stroke-width="2"/><line x1="366" y1="237" x2="506" y2="237" stroke="#26282E" stroke-width="2"/><line x1="366" y1="263" x2="506" y2="263" stroke="#26282E" stroke-width="2"/><line x1="366" y1="289" x2="506" y2="289" stroke="#26282E" stroke-width="2"/>
+    <text x="650" y="112" font-size="13" fill="#26282E">1</text><text x="650" y="138" font-size="13" fill="#26282E">2</text><text x="650" y="164" font-size="13" fill="#26282E">3</text><text x="650" y="190" font-size="13" fill="#26282E">4</text><text x="650" y="216" font-size="13" fill="#26282E">5</text><text x="650" y="242" font-size="13" fill="#26282E">6</text><text x="650" y="268" font-size="13" fill="#26282E">7</text><text x="650" y="294" font-size="13" fill="#26282E">8</text>
+    <text x="814" y="112" font-size="13" fill="#26282E">1</text><text x="814" y="138" font-size="13" fill="#26282E">2</text><text x="814" y="164" font-size="13" fill="#26282E">3</text><text x="814" y="190" font-size="13" fill="#26282E">4</text><text x="814" y="216" font-size="13" fill="#26282E">5</text><text x="814" y="242" font-size="13" fill="#26282E">6</text><text x="814" y="268" font-size="13" fill="#26282E">7</text><text x="814" y="294" font-size="13" fill="#26282E">8</text>
+    <line x1="666" y1="107" x2="806" y2="159" stroke="#A4262C" stroke-width="2.6"/><line x1="666" y1="133" x2="806" y2="237" stroke="#A4262C" stroke-width="2.6"/><line x1="666" y1="159" x2="806" y2="107" stroke="#A4262C" stroke-width="2.6"/><line x1="666" y1="237" x2="806" y2="133" stroke="#A4262C" stroke-width="2.6"/><line x1="666" y1="185" x2="806" y2="185" stroke="#26282E" stroke-width="2"/><line x1="666" y1="211" x2="806" y2="211" stroke="#26282E" stroke-width="2"/><line x1="666" y1="263" x2="806" y2="263" stroke="#26282E" stroke-width="2"/><line x1="666" y1="289" x2="806" y2="289" stroke="#26282E" stroke-width="2"/>
+    <text x="24" y="326" font-size="13" fill="#5A5D66">Lines in red are the conductors that do not reach the same pin. The display differs between tester models.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Three wiremaps: main unit on the left, remote on the right. Each of the three panels lists pins 1 to 8 down the left side, labeled Main, and pins 1 to 8 down the right side, labeled Remote, with a line for each conductor.</p>
+    <p>The first panel, labeled Pass, joins each pin to the same pin at the remote: 1 to 1, 2 to 2, and so on to 8 to 8.</p>
+    <p>The second panel, labeled Reversed pair, pins 1 and 2, joins main pin 1 to remote pin 2 and main pin 2 to remote pin 1. The two lines cross and are drawn in red. Pins 3 to 8 run straight across.</p>
+    <p>The third panel, labeled Crossed pair, 1-2 with 3-6, joins main pin 1 to remote pin 3, main pin 2 to remote pin 6, main pin 3 to remote pin 1, and main pin 6 to remote pin 2, all in red. Pins 4, 5, 7, and 8 run straight across.</p>
+    <p>A note at the bottom reads: Lines in red are the conductors that do not reach the same pin. The display differs between tester models.</p>
+  </details>
+
+  <h3>What a wiremap test cannot see</h3>
+  <p>In a <span class="keyterm">split pair</span>, every pin reaches the same pin at the far end, but two pins that should share one twisted pair are on conductors of two different pairs. The same mistake at both ends causes it: for example, both ends putting pins 3 and 4 on one twisted pair and pins 5 and 6 on another, instead of 3 with 6 and 4 with 5. A tester that checks only continuity and pin mapping shows a pass. The owner&rsquo;s cabling addendum (A7) records the limit: a wiremap and length test <strong>verifies</strong> a link; it does not <strong>certify</strong> it. Certification, under A8, uses a certification tester.</p>
+
+  <p>Match each fault to what is wrong.</p>
+  <div class="match gate" data-left="Fault" data-right="What is wrong">
+    <div class="pair" data-left="Open" data-right="A conductor not connected end to end"></div>
+    <div class="pair" data-left="Short" data-right="Two conductors connected to each other"></div>
+    <div class="pair" data-left="Reversed pair" data-right="The two conductors of one pair swapped at one end"></div>
+    <div class="pair" data-left="Crossed pair" data-right="Two pairs swapped at one end"></div>
+    <div class="pair" data-left="Split pair" data-right="Pins correct end to end, but the conductors of two pairs mixed"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.2" data-lesson-title="Copper Termination and the Patch Panel" data-group-num="3" data-group-title="Wiremap Testing" data-num="527.2.9" data-title="Testing a cord and a permanent link">
+  <p class="crumb">Lesson 527.2 &middot; Section 3 Wiremap Testing</p>
+  <h2><span class="tnum">527.2.9</span> Testing a cord and a permanent link</h2>
+  <p class="lead-in">A cord plugs straight into the tester. A permanent link is tested from its outlet jack to its panel port, with a <strong>tester lead</strong>, a short patch cable, at each end.</p>
+
+  <h3>A patch cord</h3>
+  <p>Plug one end of the cord into the main unit and the other into the remote, and run the wiremap test. Record the result as the tester shows it: &ldquo;pass,&rdquo; or the fault and the pins the tester names. Record every attempt, not only the last one.</p>
+
+  <h3>A permanent link</h3>
+  <p>A permanent link ends on two jacks, so the tester needs a tester lead at each end. Put the remote on the panel port and the main unit on the outlet jack, or the other way around; the direction does not change the map. The owner&rsquo;s cabling addendum (A7) sets the pass: all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft (90 m). Record the wiremap result and the length as the tester shows them.</p>
+
+  <h3>When a test fails</h3>
+  <p>Read the fault and the pins. Then look at the terminations:</p>
+  <ul>
+    <li>A <strong>reversed pair</strong> or a <strong>crossed pair</strong> is wrong at one end only. Compare each end with its scheme: through the plug body for a cord, or against the jack&rsquo;s color label for a link. Re-terminate the end that does not match.</li>
+    <li>An <strong>open</strong> or a <strong>short</strong> can sit at either end or in the cable. Look for a conductor not at the bottom of its slot, a contact standing high, nicked insulation, or a trimmed end touching its neighbor.</li>
+  </ul>
+  <p>Re-terminate a plug by cutting the cable square, as close to the plug as you can, and terminating that end again. Re-terminate a jack with a new jack. Retest after each change, and record what you re-terminated and the new result. If you cannot find the fault, tell the site lead.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="A reversed pair on pins 3 and 6 means white-green and green have swapped places at one end. End 1 matches T568B, white-green on pin 3 and green on pin 6. End 2 has them the other way around, so you re-terminate end 2. Re-terminating end 1 would move a correct end to match the faulty one. Swapping the main unit and the remote gives the same map, because the fault is in the cord.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A cord fails with a reversed pair on pins 3 and 6. Through the plug bodies, end 1 shows white-green on pin 3 and green on pin 6. End 2 shows green on pin 3 and white-green on pin 6. What do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Re-terminate end 1</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Re-terminate end 2</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Re-terminate both ends</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Swap the main unit and the remote, and test again</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.2" data-lesson-title="Copper Termination and the Patch Panel" data-group-num="4" data-group-title="The Patch Panel at the Rack" data-num="527.2.10" data-title="Patch panels and the rack">
+  <p class="crumb">Lesson 527.2 &middot; Section 4 The Patch Panel at the Rack</p>
+  <h2><span class="tnum">527.2.10</span> Patch panels and the rack</h2>
+  <p class="lead-in">A patch panel gathers the permanent links of an area in numbered ports at the rack, where patch cords connect them to equipment.</p>
+
+  <h3>Two kinds of panel</h3>
+  <div class="compare">
+    <div><h3>Keystone panel</h3><ul class="clean">
+      <li>A frame of empty ports</li>
+      <li>Each cable is terminated on a keystone jack, which snaps into its port</li>
+      <li>A faulty port is repaired with a new jack</li>
+    </ul></div>
+    <div><h3>Punch-down panel</h3><ul class="clean">
+      <li>Fixed jacks, with a punch-down block on the back of each port</li>
+      <li>Each cable is punched down on the panel itself</li>
+      <li>The ports cannot be removed one at a time</li>
+    </ul></div>
+  </div>
+  <p>On a keystone panel, the jack goes into its port from the back or the front, as the panel&rsquo;s manufacturer sets out. The panel&rsquo;s product card says which, and where its port labels go.</p>
+
+  <h3>The rack</h3>
+  <p>A standard equipment rack takes equipment 19 in wide, mounted between its vertical rails. Height in a rack is counted in <span class="keyterm">rack units</span> (U): 1U is 1.75 in, and each rack unit has three mounting holes on each rail. A 12-port panel is commonly 1U high; a 48-port panel is commonly 2U. The panel&rsquo;s <strong>ears</strong>, the flanges at each end, sit against the front rails and take its rack screws.</p>
+  <p>Rails come in two forms. <strong>Square-hole</strong> rails take <span class="keyterm">cage nuts</span>: a square nut in a spring-steel cage, clipped into a square hole so that the nut sits behind the rail. A cage-nut tool or a small screwdriver compresses the cage as it goes in. <strong>Threaded</strong> rails take the screw directly. </p>
+
+  <h3>Mounting a panel</h3>
+  <ol>
+    <li>Find the panel&rsquo;s position on the <strong>rack sheet</strong>, the posted list that assigns each position in the rack.</li>
+    <li>Fit the cage nuts, where used, in the holes that match the ear holes, on both rails at the same height.</li>
+    <li>Hold the panel in place and start every screw by hand.</li>
+    <li>Tighten the screws, then press the panel to check that it does not move.</li>
+    <li>Fix the panel&rsquo;s label on its front, clear of the ports.</li>
+  </ol>
+  <p>The rack is shared. Move, unplug, or switch off nothing that is not yours; if equipment is in the way, tell the site lead.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="Starting every screw by hand before any is tightened leaves the ears free to shift, so the last screws still line up with their holes and go in straight. A screw tightened first pulls the panel against the rail and can leave another hole out of line, which invites a cross-threaded screw. The order has no effect on the panel&rsquo;s position on the rack sheet, on the labels, or on the cage nuts&rsquo; fit in the rail.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Why is every rack screw started by hand before any is tightened?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>To keep the panel at the position the rack sheet names</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>To seat the cage nuts in their square holes</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>So the ears can still shift and every screw lines up with its hole</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>So the panel label stays clear of the ports</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.2" data-lesson-title="Copper Termination and the Patch Panel" data-group-num="4" data-group-title="The Patch Panel at the Rack" data-num="527.2.11" data-title="Dressing cable to the panel">
+  <p class="crumb">Lesson 527.2 &middot; Section 4 The Patch Panel at the Rack</p>
+  <h2><span class="tnum">527.2.11</span> Dressing cable to the panel</h2>
+  <p class="lead-in">Dressing is laying each cable along a set route from the cable ladder to its port and tying the cables of that route into a bundle, so that the next technician can trace and work on any one of them.</p>
+
+  <h3>The route</h3>
+  <p>Cables leave the ladder at the rack and come down through <span class="keyterm">cable managers</span> and <span class="keyterm">D-rings</span>. Cable managers are the troughs and fingers mounted beside or between the panels; D-rings are open rings that guide cable down the rack. Each cable follows the route its team is given, without crossing another bundle, to the back of its own port. The 10 ft service loop of the owner&rsquo;s cabling addendum (A5) stays coiled on the ladder: it is spare cable for a later re-termination or a move, not slack to dress into the rack.</p>
+
+  <h3>Bend radius</h3>
+  <p>The owner&rsquo;s cabling addendum (A4) sets a minimum bend radius of <strong>four times the cable&rsquo;s outside diameter</strong>. A tighter bend flattens the cable and changes the spacing and twist of its pairs, which adds crosstalk and reflects part of the signal. The limit is a radius. A <span class="keyterm">bend gauge</span>, the round object that checks it, has a diameter of twice that radius.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; Bend radius and the gauge that checks it</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 280" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A cable bent around a round gauge, with the radius of the gauge marked as four times the cable's outside diameter and its diameter as eight times, and a worked example for a 0.25 in cable. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Bend radius and the gauge that checks it</text>
+    <circle cx="200" cy="150" r="80" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+    <path d="M 40 62 L 200 62 A 88 88 0 0 1 288 150 L 288 262" fill="none" stroke="#611940" stroke-width="10" stroke-linecap="round"/>
+    <line x1="200" y1="150" x2="200" y2="70" stroke="#26282E" stroke-width="2"/>
+    <text x="208" y="112" font-size="13" fill="#26282E">radius</text>
+    <line x1="120" y1="150" x2="280" y2="150" stroke="#26282E" stroke-width="1.4" stroke-dasharray="6 4"/>
+    <text x="130" y="172" font-size="13" fill="#26282E">diameter</text>
+    <text x="60" y="52" font-size="13" fill="#611940">cable</text>
+    <text x="340" y="84" font-size="14" font-weight="700" fill="#26282E">Minimum bend radius = 4 &#215; the cable&#8217;s outside diameter</text>
+    <text x="340" y="110" font-size="14" font-weight="700" fill="#26282E">Gauge diameter = 2 &#215; that radius = 8 &#215; the outside diameter</text>
+    <text x="340" y="156" font-size="14" fill="#26282E">Example, another job: outside diameter 0.25 in</text>
+    <text x="340" y="180" font-size="14" fill="#26282E">Minimum bend radius 4 &#215; 0.25 = 1 in</text>
+    <text x="340" y="204" font-size="14" fill="#26282E">Gauge diameter 2 in</text>
+    <text x="340" y="244" font-size="13" fill="#5A5D66">A bend that follows the gauge is at the limit. A bend tighter than the gauge fails.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Bend radius and the gauge that checks it. On the left, a thick line labeled cable runs horizontally, bends around the top and right side of a round gauge, and continues straight down. A line from the center of the gauge to its edge is labeled radius; a dashed line across the gauge is labeled diameter.</p>
+    <p>On the right, the text reads: Minimum bend radius = 4 &times; the cable&rsquo;s outside diameter. Gauge diameter = 2 &times; that radius = 8 &times; the outside diameter. Example, another job: outside diameter 0.25 in. Minimum bend radius 4 &times; 0.25 = 1 in. Gauge diameter 2 in.</p>
+    <p>A note at the bottom right reads: A bend that follows the gauge is at the limit. A bend tighter than the gauge fails.</p>
+  </details>
+
+  <h3>Ties</h3>
+  <p>The owner&rsquo;s cabling addendum (A4) allows <strong>hook-and-loop ties only</strong>, tightened by hand, with no cable jacket deformed. A tie pulled tight presses the jacket out of round and changes the pairs&rsquo; geometry at that point, as a tight bend does. Tighten each tie until the bundle holds its shape, and stop before any jacket is pressed in. Do not support a cable from another service, such as a pipe or another trade&rsquo;s bracket.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The minimum bend radius is 4 &times; 0.30 = 1.2 in, and a gauge is a round object, so its diameter is twice the radius: 2.4 in. 1.2 in is the radius, not the diameter: a gauge 1.2 in across allows a bend radius of 0.6 in, half the limit. 0.6 in uses two times the outside diameter. 4.8 in uses 16 times the outside diameter, twice the gauge the limit needs.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A cable&rsquo;s outside diameter is 0.30 in. What diameter of bend gauge checks the owner&rsquo;s minimum bend radius?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>1.2 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>2.4 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>0.6 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>4.8 in</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.2" data-lesson-title="Copper Termination and the Patch Panel" data-group-num="4" data-group-title="The Patch Panel at the Rack" data-num="527.2.12" data-title="Labeling the port, the outlet, and the cable">
+  <p class="crumb">Lesson 527.2 &middot; Section 4 The Patch Panel at the Rack</p>
+  <h2><span class="tnum">527.2.12</span> Labeling the port, the outlet, and the cable</h2>
+  <p class="lead-in">Each end of a permanent link carries a label that names the other end, so that a technician at the outlet can find the port and a technician at the rack can find the outlet.</p>
+
+  <h3>The owner&rsquo;s schemes</h3>
+  <p>In the production building, the owner&rsquo;s standard (27 05 53 2.1) identifies a telecommunications room by floor and letter, a patch panel by room and number, and an outlet by its panel and port. Outlet 2A-PP01-014 is port 014 of panel PP01 in room 2A. Labels are machine-printed and fixed at both ends of every cable.</p>
+  <p>On the mock-up, each outlet has an identifier built from its wall, face, bay, and outlet code. The owner&rsquo;s cabling addendum (A6) assigns each outlet a port on its wall&rsquo;s panel, in a fixed order by bay and outlet, and sets three labels for each link:</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The three labels the owner&rsquo;s cabling addendum (A6) sets for each permanent link.</caption>
+      <thead><tr>
+        <th scope="col">Where</th><th scope="col">The label carries</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Patch panel port</th><td>The outlet identifier</td></tr>
+        <tr><th scope="row">Outlet faceplate, or the cover of a surface box</th><td>The panel and port</td></tr>
+        <tr><th scope="row">Each end of the cable</th><td>The outlet identifier, then the panel and port</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Work out each label from the addendum&rsquo;s port table and the outlet identifier, print it, and fix it flat and legible. At termination, print a new cable label. It replaces any earlier cable label that named the outlet only. The panel also carries one label with its own identifier.</p>
+
+  <p>This example comes from another Kestrel job that used the same three-label rule.</p>
+  <div class="figure">
+    <div class="cap">Example &mdash; one link at the Mercer Avenue Clinic (hypothetical)</div>
+    <p><strong>Outlet.</strong> 1.06-A3, served by port 14 of patch panel PP2.</p>
+    <p><strong>Port label.</strong> 1.06-A3</p>
+    <p><strong>Faceplate label.</strong> PP2-14</p>
+    <p style="margin-bottom:0"><strong>Cable label, at both ends.</strong> 1.06-A3 PP2-14</p>
+  </div>
+
+  <div class="cyu gate" data-answer="3" data-fb="Under the three-label rule, the faceplate carries the panel and port, so the faceplate at outlet 1.06-A3 reads PP2-14. 1.06-A3 is the outlet identifier, which goes on the panel port. 1.06-A3 PP2-14 is the cable label, at both ends of the cable. PP2 alone names the panel, not the port.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">At the Mercer Avenue Clinic, which label goes on the faceplate of outlet 1.06-A3?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>1.06-A3</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>1.06-A3 PP2-14</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>PP2</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>PP2-14</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+
+  <h3>Checking a record with an AI tool</h3>
+  <p>An AI tool can check a record of ports and labels: you give it your entries and the rule, and ask it to list every entry that does not match. The tool can report a mismatch that is not there, or miss one that is. Check each finding against the rule yourself. Correct the record where the finding is right, reject it where the rule says otherwise, and record the reason either way.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="The rule puts only the panel and port on the faceplate, so PP2-14 is right and the finding is wrong. You reject it and record that the rule sets the panel and port alone for a faceplate. Adding the outlet identifier would make the faceplate label match the cable label instead of the rule. Accepting a finding because the tool made it skips the check. Deleting the finding from the record removes the evidence of what the tool said.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You give an AI tool the Mercer Avenue Clinic labels and the three-label rule. It reports that the faceplate label PP2-14 should also carry the outlet identifier. What do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Reprint the faceplate label as 1.06-A3 PP2-14</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Accept the finding, because the tool checked every entry</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Reject the finding, and record that the rule sets the panel and port alone for a faceplate</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Delete the finding from your record and keep the label</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.2" data-lesson-title="Copper Termination and the Patch Panel" data-group-num="5" data-group-title="Wrapping Up" data-num="527.2.13" data-title="What you covered">
+  <p class="crumb">Lesson 527.2 &middot; Section 5 Wrapping Up</p>
+  <h2><span class="tnum">527.2.13</span> What you covered</h2>
+  <p class="lead-in">A permanent link is terminated to T568B at its outlet and at its panel port, dressed, labeled at both ends, and verified with a wiremap test.</p>
+
+  <h3>The link and its parts</h3>
+  <p>The <strong>permanent link</strong> runs from the outlet jack to the panel port and includes both terminations; patch cords are not part of it. A cable&rsquo;s jacket gives its <strong>category</strong>, its conductor size in <strong>AWG</strong> (a smaller number is a thicker conductor), its fire rating, and its footage marks. Permanent links use <strong>solid</strong> conductor. A plug or jack fits a cable when its category, conductor type, and size range all include the cable&rsquo;s; the manufacturer&rsquo;s figures decide the fit.</p>
+
+  <h3>Terminating copper</h3>
+  <p>T568B: white-orange, orange, white-green, blue, white-blue, green, white-brown, brown, pins 1 to 8. Strip to the manufacturer&rsquo;s length without nicking a conductor. Keep each pair twisted to within <strong>0.5 in</strong> of its termination. On a plug, the jacket sits under the jacket crimp and all eight contacts press down level. On a keystone jack, follow the <strong>B row of the jack&rsquo;s own label</strong>. Seat each conductor with the cutting side of the 110 blade toward the waste end.</p>
+
+  <h3>Wiremap testing</h3>
+  <p>A wiremap tester names an <strong>open</strong>, a <strong>short</strong>, a <strong>reversed pair</strong>, or a <strong>crossed pair</strong>, with the pins. A reversed or crossed pair is wrong at one end: re-terminate the end that does not match its scheme. A split pair passes a tester that checks only continuity and pin mapping; a certification tester finds it.</p>
+
+  <h3>The patch panel at the rack</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The work at the rack in order, and the rule that governs each step.</caption>
+      <thead><tr>
+        <th scope="col">Step</th><th scope="col">Rule</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Mount the panel</th><td>At the position the rack sheet gives; cage nuts or threaded holes matched to the ears; every screw started before any is tightened; nothing else in the rack moved</td></tr>
+        <tr><th scope="row">Dress</th><td>Along the set route through the managers and D-rings; no bend radius under 4 &times; the outside diameter (gauge diameter 8 &times;); hook-and-loop ties, hand-tight; service loop left on the ladder</td></tr>
+        <tr><th scope="row">Label</th><td>Port: the outlet identifier. Faceplate: the panel and port. Cable, both ends: the outlet identifier, then the panel and port. Machine-printed</td></tr>
+        <tr><th scope="row">Verify</th><td>Wiremap and length on every link; a pass is all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft; record the result as the tester shows it</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete — continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again — this does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct>=90) msg.textContent='Outstanding — you are working at field-standard level and are ready for the lab.';
+      else if(pct>=75) msg.textContent='Strong work. Revisit anything you missed and you will be field-ready.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the cards and applied scenarios to close the gaps.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+<!--
+BUILD FLAGS - UCI 1019 Lesson 527.2 Async Reading v0.1.0 DRAFT, 2026-11-08
+(Module 527, Structured Cabling Techniques and Troubleshooting; built under
+the delegated mode, brief Planning/_AGENT-BRIEF_M527-Readings.md). This
+comment is visible in the page source, so it carries no answer-key value.
+Not reviewed: no language pass, cold read or provenance check by a fresh
+reviewer yet (drafting agent's own self-check only).
+
+SOURCES READ
+- CLAUDE.md; STYLE-RULES.md; style profile v1.4 (lines 1-250); format spec
+  v1.0 and 2026 addendum v0.1.0; pattern page Lesson 526.1 v0.1.0.
+- Module plan v0.1.0 DRAFT s1-s11 and change log; lab-build agent brief.
+- GLAB 527.2.1 lab, Cord Inspection Sheet, guide (s1-s5 and site notes);
+  ALAB 527.2.2 lab and guide terms; ALAB 527.2.3 lab, Panel Inspection
+  and Key Sheet (s0-s4), guide (terms, s1-s2, site notes).
+- Work orders KC-2620, KC-2621, KC-2622; owner's cabling addendum v0.1.0
+  (A1-A10); owner standard mock-up edition 27 05 00 4.4, 27 05 53 2.1-2.2,
+  27 15 00 2.1-3.1.
+- No drawing is relied on: the page names no sheet and shows no drawing.
+
+DECISIONS TAKEN
+- Five sections, 13 topics, 14 activities, 4 diagrams. Topics follow the
+  work, not the objective list: parts and selection; termination (plug and
+  jack together, since both use T568B and the strip and twist rules);
+  testing (cord and link together); the panel at the rack. The outline in
+  the head comment shows which topic teaches each objective.
+- Objectives are the module plan section 3 wording verbatim (11 lines,
+  bold verb). Terminate and Label appear twice each, as in the plan.
+- Time stated as ~60-75 min (brief default; plan s6 allows ~60-90). The
+  reading is due before the Lesson 527.2 presentation (Day 2, 9:15).
+- Every identifier example comes from another job or the production
+  scheme: Mercer Avenue Clinic (hypothetical, as in the 526.1 reading),
+  outlet 1.06-A3 on PP2 port 14; production outlet 2A-PP01-014 from the
+  owner standard 27 05 53 2.1. No bay, port or label of the mock-up appears
+  on the page. The A6 port table is described, not reproduced; the
+  three-label rule is reproduced (it is the rule the learner applies, given
+  in the addendum and the labs).
+- No product figure for the mock-up: no strip length, trim method, plug or
+  jack rating, cable gauge or outside diameter. The selection example uses
+  a Category 6, 23 AWG cable from another job; the bend examples use 0.25 in
+  (diagram) and 0.30 in (check) outside diameters, not the guide's ~0.2 in
+  and ~1.6 in gauge.
+- Stated because the labs and documents state them and the reading teaches
+  the rule: T568B pinout (A1); 0.5 in untwist (A3); ~1/4 in of pairs at
+  most between jacket and jack (lab and key rule, "on the mock-up");
+  4 x OD bend radius and 8 x OD gauge diameter (A4, guide); hook-and-loop
+  ties (A4); 10 ft service loop stays on the ladder (A5); pass definition
+  and 295 ft (A7); verification is not certification (A7, A8).
+- Tester claims limited to what the brief allows: open, short, reversed
+  pair, crossed pair; length on "most models". The split pair is named as
+  something a continuity-and-mapping test passes and certification finds
+  (A7). The display is said to differ between models.
+- AI check taught in 527.2.12 (port and label record), the plan's AI use
+  for this lesson; no tool named (the lab names Copilot).
+- Engine style blocks and script byte-identical to the pattern page
+  (checked by script). The .calc sheet is carried but unused.
+- No lab, record, work order or quiz named. Project documents named: the
+  owner's standard (mock-up edition) and the cabling addendum, by title in
+  the overview and by clause elsewhere. The Kestrel site lead is named in
+  527.2.3 as the person to tell.
+- Serial comma; American spelling; times approximate.
+
+ASSUMPTIONS (not in the module plan)
+- "A link built from parts of different categories is rated no higher than
+  its lowest-rated part": general TIA practice, not from a project file.
+- Solid and stranded loss and flex, IDC behavior, plug parts (contacts,
+  jacket crimp, latch), standard and pass-through plugs, keystone slot
+  order usually not pin order, the 110 blade's cutting side: general trade
+  knowledge.
+- Rack: 19 in width, 1U = 1.75 in, three holes per U per rail; a 12-port
+  panel commonly 1U and a 48-port commonly 2U; cage nuts in square holes,
+  threaded rails; all screws started before any is tightened. General
+  knowledge.
+- CMR described as riser (vertical runs between floors) and CMP as plenum
+  (air-handling spaces); not expanded as acronyms (listing designations;
+  the addendum's LP3 held the expansion).
+- Crosstalk explanation (balanced pair, twist rates, untwist adds
+  crosstalk; tight bends and tight ties change pair geometry) stated
+  qualitatively; no numeric limit from TIA-568 beyond what the addendum
+  states (0.5 in, 4 x OD, 295 ft).
+
+CONFLICTS FOUND (reported, not resolved here)
+- Module plan s3 says its objectives carry the labs' wording word for word,
+  but two lines differ from the ALAB 527.2.3 lab: "Dress cable to a patch
+  panel through the rack's managers" (lab: "rack's cable managers") and
+  "Terminate your cables on the patch panel" (lab: "Terminate cables on a
+  patch panel"). Plan wording used.
+- KC-2620 Project facts and the GLAB 527.2.1 lab and guide define a cord
+  pass as "continuous and correctly mapped"; addendum A7 reads "each
+  reaching the same pin at the far end". The page uses the A7 wording.
+- GLAB 527.2.1 guide: the D13b plug (R-076) is Category 6 pass-through and
+  may not be rated for the cable; the page teaches the fit check
+  generically and does not say which plug the mock-up uses.
+
+CHECK QUESTIONS AND ACTIVITIES (for the quiz writer; do not repeat)
+- 527.2.1 CYU: which is part of the permanent link (the keystone jack at
+  the outlet; distractors: two patch cords, the switch port).
+- 527.2.2 CYU: 23 AWG or 24 AWG, which is thicker (23 AWG).
+- 527.2.3 CYU: Category 6 solid 23 AWG cable; which plug card fits (Cat 6,
+  solid or stranded, 24-22 AWG).
+- 527.2.4 CYU: T568B pins of the green pair (3 and 6).
+- 527.2.5 CYU: orange pair untwisted 3/4 in, others 3/8 in: re-terminate
+  with every pair within 0.5 in.
+- 527.2.6 CYU: which finding means a pull loads the conductors (jacket ends
+  before the jacket crimp).
+- 527.2.7 CYU: what decides the slot for each conductor on a keystone jack
+  (the B row of that jack's color label).
+- 527.2.8 Matching: open, short, reversed pair, crossed pair, split pair to
+  their definitions.
+- 527.2.9 CYU: cord with a reversed pair on pins 3 and 6; end 2 shows green
+  on 3 and white-green on 6: re-terminate end 2.
+- 527.2.10 CYU: why all four rack screws are started before any is
+  tightened (ears can shift, every screw lines up).
+- 527.2.11 CYU: OD 0.30 in, bend gauge diameter (2.4 in).
+- 527.2.12 CYU 1: Mercer faceplate label for outlet 1.06-A3 (PP2-14).
+- 527.2.12 CYU 2: AI tool says the faceplate PP2-14 should carry the outlet
+  identifier: reject and record the reason.
+- 527.2.13 acknowledgement.
+
+WORKED EXAMPLES (for the quiz writer; do not repeat)
+- 527.2.1 Permanent link inside the channel (diagram).
+- 527.2.2 Footage marks 0846 and 0836 = 10 ft; 22 AWG thicker than 24 AWG;
+  jacket print examples CAT 6, 4PR, 23 AWG, U/UTP, CMR, CMP.
+- 527.2.3 Category 6 solid 23 AWG cable checked against a plug (Cat 6,
+  stranded, 26-24: no), a keystone jack (Cat 6, solid, 26-22: yes) and a
+  panel (Cat 6, keystone: yes).
+- 527.2.4 T568B and T568A pin diagram; T568A at one end and T568B at the
+  other swaps the orange and green pairs.
+- 527.2.8 Three wiremaps: pass; reversed pair 1-2; crossed pair 1-2 with
+  3-6. Split pair example: pins 3-4 and 5-6 paired at both ends.
+- 527.2.11 OD 0.25 in: radius 1 in, gauge 2 in.
+- 527.2.12 Production outlet 2A-PP01-014; Mercer Avenue Clinic link
+  1.06-A3, PP2-14, 1.06-A3 PP2-14.
+
+KEY CHECK
+- Grepped for W1-W5 bay identifiers, P1-P5 and Pn-nn labels, 7 ft, KC-26xx,
+  lab and record names: none in the page body. No product figure from the
+  GLAB 527.2.1 key (instructor-written at setup) is stated; the page never
+  states the mock-up cable's gauge. The ALAB 527.2.3 guide's ~0.2 in OD and
+  ~1.6 in gauge are not used. ALAB 527.2.2 and 527.2.3 keys (port and labels
+  per bay): no match.
+
+UNVERIFIED
+- Not opened in a browser; SVG layout checked by coordinates only.
+- The general-knowledge claims under ASSUMPTIONS have not been checked by a
+  subject matter expert.
+
+AUDITS (final build)
+- audit_html.py: first run FAIL 0, WARN 2 (two long sentences); after the
+  split, FAIL 0, WARN 0. ~6,600 words of prose including text descriptions
+  and feedback, ~59 min at 112 wpm before activities.
+- contrast_audit.py as written: FAIL 1, .order .step.picked .seq scored
+  against the legacy amber token (known tool limitation; the brand layer
+  sets White on #8A4B00, 6.8:1; the page has no ordering activity). With
+  later token definitions winning (scratch copy of the tool): FAIL 0.
+  REPORT 83 unresolvable containers, as on the 526.1 page.
+- Self-check against STYLE-RULES and the eleven patterns in CLAUDE.md: 21
+  wording changes (bolted "and" clauses, agentless passives, a tautology,
+  an unverifiable claim, referents) and three terms defined at first use
+  (patch panel, keystone jack, rack sheet).
+- 2026-11-08 LP1 (content): 27 applied (3 reworded: U/UTP and CMR/CMP keep their bold term; the cable-label sentence says 'any earlier cable label' rather than introducing a label fixed at the pull), 0 held.
+- 2026-11-08 final consolidation: item 48, A7 pass wording "all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft" (A7 paragraph, summary table, tester sentence); item 39, "crew" -> "team" for the mock-up teams (four places). audit_html.py 0 FAIL, 0 WARN.
+- 2026-11-08 LP2 (content): 20 applied (6 reworded: certification defined at first use in the opening and its later definition shortened; strip length 'inside a plug, or at the back of a jack'; pass-through trim step; punch-down cut 'between the slot and the cable'; tester lead defined in the 527.2.9 lead-in, later sentence shortened; wiremap lead-in split), 0 held.
+-->
+</body>
+</html>

@@ -1,0 +1,2424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 527 (M07) - Structured Cabling Techniques and Troubleshooting
+  Lesson 527.4 - Certification Reports and Cable Faults (Async Reading)
+  VERSION: v0.1.0  (2026-11-08)  DRAFT - for review
+
+  CHANGES IN v0.1.0
+  First issue. Built new for UCI 1019; no earlier version exists.
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox) reused verbatim from
+  UCI-1019_M526_Lesson-526.1_Async-Reading_v0.1.0_DRAFT.html, which carries the
+  engine of UCI-2107.1_M529_Lesson-529.6_Async-Reading_v0.2.0.html. Appended
+  after it, unchanged from that page: the 2026 brand layer
+  (FORMAT-SPEC_Async-Reading_2026-Addendum_v0.1.0_DRAFT.md section 3) and the
+  .calc component sheet (worked-arithmetic panel). Logo: inline Slate SVG.
+  The .portmap-panel class is used once (practice report excerpt); its CSS is
+  in the engine sheet.
+
+  OBJECTIVES, one verb each, from the module plan v0.1.0 section 3,
+  Lesson 527.4 (learner-facing wording, codes removed).
+    Distinguish  verification from qualification and certification   7.7.1, 7.7.2
+    Interpret    a Category 5e certification report                   7.7.3
+    Explain      why a split pair passes a wiremap continuity check ...       7.7.4
+    Decide       whether a link is accepted or escalated              7.7.5
+    Verify       an AI interpretation of a report                     7.7.5 AI
+    Inspect      a failing link before choosing a test                7.3.1, 7.3.2
+    Isolate      an open, a short, a reversed or crossed pair         7.3.3
+    Repair       a faulted termination to T568B                       7.3.5
+    Retest       a repaired link with the same test                   7.3.5
+    Record       each fault's location, cause, correction, retest     7.3.4
+    Check        an AI fault hypothesis against what you find         7.3.6 AI
+  Wording as in the module plan, unchanged.
+
+  TOPIC OUTLINE
+    Section 1  Three Kinds of Test
+      527.4.1   What a wiremap test proves                entry point; Distinguish
+      527.4.2   Verification, qualification, and
+                certification                             Distinguish
+    Section 2  Reading a Certification Report
+      527.4.3   The parts of a certification report       Interpret
+      527.4.4   What each result measures                 Interpret
+      527.4.5   Margin and the worst case                 Interpret
+      527.4.6   Accept or escalate                        Decide
+    Section 3  The Split Pair
+      527.4.7   Pins, pairs, and T568B                    Explain (ground)
+      527.4.8   Why a split pair passes a continuity
+                check                                     Explain
+    Section 4  Finding and Repairing a Fault
+      527.4.9   Look before you test                      Inspect
+      527.4.10  The four wiremap faults and their causes  Isolate, Record (cause)
+      527.4.11  Which end holds the fault                 Isolate
+      527.4.12  Repairing the termination                 Repair
+      527.4.13  Retest and record                         Retest, Record
+    Section 5  Checking an AI Tool
+      527.4.14  Checking an AI reading of a report        Verify (AI)
+      527.4.15  Checking an AI fault hypothesis           Check (AI)
+    Section 6  Wrapping Up
+      527.4.16  What you covered                          summary
+
+  ACTIVITY GATES: 16 - 13 single-answer checks, 1 matching, 1 ordering,
+    1 acknowledgement.
+  DIAGRAMS: 4 original SVG, each with a full text description (diagnostic
+    distance on a link; T568B pins and pairs; split pair at both ends; four
+    practice wiremap faults).
+  IMAGES: none.
+
+  Build flags, decisions, assumptions, the list of every check question and
+  worked example, and the audit results are in the BUILD FLAGS comment at the
+  end of this file.
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 527.4 - Certification Reports and Cable Faults &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Structured Cabling</b> &middot; Lesson 527.4 - Certification Reports and Cable Faults</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Structured Cabling Techniques and Troubleshooting</p>
+      <h2 id="ovh" tabindex="-1">Lesson 527.4 - Certification Reports and Cable Faults</h2>
+      <p class="lead-in">What a wiremap test proves about a copper link, how to read a certification report, and how to find and repair a fault that the wiremap test reports.</p>
+
+      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. Its installation mock-up of the typical Level 2 work area stands on five training walls, each laid out in bays. The three data outlets in each bay are cabled to a team patch panel in the Mobile Infrastructure Rack (MIR). Before the owner, Calder Regional Services, accepts the mock-up as the standard for Level 2, the owner&rsquo;s representative walks the cabling.</p>
+
+      <p>The owner&rsquo;s cabling addendum sets two tests. Each team tests every link, from outlet jack to patch panel port, for wiremap and length with its own tester. At closeout, Kestrel&rsquo;s lead technician tests every link again with a certification tester and sends the reports to the owner. A link can pass the first test and fail the second. Where a wiremap test fails, the installer finds the fault, repairs the termination, and proves the repair with the same test.</p>
+
+      <p>The worked examples on this page come from other jobs; none gives the values of a link on the mock-up.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>Three Kinds of Test.</b> What a wiremap and length test proves, and how verification, qualification, and certification differ.</li>
+        <li><b>Reading a Certification Report.</b> The parts of a report, what each result measures, the margin, and the decision to accept or escalate.</li>
+        <li><b>The Split Pair.</b> Pins, pairs, and T568B, and the wiring error that a continuity check passes.</li>
+        <li><b>Finding and Repairing a Fault.</b> Inspection, the four wiremap faults and their causes, the faulted end, the repair, the retest, and the record.</li>
+        <li><b>Checking an AI Tool.</b> An AI reading of a report, and an AI fault hypothesis, each checked against the evidence.</li>
+        <li><b>Wrapping Up.</b> A summary of each section.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>6</b><span>Sections</span></div>
+        <div class="ov-stat"><b>16</b><span>Topics</span></div>
+        <div class="ov-stat"><b>16</b><span>Activities</span></div>
+        <div class="ov-stat"><b>4</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the documents and the equipment</h3>
+      <p>The project documents cited on this page are the owner&rsquo;s <strong>Telecommunications Design and Installation Standard</strong> and its <strong>cabling addendum</strong>, clauses A1 to A10. Both are fictional documents written for the mock-up. Where this page states what a clause requires, it cites the clause, for example A7. The addendum draws on ANSI/TIA-568, the cabling standard from the American National Standards Institute (ANSI) and the Telecommunications Industry Association (TIA).</p>
+      <p>Wiremap testers differ by model. Some detect wiring errors that others miss; some show a length for each pair and some show one length. The limits printed in the practice report on this page are examples, not values to apply to any link.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or go to any topic
+         from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks &mdash; a
+         knowledge check, a matching exercise, or an ordering exercise.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. The lesson takes ~60&ndash;75 min, including the activities.
+         The header and the contents list show your progress through the lesson.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching and ordering activities every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description. Each table has column headings and a caption.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 527.4</button>
+    </section>
+
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="1" data-group-title="Three Kinds of Test" data-num="527.4.1" data-title="What a wiremap test proves">
+  <p class="crumb">Lesson 527.4 &middot; Section 1 Three Kinds of Test</p>
+  <h2><span class="tnum">527.4.1</span> What a wiremap test proves</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 527.4</span>
+    <h3>Certification Reports and Cable Faults</h3>
+    <p>A wiremap tester shows whether a link is wired correctly. A certification tester measures how the link carries a signal.</p>
+    <p class="lb-meta"><b>6</b> sections &nbsp;&middot;&nbsp;
+       <b>16</b> topics &nbsp;&middot;&nbsp;
+       <b>16</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 527.4 you will be able to</div>
+    <ul>
+      <li><b>Distinguish</b> verification from qualification and certification.</li>
+      <li><b>Interpret</b> a Category 5e certification report.</li>
+      <li><b>Explain</b> why a split pair passes a wiremap continuity check and fails certification.</li>
+      <li><b>Decide</b> whether a link is accepted or escalated.</li>
+      <li><b>Verify</b> an AI interpretation of a certification report against the report.</li>
+      <li><b>Inspect</b> a failing link before choosing a test.</li>
+      <li><b>Isolate</b> an open, a short, a reversed pair, or a crossed pair with the wiremap tester and the tone kit.</li>
+      <li><b>Repair</b> a faulted termination to T568B.</li>
+      <li><b>Retest</b> a repaired link with the same test.</li>
+      <li><b>Record</b> each fault&rsquo;s location, cause, correction, and retest.</li>
+      <li><b>Check</b> an AI fault hypothesis against what you find.</li>
+    </ul></div>
+
+  <p class="lead-in">A wiremap and length test shows where each conductor of a link goes, and how long the link is.</p>
+
+  <p>A <span class="keyterm">permanent link</span> is the installed cable from the outlet jack to the patch panel port, with the termination at each end. Patch cords are not part of it (owner&rsquo;s cabling addendum, Terms). On the mock-up, each permanent link runs from a data outlet in a bay to a port on the team&rsquo;s patch panel in the Mobile Infrastructure Rack (MIR). On this page, &ldquo;link&rdquo; means a permanent link.</p>
+
+  <h3>The tester</h3>
+  <p>A wiremap tester has two parts. The <span class="keyterm">main unit</span> runs the test and shows the result. The <span class="keyterm">remote unit</span> plugs into the other end of the link. Through it, the main unit tells which pin each conductor reaches. Each unit connects to the link through a short patch cord: one at the patch panel port, one at the outlet.</p>
+
+  <h3>What the test checks</h3>
+  <ul>
+    <li><strong>Continuity.</strong> Each of the eight conductors is connected from end to end.</li>
+    <li><strong>Pin mapping.</strong> Each conductor reaches the same pin at the far end: pin 1 to pin 1, and so on to pin 8.</li>
+    <li><strong>Shorts.</strong> No two conductors are connected to each other.</li>
+    <li><strong>Length.</strong> The tester times a pulse along a pair and converts the time to a length with the <span class="keyterm">Nominal Velocity of Propagation</span> (NVP) set for the cable. NVP is the speed of a signal in the cable, as a percentage of the speed of light. A wrong NVP setting gives a wrong length.</li>
+  </ul>
+
+  <p>The owner&rsquo;s cabling addendum sets the pass (A7): all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft (90 m). Each team runs this test on every link. It does not measure how the link carries a signal at the frequencies a network uses. A certification tester measures that.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="A link passes A7 only when every conductor maps pin to pin, touching no other conductor, and the length is not over 295 ft. At 302 ft, the length fails although every conductor maps correctly. The links of 41 ft, 156 ft, and 290 ft are all within the limit, so each passes.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Four links each show all eight conductors mapped pin to pin. Which result fails the wiremap and length test of A7?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Length 41 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Length 290 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Length 302 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Length 156 ft</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="1" data-group-title="Three Kinds of Test" data-num="527.4.2" data-title="Verification, qualification, and certification">
+  <p class="crumb">Lesson 527.4 &middot; Section 1 Three Kinds of Test</p>
+  <h2><span class="tnum">527.4.2</span> Verification, qualification, and certification</h2>
+  <p class="lead-in">Verification, qualification, and certification each answer a different question about a link, with a different instrument.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The three kinds of test, the question each answers, and what its instrument does.</caption>
+      <thead><tr>
+        <th scope="col">Test</th><th scope="col">The question it answers</th><th scope="col">What the instrument does</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Verification</th><td>Is the link wired correctly?</td><td>A wiremap tester checks continuity, pin mapping, shorts, and length.</td></tr>
+        <tr><th scope="row">Qualification</th><td>Can the link carry one named network application?</td><td>A qualification tester measures the link against what that application needs, and reports whether the link supports it.</td></tr>
+        <tr><th scope="row">Certification</th><td>Does the link meet every limit its cabling standard sets for its category?</td><td>A certification tester measures each parameter the standard sets, across the category&rsquo;s frequency range, and reports a pass or a fail for each. For a Category 5e permanent link, the limits are those of ANSI/TIA-568, from 1 to 100 MHz.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A qualification pass covers the application it names, not another one. A certification report names the standard, the category, and the test limit it applied.</p>
+
+  <p>The owner&rsquo;s cabling addendum asks for two of the three. Under A7, each team verifies every link with its own wiremap tester as the link is finished. Under A8, the lead technician certifies every link at closeout and submits the reports to the owner. The owner accepts the links on the certification reports.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="Only a certification tester measures a link against the limits of its category, so only a certification report answers the request (A8). A wiremap and length pass verifies the wiring, whichever tester produced it. A qualification test answers whether a link supports one named application, not whether it meets the category&rsquo;s limits.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">The owner&rsquo;s representative asks for proof that each link meets the Category 5e permanent link limits. The team holds a passing wiremap and length result for every link. What answers the request?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>A certification report for each link, from a certification tester</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The passing wiremap and length results the team already holds</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A qualification test of each link for the network the owner plans to run</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A second wiremap and length test, with a different wiremap tester</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="2" data-group-title="Reading a Certification Report" data-num="527.4.3" data-title="The parts of a certification report">
+  <p class="crumb">Lesson 527.4 &middot; Section 2 Reading a Certification Report</p>
+  <h2><span class="tnum">527.4.3</span> The parts of a certification report</h2>
+  <p class="lead-in">A certification report records one link: where the tester was connected, what it measured, and whether each result met its limit.</p>
+
+  <p>A certification tester also has a main unit and a remote unit. Its report for one link has the parts below.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The parts of a certification report and what each one gives.</caption>
+      <thead><tr>
+        <th scope="col">Part</th><th scope="col">What it gives</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Header</th><td>The link; the test limit, such as a Category 5e permanent link; the cable type; the NVP set in the tester; where the main unit and the remote unit were connected; and the overall result</td></tr>
+        <tr><th scope="row">Wiremap</th><td>For each pin at the main unit, the pin it reaches at the remote unit, then the wiremap result</td></tr>
+        <tr><th scope="row">Length and delay</th><td>For each pair, its length, its propagation delay (the time a signal takes to travel the pair), and its delay skew (the difference in delay between that pair and the fastest pair); then each against its limit</td></tr>
+        <tr><th scope="row">Transmission results</th><td>One row for each parameter, at each end where the tester measures it: the pair or pairs, the frequency, the measured value, the limit, the margin, and the result</td></tr>
+        <tr><th scope="row">Diagnostics</th><td>Where the tester finds the largest disturbance on the link, as a distance from the main unit, when it reports one</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Permanent link and channel</h3>
+  <p>ANSI/TIA-568 gives one set of limits for a permanent link and another for a channel. A channel includes the patch cords at both ends; a permanent link does not. When the tester applies the permanent link limit, the result leaves the patch cords out.</p>
+
+  <h3>The two ends</h3>
+  <p>The header states where each unit was connected, for example the main unit at the patch panel port and the remote unit at the outlet jack. Every &ldquo;main unit&rdquo; and &ldquo;remote unit&rdquo; in the report&rsquo;s rows refers to those places. Every diagnostic distance is measured from the main unit.</p>
+
+  <h3>The overall result</h3>
+  <p>The overall result is PASS only when every result on the report passes; otherwise it is FAIL.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="The End column names a unit, and the header says where that unit was: here, the outlet jack. The row therefore describes the outlet end of the link. The patch panel port is the main unit&rsquo;s end. Neither unit sits midway along the cable. A permanent link result leaves the patch cords out.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A report&rsquo;s header states that the remote unit was at the outlet jack. A transmission row&rsquo;s End column reads &ldquo;Remote unit&rdquo;. Which part of the link does that row describe?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The patch panel port end</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The middle of the cable</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The patch cord at the main unit</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The outlet end</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="2" data-group-title="Reading a Certification Report" data-num="527.4.4" data-title="What each result measures">
+  <p class="crumb">Lesson 527.4 &middot; Section 2 Reading a Certification Report</p>
+  <h2><span class="tnum">527.4.4</span> What each result measures</h2>
+  <p class="lead-in">Each result on a report measures one way a link loses, leaks, or reflects a signal. Most of them point to a part of the installation.</p>
+
+  <h3>Length, propagation delay, and delay skew</h3>
+  <p>The tester measures the delay of each pair and converts it to a length at the NVP. The four pairs differ slightly in length, because each pair is twisted at its own rate. <strong>Delay skew</strong> is the difference in delay between a pair and the fastest pair. A route longer than the limit allows, or excess cable coiled in the run, makes the link fail its length limit.</p>
+
+  <h3>Insertion loss</h3>
+  <p><strong>Insertion loss</strong> is the signal lost along the link. It rises with length and with frequency. A long link, or a damaged or substandard cable, raises it.</p>
+
+  <h3>Crosstalk</h3>
+  <p>A signal on one pair couples into the pairs beside it. Twisting each pair keeps that coupling small, because the coupling from each twist largely cancels the next. Where the installer untwists a pair, or strips the jacket back, further than needed at a termination, coupling rises at that end. A jack or patch panel port not rated for the cable&rsquo;s category does the same.</p>
+  <ul>
+    <li><strong>Near-End Crosstalk (NEXT)</strong> is signal coupled from one pair into another, measured at the end where the signal enters. The tester measures it at each end, because each end has its own termination.</li>
+    <li><strong>Power Sum Near-End Crosstalk (PSNEXT)</strong> is the crosstalk into one pair from the other three together. 1000BASE-T Ethernet sends on all four pairs at once, so each pair receives crosstalk from the other three.</li>
+    <li><strong>Attenuation to Crosstalk Ratio, Far End (ACR-F)</strong> and its power-sum form, <strong>PSACR-F</strong>, measure the coupling at the far end, relative to the insertion loss. They have the same causes as NEXT, usually with less effect.</li>
+  </ul>
+
+  <h3>Return loss</h3>
+  <p><strong>Return loss</strong> is the signal reflected back toward the tester wherever the link&rsquo;s impedance changes. A cable crushed, kinked, deformed by an overtightened tie, or bent tighter than its minimum radius changes the impedance. So do excess untwisting at a termination and a component whose impedance differs from the cable&rsquo;s. The owner&rsquo;s cabling addendum sets the minimum bend radius at four times the cable&rsquo;s outside diameter (A4). The tester reports return loss at each end.</p>
+
+  <h3>The diagnostics distance</h3>
+  <p>The diagnostics line gives the distance from the main unit to the largest disturbance on the link. That distance places the disturbance at one end or in the cable.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; Where a diagnostic distance places a disturbance</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 300" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A link from a main unit at the patch panel port to a remote unit at the outlet jack, with a distance scale from 0 ft at the main unit's termination to the link's length at the remote unit's termination. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Where a diagnostic distance places a disturbance</text>
+    <rect x="24" y="90" width="110" height="50" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="79" y="120" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">Main unit</text>
+    <line x1="134" y1="115" x2="180" y2="115" stroke="#26282E" stroke-width="2"/>
+    <rect x="180" y="85" width="90" height="60" rx="4" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="225" y="110" font-size="14" fill="#26282E" text-anchor="middle">Patch panel</text>
+    <text x="225" y="130" font-size="14" fill="#26282E" text-anchor="middle">port</text>
+    <line x1="270" y1="115" x2="670" y2="115" stroke="#26282E" stroke-width="4"/>
+    <text x="470" y="104" font-size="14" fill="#26282E" text-anchor="middle">Cable</text>
+    <rect x="670" y="85" width="90" height="60" rx="4" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="715" y="110" font-size="14" fill="#26282E" text-anchor="middle">Outlet</text>
+    <text x="715" y="130" font-size="14" fill="#26282E" text-anchor="middle">jack</text>
+    <line x1="760" y1="115" x2="806" y2="115" stroke="#26282E" stroke-width="2"/>
+    <rect x="806" y="90" width="110" height="50" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="861" y="120" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">Remote unit</text>
+    <line x1="225" y1="172" x2="715" y2="172" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="225" y1="164" x2="225" y2="180" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="715" y1="164" x2="715" y2="180" stroke="#26282E" stroke-width="1.4"/>
+    <text x="225" y="160" font-size="13" fill="#5A5D66" text-anchor="middle">0 ft</text>
+    <text x="715" y="160" font-size="13" fill="#5A5D66" text-anchor="middle">the link&#8217;s length</text>
+    <line x1="225" y1="186" x2="225" y2="210" stroke="#611940" stroke-width="2"/>
+    <line x1="470" y1="186" x2="470" y2="210" stroke="#611940" stroke-width="2"/>
+    <line x1="715" y1="186" x2="715" y2="210" stroke="#611940" stroke-width="2"/>
+    <text x="225" y="228" font-size="14" font-weight="700" fill="#611940" text-anchor="middle">Near 0 ft</text>
+    <text x="225" y="248" font-size="13" fill="#26282E" text-anchor="middle">the termination at the main unit&#8217;s end</text>
+    <text x="470" y="228" font-size="14" font-weight="700" fill="#611940" text-anchor="middle">In between</text>
+    <text x="470" y="248" font-size="13" fill="#26282E" text-anchor="middle">in the cable</text>
+    <text x="715" y="228" font-size="14" font-weight="700" fill="#611940" text-anchor="middle">Near the link&#8217;s length</text>
+    <text x="715" y="248" font-size="13" fill="#26282E" text-anchor="middle">the termination at the remote unit&#8217;s end</text>
+    <text x="24" y="284" font-size="14" fill="#26282E">The distance is measured from the main unit. Here the main unit is at the patch panel port.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Where a diagnostic distance places a disturbance. From left to right it shows a main unit, a short cord, a patch panel port, a long cable, an outlet jack, a short cord, and a remote unit.</p>
+    <p>Under the link, a distance scale runs from 0 ft at the patch panel port to the link&rsquo;s length at the outlet jack. Three labels hang from it. Near 0 ft: the termination at the main unit&rsquo;s end. In between: in the cable. Near the link&rsquo;s length: the termination at the remote unit&rsquo;s end.</p>
+    <p>A line of text under the diagram reads: The distance is measured from the main unit. Here the main unit is at the patch panel port.</p>
+  </details>
+
+  <div class="cyu gate" data-answer="1" data-fb="The distance is measured from the main unit. At ~95 ft on a 96 ft link, the reflection lies ~1 ft from the remote unit, at the outlet jack&rsquo;s termination. A disturbance at the patch panel port would show near 0 ft, and one halfway along the cable near 48 ft. A permanent link result leaves the patch cords out.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a practice report for a 96 ft link, the main unit was at the patch panel port and the remote unit at the outlet jack. Return loss fails at the remote unit, and the diagnostics line places the largest reflection ~95 ft from the main unit. Where does the cause most likely lie?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>At the termination in the patch panel port</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>At the termination in the outlet jack</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>In the cable, about halfway along the run</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>In the patch cord at the main unit</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="2" data-group-title="Reading a Certification Report" data-num="527.4.5" data-title="Margin and the worst case">
+  <p class="crumb">Lesson 527.4 &middot; Section 2 Reading a Certification Report</p>
+  <h2><span class="tnum">527.4.5</span> Margin and the worst case</h2>
+  <p class="lead-in">The margin states by how much a result clears its limit, or misses it.</p>
+
+  <p>A certification tester measures each transmission parameter across the whole frequency range of the test. The limit changes with frequency. Each transmission row reports the worst point: the frequency where the measured value comes closest to the limit, or goes furthest past it.</p>
+
+  <p>The <span class="keyterm">margin</span> is the difference between the measured value and the limit, in decibels (dB).</p>
+  <ul>
+    <li><strong>Insertion loss:</strong> a lower value is better, so the margin is the limit minus the measured value.</li>
+    <li><strong>Every other transmission parameter:</strong> a higher value is better, so the margin is the measured value minus the limit.</li>
+  </ul>
+  <p>A positive margin passes and a negative margin fails. The row with the smallest margin holds the result closest to its limit; on a failing report, it is the result furthest past its limit.</p>
+
+  <p>This excerpt comes from a practice report for another job. Its limits apply to that report only.</p>
+  <div class="portmap-panel">
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Practice report excerpt, Dunmore Street Library (hypothetical), link 2-14: Category 5e permanent link, 96 ft; main unit at the patch panel port, remote unit at the outlet jack; overall result FAIL. Diagnostics: largest return-loss reflection on pair 1,2, ~95 ft from the main unit.</caption>
+      <thead><tr>
+        <th scope="col">Parameter</th><th scope="col">End</th><th scope="col">Pair or pairs</th><th scope="col">Frequency (MHz)</th><th scope="col">Measured (dB)</th><th scope="col">Limit (dB)</th><th scope="col">Margin (dB)</th><th scope="col">Result</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Insertion loss</th><td>n/a</td><td>4,5</td><td>100.0</td><td>6.7</td><td>21.0</td><td>14.3</td><td>PASS</td></tr>
+        <tr><th scope="row">NEXT</th><td>Remote unit</td><td>1,2 with 7,8</td><td>20.0</td><td>47.9</td><td>43.7</td><td>4.2</td><td>PASS</td></tr>
+        <tr><th scope="row">Return loss</th><td>Remote unit</td><td>1,2</td><td>40.0</td><td>15.3</td><td>16.0</td><td>&minus;0.7</td><td>FAIL</td></tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <div class="calc">
+    <table>
+      <caption>Worked margins for the three rows of the practice excerpt.</caption>
+      <thead><tr><th scope="col">Row</th><th scope="col">Working</th></tr></thead>
+      <tbody>
+        <tr><td>Insertion loss: limit minus measured</td><td class="n">21.0 &minus; 6.7 = 14.3 dB, PASS</td></tr>
+        <tr><td>NEXT at the remote unit: measured minus limit</td><td class="n">47.9 &minus; 43.7 = 4.2 dB, PASS</td></tr>
+        <tr><td>Return loss at the remote unit: measured minus limit</td><td class="n">15.3 &minus; 16.0 = &minus;0.7 dB, FAIL</td></tr>
+        <tr class="tot"><td>Smallest margin</td><td class="n">Return loss, remote unit, pair 1,2, &minus;0.7 dB</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>In a pair combination such as &ldquo;1,2 with 7,8&rdquo;, the tester measured the crosstalk between those two pairs. On a power-sum row, the single pair named is the pair that receives crosstalk from the other three.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="For insertion loss a lower value is better, so the margin is the limit minus the measured value: 21.0 &minus; 18.4 = 2.6 dB. A positive margin passes. &minus;2.6 dB comes from subtracting in the wrong order. 39.4 dB adds the two values. A positive margin cannot fail.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">An insertion loss row reads: measured 18.4 dB, limit 21.0 dB. What are the margin and the result?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>&minus;2.6 dB, FAIL</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>39.4 dB, PASS</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>2.6 dB, PASS</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>2.6 dB, FAIL</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="2" data-group-title="Reading a Certification Report" data-num="527.4.6" data-title="Accept or escalate">
+  <p class="crumb">Lesson 527.4 &middot; Section 2 Reading a Certification Report</p>
+  <h2><span class="tnum">527.4.6</span> Accept or escalate</h2>
+  <p class="lead-in">The overall result decides what happens to a link. The escalation states what failed and why.</p>
+
+  <p>Kestrel&rsquo;s site lead sets the rule for the mock-up&rsquo;s certification reports.</p>
+  <ul>
+    <li><strong>Accept</strong> a link whose report shows an overall PASS.</li>
+    <li><strong>Escalate</strong> to the lead technician a link whose report shows an overall FAIL. The lead technician decides the repair. A report with an overall FAIL does not go to the owner.</li>
+  </ul>
+
+  <h3>What an escalation states</h3>
+  <ul>
+    <li>Each failing parameter, with its end and its pair or pairs.</li>
+    <li>Where the likely cause lies: the termination at one end, or a place in the cable. The diagnostics line gives the distance, where the report has one.</li>
+    <li>What in the installation produces the failure: the causes that parameter points to, narrowed by where the failure lies.</li>
+  </ul>
+  <p>Record anything else you see in a report as a note; a note does not change the decision.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="An escalation names each failing parameter with its end and pairs, where the cause lies, and what produces it. Option D does all three, and the diagnostics distance places the reflection at the outlet. Option A names no failing parameter and no cause. Option B accepts a link whose overall result is FAIL. Option C names a parameter that passes on the practice report.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which entry escalates the Dunmore Street Library practice link 2-14 correctly?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Link 2-14: escalate. The overall result is FAIL. Test the link again before the owner&rsquo;s representative walks the mock-up.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Link 2-14: return loss misses its limit by 0.7 dB, and every other row passes. Accept the link.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Link 2-14: escalate. NEXT fails at the remote unit, pairs 1,2 with 7,8. The cause lies at the outlet jack: likely the pairs untwisted too far there.</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Link 2-14: escalate. Return loss fails at the remote unit, pair 1,2, &minus;0.7 dB. The reflection lies ~95 ft from the main unit, at the outlet jack: likely the pair untwisted, or the jacket stripped back, too far there.</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="3" data-group-title="The Split Pair" data-num="527.4.7" data-title="Pins, pairs, and T568B">
+  <p class="crumb">Lesson 527.4 &middot; Section 3 The Split Pair</p>
+  <h2><span class="tnum">527.4.7</span> Pins, pairs, and T568B</h2>
+  <p class="lead-in">A four-pair cable carries each signal on a twisted pair. A jack lands each pair on two assigned pins.</p>
+
+  <p>The links on the mock-up are Category 5e Unscreened Unshielded Twisted-Pair (U/UTP) cable (A2). The cable holds four twisted pairs: blue, orange, green, and brown. Each pair is a solid-colored conductor twisted with a white conductor striped in the same color. A signal travels on a pair, as the voltage difference between its two conductors.</p>
+
+  <p>ANSI/TIA-568 defines two pin and pair assignments for an eight-pin jack, T568A and T568B. The owner&rsquo;s cabling addendum requires T568B on every jack, patch panel port, and patch cord (A1). A keystone jack carries a color label showing both, in rows marked A and B.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; T568B: the conductor on each pin, and the four pairs</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 300" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Eight pins numbered 1 to 8 with the T568B conductor under each, and brackets marking pair 1,2 orange, pair 4,5 blue, pair 7,8 brown, and pair 3,6 green. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">T568B: the conductor on each pin, and the four pairs</text>
+    <line x1="107.5" y1="110" x2="212.5" y2="110" stroke="#611940" stroke-width="2.4"/>
+    <line x1="107.5" y1="110" x2="107.5" y2="128" stroke="#611940" stroke-width="2.4"/>
+    <line x1="212.5" y1="110" x2="212.5" y2="128" stroke="#611940" stroke-width="2.4"/>
+    <text x="160" y="100" font-size="14" font-weight="700" fill="#611940" text-anchor="middle">pair 1,2: orange</text>
+    <line x1="422.5" y1="110" x2="527.5" y2="110" stroke="#611940" stroke-width="2.4"/>
+    <line x1="422.5" y1="110" x2="422.5" y2="128" stroke="#611940" stroke-width="2.4"/>
+    <line x1="527.5" y1="110" x2="527.5" y2="128" stroke="#611940" stroke-width="2.4"/>
+    <text x="475" y="100" font-size="14" font-weight="700" fill="#611940" text-anchor="middle">pair 4,5: blue</text>
+    <line x1="737.5" y1="110" x2="842.5" y2="110" stroke="#611940" stroke-width="2.4"/>
+    <line x1="737.5" y1="110" x2="737.5" y2="128" stroke="#611940" stroke-width="2.4"/>
+    <line x1="842.5" y1="110" x2="842.5" y2="128" stroke="#611940" stroke-width="2.4"/>
+    <text x="790" y="100" font-size="14" font-weight="700" fill="#611940" text-anchor="middle">pair 7,8: brown</text>
+    <rect x="60" y="130" width="95" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="165" y="130" width="95" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="270" y="130" width="95" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="375" y="130" width="95" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="480" y="130" width="95" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="585" y="130" width="95" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="690" y="130" width="95" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="795" y="130" width="95" height="40" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="107.5" y="156" font-size="15" font-weight="700" fill="#26282E" text-anchor="middle">pin 1</text>
+    <text x="212.5" y="156" font-size="15" font-weight="700" fill="#26282E" text-anchor="middle">pin 2</text>
+    <text x="317.5" y="156" font-size="15" font-weight="700" fill="#26282E" text-anchor="middle">pin 3</text>
+    <text x="422.5" y="156" font-size="15" font-weight="700" fill="#26282E" text-anchor="middle">pin 4</text>
+    <text x="527.5" y="156" font-size="15" font-weight="700" fill="#26282E" text-anchor="middle">pin 5</text>
+    <text x="632.5" y="156" font-size="15" font-weight="700" fill="#26282E" text-anchor="middle">pin 6</text>
+    <text x="737.5" y="156" font-size="15" font-weight="700" fill="#26282E" text-anchor="middle">pin 7</text>
+    <text x="842.5" y="156" font-size="15" font-weight="700" fill="#26282E" text-anchor="middle">pin 8</text>
+    <text x="107.5" y="192" font-size="13" fill="#26282E" text-anchor="middle">white-orange</text>
+    <text x="212.5" y="192" font-size="13" fill="#26282E" text-anchor="middle">orange</text>
+    <text x="317.5" y="192" font-size="13" fill="#26282E" text-anchor="middle">white-green</text>
+    <text x="422.5" y="192" font-size="13" fill="#26282E" text-anchor="middle">blue</text>
+    <text x="527.5" y="192" font-size="13" fill="#26282E" text-anchor="middle">white-blue</text>
+    <text x="632.5" y="192" font-size="13" fill="#26282E" text-anchor="middle">green</text>
+    <text x="737.5" y="192" font-size="13" fill="#26282E" text-anchor="middle">white-brown</text>
+    <text x="842.5" y="192" font-size="13" fill="#26282E" text-anchor="middle">brown</text>
+    <line x1="317.5" y1="202" x2="317.5" y2="226" stroke="#724DFD" stroke-width="2.4"/>
+    <line x1="632.5" y1="202" x2="632.5" y2="226" stroke="#724DFD" stroke-width="2.4"/>
+    <line x1="317.5" y1="226" x2="632.5" y2="226" stroke="#724DFD" stroke-width="2.4"/>
+    <text x="475" y="248" font-size="14" font-weight="700" fill="#724DFD" text-anchor="middle">pair 3,6: green, on either side of pair 4,5</text>
+    <text x="24" y="284" font-size="14" fill="#26282E">T568A exchanges the orange and green pairs: green on pins 1 and 2, orange on pins 3 and 6.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled T568B: the conductor on each pin, and the four pairs. It shows eight pins in a row, numbered 1 to 8, with the T568B conductor under each: pin 1 white-orange, pin 2 orange, pin 3 white-green, pin 4 blue, pin 5 white-blue, pin 6 green, pin 7 white-brown, pin 8 brown.</p>
+    <p>Brackets above the row join pins 1 and 2, labeled pair 1,2: orange; pins 4 and 5, labeled pair 4,5: blue; and pins 7 and 8, labeled pair 7,8: brown. A bracket below the row joins pins 3 and 6, labeled pair 3,6: green, on either side of pair 4,5.</p>
+    <p>A line of text under the diagram reads: T568A exchanges the orange and green pairs: green on pins 1 and 2, orange on pins 3 and 6.</p>
+  </details>
+
+  <p>A pair is named by its pins: pair 1,2, pair 3,6, pair 4,5, and pair 7,8. Pair 3,6 is split across the jack, with its two pins on either side of pair 4,5. Blue and brown sit on the same pins in T568A and T568B.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="In T568B, white-green sits on pin 3 and green on pin 6, on either side of the blue pair. Pins 1 and 2 carry the orange pair, and pins 4 and 5 the blue pair. Pins 5 and 6 hold conductors of two different pairs.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">In T568B, which pins carry the green pair?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Pins 1 and 2</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Pins 3 and 6</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Pins 4 and 5</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Pins 5 and 6</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="3" data-group-title="The Split Pair" data-num="527.4.8" data-title="Why a split pair passes a continuity check">
+  <p class="crumb">Lesson 527.4 &middot; Section 3 The Split Pair</p>
+  <h2><span class="tnum">527.4.8</span> Why a split pair passes a continuity check</h2>
+  <p class="lead-in">In a split pair, every conductor sits on the same pin at both ends, but each affected signal travels on two conductors that are not twisted together.</p>
+
+  <p>A <span class="keyterm">split pair</span> puts conductors from two different pairs on the pins of one signal pair. In this example, an installer exchanged the conductors on pins 2 and 3 at both ends of a link: white-green on pin 2, orange on pin 3.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; A split pair: the same error at both ends</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 410" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Pins 1 to 8 at one end joined straight across to pins 1 to 8 at the other end, with white-green on pin 2 and orange on pin 3 at both ends. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">A split pair: the same error at both ends</text>
+    <text x="90" y="62" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">One end</text>
+    <text x="850" y="62" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">Other end</text>
+    <rect x="60" y="77" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="60" y="107" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="60" y="137" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="60" y="167" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="60" y="197" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="60" y="227" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="60" y="257" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="60" y="287" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="820" y="77" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="820" y="107" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="820" y="137" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="820" y="167" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="820" y="197" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="820" y="227" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="820" y="257" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="820" y="287" width="60" height="24" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <text x="90" y="94" font-size="13" fill="#26282E" text-anchor="middle">pin 1</text>
+    <text x="90" y="124" font-size="13" fill="#A4262C" font-weight="700" text-anchor="middle">pin 2</text>
+    <text x="90" y="154" font-size="13" fill="#A4262C" font-weight="700" text-anchor="middle">pin 3</text>
+    <text x="90" y="184" font-size="13" fill="#26282E" text-anchor="middle">pin 4</text>
+    <text x="90" y="214" font-size="13" fill="#26282E" text-anchor="middle">pin 5</text>
+    <text x="90" y="244" font-size="13" fill="#26282E" text-anchor="middle">pin 6</text>
+    <text x="90" y="274" font-size="13" fill="#26282E" text-anchor="middle">pin 7</text>
+    <text x="90" y="304" font-size="13" fill="#26282E" text-anchor="middle">pin 8</text>
+    <text x="850" y="94" font-size="13" fill="#26282E" text-anchor="middle">pin 1</text>
+    <text x="850" y="124" font-size="13" fill="#A4262C" font-weight="700" text-anchor="middle">pin 2</text>
+    <text x="850" y="154" font-size="13" fill="#A4262C" font-weight="700" text-anchor="middle">pin 3</text>
+    <text x="850" y="184" font-size="13" fill="#26282E" text-anchor="middle">pin 4</text>
+    <text x="850" y="214" font-size="13" fill="#26282E" text-anchor="middle">pin 5</text>
+    <text x="850" y="244" font-size="13" fill="#26282E" text-anchor="middle">pin 6</text>
+    <text x="850" y="274" font-size="13" fill="#26282E" text-anchor="middle">pin 7</text>
+    <text x="850" y="304" font-size="13" fill="#26282E" text-anchor="middle">pin 8</text>
+    <line x1="120" y1="89" x2="820" y2="89" stroke="#26282E" stroke-width="1.6"/>
+    <line x1="120" y1="119" x2="820" y2="119" stroke="#A4262C" stroke-width="2.4"/>
+    <line x1="120" y1="149" x2="820" y2="149" stroke="#A4262C" stroke-width="2.4"/>
+    <line x1="120" y1="179" x2="820" y2="179" stroke="#26282E" stroke-width="1.6"/>
+    <line x1="120" y1="209" x2="820" y2="209" stroke="#26282E" stroke-width="1.6"/>
+    <line x1="120" y1="239" x2="820" y2="239" stroke="#26282E" stroke-width="1.6"/>
+    <line x1="120" y1="269" x2="820" y2="269" stroke="#26282E" stroke-width="1.6"/>
+    <line x1="120" y1="299" x2="820" y2="299" stroke="#26282E" stroke-width="1.6"/>
+    <text x="470" y="84" font-size="13" fill="#26282E" text-anchor="middle">white-orange</text>
+    <text x="470" y="114" font-size="13" fill="#A4262C" font-weight="700" text-anchor="middle">white-green</text>
+    <text x="470" y="144" font-size="13" fill="#A4262C" font-weight="700" text-anchor="middle">orange</text>
+    <text x="470" y="174" font-size="13" fill="#26282E" text-anchor="middle">blue</text>
+    <text x="470" y="204" font-size="13" fill="#26282E" text-anchor="middle">white-blue</text>
+    <text x="470" y="234" font-size="13" fill="#26282E" text-anchor="middle">green</text>
+    <text x="470" y="264" font-size="13" fill="#26282E" text-anchor="middle">white-brown</text>
+    <text x="470" y="294" font-size="13" fill="#26282E" text-anchor="middle">brown</text>
+    <text x="24" y="340" font-size="14" fill="#26282E">Continuity check: each conductor reaches the same pin at the other end, so the check passes.</text>
+    <text x="24" y="364" font-size="14" fill="#26282E">Signal pair 1,2 runs on white-orange and white-green; signal pair 3,6 runs on orange and green.</text>
+    <text x="24" y="388" font-size="14" fill="#26282E">Neither signal pair is a twisted pair: each conductor is twisted with a conductor of the other signal pair.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled A split pair: the same error at both ends. Pins 1 to 8 at one end are joined by straight lines to pins 1 to 8 at the other end. Each line is labeled with its conductor: pin 1 white-orange, pin 2 white-green, pin 3 orange, pin 4 blue, pin 5 white-blue, pin 6 green, pin 7 white-brown, pin 8 brown. The lines for pins 2 and 3 are highlighted.</p>
+    <p>Three lines of text under the diagram read: Continuity check: each conductor reaches the same pin at the other end, so the check passes. Signal pair 1,2 runs on white-orange and white-green; signal pair 3,6 runs on orange and green. Neither signal pair is a twisted pair: each conductor is twisted with a conductor of the other signal pair.</p>
+  </details>
+
+  <h3>The continuity check</h3>
+  <p>A continuity check follows each conductor. White-green leaves pin 2 at one end and arrives at pin 2 at the other; every other conductor does the same. The check finds no open, no short, and no conductor on the wrong pin. It passes: the check never looks at which conductors share a twist.</p>
+
+  <h3>The certification test</h3>
+  <p>A network sends one signal on pins 1 and 2 and another on pins 3 and 6. In this link, each conductor of signal pair 1,2 is twisted with a conductor of signal pair 3,6, so the two signals couple into each other along the whole length of the link. A certification tester measures the crosstalk between pairs. On a split pair, NEXT between the two affected pairs fails at both ends, typically by a wide margin.</p>
+  <p>Some wiremap testers add a measurement that reports a split pair. A tester that checks only continuity and pin mapping cannot detect one.</p>
+  <p>A split pair needs the same error at both ends. With the error at one end only, the two conductors arrive on different pins, and the wiremap test fails.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="Each conductor sits on the same pin at both ends, so the continuity and mapping check passes. Pins 4 and 5 now carry blue and white-brown, which are not twisted together: the link holds a split pair. A reversed or crossed pair needs the two ends to differ. No conductor is disconnected, so the tester shows no open.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">At both ends of a link, the installer landed white-brown on pin 5 and white-blue on pin 7. Every other conductor is in its T568B place. What does a tester that checks only continuity and pin mapping show?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>A pass, with every pin mapped to the same pin</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A crossed pair on pairs 4,5 and 7,8</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>An open on pins 5 and 7</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A reversed pair on pair 4,5</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="4" data-group-title="Finding and Repairing a Fault" data-num="527.4.9" data-title="Look before you test">
+  <p class="crumb">Lesson 527.4 &middot; Section 4 Finding and Repairing a Fault</p>
+  <h2><span class="tnum">527.4.9</span> Look before you test</h2>
+  <p class="lead-in">Before testing a failing link, the installer looks at both of its ends and opens neither.</p>
+
+  <p>A link that fails its wiremap test holds its fault at a termination or in the cable. Most terminations cannot be seen without opening them, but the outside of each end can. An inspection reads both ends and changes nothing.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>What to look at on each end of a link before testing it.</caption>
+      <thead><tr>
+        <th scope="col">End</th><th scope="col">What you look at</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Outlet</th><td>The faceplate or cover fixed; the jack seated and latched; the label present and correct; the cable at the box entry neither crushed nor kinked</td></tr>
+        <tr><th scope="row">Patch panel port</th><td>The jack seated in its port; the port label present and correct; the cable behind the panel dressed, with no crushed or kinked jacket and no tie deforming it; no patch cord in the port</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Record each end as found: the label you read, what you checked, and what you found. &ldquo;Jack seated and latched, label correct, cable at the box entry undamaged&rdquo; is a finding. &ldquo;OK&rdquo; records no check.</p>
+
+  <h3>Why the test comes before any opening</h3>
+  <p>The <span class="keyterm">before-test</span> is the wiremap and length test run on a failing link before any repair; the <span class="keyterm">after-test</span> is the same test run after the repair. The before-test records the fault as the link holds it. A termination opened first may no longer hold the fault that the test would have found.</p>
+  <p>A patch cord found in a panel port may connect the link to a switch in service. Leave it in place and report it to the site crew, Kestrel's staff at the MIR. Never plug a tester into a switch port.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="A dent can leave every conductor connected and on its pin, so a wiremap test can still pass. The deformed jacket changes the cable&rsquo;s impedance, which a certification tester measures as return loss. A4 allows no tie that deforms a jacket. Record it as found. A wiremap test reports an open only where a conductor is disconnected. Re-terminating the jack opens a termination before the test and does not touch the dent.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Inspecting a panel port before the test, you find a hook-and-loop tie pulled tight enough to dent the cable jacket behind the jack. What follows from this finding?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The wiremap test will report the dent as an open on that pair</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Nothing needs recording unless the wiremap test fails at that end</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Cut the tie and re-terminate the jack before running any test</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Record it as found: the wiremap test can still pass with the dent</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="4" data-group-title="Finding and Repairing a Fault" data-num="527.4.10" data-title="The four wiremap faults and their causes">
+  <p class="crumb">Lesson 527.4 &middot; Section 4 Finding and Repairing a Fault</p>
+  <h2><span class="tnum">527.4.10</span> The four wiremap faults and their causes</h2>
+  <p class="lead-in">A wiremap tester names an open, a short, a reversed pair, or a crossed pair, with the pins it affects. Each fault has a usual cause at a termination.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The four wiremap faults, what the tester shows for each, and the usual cause in the installation.</caption>
+      <thead><tr>
+        <th scope="col">Fault</th><th scope="col">What the tester shows</th><th scope="col">Usual cause in the installation</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Open</th><td>A conductor that does not reach the far end</td><td>A conductor not pressed into its contact, or a conductor broken or cut at the termination</td></tr>
+        <tr><th scope="row">Short</th><td>Two conductors connected to each other</td><td>Copper bridging two contacts: a scrap of conductor or a strand left in the jack, or bare copper where insulation was stripped or damaged</td></tr>
+        <tr><th scope="row">Reversed pair</th><td>The two conductors of one pair exchanged at one end, for example pin 3 reaching pin 6 and pin 6 reaching pin 3</td><td>The color code misread at that end, so the white and the solid conductor of the pair sit in each other&rsquo;s contacts</td></tr>
+        <tr><th scope="row">Crossed pair</th><td>Two pairs exchanged at one end</td><td>That end terminated to T568A, which exchanges the orange and green pairs, or two pairs landed in each other&rsquo;s positions</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; One of each wiremap fault, on practice links</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:940px" viewBox="0 0 940 330" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="Four practice wiremaps: an open on pin 4, a short on pins 5 and 6, a reversed pair on pair 3,6, and crossed pairs 4,5 and 7,8. A full text description follows.">
+    <text x="24" y="24" font-size="16" font-weight="700" fill="#611940">One of each wiremap fault, on practice links</text>
+    <rect x="15" y="36" width="220" height="262" rx="6" fill="#FFFFFF" stroke="#8C8F96" stroke-width="1"/>
+    <text x="125" y="56" font-size="14" font-weight="700" fill="#611940" text-anchor="middle">Open: pin 4</text>
+    <text x="50" y="80" font-size="13" fill="#5A5D66" text-anchor="middle">Main</text>
+    <text x="200" y="80" font-size="13" fill="#5A5D66" text-anchor="middle">Remote</text>
+    <text x="50" y="105" font-size="13" fill="#26282E" text-anchor="middle">1</text>
+    <text x="200" y="105" font-size="13" fill="#26282E" text-anchor="middle">1</text>
+    <text x="50" y="131" font-size="13" fill="#26282E" text-anchor="middle">2</text>
+    <text x="200" y="131" font-size="13" fill="#26282E" text-anchor="middle">2</text>
+    <text x="50" y="157" font-size="13" fill="#26282E" text-anchor="middle">3</text>
+    <text x="200" y="157" font-size="13" fill="#26282E" text-anchor="middle">3</text>
+    <text x="50" y="183" font-size="13" fill="#26282E" text-anchor="middle">4</text>
+    <text x="200" y="183" font-size="13" fill="#26282E" text-anchor="middle">4</text>
+    <text x="50" y="209" font-size="13" fill="#26282E" text-anchor="middle">5</text>
+    <text x="200" y="209" font-size="13" fill="#26282E" text-anchor="middle">5</text>
+    <text x="50" y="235" font-size="13" fill="#26282E" text-anchor="middle">6</text>
+    <text x="200" y="235" font-size="13" fill="#26282E" text-anchor="middle">6</text>
+    <text x="50" y="261" font-size="13" fill="#26282E" text-anchor="middle">7</text>
+    <text x="200" y="261" font-size="13" fill="#26282E" text-anchor="middle">7</text>
+    <text x="50" y="287" font-size="13" fill="#26282E" text-anchor="middle">8</text>
+    <text x="200" y="287" font-size="13" fill="#26282E" text-anchor="middle">8</text>
+    <line x1="70" y1="100" x2="180" y2="100" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="70" y1="126" x2="180" y2="126" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="70" y1="152" x2="180" y2="152" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="70" y1="178" x2="115" y2="178" stroke="#A4262C" stroke-width="2.6"/>
+    <line x1="115" y1="171" x2="115" y2="185" stroke="#A4262C" stroke-width="2.6"/>
+    <line x1="70" y1="204" x2="180" y2="204" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="70" y1="230" x2="180" y2="230" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="70" y1="256" x2="180" y2="256" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="70" y1="282" x2="180" y2="282" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="245" y="36" width="220" height="262" rx="6" fill="#FFFFFF" stroke="#8C8F96" stroke-width="1"/>
+    <text x="355" y="56" font-size="14" font-weight="700" fill="#611940" text-anchor="middle">Short: pins 5 and 6</text>
+    <text x="280" y="80" font-size="13" fill="#5A5D66" text-anchor="middle">Main</text>
+    <text x="430" y="80" font-size="13" fill="#5A5D66" text-anchor="middle">Remote</text>
+    <text x="280" y="105" font-size="13" fill="#26282E" text-anchor="middle">1</text>
+    <text x="430" y="105" font-size="13" fill="#26282E" text-anchor="middle">1</text>
+    <text x="280" y="131" font-size="13" fill="#26282E" text-anchor="middle">2</text>
+    <text x="430" y="131" font-size="13" fill="#26282E" text-anchor="middle">2</text>
+    <text x="280" y="157" font-size="13" fill="#26282E" text-anchor="middle">3</text>
+    <text x="430" y="157" font-size="13" fill="#26282E" text-anchor="middle">3</text>
+    <text x="280" y="183" font-size="13" fill="#26282E" text-anchor="middle">4</text>
+    <text x="430" y="183" font-size="13" fill="#26282E" text-anchor="middle">4</text>
+    <text x="280" y="209" font-size="13" fill="#26282E" text-anchor="middle">5</text>
+    <text x="430" y="209" font-size="13" fill="#26282E" text-anchor="middle">5</text>
+    <text x="280" y="235" font-size="13" fill="#26282E" text-anchor="middle">6</text>
+    <text x="430" y="235" font-size="13" fill="#26282E" text-anchor="middle">6</text>
+    <text x="280" y="261" font-size="13" fill="#26282E" text-anchor="middle">7</text>
+    <text x="430" y="261" font-size="13" fill="#26282E" text-anchor="middle">7</text>
+    <text x="280" y="287" font-size="13" fill="#26282E" text-anchor="middle">8</text>
+    <text x="430" y="287" font-size="13" fill="#26282E" text-anchor="middle">8</text>
+    <line x1="300" y1="100" x2="410" y2="100" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="300" y1="126" x2="410" y2="126" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="300" y1="152" x2="410" y2="152" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="300" y1="178" x2="410" y2="178" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="300" y1="204" x2="410" y2="204" stroke="#A4262C" stroke-width="2.6"/>
+    <line x1="300" y1="230" x2="410" y2="230" stroke="#A4262C" stroke-width="2.6"/>
+    <line x1="300" y1="256" x2="410" y2="256" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="300" y1="282" x2="410" y2="282" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="355" y1="204" x2="355" y2="230" stroke="#A4262C" stroke-width="3"/>
+    <circle cx="355" cy="204" r="4" fill="#A4262C"/>
+    <circle cx="355" cy="230" r="4" fill="#A4262C"/>
+    <rect x="475" y="36" width="220" height="262" rx="6" fill="#FFFFFF" stroke="#8C8F96" stroke-width="1"/>
+    <text x="585" y="56" font-size="14" font-weight="700" fill="#611940" text-anchor="middle">Reversed pair: 3,6</text>
+    <text x="510" y="80" font-size="13" fill="#5A5D66" text-anchor="middle">Main</text>
+    <text x="660" y="80" font-size="13" fill="#5A5D66" text-anchor="middle">Remote</text>
+    <text x="510" y="105" font-size="13" fill="#26282E" text-anchor="middle">1</text>
+    <text x="660" y="105" font-size="13" fill="#26282E" text-anchor="middle">1</text>
+    <text x="510" y="131" font-size="13" fill="#26282E" text-anchor="middle">2</text>
+    <text x="660" y="131" font-size="13" fill="#26282E" text-anchor="middle">2</text>
+    <text x="510" y="157" font-size="13" fill="#26282E" text-anchor="middle">3</text>
+    <text x="660" y="157" font-size="13" fill="#26282E" text-anchor="middle">3</text>
+    <text x="510" y="183" font-size="13" fill="#26282E" text-anchor="middle">4</text>
+    <text x="660" y="183" font-size="13" fill="#26282E" text-anchor="middle">4</text>
+    <text x="510" y="209" font-size="13" fill="#26282E" text-anchor="middle">5</text>
+    <text x="660" y="209" font-size="13" fill="#26282E" text-anchor="middle">5</text>
+    <text x="510" y="235" font-size="13" fill="#26282E" text-anchor="middle">6</text>
+    <text x="660" y="235" font-size="13" fill="#26282E" text-anchor="middle">6</text>
+    <text x="510" y="261" font-size="13" fill="#26282E" text-anchor="middle">7</text>
+    <text x="660" y="261" font-size="13" fill="#26282E" text-anchor="middle">7</text>
+    <text x="510" y="287" font-size="13" fill="#26282E" text-anchor="middle">8</text>
+    <text x="660" y="287" font-size="13" fill="#26282E" text-anchor="middle">8</text>
+    <line x1="530" y1="100" x2="640" y2="100" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="530" y1="126" x2="640" y2="126" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="530" y1="152" x2="640" y2="230" stroke="#A4262C" stroke-width="2.6"/>
+    <line x1="530" y1="178" x2="640" y2="178" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="530" y1="204" x2="640" y2="204" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="530" y1="230" x2="640" y2="152" stroke="#A4262C" stroke-width="2.6"/>
+    <line x1="530" y1="256" x2="640" y2="256" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="530" y1="282" x2="640" y2="282" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="705" y="36" width="220" height="262" rx="6" fill="#FFFFFF" stroke="#8C8F96" stroke-width="1"/>
+    <text x="815" y="56" font-size="14" font-weight="700" fill="#611940" text-anchor="middle">Crossed pairs: 4,5 and 7,8</text>
+    <text x="740" y="80" font-size="13" fill="#5A5D66" text-anchor="middle">Main</text>
+    <text x="890" y="80" font-size="13" fill="#5A5D66" text-anchor="middle">Remote</text>
+    <text x="740" y="105" font-size="13" fill="#26282E" text-anchor="middle">1</text>
+    <text x="890" y="105" font-size="13" fill="#26282E" text-anchor="middle">1</text>
+    <text x="740" y="131" font-size="13" fill="#26282E" text-anchor="middle">2</text>
+    <text x="890" y="131" font-size="13" fill="#26282E" text-anchor="middle">2</text>
+    <text x="740" y="157" font-size="13" fill="#26282E" text-anchor="middle">3</text>
+    <text x="890" y="157" font-size="13" fill="#26282E" text-anchor="middle">3</text>
+    <text x="740" y="183" font-size="13" fill="#26282E" text-anchor="middle">4</text>
+    <text x="890" y="183" font-size="13" fill="#26282E" text-anchor="middle">4</text>
+    <text x="740" y="209" font-size="13" fill="#26282E" text-anchor="middle">5</text>
+    <text x="890" y="209" font-size="13" fill="#26282E" text-anchor="middle">5</text>
+    <text x="740" y="235" font-size="13" fill="#26282E" text-anchor="middle">6</text>
+    <text x="890" y="235" font-size="13" fill="#26282E" text-anchor="middle">6</text>
+    <text x="740" y="261" font-size="13" fill="#26282E" text-anchor="middle">7</text>
+    <text x="890" y="261" font-size="13" fill="#26282E" text-anchor="middle">7</text>
+    <text x="740" y="287" font-size="13" fill="#26282E" text-anchor="middle">8</text>
+    <text x="890" y="287" font-size="13" fill="#26282E" text-anchor="middle">8</text>
+    <line x1="760" y1="100" x2="870" y2="100" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="760" y1="126" x2="870" y2="126" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="760" y1="152" x2="870" y2="152" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="760" y1="178" x2="870" y2="256" stroke="#A4262C" stroke-width="2.6"/>
+    <line x1="760" y1="204" x2="870" y2="282" stroke="#A4262C" stroke-width="2.6"/>
+    <line x1="760" y1="230" x2="870" y2="230" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="760" y1="256" x2="870" y2="178" stroke="#A4262C" stroke-width="2.6"/>
+    <line x1="760" y1="282" x2="870" y2="204" stroke="#A4262C" stroke-width="2.6"/>
+    <text x="24" y="320" font-size="14" fill="#26282E">Left column: the pin at the main unit. Right column: the pin it reaches at the remote unit. Highlighted lines: the fault.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled One of each wiremap fault, on practice links. Four panels each show pins 1 to 8 at the main unit on the left, joined by lines to the pin each conductor reaches at the remote unit on the right. Lines that are not part of the fault run straight across.</p>
+    <p>Open: pin 4. The line from pin 4 stops partway and reaches no pin at the remote unit.</p>
+    <p>Short: pins 5 and 6. Both lines run straight across, and a connection joins them partway.</p>
+    <p>Reversed pair: 3,6. Pin 3 reaches pin 6, and pin 6 reaches pin 3.</p>
+    <p>Crossed pairs: 4,5 and 7,8. Pin 4 reaches pin 7, pin 5 reaches pin 8, pin 7 reaches pin 4, and pin 8 reaches pin 5.</p>
+    <p>A line of text under the diagram reads: Left column: the pin at the main unit. Right column: the pin it reaches at the remote unit. Highlighted lines: the fault.</p>
+  </details>
+
+  <p>A reversed or a crossed pair keeps every conductor connected, so the link is continuous but mapped to the wrong pins. An open or a short breaks or bridges a conductor&rsquo;s path.</p>
+
+  <p>Match what an installer finds inside a jack to the fault the tester names for it.</p>
+  <div class="match gate" data-left="What you find inside the jack" data-right="Fault the tester names">
+    <div class="pair" data-left="A strand of copper lying across two contacts" data-right="Short"></div>
+    <div class="pair" data-left="White-green and green, each in the other&rsquo;s contact" data-right="Reversed pair"></div>
+    <div class="pair" data-left="One conductor resting in its slot, never pressed into the contact" data-right="Open"></div>
+    <div class="pair" data-left="Conductors landed by the A row of the jack&rsquo;s color label, at one end only" data-right="Crossed pair"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="4" data-group-title="Finding and Repairing a Fault" data-num="527.4.11" data-title="Which end holds the fault">
+  <p class="crumb">Lesson 527.4 &middot; Section 4 Finding and Repairing a Fault</p>
+  <h2><span class="tnum">527.4.11</span> Which end holds the fault</h2>
+  <p class="lead-in">The tester names the fault. The type of fault decides how the installer finds the end that holds it.</p>
+
+  <h3>An open or a short, with a length</h3>
+  <p>Where the tester gives a length for the faulted conductor or pair, that length is the distance from the main unit to the fault. A length near that of the patch cord at the main unit puts the fault at the main unit&rsquo;s end. A length near the link&rsquo;s length puts it at the remote unit&rsquo;s end.</p>
+
+  <div class="figure">
+    <div class="cap">Example &mdash; practice link 2-11, Dunmore Street Library (hypothetical)</div>
+    <p>The link is 64 ft long. The main unit is at the patch panel port, through a 1 ft patch cord, and the remote unit at the outlet jack.</p>
+    <p>The tester shows an open on pin 4, at 64 ft.</p>
+    <p style="margin-bottom:0">64 ft from the main unit is the far end of the link. The fault lies in the outlet jack&rsquo;s termination.</p>
+  </div>
+
+  <h3>A reversed or a crossed pair</h3>
+  <p>The tester gives no distance for a reversed or a crossed pair. Open one end and compare its conductor order with T568B, which is the B row of the jack&rsquo;s color label. If that end is in T568B order, the fault is at the other end.</p>
+  <p>Where the tester shows no length for an open or a short, open one end and inspect it in the same way.</p>
+
+  <h3>The tone kit</h3>
+  <p>A <span class="keyterm">tone kit</span> is a tone generator and a probe. With the generator plugged into an outlet, the probe sounds loudest at the cable that runs from that outlet, and fainter at the cables beside it. At the patch panel, run the probe along the cables behind the panel, find the loudest, and follow it to its port. The tone kit confirms which port an outlet&rsquo;s cable reaches. It does not name a fault.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="A reversed pair shows no distance, so the installer opens one end and compares it with T568B. An outlet jack in T568B order puts the fault at the other end, the patch panel port. Re-terminating a correct jack changes nothing about the fault. The tone kit confirms which port a cable reaches, not where a fault lies. Swapping the units does not give a distance for a reversed pair either.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">The tester shows a reversed pair on pair 3,6 and no length. You open the outlet jack and find every conductor in T568B order. What do you do next?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Re-terminate the outlet jack, since the tester reported a fault on the link</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Open the termination at the patch panel port: the fault lies there</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Use the tone kit to find which end holds the reversed pair</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Swap the main unit and the remote unit, and read the distance to the fault</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="4" data-group-title="Finding and Repairing a Fault" data-num="527.4.12" data-title="Repairing the termination">
+  <p class="crumb">Lesson 527.4 &middot; Section 4 Finding and Repairing a Fault</p>
+  <h2><span class="tnum">527.4.12</span> Repairing the termination</h2>
+  <p class="lead-in">A repair puts the faulted end into T568B order, within the owner&rsquo;s termination limits.</p>
+
+  <p>Repair the end that holds the fault, to T568B. Do not change the other end to match it. Two ends wired the same wrong way map pin to pin and pass a wiremap test, yet neither meets A1.</p>
+
+  <h3>The termination limits</h3>
+  <p>The owner&rsquo;s cabling addendum sets these limits for every termination (A3):</p>
+  <ul>
+    <li>The jack or patch panel manufacturer&rsquo;s instructions govern how much jacket the installer strips.</li>
+    <li>Each pair stays twisted to within 0.5 in (13 mm) of its contact, the limit ANSI/TIA-568 sets for Category 5e.</li>
+    <li>The cable jacket reaches the back of the jack.</li>
+  </ul>
+
+  <h3>Re-seat, or a new jack</h3>
+  <ul>
+    <li><strong>Re-seat</strong> where every conductor at the termination is undamaged and reaches its contact within the limits. Lift each conductor in the wrong place with the hook end of the punch-down tool, and remove any stray copper. Seat each conductor in its T568B contact, and trim it with the punch-down tool.</li>
+    <li><strong>New jack</strong> where a conductor is nicked or broken, or will not reach its contact within the limits, or where the jack is damaged. Cut the cable back past the old termination, then terminate a new jack.</li>
+  </ul>
+  <p>Cutting back shortens the cable. The 12 in of slack at the outlet and the 10 ft service loop at the MIR allow for it (A5). Where cutting back would remove the cable label, get a new label before you cut (A6). Wear safety glasses to cut, strip, or trim.</p>
+  <p>Photograph the termination before the cap goes on, with the conductor order and the jacket at the back of the jack in the frame. Once the cap is on, the photograph is the only view of the termination.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="A nicked conductor is damaged copper, so a re-seat is not enough: cut the cable back past the old termination and terminate a new jack. Re-seating leaves the nick in the link. Tape does not restore the conductor. It has no place inside a jack. A passing retest does not remove the nick.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You open an outlet jack to repair a reversed pair and find the blue conductor nicked, with copper showing, just behind its contact. How do you repair the termination?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Lift the reversed conductors and re-seat all of them, the blue one included</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Wrap the nick in electrical tape, then re-seat the reversed conductors</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Cut the cable back past the old termination and terminate a new jack</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Re-seat the reversed conductors only, and leave the blue one if the retest passes</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="4" data-group-title="Finding and Repairing a Fault" data-num="527.4.13" data-title="Retest and record">
+  <p class="crumb">Lesson 527.4 &middot; Section 4 Finding and Repairing a Fault</p>
+  <h2><span class="tnum">527.4.13</span> Retest and record</h2>
+  <p class="lead-in">The installer proves the repair with the test that found the fault, run the same way.</p>
+
+  <p>Run the same wiremap and length test, with the main unit and the remote unit at the same ends as in the before-test. The two results then differ only by the repair. A pass shows that the fault the before-test named is gone, and that the repair has made no new wiremap fault.</p>
+  <p>If the after-test fails, open the termination again, repair it, and test again. Record the last result.</p>
+
+  <h3>The record of a fault</h3>
+  <ul>
+    <li><strong>End:</strong> the outlet or the patch panel port that held the fault.</li>
+    <li><strong>Found:</strong> the fault, the conductors or pairs it affects, and what was in the wrong place.</li>
+    <li><strong>Cause:</strong> what in the installation produced the fault.</li>
+    <li><strong>Correction:</strong> re-seat or new jack, and at which end.</li>
+    <li><strong>After-test:</strong> the result as the tester&rsquo;s screen shows it.</li>
+  </ul>
+  <p>Photographs of the before-test screen, the open termination, and the after-test screen support each entry.</p>
+
+  <div class="figure">
+    <div class="cap">Example &mdash; record entry, practice link 2-11, Dunmore Street Library (hypothetical)</div>
+    <p><strong>End.</strong> Outlet jack.</p>
+    <p><strong>Found.</strong> Open on pin 4: the blue conductor resting in its slot, not pressed into the contact.</p>
+    <p><strong>Cause.</strong> Conductor not punched down.</p>
+    <p><strong>Correction.</strong> Re-seated the blue conductor in its T568B contact and trimmed it, at the outlet jack.</p>
+    <p style="margin-bottom:0"><strong>After-test.</strong> Pass, 64 ft.</p>
+  </div>
+
+  <p>Put the work on a failing link in order, from first to last.</p>
+  <div class="order gate">
+    <div class="step" data-pos="1">Look at both ends of the link without opening either</div>
+    <div class="step" data-pos="2">Run the before-test and photograph the screen</div>
+    <div class="step" data-pos="3">Open the termination at the end that holds the fault</div>
+    <div class="step" data-pos="4">Re-seat the conductors, or terminate a new jack, to T568B</div>
+    <div class="step" data-pos="5">Photograph the termination with its cap off</div>
+    <div class="step" data-pos="6">Fit the cap, refit the jack, and run the same test with the units at the same ends</div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="5" data-group-title="Checking an AI Tool" data-num="527.4.14" data-title="Checking an AI reading of a report">
+  <p class="crumb">Lesson 527.4 &middot; Section 5 Checking an AI Tool</p>
+  <h2><span class="tnum">527.4.14</span> Checking an AI reading of a report</h2>
+  <p class="lead-in">An artificial intelligence (AI) tool can turn a certification report into a paragraph in seconds. The installer who passes that paragraph on answers for every statement in it.</p>
+
+  <p>A general-purpose AI assistant, such as Microsoft Copilot, has not seen the link. It knows the report only from the prompt. Its reply reads the same whether a statement is right or wrong.</p>
+
+  <p>An AI reading of a report can call a passing row a failure, quote a figure or a limit the report does not print, place a cause at the wrong end, or recommend accepting a link whose overall result is FAIL.</p>
+
+  <h3>The check</h3>
+  <ol>
+    <li>Write your own interpretation of the report first.</li>
+    <li>Paste the whole report into the prompt. Ask which parameters fail, what the likely cause is, and whether the link should be accepted. Keep the prompt and the whole reply as they were.</li>
+    <li>From the reply, choose statements of fact or judgment about the link.</li>
+    <li>For each statement, find the value in the report that bears on it. Mark the statement &ldquo;agrees&rdquo; where the report supports it, or &ldquo;errs&rdquo; where the report contradicts it or does not show what it claims. Enter the value or the reason.</li>
+  </ol>
+  <p>The report decides each statement. A statement is not right because the tool wrote it, or because it matches your own reading.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="The NEXT row at the remote unit passes with a margin of 4.2 dB, so the statement errs. The failing row on the excerpt is return loss. The overall result is FAIL, but that does not support a statement about NEXT. The disturbance at the outlet end is a return-loss reflection, not a NEXT failure. An AI tool can read a pasted report. You mark each of its statements against the report.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">An AI tool, given the Dunmore Street Library practice excerpt for link 2-14, states: &ldquo;The link fails near-end crosstalk at the outlet end.&rdquo; How do you mark the statement?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Errs: the NEXT row at the remote unit passes, with a margin of 4.2 dB</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Agrees: the overall result of the report is FAIL</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Agrees: the report places the disturbance at the outlet end</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Errs: an AI tool cannot read a certification report</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="5" data-group-title="Checking an AI Tool" data-num="527.4.15" data-title="Checking an AI fault hypothesis">
+  <p class="crumb">Lesson 527.4 &middot; Section 5 Checking an AI Tool</p>
+  <h2><span class="tnum">527.4.15</span> Checking an AI fault hypothesis</h2>
+  <p class="lead-in">Before opening a failing link, an installer can ask an AI tool what the fault is likely to be and where, then check the answer against the termination.</p>
+
+  <p>Put the before-test result in the prompt: the fault the screen shows, the pins, any length shown, and which unit was at which end. Ask what the fault is likely to be and at which end to look. Keep the prompt and the whole reply.</p>
+
+  <p>For an open or a short with a length, the end follows from the distance, so the tool can work it out from the prompt. For a reversed or a crossed pair, the before-test shows no distance, so nothing in the prompt tells the tool which end holds the fault.</p>
+
+  <p>When you have found the fault, compare the tool&rsquo;s fault type and its location with what you found, one at a time. Each one agrees or errs on its own.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="The tool named a reversed pair on pair 3,6, which is the fault you found, so the type agrees. It placed the fault at the outlet jack. The outlet is in T568B order and the fault is at the patch panel port, so the location errs. You mark the type and the location separately.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">An AI tool&rsquo;s hypothesis reads: &ldquo;Reversed pair on pair 3,6, at the outlet jack.&rdquo; You find the outlet jack in T568B order, and white-green and green exchanged at the patch panel port. How do you mark the hypothesis?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Type agrees; location agrees</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Type errs; location agrees</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Type errs; location errs</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Type agrees; location errs</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="6" data-group-title="Wrapping Up" data-num="527.4.16" data-title="What you covered">
+  <p class="crumb">Lesson 527.4 &middot; Section 6 Wrapping Up</p>
+  <h2><span class="tnum">527.4.16</span> What you covered</h2>
+  <p class="lead-in">Each team verifies every link with a wiremap tester. The lead technician certifies every link at closeout. Where a wiremap test fails, the installer finds the fault, repairs it, and proves the repair with the same test.</p>
+
+  <h3>Three kinds of test</h3>
+  <p><strong>Verification</strong> asks whether a link is wired correctly. A wiremap and length pass under A7 means all eight conductors are continuous, each reaching the same pin at the far end and connected to no other conductor, and the link is not over 295 ft. <strong>Qualification</strong> asks whether a link can carry one named application. <strong>Certification</strong> asks whether a link meets every limit of its category, across the category&rsquo;s frequency range (A8).</p>
+
+  <h3>Reading a certification report</h3>
+  <p>The header says where the <strong>main unit</strong> and the <strong>remote unit</strong> were; every diagnostic distance is measured from the main unit. Crosstalk most often points to the termination at the end where it fails; return loss points to a deformed cable or a termination; length and insertion loss point to the run. The <strong>margin</strong> is the measured value minus the limit, or the limit minus the measured value for insertion loss; a negative margin fails. Accept a link on an overall PASS. Escalate an overall FAIL with each failing parameter, where its cause lies, and what produces it.</p>
+
+  <h3>The split pair</h3>
+  <p>T568B puts the orange pair on pins 1 and 2, green on 3 and 6, blue on 4 and 5, and brown on 7 and 8. A <strong>split pair</strong> puts conductors of two pairs on one signal pair&rsquo;s pins, the same way at both ends. Every conductor reaches the same pin, so a continuity check passes. The signals couple between the pairs, so NEXT fails on certification.</p>
+
+  <h3>Finding and repairing a fault</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The four wiremap faults: how to find the end that holds each, and its usual cause.</caption>
+      <thead><tr>
+        <th scope="col">Fault</th><th scope="col">Finding the end</th><th scope="col">Usual cause</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Open</th><td>The length to the fault, where shown; otherwise open one end and look</td><td>Conductor not pressed into its contact, or broken</td></tr>
+        <tr><th scope="row">Short</th><td>The length to the fault, where shown; otherwise open one end and look</td><td>Copper bridging two contacts</td></tr>
+        <tr><th scope="row">Reversed pair</th><td>Open one end and compare it with T568B</td><td>The two conductors of a pair exchanged at one end</td></tr>
+        <tr><th scope="row">Crossed pair</th><td>Open one end and compare it with T568B</td><td>One end terminated to T568A, or two pairs exchanged</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Look at both ends before the test, and open nothing. Repair the faulted end to T568B within A3: <strong>re-seat</strong> undamaged conductors, or cut back and fit a <strong>new jack</strong>. Photograph the termination before the cap goes on. Retest with the same test, the units at the same ends. Record the end, what you found, the cause, the correction, and the after-test.</p>
+
+  <h3>Checking an AI tool</h3>
+  <p>Do your own reading first. Mark each AI statement &ldquo;agrees&rdquo; or &ldquo;errs&rdquo; against the report, with the value that decides it. Check a fault hypothesis&rsquo;s type and location separately against what you find.</p>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+
+</div>
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete — continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again — this does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct>=90) msg.textContent='Outstanding — you are working at field-standard level and are ready for the lab.';
+      else if(pct>=75) msg.textContent='Strong work. Revisit anything you missed and you will be field-ready.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the cards and applied scenarios to close the gaps.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+<!--
+BUILD FLAGS - UCI 1019 Lesson 527.4 Async Reading v0.1.0 DRAFT, 2026-11-08
+(Module 527, Structured Cabling Techniques and Troubleshooting; built under
+the delegated mode, brief Planning/_AGENT-BRIEF_M527-Readings.md). This
+comment is visible in the page source, so it carries no answer-key value.
+Drafting session: no language pass, cold read or provenance check run on
+this page; fresh reviewers follow.
+
+SOURCES READ
+- Module plan v0.1.0 DRAFT s1-s7, s10; lab agent brief; GLAB 527.4.1 lab,
+  HO 527.4.1, instructor guide, Report Key and Scoring Sheet, rehearsal (in
+  part); ALAB 527.4.2 lab, Fault Assignment and Scoring Sheet, instructor
+  guide (key section); KC-2625; KC-2626; owner's cabling addendum A1-A10;
+  sample certification reports (all six); pattern page 526.1.
+- No drawing of the Training Wall Drawing Set is used or relied on: the
+  lesson concerns tests, reports and terminations, not wall positions.
+
+DECISIONS TAKEN
+- Six sections, 16 topics, in the module plan's objective order.
+- Time stated as ~60-75 min (audit 6,9xx words, ~62 min at 112 wpm, plus 13
+  checks, one matching, one ordering). Due before the Lesson 527.4
+  presentation (plan s6, Day 4).
+- Worked examples use a hypothetical Dunmore Street Library (links 2-14 and
+  2-11) and practice pins chosen outside every key (below). No sample
+  report figure, no mock-up bay, panel port, label or length is used.
+- Practice report limits (21.0 dB insertion loss at 100 MHz, 43.7 dB NEXT
+  at 20 MHz, 16.0 dB return loss at 40 MHz) are computed from the same
+  recalled equations as the sample reports' build flags, so the two
+  documents agree; the page presents them as "the limits printed on that
+  report" and the overview says they are examples, not values to apply.
+- Objective wording taken from the module plan section 3 unchanged. The
+  GLAB 527.4.1 lab words objective 3 "passes a wiremap continuity check";
+  the plan says "a continuity check". Plan wording used.
+- The sample certification reports project document is not named (the
+  reader does not open it from this page). The owner's standard and its
+  cabling addendum are named and cited by clause (A1-A8).
+- Taught because the lab criteria rest on the knowledge, without any graded
+  figure: the three test levels (GLAB 527.4.1 Section 2 questions use other
+  wording); the split-pair mechanism (Section 8 asks for it in the
+  learner's words about Report 6; this page uses splits on pins 2/3 and
+  5/7, not Report 6's 3,6 with 4,5); the general cause of each wiremap
+  fault (ALAB 527.4.2 Cause criterion); the accept/escalate rule (stated in
+  the lab and KC-2625); the diagnostics distance rule (stated in the lab).
+- Held back: no list of "what a wiremap pass cannot prove" (Section 2 key);
+  no example of NEXT failing at the main unit near 0 ft (Report 3); no
+  return-loss example located in the cable (Report 4); no length-fail
+  example on a report (Report 5); no marginal-pass example (Report 2); no
+  statement that T568A at both ends passes a wiremap (a key item); no
+  crossed pair drawn on 1,2 and 3,6 (the ALAB default crossed fault), though
+  the text states that T568A at one end exchanges the orange and green pairs.
+- Engine script byte-identical to the pattern page; the head and body chrome
+  copied from it with the title and header text replaced.
+- Serial comma; American spelling; times approximate.
+
+ASSUMPTIONS (not in the module plan)
+- The learner reads this page before the Lesson 527.4 presentation on Day 4.
+- General knowledge, not from a project file: twisting cancels coupling;
+  1000BASE-T sends on all four pairs; pairs differ in length by twist rate;
+  permanent link vs channel limits in ANSI/TIA-568; split pair NEXT fails
+  "typically by a wide margin"; some wiremap testers detect split pairs;
+  NVP as a percentage of the speed of light.
+- The tester gives a length to an open or a short where the model supports
+  it (as the ALAB 527.4.2 lab states).
+
+CONFLICTS FOUND
+- Objective 3 wording: plan "a continuity check", GLAB 527.4.1 lab "a
+  wiremap continuity check" (plan s3 says it carries the labs' wording word
+  for word).
+- None found against the drawings (none used) or the addendum.
+
+CHECK QUESTIONS AND ACTIVITIES (for the quiz writer; do not repeat)
+- 527.4.1 CYU: four pin-to-pin links, which fails A7 (302 ft; others 41,
+  156, 290 ft).
+- 527.4.2 CYU: owner wants proof of Cat5e permanent link limits; crew holds
+  wiremap passes: a certification report per link.
+- 527.4.3 CYU: End column "Remote unit", remote at the outlet: the outlet
+  end.
+- 527.4.4 CYU: 96 ft practice link, return loss fails at remote unit,
+  reflection ~95 ft from main unit: outlet jack termination.
+- 527.4.5 CYU: insertion loss measured 18.4, limit 21.0: +2.6 dB, PASS.
+- 527.4.6 CYU: which entry escalates practice link 2-14 correctly (return
+  loss, remote unit, pair 1,2, -0.7 dB, outlet, untwist or jacket).
+- 527.4.7 CYU: T568B green pair on pins 3 and 6.
+- 527.4.8 CYU: white-brown on pin 5 and white-blue on pin 7 at both ends:
+  continuity-only tester shows a pass.
+- 527.4.9 CYU: tie denting the jacket at the panel: record as found; the
+  wiremap test can still pass.
+- 527.4.10 Matching: strand across two contacts / short; white-green and
+  green exchanged / reversed pair; conductor never pressed in / open; A row
+  at one end / crossed pair.
+- 527.4.11 CYU: reversed pair 3,6, no length, outlet in T568B: open the
+  panel end.
+- 527.4.12 CYU: nicked blue conductor at the outlet: cut back, new jack.
+- 527.4.13 Ordering: look, before-test, open the faulted end, repair to
+  T568B, photograph cap off, cap and retest same ends.
+- 527.4.14 CYU: AI says "fails NEXT at the outlet end" on practice 2-14:
+  errs, NEXT remote passes 4.2 dB.
+- 527.4.15 CYU: AI says reversed pair 3,6 at the outlet; found at the
+  panel: type agrees, location errs.
+- 527.4.16 acknowledgement.
+
+WORKED EXAMPLES (for the quiz writer; do not repeat)
+- 527.4.4 Diagram: diagnostic distance near 0 ft / in between / near the
+  link's length.
+- 527.4.5 Practice excerpt Dunmore 2-14, 96 ft: insertion loss 4,5 100 MHz
+  6.7/21.0/14.3 PASS; NEXT remote 1,2 with 7,8 20 MHz 47.9/43.7/4.2 PASS;
+  return loss remote 1,2 40 MHz 15.3/16.0/-0.7 FAIL; diagnostics ~95 ft;
+  smallest margin return loss -0.7.
+- 527.4.7 Diagram: T568B pins and pairs; T568A exchanges orange and green.
+- 527.4.8 Split pair: conductors on pins 2 and 3 exchanged at both ends
+  (white-green on 2, orange on 3).
+- 527.4.10 Diagram: open pin 4; short pins 5 and 6; reversed pair 3,6;
+  crossed pairs 4,5 and 7,8. Table: reversed pair example pins 3 and 6.
+- 527.4.11 Practice link 2-11, 64 ft, main unit at the panel via 1 ft cord:
+  open on pin 4 at 64 ft: outlet termination.
+- 527.4.13 Record entry for 2-11: open pin 4, blue not punched down,
+  re-seated at the outlet, after-test pass 64 ft.
+
+KEY CHECK
+- Sample reports and GLAB 527.4.1 key: no report figure, margin, pair
+  combination of a smallest margin, diagnostic distance, or cause/location
+  pairing used. Coincidental numerals elsewhere in the reports (21.0 limit
+  at 100 MHz, a 2.6 MHz frequency) are not key answers.
+- ALAB 527.4.2 default plan (opens on pins 2, 3, 6, 7, 8; shorts 1-2, 4-5,
+  7-8; reversed 1,2, 4,5, 7,8; crossed 1,2 with 3,6): page uses open pin 4,
+  short 5-6, reversed 3,6, crossed 4,5 with 7,8. No match.
+- No mock-up bay, port, label (W/P identifiers) or link length used.
+
+UNVERIFIED
+- Every limit value (recalled equations, SME check owed, as for the sample
+  reports). Not opened in a browser.
+
+AUDITS (final build)
+- audit_html.py: FAIL (0), WARN (0).
+- contrast_audit.py as written: FAIL (1), .order .step.picked .seq scored
+  against the legacy amber token (known tool limitation; the brand layer
+  sets White on #8A4B00, 6.8:1). With later token definitions winning:
+  FAIL (0). REPORT (83) unresolvable containers, as on the 526.1 page.
+- 2026-11-08 LP1 (content): 33 applied (4 reworded: overview bays and team patch panel, 527.4.6 cause location, the note sentence, "assigned pins"), 0 held.
+- 2026-11-08 final consolidation: item 48, A7 pass wording "all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft" (A7 paragraph, CYU feedback, summary); item 39, "crew" -> "team" for the mock-up teams ('site crew' kept). audit_html.py 0 FAIL, 0 WARN.
+- 2026-11-08 LP2 (content): 9 applied, 3 held (activity count 16 x2: module pages count the acknowledgement; 'site crew': kept by final consolidation, shared with ALAB 527.4.2 and KC-2625/2626).
+-->
+
+</body>
+</html>
