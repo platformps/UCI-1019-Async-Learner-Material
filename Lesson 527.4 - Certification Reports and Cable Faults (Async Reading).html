@@ -666,7 +666,7 @@
       <h2 id="ovh" tabindex="-1">Lesson 527.4 - Certification Reports and Cable Faults</h2>
       <p class="lead-in">What a wiremap test proves about a copper link, how to read a certification report, and how to find and repair a fault that the wiremap test reports.</p>
 
-      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. Its installation mock-up of the typical Level 2 work area stands on five training walls, each laid out in bays. The three data outlets in each bay are cabled to a team patch panel in the Mobile Infrastructure Rack (MIR). Before the owner, Calder Regional Services, accepts the mock-up as the standard for Level 2, the owner&rsquo;s representative walks the cabling.</p>
+      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. Its installation mock-up of the typical Level 2 work area stands on five training walls, each laid out in bays. The three data outlets in each bay are cabled to the team&rsquo;s block of ports on a patch panel in the Mobile Infrastructure Rack (MIR). Before the owner, Calder Regional Services, accepts the mock-up as the standard for Level 2, the owner&rsquo;s representative walks the cabling.</p>
 
       <p>The owner&rsquo;s cabling addendum sets two tests. Each team tests every link, from outlet jack to patch panel port, for wiremap and length with its own tester. At closeout, Kestrel&rsquo;s lead technician tests every link again with a certification tester and sends the reports to the owner. A link can pass the first test and fail the second. Where a wiremap test fails, the installer finds the fault, repairs the termination, and proves the repair with the same test.</p>
 
@@ -735,7 +735,7 @@
       <li><b>Decide</b> whether a link is accepted or escalated.</li>
       <li><b>Verify</b> an AI interpretation of a certification report against the report.</li>
       <li><b>Inspect</b> a failing link before choosing a test.</li>
-      <li><b>Isolate</b> an open, a short, a reversed pair, or a crossed pair with the wiremap tester and the tone kit.</li>
+      <li><b>Isolate</b> an open, a short, a reversed pair, or a crossed pair with the wiremap tester.</li>
       <li><b>Repair</b> a faulted termination to T568B.</li>
       <li><b>Retest</b> a repaired link with the same test.</li>
       <li><b>Record</b> each fault&rsquo;s location, cause, correction, and retest.</li>
@@ -744,7 +744,7 @@
 
   <p class="lead-in">A wiremap and length test shows where each conductor of a link goes, and how long the link is.</p>
 
-  <p>A <span class="keyterm">permanent link</span> is the installed cable from the outlet jack to the patch panel port, with the termination at each end. Patch cords are not part of it (owner&rsquo;s cabling addendum, Terms). On the mock-up, each permanent link runs from a data outlet in a bay to a port on the team&rsquo;s patch panel in the Mobile Infrastructure Rack (MIR). On this page, &ldquo;link&rdquo; means a permanent link.</p>
+  <p>A <span class="keyterm">permanent link</span> is the installed cable from the outlet jack to the patch panel port, with the termination at each end. Patch cords are not part of it (owner&rsquo;s cabling addendum, Terms). On the mock-up, each permanent link runs from a data outlet in a bay to a port in the team&rsquo;s block on a patch panel in the Mobile Infrastructure Rack (MIR). On this page, &ldquo;link&rdquo; means a permanent link.</p>
 
   <h3>The tester</h3>
   <p>A wiremap tester has two parts. The <span class="keyterm">main unit</span> runs the test and shows the result. The <span class="keyterm">remote unit</span> plugs into the other end of the link. Through it, the main unit tells which pin each conductor reaches. Each unit connects to the link through a short patch cord: one at the patch panel port, one at the outlet.</p>
@@ -754,7 +754,7 @@
     <li><strong>Continuity.</strong> Each of the eight conductors is connected from end to end.</li>
     <li><strong>Pin mapping.</strong> Each conductor reaches the same pin at the far end: pin 1 to pin 1, and so on to pin 8.</li>
     <li><strong>Shorts.</strong> No two conductors are connected to each other.</li>
-    <li><strong>Length.</strong> The tester times a pulse along a pair and converts the time to a length with the <span class="keyterm">Nominal Velocity of Propagation</span> (NVP) set for the cable. NVP is the speed of a signal in the cable, as a percentage of the speed of light. A wrong NVP setting gives a wrong length.</li>
+    <li><strong>Length.</strong> The tester times a pulse along a pair and converts the time to a length with the <span class="keyterm">Nominal Velocity of Propagation</span> (NVP) set for the cable. NVP is the speed of a signal in the cable, as a percentage of the speed of light. A wrong NVP setting gives a wrong length. The length test runs without the remote unit, with nothing plugged into the far end of the link. The tester on the mock-up measures from ~8 ft (2.5 m) to ~656 ft (200 m) and shows 0 outside that range.</li>
   </ul>
 
   <p>The owner&rsquo;s cabling addendum sets the pass (A7): all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft (90 m). Each team runs this test on every link. It does not measure how the link carries a signal at the frequencies a network uses. A certification tester measures that.</p>
@@ -1171,7 +1171,7 @@
 
   <h3>The certification test</h3>
   <p>A network sends one signal on pins 1 and 2 and another on pins 3 and 6. In this link, each conductor of signal pair 1,2 is twisted with a conductor of signal pair 3,6, so the two signals couple into each other along the whole length of the link. A certification tester measures the crosstalk between pairs. On a split pair, NEXT between the two affected pairs fails at both ends, typically by a wide margin.</p>
-  <p>Some wiremap testers add a measurement that reports a split pair. A tester that checks only continuity and pin mapping cannot detect one.</p>
+  <p>Some wiremap testers add a measurement that reports a split pair. A tester that checks only continuity and pin mapping cannot detect one. The wiremap test of the tester on the mock-up is of that kind: it does not report a split pair.</p>
   <p>A split pair needs the same error at both ends. With the error at one end only, the two conductors arrive on different pins, and the wiremap test fails.</p>
 
   <div class="cyu gate" data-answer="0" data-fb="Each conductor sits on the same pin at both ends, so the continuity and mapping check passes. Pins 4 and 5 now carry blue and white-brown, which are not twisted together: the link holds a split pair. A reversed or crossed pair needs the two ends to differ. No conductor is disconnected, so the tester shows no open.">
@@ -1208,7 +1208,7 @@
   <p>Record each end as found: the label you read, what you checked, and what you found. &ldquo;Jack seated and latched, label correct, cable at the box entry undamaged&rdquo; is a finding. &ldquo;OK&rdquo; records no check.</p>
 
   <h3>Why the test comes before any opening</h3>
-  <p>The <span class="keyterm">before-test</span> is the wiremap and length test run on a failing link before any repair; the <span class="keyterm">after-test</span> is the same test run after the repair. The before-test records the fault as the link holds it. A termination opened first may no longer hold the fault that the test would have found.</p>
+  <p>The <span class="keyterm">before-test</span> is the wiremap test run on a failing link before any repair; the <span class="keyterm">after-test</span> is the same test run after the repair. The before-test records the fault as the link holds it. A termination opened first may no longer hold the fault that the test would have found.</p>
   <p>A patch cord found in a panel port may connect the link to a switch in service. Leave it in place and report it to the site crew, Kestrel's staff at the MIR. Never plug a tester into a switch port.</p>
 
   <div class="cyu gate" data-answer="3" data-fb="A dent can leave every conductor connected and on its pin, so a wiremap test can still pass. The deformed jacket changes the cable&rsquo;s impedance, which a certification tester measures as return loss. A4 allows no tie that deforms a jacket. Record it as found. A wiremap test reports an open only where a conductor is disconnected. Re-terminating the jack opens a termination before the test and does not touch the dent.">
@@ -1225,7 +1225,7 @@
 <section class="topic" data-lesson-num="527.4" data-lesson-title="Certification Reports and Cable Faults" data-group-num="4" data-group-title="Finding and Repairing a Fault" data-num="527.4.10" data-title="The four wiremap faults and their causes">
   <p class="crumb">Lesson 527.4 &middot; Section 4 Finding and Repairing a Fault</p>
   <h2><span class="tnum">527.4.10</span> The four wiremap faults and their causes</h2>
-  <p class="lead-in">A wiremap tester names an open, a short, a reversed pair, or a crossed pair, with the pins it affects. Each fault has a usual cause at a termination.</p>
+  <p class="lead-in">A wiremap tester names an open, a short, a reversed pair, or a crossed pair, with the pins it affects. Where any short exists, the tester on the mock-up shows only &ldquo;Short&rdquo;, with no pins. Each fault has a usual cause at a termination.</p>
 
   <div class="tbl-scroll">
     <table class="tbl">
@@ -1393,22 +1393,22 @@
   <h2><span class="tnum">527.4.11</span> Which end holds the fault</h2>
   <p class="lead-in">The tester names the fault. The type of fault decides how the installer finds the end that holds it.</p>
 
-  <h3>An open or a short, with a length</h3>
-  <p>Where the tester gives a length for the faulted conductor or pair, that length is the distance from the main unit to the fault. A length near that of the patch cord at the main unit puts the fault at the main unit&rsquo;s end. A length near the link&rsquo;s length puts it at the remote unit&rsquo;s end.</p>
+  <h3>An open or a short: the length test</h3>
+  <p>Run the length test from one end, with the remote unit removed and nothing plugged into the far end. The tester gives a length for each pair. A pair shorter than the others has the open or short at that distance from the main unit. A pair that shows 0 has the fault within ~8 ft (2.5 m) of the main unit, at the main unit&rsquo;s end; the tester on the mock-up measures no shorter length. Where every pair shows the link&rsquo;s length, the fault lies at the far end.</p>
 
   <div class="figure">
     <div class="cap">Example &mdash; practice link 2-11, Dunmore Street Library (hypothetical)</div>
-    <p>The link is 64 ft long. The main unit is at the patch panel port, through a 1 ft patch cord, and the remote unit at the outlet jack.</p>
-    <p>The tester shows an open on pin 4, at 64 ft.</p>
-    <p style="margin-bottom:0">64 ft from the main unit is the far end of the link. The fault lies in the outlet jack&rsquo;s termination.</p>
+    <p>The link is 64 ft long. The wiremap test shows an open on pin 4. For the length test, the main unit is at the patch panel port, through a 1 ft patch cord, with nothing plugged into the outlet jack.</p>
+    <p>Every pair, pair 4,5 included, shows 65 ft: the 64 ft link plus the 1 ft patch cord.</p>
+    <p style="margin-bottom:0">No pair is shorter than the others, so the open lies at the far end of the link, in the outlet jack&rsquo;s termination.</p>
   </div>
 
   <h3>A reversed or a crossed pair</h3>
   <p>The tester gives no distance for a reversed or a crossed pair. Open one end and compare its conductor order with T568B, which is the B row of the jack&rsquo;s color label. If that end is in T568B order, the fault is at the other end.</p>
-  <p>Where the tester shows no length for an open or a short, open one end and inspect it in the same way.</p>
+  <p>Where the lengths do not show the end of an open or a short, open one end and inspect it in the same way.</p>
 
   <h3>The tone kit</h3>
-  <p>A <span class="keyterm">tone kit</span> is a tone generator and a probe. With the generator plugged into an outlet, the probe sounds loudest at the cable that runs from that outlet, and fainter at the cables beside it. At the patch panel, run the probe along the cables behind the panel, find the loudest, and follow it to its port. The tone kit confirms which port an outlet&rsquo;s cable reaches. It does not name a fault.</p>
+  <p>A <span class="keyterm">tone kit</span> is a tone generator and a probe. With the generator plugged into an outlet, the probe sounds loudest at the cable that runs from that outlet, and fainter at the cables beside it. At the patch panel, run the probe along the cables behind the panel, find the loudest, and follow it to its port. The kit also works the other way round: with the generator in a panel port, the probe sounds loudest at the outlet whose cable runs to that port. The tone kit confirms which port an outlet&rsquo;s cable reaches. It does not name a fault.</p>
 
   <div class="cyu gate" data-answer="1" data-fb="A reversed pair shows no distance, so the installer opens one end and compares it with T568B. An outlet jack in T568B order puts the fault at the other end, the patch panel port. Re-terminating a correct jack changes nothing about the fault. The tone kit confirms which port a cable reaches, not where a fault lies. Swapping the units does not give a distance for a reversed pair either.">
     <p class="cyu-h">Check Your Understanding</p>
@@ -1460,7 +1460,7 @@
   <h2><span class="tnum">527.4.13</span> Retest and record</h2>
   <p class="lead-in">The installer proves the repair with the test that found the fault, run the same way.</p>
 
-  <p>Run the same wiremap and length test, with the main unit and the remote unit at the same ends as in the before-test. The two results then differ only by the repair. A pass shows that the fault the before-test named is gone, and that the repair has made no new wiremap fault.</p>
+  <p>Run the same wiremap test, with the main unit and the remote unit at the same ends as in the before-test. The two results then differ only by the repair. A pass shows that the fault the before-test named is gone, and that the repair has made no new wiremap fault.</p>
   <p>If the after-test fails, open the termination again, repair it, and test again. Record the last result.</p>
 
   <h3>The record of a fault</h3>
@@ -1566,8 +1566,8 @@
         <th scope="col">Fault</th><th scope="col">Finding the end</th><th scope="col">Usual cause</th>
       </tr></thead>
       <tbody>
-        <tr><th scope="row">Open</th><td>The length to the fault, where shown; otherwise open one end and look</td><td>Conductor not pressed into its contact, or broken</td></tr>
-        <tr><th scope="row">Short</th><td>The length to the fault, where shown; otherwise open one end and look</td><td>Copper bridging two contacts</td></tr>
+        <tr><th scope="row">Open</th><td>The length test, remote unit removed; otherwise open one end and look</td><td>Conductor not pressed into its contact, or broken</td></tr>
+        <tr><th scope="row">Short</th><td>The length test, remote unit removed; otherwise open one end and look</td><td>Copper bridging two contacts</td></tr>
         <tr><th scope="row">Reversed pair</th><td>Open one end and compare it with T568B</td><td>The two conductors of a pair exchanged at one end</td></tr>
         <tr><th scope="row">Crossed pair</th><td>Open one end and compare it with T568B</td><td>One end terminated to T568A, or two pairs exchanged</td></tr>
       </tbody>
@@ -2304,7 +2304,7 @@ DECISIONS TAKEN
   report figure, no mock-up bay, panel port, label or length is used.
 - Practice report limits (21.0 dB insertion loss at 100 MHz, 43.7 dB NEXT
   at 20 MHz, 16.0 dB return loss at 40 MHz) are computed from the same
-  recalled equations as the sample reports' build flags, so the two
+  equations as the sample reports' build flags (verified 2026-11-09), so the two
   documents agree; the page presents them as "the limits printed on that
   report" and the overview says they are examples, not values to apply.
 - Objective wording taken from the module plan section 3 unchanged. The
@@ -2406,8 +2406,8 @@ KEY CHECK
 - No mock-up bay, port, label (W/P identifiers) or link length used.
 
 UNVERIFIED
-- Every limit value (recalled equations, SME check owed, as for the sample
-  reports). Not opened in a browser.
+- Limit values verified 2026-11-09 against the published formulas and Fluke
+  reports, not the TIA text. Not opened in a browser.
 
 AUDITS (final build)
 - audit_html.py: FAIL (0), WARN (0).
@@ -2418,6 +2418,10 @@ AUDITS (final build)
 - 2026-11-08 LP1 (content): 33 applied (4 reworded: overview bays and team patch panel, 527.4.6 cause location, the note sentence, "assigned pins"), 0 held.
 - 2026-11-08 final consolidation: item 48, A7 pass wording "all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft" (A7 paragraph, CYU feedback, summary); item 39, "crew" -> "team" for the mock-up teams ('site crew' kept). audit_html.py 0 FAIL, 0 WARN.
 - 2026-11-08 LP2 (content): 9 applied, 3 held (activity count 16 x2: module pages count the acknowledgement; 'site crew': kept by final consolidation, shared with ALAB 527.4.2 and KC-2625/2626).
+- 2026-11-09 tester: R-067 identified as the NOYAFA NF-8209 (Eldad); 527.4.2 length test without the remote and its range; 527.4.8 the mock-up tester reports no split pair; 527.4.9 before-test = wiremap test; 527.4.10 Short-only screen; 527.4.11 locating by the length test, example reworked (every pair 65 ft, far end); 527.4.13 same wiremap test; summary table. Not re-reviewed.
+- 2026-11-09 MIR 48-port panels: overview and link definition: the team's block of ports on a patch panel in the MIR (no team patch panel). Not uploaded (coordinator uploads).
+- 2026-11-09 final rulings (Eldad): objective 'Isolate' names the wiremap tester only (tone kit optional in the lab). The tone kit section stays as teaching text. Not re-reviewed.
+- 2026-11-09 LP final (Planning/reviews/LP_final-rulings_2026-11-09.md): C4: 'The tone kit' gains one sentence on the generator in a panel port and the probe at the outlet (the lab's optional use). Limit values marked verified (formulas and Fluke reports, not the TIA text). Re-uploaded. audit_html 0 FAIL. Not re-reviewed.
 -->
 
 </body>

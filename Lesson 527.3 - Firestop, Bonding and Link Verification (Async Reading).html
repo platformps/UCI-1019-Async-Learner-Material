@@ -23,9 +23,10 @@
   OBJECTIVES, one verb each, from the module plan v0.1.0 section 3,
   Lesson 527.3 (learner-facing wording, word for word).
     Identify     the limits of a training firestop assembly       7.8.1
-    Install      a firestop system to its listed instructions
-                 and inspect it                                   7.8.2, 7.8.3, 7.8.6
-    Install      a rack bond to the busbar and verify it          7.8.4, 7.8.5, 7.8.6
+    Install      a firestop system to its listed instructions     7.8.2, 7.8.3, 7.8.6
+    Inspect      a firestop system against its listed instructions 7.8.2, 7.8.3, 7.8.6
+    Install      a rack bond to the busbar                        7.8.4, 7.8.5, 7.8.6
+    Verify       a rack bond with a multimeter                    7.8.4, 7.8.5, 7.8.6
     Connect      a laptop to the network through your link        7.5.1-7.5.3
     Verify       reachability with ping and traceroute            7.5.3, 7.5.4
     Distinguish  a cabling fault from a network or service fault  7.5.5
@@ -680,9 +681,9 @@
       <h2 id="ovh" tabindex="-1">Lesson 527.3 - Firestop, Bonding and Link Verification</h2>
       <p class="lead-in">How an installer seals a cable bundle where it passes through a fire-rated wall, bonds a rack to the room&rsquo;s busbar, and proves from a work-area outlet that a link carries traffic on the owner&rsquo;s network.</p>
 
-      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. On Level 2, every cable bundle that crosses the rated corridor wall runs through a steel sleeve. Every rack in telecommunications room 2A is bonded to the room&rsquo;s busbar. Before production work starts, the owner, Calder Regional Services, accepts Kestrel&rsquo;s methods on an installation mock-up: five training walls, each cabled to its own patch panel in a Mobile Infrastructure Rack (MIR).</p>
+      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. On Level 2, every cable bundle that crosses the rated corridor wall runs through a steel sleeve. Every rack in telecommunications room 2A is bonded to the room&rsquo;s busbar. Before production work starts, the owner, Calder Regional Services, accepts Kestrel&rsquo;s methods on an installation mock-up: five training walls, each cabled to its own block of ports on the patch panels in a Mobile Infrastructure Rack (MIR).</p>
 
-      <p>The owner&rsquo;s representative watches each installer seal a sleeve and land a bond on bench fixtures. Calder&rsquo;s network team sets up a switch in the MIR for each Kestrel team. The representative then asks for proof, from a laptop plugged into an outlet, that the link reaches the network. D. Okafor, the Kestrel site lead, issues the work orders for the bench work and the network proof.</p>
+      <p>The owner&rsquo;s representative watches each installer seal a sleeve and land a bond on bench fixtures. Calder&rsquo;s network team sets up a switch in the MIR for the Kestrel teams. The representative then asks for proof, from a laptop plugged into an outlet, that the link reaches the network. D. Okafor, the Kestrel site lead, issues the work orders for the bench work and the network proof.</p>
 
       <p>The worked examples on this page come from other jobs and other networks, not from the mock-up&rsquo;s fixtures, product data, or network.</p>
 
@@ -741,8 +742,10 @@
   <div class="note note"><div class="nt">By the end of Lesson 527.3 you will be able to</div>
     <ul>
       <li><b>Identify</b> the limits of a training firestop assembly.</li>
-      <li><b>Install</b> a firestop system to its listed instructions and inspect it.</li>
-      <li><b>Install</b> a rack bond to the busbar and verify it.</li>
+      <li><b>Install</b> a firestop system to its listed instructions.</li>
+      <li><b>Inspect</b> a firestop system against its listed instructions.</li>
+      <li><b>Install</b> a rack bond to the busbar.</li>
+      <li><b>Verify</b> a rack bond with a multimeter.</li>
       <li><b>Connect</b> a laptop to the network through your installed link.</li>
       <li><b>Verify</b> reachability with ping and traceroute.</li>
       <li><b>Distinguish</b> a cabling fault from a network or service fault.</li>
@@ -1055,18 +1058,18 @@
   </ul>
 
   <h3>Land on bare metal</h3>
-  <p>Paint and powder coat insulate. The lug lands on a bonding point of bare metal: a spot on the rack cleared of paint, or a fitting made for the purpose. At the busbar, the lug lands on a position of its own. The bolt, washers, and nut go on in the order the hardware or busbar manufacturer gives.</p>
+  <p>Paint and powder coat insulate. The lug lands on a bonding point of bare metal: a spot on the rack cleared of paint, or a fitting made for the purpose. At the busbar, the lug lands on a position of its own. The screw, washers, and any nut go on in the order the hardware or busbar manufacturer gives.</p>
 
   <h3>Torque and the torque mark</h3>
   <p>The <span class="keyterm">torque value</span> is the tightening torque the manufacturer sets for the joint. A torque wrench or torque screwdriver set to that value signals when the joint reaches it. A joint left loose can work looser and rise in resistance. A joint driven past the value can strip a thread or deform the lug.</p>
-  <p>After tightening, the installer draws a <span class="keyterm">torque mark</span>: a paint-marker line across the nut, the washer, and the lug. A nut that turns afterward breaks the line. An inspector sees the break without a tool.</p>
+  <p>After tightening, the installer draws a <span class="keyterm">torque mark</span>: a marker line across the screw head or nut, the washer, and the lug. A screw or nut that turns afterward breaks the line. An inspector sees the break without a tool.</p>
 
-  <div class="cyu gate" data-answer="1" data-fb="The torque mark was drawn in one line across the nut, the washer, and the lug after tightening. A broken line means the nut has turned since then, so the torque on the joint is no longer known. The mark records movement, not the torque reached, so it cannot show over-tightening. A broken line says nothing about the marker&rsquo;s color or the lug&rsquo;s size.">
+  <div class="cyu gate" data-answer="1" data-fb="The torque mark was drawn in one line across the screw head or nut, the washer, and the lug after tightening. A broken line means the screw or nut has turned since then, so the torque on the joint is no longer known. The mark records movement, not the torque reached, so it cannot show over-tightening. A broken line says nothing about the marker&rsquo;s color or the lug&rsquo;s size.">
     <p class="cyu-h">Check Your Understanding</p>
-    <p class="cyu-q">At a later inspection of a rack bond, the paint line on the nut no longer lines up with the line on the washer and the lug. What does the broken line show?</p>
+    <p class="cyu-q">At a later inspection of a rack bond, the marker line on the screw or nut no longer lines up with the line on the washer and the lug. What does the broken line show?</p>
     <button class="opt"><span class="mk" aria-hidden="true">A</span>The joint was tightened past its torque value</button>
-    <button class="opt"><span class="mk" aria-hidden="true">B</span>The nut has turned since the mark was drawn, so the joint&rsquo;s torque is no longer known</button>
-    <button class="opt"><span class="mk" aria-hidden="true">C</span>The paint marker was the wrong color for a bonding joint</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The screw or nut has turned since the mark was drawn, so the joint&rsquo;s torque is no longer known</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The marker line was the wrong color for a bonding joint</button>
     <button class="opt"><span class="mk" aria-hidden="true">D</span>The lug is the wrong size for the conductor</button>
     <div class="cyu-fb" role="status"></div>
   </div>
@@ -1081,8 +1084,8 @@
 
   <h3>The method</h3>
   <ol>
-    <li>Set the multimeter to its lowest resistance range.</li>
-    <li>Touch the two probe tips together and note the reading: the <strong>leads-touched</strong> reading. It is the resistance of the leads and the probe contacts.</li>
+    <li>Set the multimeter to resistance (&#937;). Touch the two probe tips together. Where the meter has a RANGE button, press it until the display shows tenths of an ohm.</li>
+    <li>Keep the probe tips together and note the reading: the <strong>leads-touched</strong> reading. It is the resistance of the leads and the probe contacts.</li>
     <li>Hold one probe on bare metal of the rack rail beside the lug and the other on the busbar beside the other lug. Note the reading: the <strong>rail-to-busbar</strong> reading.</li>
     <li>Subtract the leads-touched reading from the rail-to-busbar reading. The result is the <strong>net</strong> reading.</li>
   </ol>
@@ -1101,7 +1104,7 @@
 
   <h3>What the reading can show</h3>
   <p>6 AWG copper has a resistance of about 0.4 thousandths of an ohm per foot, so a 2 ft rack bond conductor measures under one thousandth of an ohm. A sound crimped and bolted joint adds thousandths of an ohm at most. Many handheld multimeters display resistance in steps of 0.1 &#937; on their lowest range; the meter&rsquo;s specification states its resolution. On such a meter, a sound bond and a weak one can both give a net reading of 0.0 &#937; or 0.1 &#937;.</p>
-  <p>The meter does show an open bond: a lug off its bolt or a conductor broken in its barrel gives the meter&rsquo;s over-range reading, shown as <code>OL</code> on many meters.</p>
+  <p>The meter does show an open bond: a lug off its screw or a conductor broken in its barrel gives the meter&rsquo;s over-range reading, shown as <code>OL</code> on many meters.</p>
 
   <h3>The acceptance figure</h3>
   <p>An owner, a busbar or lug manufacturer, or an electrical contractor may set an <span class="keyterm">acceptance figure</span>: the largest resistance a bond may show. Where the figure is set in thousandths of an ohm, contractors measure the bond with a low-resistance ohmmeter, which resolves far smaller values than a handheld multimeter. Where a figure is posted, compare the net reading with it and state whether the reading meets it. Where none is posted, record that none is posted. A statement that a bond passes needs a figure to pass against.</p>
@@ -2350,6 +2353,12 @@ AUDITS (final build)
 2026-11-08 LP1 (content): 37 applied (several reworded from the table), 0 held; firestop schedule now defined at first use (T-501 sentence), later definition dropped.
 2026-11-08 LP2 (content): 24 applied (4 reworded from the table), 3 held (section 300.21 citation, unconfirmed; 15 activities, which matches the 15 gates including the completion button; Windows ping summary ends with a comma, as printed).
 - 2026-11-08 final consolidation: item 48, A7 pass wording "all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft" (paragraph and matching pair); one generic 'crew' made 'installer'. audit_html.py 0 FAIL, 0 WARN.
+- 2026-11-09 MIR 48-port panels: overview: each wall cabled to its own block of ports on the MIR's patch panels; one switch set up for the Kestrel teams. Not uploaded (coordinator uploads).
+- 2026-11-09 confirmation fixes (Planning/reviews/CF_review-fixes_2026-11-09.md; coordinator rulings under delegation): CF 8 (meter method step 1: resistance, RANGE to tenths of an ohm), 9 (marker line on the screw or nut, check's feedback and options B and C to match; a lug off its screw). Changed sentences under "Confirmation fixes" in Planning/reviews/_review-fixes-changes_2026-11-09.md. Not re-reviewed.
+- 2026-11-09 CF2 fixes (Planning/reviews/CF2_2026-11-09.md; coordinator rulings under delegation): CF2 12 (meter method: probe tips touched before RANGE; leads-touched reading with tips kept together), 13 (torque mark: marker line across the screw head or nut; 'crimped and bolted' left as trade usage); audit_html.py 0 FAIL 0 WARN; re-uploaded. Changed sentences under "CF2 fixes" in Planning/reviews/_review-fixes-changes_2026-11-09.md. Not re-reviewed.
+- 2026-11-09 CF3 fixes (Planning/reviews/CF3_2026-11-09.md; coordinator rulings under delegation): CF3 10 (Land on bare metal: 'The screw, washers, and any nut go on…'); audit_html.py 0 FAIL 0 WARN; re-uploaded. Changed sentences under "CF3 fixes" in Planning/reviews/_review-fixes-changes_2026-11-09.md. Not re-reviewed.
+- 2026-11-09 final rulings (Eldad): objectives split (Install / Inspect a firestop system; Install / Verify a rack bond), list and objectives comment updated. Not re-reviewed.
+- 2026-11-09 LP final (Planning/reviews/LP_final-rulings_2026-11-09.md): C5: objectives comment reads 'against its listed instructions', as the page. Comment only. Re-uploaded. audit_html 0 FAIL.
 -->
 </body>
 </html>

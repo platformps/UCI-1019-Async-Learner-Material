@@ -18,17 +18,19 @@
   .calc component sheet (worked-arithmetic panel). Logo: inline Slate SVG.
 
   OBJECTIVES, from the module plan v0.1.0 section 3, Lesson 527.1
-  (the labs' wording, word for word; codes removed).
-    Accept   a bay against its acceptance checks; record faults   7.2.1
+  (the labs' wording, abbreviated in this list; the page carries it in full; codes removed).
+    Accept   a bay against its acceptance checks                  7.2.1
+    Record   each element that is missing or defective            7.2.1
     Assign   each cable its panel port and full identifier         7.1.6
     Plan     a cable pull: route, length, supports, capacity       7.2.2
     Pull     a concealed cable from the ladder to an outlet box    7.2.3
     Route    cables along a ladder within bend and pull limits     7.2.3, 7.2.4
-    Support  and bundle cable with hook-and-loop ties              7.1.2, 7.2.4
-    Leave    a service loop; protect and identify both ends        7.2.4, 7.2.5
+    Support  cable with hook-and-loop ties                         7.1.2, 7.2.4
+    Bundle   cables on a cable ladder with hook-and-loop ties      7.1.2, 7.2.4
+    Leave    a service loop at the rack end of a cable             7.2.4, 7.2.5
+    Prepare  both ends of a cable for termination                  7.2.4, 7.2.5
     Record   each cable's route and length                         7.2.6
-  Three objectives carry two verbs as the plan states them (marked in the
-  plan, held for Eldad); the first verb is bolded.
+  One verb each since 2026-11-09 (Eldad split the two-verb objectives).
 
   TOPIC OUTLINE
     Section 1  Accepting the Bay
@@ -655,7 +657,7 @@
       <h2 id="ovh" tabindex="-1">Lesson 527.1 - Bay Handover and Cable Installation</h2>
       <p class="lead-in">How an installer takes over a bay for cabling, works out the length and route of each cable, pulls a cable down a closed wall, and lays the bay&rsquo;s cables along a cable ladder to the rack.</p>
 
-      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. The owner, Calder Regional Services, has approved the rough-in of the installation mock-up: five free-standing training walls, each bay with its outlet boxes in place and two of its cables coiled above the wall. The cabling phase follows. Each data outlet in a bay becomes one end of a <span class="keyterm">permanent link</span>, the installed cable from the outlet jack to its port on the team&rsquo;s patch panel in the Mobile Infrastructure Rack (MIR), which stands in for the Level 2 telecommunications room.</p>
+      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. The owner, Calder Regional Services, has approved the rough-in of the installation mock-up: five free-standing training walls, each bay with its outlet boxes in place and two of its cables coiled above the wall. The cabling phase follows. Each data outlet in a bay becomes one end of a <span class="keyterm">permanent link</span>, the installed cable from the outlet jack to its patch panel port in the Mobile Infrastructure Rack (MIR), which stands in for the Level 2 telecommunications room.</p>
 
       <p>D. Okafor, the Kestrel site lead, sets the order of the work. The installer who owns a bay accepts it in writing before pulling any cable into it. The installer then works out the new cable&rsquo;s length and the route of the bay&rsquo;s cables, pulls the new cable down the wall, lays the bay&rsquo;s cables along the cable ladder to the MIR, and records each one. The owner&rsquo;s representative inspects the cables before the installer terminates any of them.</p>
 
@@ -716,13 +718,16 @@
 
   <div class="note note"><div class="nt">By the end of Lesson 527.1 you will be able to</div>
     <ul>
-      <li><b>Accept</b> a bay against its acceptance checks and record each element that is missing or defective.</li>
+      <li><b>Accept</b> a bay against its acceptance checks.</li>
+      <li><b>Record</b> each element that is missing or defective.</li>
       <li><b>Assign</b> each cable its panel port and full identifier.</li>
       <li><b>Plan</b> a cable pull: route, length, supports, and capacity.</li>
       <li><b>Pull</b> a concealed cable from the cable ladder to an outlet box.</li>
       <li><b>Route</b> cables along a cable ladder to a rack within the bend and pulling limits.</li>
-      <li><b>Support</b> and bundle cable with hook-and-loop ties without deforming the jacket.</li>
-      <li><b>Leave</b> a service loop, and protect and identify both ends of a cable.</li>
+      <li><b>Support</b> cable with hook-and-loop ties without deforming the jacket.</li>
+      <li><b>Bundle</b> cables on a cable ladder with hook-and-loop ties.</li>
+      <li><b>Leave</b> a service loop at the rack end of a cable.</li>
+      <li><b>Prepare</b> both ends of a cable for termination, taped and labeled.</li>
       <li><b>Record</b> each cable&rsquo;s route and length.</li>
     </ul></div>
 
@@ -1061,7 +1066,7 @@
   <p>The <span class="keyterm">cavity</span> is the space inside a wall between its two faces. Cable in the cavity is out of sight once the wall is closed, so the installer checks it during the pull: nothing in the cavity may press on it or wear through its jacket.</p>
 
   <h3>The cable entry</h3>
-  <p>Where a box has no entry toward the cavity, the work order states how to make one. Before drilling, shine a flashlight down the cavity from the top of the frame. A cable already lying behind the box is a reason to stop and tell the site lead. A hole drilled through a steel box leaves a sharp edge, so the installer fits a <span class="keyterm">snap-in insulating bushing</span>, a plastic ring that clips into the hole and keeps the cable off the edge.</p>
+  <p>Where a box has no entry toward the cavity, the work order states how to make one. Before drilling, shine a flashlight down the cavity from the top of the frame. A cable already lying behind the box is a reason to stop and tell the site lead. A hole drilled through a steel box leaves a sharp edge, so the installer fits a <span class="keyterm">snap-in insulating bushing</span>, a plastic ring that clips into the hole and keeps the cable off the edge. On the training walls, where no bushing is stocked, a split loom offcut squeezed into the hole serves as a liner.</p>
 
   <h3>Fishing the cable</h3>
   <p>A <span class="keyterm">fish tape</span> is a flat steel tape on a reel, pushed through a closed space to draw a cable back through it. Push it in through the bushing and up the cavity until its head comes out of the open top of the frame. Tape the cable end to the head, wrapped smooth so that it does not catch on the way down. Then draw the tape back down while you feed the cable over the top of the frame, so that the cable does not rub on the frame&rsquo;s edge or catch on another cable.</p>
@@ -1225,11 +1230,11 @@
   <h2><span class="tnum">527.1.10</span> Service loop, drop, and the release</h2>
   <p class="lead-in">At the rack end, the installer leaves each cable a service loop on the cable ladder and a drop for the patch panel. The cable stays unterminated until the owner&rsquo;s representative releases it.</p>
 
-  <p>The <span class="keyterm">team mark</span> is a tape flag on the last rung of the cable ladder before the MIR, lettered for the patch panel the team&rsquo;s cables serve. Each installer stores their cables&rsquo; spare length there.</p>
+  <p>The <span class="keyterm">team mark</span> is a tape flag on the last rung of the cable ladder before the MIR, lettered for the block of patch panel ports the team&rsquo;s cables serve. Each installer stores their cables&rsquo; spare length there.</p>
 
   <ul>
     <li><strong>Service loop.</strong> 10 ft of each cable, coiled on the cable ladder at the MIR end (27 15 00 3.1; addendum A5). Coil the loops of your cables together, lay them flat on the ladder at the team mark, and tie them to a rung. Note the footage mark of each cable where its loop begins and where it ends.</li>
-    <li><strong>Drop.</strong> 6 ft of each cable beyond the service loop (27 05 00 4.8). Until the patch panel is mounted, wind the drops in one loose loop and hang it from the last rung, off the floor.</li>
+    <li><strong>Drop.</strong> 6 ft of each cable beyond the service loop (27 05 00 4.8). Until termination, wind the drops in one loose loop and hang it from the last rung, off the floor.</li>
     <li><strong>The ends.</strong> Tape each end, and check that its label is legible within ~6 in of the end. The outlet end of each cable stays in its box or bracket with its slack, taped and labeled.</li>
   </ul>
 
@@ -1249,8 +1254,7 @@
     <circle cx="590" cy="178" r="28" fill="none" stroke="#611940" stroke-width="4"/>
     <rect x="640" y="60" width="140" height="270" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
     <rect x="652" y="150" width="116" height="24" fill="#FFFFFF" stroke="#26282E" stroke-width="1.2"/>
-    <text x="656" y="196" font-size="13" fill="#26282E">patch panel,</text>
-    <text x="656" y="212" font-size="13" fill="#26282E">when mounted</text>
+    <text x="656" y="196" font-size="13" fill="#26282E">patch panel</text>
     <text x="684" y="350" font-size="13" fill="#5A5D66">rack</text>
     <line x1="20" y1="330" x2="800" y2="330" stroke="#8C8F96" stroke-width="1.4" stroke-dasharray="6 4"/>
     <text x="40" y="350" font-size="13" fill="#5A5D66">floor</text>
@@ -1258,7 +1262,7 @@
     <text x="60" y="130" font-size="13" fill="#26282E">Service loop: coiled flat on the cable ladder at the team mark,</text>
     <text x="60" y="146" font-size="13" fill="#26282E">tied to a rung</text>
     <line x1="505" y1="122" x2="500" y2="76" stroke="#5A5D66" stroke-width="1"/>
-    <text x="60" y="210" font-size="13" fill="#26282E">Team mark: tape flag on the last rung, lettered for the patch panel</text>
+    <text x="60" y="210" font-size="13" fill="#26282E">Team mark: tape flag on the last rung, lettered for the team&rsquo;s block</text>
     <line x1="545" y1="204" x2="566" y2="106" stroke="#5A5D66" stroke-width="1"/>
     <text x="60" y="262" font-size="13" fill="#26282E">Drop: one loose loop hung from the last rung, off the floor,</text>
     <text x="60" y="278" font-size="13" fill="#26282E">ends taped and labeled</text>
@@ -1267,17 +1271,17 @@
   </div>
   </div>
   <details class="longdesc"><summary>Text description of this diagram</summary>
-    <p>The diagram is titled Service loop and drop at the rack end (elevation). Cables from the wall run along the cable ladder to its end beside a rack. The rack holds the patch panel, when mounted.</p>
-    <p>Service loop: coiled flat on the cable ladder at the team mark, tied to a rung. Team mark: tape flag on the last rung, lettered for the patch panel. Drop: one loose loop hung from the last rung, off the floor, ends taped and labeled. The floor is shown below.</p>
+    <p>The diagram is titled Service loop and drop at the rack end (elevation). Cables from the wall run along the cable ladder to its end beside a rack. The rack holds the patch panel.</p>
+    <p>Service loop: coiled flat on the cable ladder at the team mark, tied to a rung. Team mark: tape flag on the last rung, lettered for the team&rsquo;s block. Drop: one loose loop hung from the last rung, off the floor, ends taped and labeled. The floor is shown below.</p>
   </details>
 
   <h3>The release</h3>
   <p>When the cables are tied, looped, and dropped, the installer calls the owner&rsquo;s representative. This is the hold point. The representative inspects each cable and names any fault. The installer corrects each named fault, the representative checks it again, and the representative then releases the cable. Terminating a cable fixes its length. A fault in its route or its loop, found after termination, means cutting off the termination and making it again.</p>
 
-  <div class="cyu gate" data-answer="3" data-fb="Termination waits for the release, whatever else is ready: call the representative and wait. The mounted patch panel does not lift the hold point. Terminating one cable to show that the drop reaches is a termination before release. Cutting the drops shorter removes cable the owner&rsquo;s documents require.">
+  <div class="cyu gate" data-answer="3" data-fb="Termination waits for the release, whatever else is ready: call the representative and wait. Free ports on the patch panel do not lift the hold point. Terminating one cable to show that the drop reaches is a termination before release. Cutting the drops shorter removes cable the owner&rsquo;s documents require.">
     <p class="cyu-h">Check Your Understanding</p>
-    <p class="cyu-q">Your cables are tied, looped, and dropped. Your team has mounted the patch panel, and the owner&rsquo;s representative has not yet reached you. What do you do with the drops?</p>
-    <button class="opt"><span class="mk" aria-hidden="true">A</span>Terminate them on the patch panel: the panel is ready</button>
+    <p class="cyu-q">Your cables are tied, looped, and dropped. Your team&rsquo;s ports on the patch panel are free, and the owner&rsquo;s representative has not yet reached you. What do you do with the drops?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Terminate them on the patch panel: the ports are free</button>
     <button class="opt"><span class="mk" aria-hidden="true">B</span>Terminate one, to show the representative that the drop reaches</button>
     <button class="opt"><span class="mk" aria-hidden="true">C</span>Cut each drop to the length the panel needs, then wait for the representative</button>
     <button class="opt"><span class="mk" aria-hidden="true">D</span>Call the owner&rsquo;s representative and leave them unterminated until released</button>
@@ -2138,7 +2142,7 @@ CHECK QUESTIONS AND ACTIVITIES (for the quiz writer; do not repeat)
   where.
 - 527.1.9 CYU: tension reading 31 lbf: not within 25 lbf; record, stop,
   report.
-- 527.1.10 CYU: panel mounted before the representative arrives: call and
+- 527.1.10 CYU: team's ports free before the representative arrives: call and
   leave the drops unterminated until released.
 - 527.1.11 CYU: loop marks 1388 and 1374 against a 10 ft standard: 14 ft
   loop, 4 ft more.
@@ -2196,6 +2200,11 @@ AUDITS (final build)
 - 2026-11-08 LP1 (content): 17 applied (4 reworded), 0 held. Structural: 'permanent link' now defined at first use (scenario paragraph); the later Horizontal cabling paragraph keeps only the termination and patch-cord facts. The agentless 'before any of them is terminated' fixed in both places it occurs (scenario and overview).
 - 2026-11-08 LP2 (content): 5 applied (1 reworded: matching answer reads 'The element label on the box or bracket: the outlet identifier'), 0 held. Structural, fixed: 'element label' was never taught; 527.1.3 now defines it at first use (one label per element with its identifier, on its box or bracket, as 27 05 53 2.2 states).
 - 2026-11-08 final consolidation: item 39, "crew" -> "team" for the mock-up teams; item 59, release time of each cable. audit_html.py 0 FAIL, 0 WARN.
+- 2026-11-09 MIR 48-port panels: no panel is mounted; each team terminates on its block of ports on a patch panel installed in the MIR. Scenario paragraph, team mark, drop, rack-end diagram ("when mounted" removed) and its text description, and the 527.1.10 check ("ports free" for "panel mounted"; answer unchanged, D) edited. Not re-reviewed.
+- 2026-11-09 review fixes (LP MIR 48-port, LP D13b adaptations, CR7; coordinator rulings under delegation): ruling 11. Changed sentences in Planning/reviews/_review-fixes-changes_2026-11-09.md. Not re-reviewed.
+- 2026-11-09 confirmation fixes (Planning/reviews/CF_review-fixes_2026-11-09.md; coordinator rulings under delegation): CF 26 (a liner). Changed sentences under "Confirmation fixes" in Planning/reviews/_review-fixes-changes_2026-11-09.md. Not re-reviewed.
+- 2026-11-09 final rulings (Eldad): objectives split (Accept / Record; Support / Bundle; Leave / Prepare), list and objectives comment updated. Not re-reviewed.
+- 2026-11-09 LP final (Planning/reviews/LP_final-rulings_2026-11-09.md): C5: objectives comment no longer claims word-for-word wording (the comment abbreviates; the page list is in full). Comment only; page text unchanged. Re-uploaded. audit_html 0 FAIL.
 -->
 
 </body>

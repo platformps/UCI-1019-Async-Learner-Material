@@ -26,7 +26,8 @@
     Test       a patch cord with a wiremap tester               7.4.5
     Terminate  a keystone jack at each outlet                   7.4.3
     Label      outlets and cable ends                           7.1.6, 7.4.6
-    Mount      a patch panel in a rack                          7.1.1, 4.7
+    Install    keystone jacks in their assigned ports on a
+               rack-mounted patch panel                         7.1.1, 4.7
     Terminate  your cables on the patch panel                   7.4.3
     Dress      cable through the rack's managers                7.1.2-7.1.5
     Label      patch panel ports and cable ends                 7.1.6, 7.4.6
@@ -47,7 +48,7 @@
       527.2.8   What a wiremap tester reports              Test, Verify
       527.2.9   Testing a cord and a permanent link        Test, Verify
     Section 4  The Patch Panel at the Rack
-      527.2.10  Patch panels and the rack                  Mount
+      527.2.10  Patch panels and the rack                  Install
       527.2.11  Dressing cable to the panel                Dress
       527.2.12  Labeling the port, the outlet, and the
                 cable                                      Label (both); AI check
@@ -657,9 +658,9 @@
       <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
          &middot; Structured Cabling Techniques and Troubleshooting</p>
       <h2 id="ovh" tabindex="-1">Lesson 527.2 - Copper Termination and the Patch Panel</h2>
-      <p class="lead-in">How an installer puts a plug or a jack on each end of a copper cable, mounts and labels a patch panel, and proves each finished link with a wiremap tester.</p>
+      <p class="lead-in">How an installer puts a plug or a jack on each end of a copper cable, installs and labels jacks in a patch panel, and proves each finished link with a wiremap tester.</p>
 
-      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. The owner, Calder Regional Services, has approved the rough-in of the installation mock-up on five training walls. In the cabling phase, every outlet cable runs along the cable ladder to the Mobile Infrastructure Rack (MIR), which stands in for the Level 2 telecommunications room. Each wall&rsquo;s team owns one patch panel in that rack.</p>
+      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. The owner, Calder Regional Services, has approved the rough-in of the installation mock-up on five training walls. In the cabling phase, every outlet cable runs along the cable ladder to the Mobile Infrastructure Rack (MIR), which stands in for the Level 2 telecommunications room. Each wall&rsquo;s team owns a block of 12 ports on one of the two patch panels installed in that rack.</p>
 
       <p>D. Okafor, the Kestrel site lead, sets the condition for the owner&rsquo;s walk-through. Each cable ends on a jack at its outlet and on a port of its team&rsquo;s panel, with both ends wired to the same scheme and labeled. Every link passes a wiremap test before the owner&rsquo;s representative walks the cabling.</p>
 
@@ -670,7 +671,7 @@
         <li><b>The Link and Its Parts.</b> The permanent link, twisted-pair cable and its markings, and matching a plug, a jack, and a panel to the cable.</li>
         <li><b>Terminating Copper.</b> The T568B assignment, stripping and the pair twist, crimping a plug, and punching down a keystone jack.</li>
         <li><b>Wiremap Testing.</b> The faults a wiremap tester reports, and testing a cord or a permanent link.</li>
-        <li><b>The Patch Panel at the Rack.</b> Mounting a panel, dressing cable to it, and labeling the port, the outlet, and the cable.</li>
+        <li><b>The Patch Panel at the Rack.</b> A team&rsquo;s ports on a shared panel, dressing cable to them, and labeling the port, the outlet, and the cable.</li>
         <li><b>Wrapping Up.</b> A summary of each section.</li>
       </ul>
 
@@ -712,7 +713,7 @@
   <div class="les-banner">
     <span class="lb-k">Lesson 527.2</span>
     <h3>Copper Termination and the Patch Panel</h3>
-    <p>A cable that reaches its outlet and its rack connects nothing until both ends are terminated to one scheme. This lesson covers the parts that go on each end of the cable, how an installer terminates them, how the installer mounts, dresses, and labels the patch panel, and how a wiremap tester proves the result.</p>
+    <p>A cable that reaches its outlet and its rack connects nothing until both ends are terminated to one scheme. This lesson covers the parts that go on each end of the cable, how an installer terminates them, how the installer dresses cable to a patch panel already in the rack and labels its ports, and how a wiremap tester proves the result.</p>
     <p class="lb-meta"><b>5</b> sections &nbsp;&middot;&nbsp;
        <b>13</b> topics &nbsp;&middot;&nbsp;
        <b>14</b> activities</p>
@@ -726,7 +727,7 @@
       <li><b>Test</b> a patch cord with a wiremap tester.</li>
       <li><b>Terminate</b> a keystone jack at each outlet.</li>
       <li><b>Label</b> outlets and cable ends to the owner&rsquo;s identification scheme.</li>
-      <li><b>Mount</b> a patch panel in a rack.</li>
+      <li><b>Install</b> keystone jacks in their assigned ports on a rack-mounted patch panel.</li>
       <li><b>Terminate</b> cables on a patch panel.</li>
       <li><b>Dress</b> cable to a patch panel through the rack&rsquo;s cable managers.</li>
       <li><b>Label</b> patch panel ports and cable ends to the owner&rsquo;s identification scheme.</li>
@@ -1082,7 +1083,7 @@
   <h2><span class="tnum">527.2.8</span> What a wiremap tester reports</h2>
   <p class="lead-in">A wiremap tester checks each of the eight conductors from one end to the other. Where a conductor does not reach its pin at the far end or touches another conductor, the tester names the fault and the pins.</p>
 
-  <p>The tester has a <strong>main unit</strong> and a <strong>remote</strong>. One goes at each end of the cord or link. The tester checks each conductor between the two units and shows the result as a map of pins 1 to 8 at each end, with a pass or the name of a fault and the pins involved. Most models also report the length of the cable.</p>
+  <p>The tester has a <strong>main unit</strong> and a <strong>remote</strong>. One goes at each end of the cord or link. The tester checks each conductor between the two units and shows the result as a map of pins 1 to 8 at each end, with a pass or the name of a fault and the pins involved. A separate length test reports the length of each pair. It runs from the main unit alone, with nothing plugged into the far end: no remote and no other device. Where any short exists, the wiremap screen of the tester on the mock-up shows only &ldquo;Short&rdquo;, whatever else is wrong.</p>
 
   <div class="tbl-scroll">
     <table class="tbl">
@@ -1154,7 +1155,7 @@
   <p>Plug one end of the cord into the main unit and the other into the remote, and run the wiremap test. Record the result as the tester shows it: &ldquo;pass,&rdquo; or the fault and the pins the tester names. Record every attempt, not only the last one.</p>
 
   <h3>A permanent link</h3>
-  <p>A permanent link ends on two jacks, so the tester needs a tester lead at each end. Put the remote on the panel port and the main unit on the outlet jack, or the other way around; the direction does not change the map. The owner&rsquo;s cabling addendum (A7) sets the pass: all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft (90 m). Record the wiremap result and the length as the tester shows them.</p>
+  <p>A permanent link ends on two jacks, so the tester needs a tester lead at each end. Put the remote on the panel port and the main unit on the outlet jack, or the other way around; the direction does not change the map. The owner&rsquo;s cabling addendum (A7) sets the pass: all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft (90 m). For the length test, remove the remote and leave nothing plugged into the far end. The tester on the mock-up measures from ~8 ft (2.5 m) to ~656 ft (200 m) and shows 0 outside that range. Record the wiremap result and the length as the tester shows them.</p>
 
   <h3>When a test fails</h3>
   <p>Read the fault and the pins. Then look at the terminations:</p>
@@ -1196,26 +1197,26 @@
   <p>On a keystone panel, the jack goes into its port from the back or the front, as the panel&rsquo;s manufacturer sets out. The panel&rsquo;s product card says which, and where its port labels go.</p>
 
   <h3>The rack</h3>
-  <p>A standard equipment rack takes equipment 19 in wide, mounted between its vertical rails. Height in a rack is counted in <span class="keyterm">rack units</span> (U): 1U is 1.75 in, and each rack unit has three mounting holes on each rail. A 12-port panel is commonly 1U high; a 48-port panel is commonly 2U. The panel&rsquo;s <strong>ears</strong>, the flanges at each end, sit against the front rails and take its rack screws.</p>
-  <p>Rails come in two forms. <strong>Square-hole</strong> rails take <span class="keyterm">cage nuts</span>: a square nut in a spring-steel cage, clipped into a square hole so that the nut sits behind the rail. A cage-nut tool or a small screwdriver compresses the cage as it goes in. <strong>Threaded</strong> rails take the screw directly. </p>
+  <p>A standard equipment rack takes equipment 19 in wide, mounted between its vertical rails. Height in a rack is counted in <span class="keyterm">rack units</span> (U): 1U is 1.75 in. A 48-port panel is commonly 2U high, with its ports in two rows of 24.</p>
 
-  <h3>Mounting a panel</h3>
+  <h3>A team&rsquo;s ports on a shared panel</h3>
+  <p>Where several teams terminate on one panel, the <strong>rack sheet</strong>, the posted list of what goes where in the rack, gives each team a <span class="keyterm">block</span> of consecutive ports. A mark above the first port of the block carries its identifier. The port numbers of the owner&rsquo;s port table count from that mark. The panel&rsquo;s own numbers run on across every block.</p>
+
+  <h3>Installing a jack in its port</h3>
   <ol>
-    <li>Find the panel&rsquo;s position on the <strong>rack sheet</strong>, the posted list that assigns each position in the rack.</li>
-    <li>Fit the cage nuts, where used, in the holes that match the ear holes, on both rails at the same height.</li>
-    <li>Hold the panel in place and start every screw by hand.</li>
-    <li>Tighten the screws, then press the panel to check that it does not move.</li>
-    <li>Fix the panel&rsquo;s label on its front, clear of the ports.</li>
+    <li>Find your block from the rack sheet and its mark, then count from the first port of the block to each of your ports.</li>
+    <li>Snap each terminated jack into its port, from the side the panel&rsquo;s product card shows, until it latches flush with the panel face.</li>
+    <li>Pull each jack gently from the front: a seated jack stays latched.</li>
   </ol>
   <p>The rack is shared. Move, unplug, or switch off nothing that is not yours; if equipment is in the way, tell the site lead.</p>
 
-  <div class="cyu gate" data-answer="2" data-fb="Starting every screw by hand before any is tightened leaves the ears free to shift, so the last screws still line up with their holes and go in straight. A screw tightened first pulls the panel against the rail and can leave another hole out of line, which invites a cross-threaded screw. The order has no effect on the panel&rsquo;s position on the rack sheet, on the labels, or on the cage nuts&rsquo; fit in the rail.">
+  <div class="cyu gate" data-answer="1" data-fb="The block&rsquo;s port 01 is panel port 17, so its port 06 is five ports on: panel port 22. Panel port 06 counts from the first port of the panel, not from the block&rsquo;s mark. Panel port 23 adds six to the block&rsquo;s first port and lands one port too far. Panel port 11 counts back from the mark instead of forward.">
     <p class="cyu-h">Check Your Understanding</p>
-    <p class="cyu-q">Why is every rack screw started by hand before any is tightened?</p>
-    <button class="opt"><span class="mk" aria-hidden="true">A</span>To keep the panel at the position the rack sheet names</button>
-    <button class="opt"><span class="mk" aria-hidden="true">B</span>To seat the cage nuts in their square holes</button>
-    <button class="opt"><span class="mk" aria-hidden="true">C</span>So the ears can still shift and every screw lines up with its hole</button>
-    <button class="opt"><span class="mk" aria-hidden="true">D</span>So the panel label stays clear of the ports</button>
+    <p class="cyu-q">On another job, the rack sheet gives your team the block of 8 ports that starts at panel port 17. Which panel port is the block&rsquo;s port 06?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Panel port 06</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Panel port 22</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Panel port 23</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Panel port 11</button>
     <div class="cyu-fb" role="status"></div>
   </div>
 </section>
@@ -1280,7 +1281,7 @@
 
   <h3>The owner&rsquo;s schemes</h3>
   <p>In the production building, the owner&rsquo;s standard (27 05 53 2.1) identifies a telecommunications room by floor and letter, a patch panel by room and number, and an outlet by its panel and port. Outlet 2A-PP01-014 is port 014 of panel PP01 in room 2A. Labels are machine-printed and fixed at both ends of every cable.</p>
-  <p>On the mock-up, each outlet has an identifier built from its wall, face, bay, and outlet code. The owner&rsquo;s cabling addendum (A6) assigns each outlet a port on its wall&rsquo;s panel, in a fixed order by bay and outlet, and sets three labels for each link:</p>
+  <p>On the mock-up, each outlet has an identifier built from its wall, face, bay, and outlet code. The owner&rsquo;s cabling addendum (A6) assigns each outlet a port in its wall&rsquo;s block, in a fixed order by bay and outlet, and sets three labels for each link:</p>
   <div class="tbl-scroll">
     <table class="tbl">
       <caption>The three labels the owner&rsquo;s cabling addendum (A6) sets for each permanent link.</caption>
@@ -1294,7 +1295,7 @@
       </tbody>
     </table>
   </div>
-  <p>Work out each label from the addendum&rsquo;s port table and the outlet identifier, print it, and fix it flat and legible. At termination, print a new cable label. It replaces any earlier cable label that named the outlet only. The panel also carries one label with its own identifier.</p>
+  <p>Work out each label from the addendum&rsquo;s port table and the outlet identifier, print it, and fix it flat and legible. At termination, print a new cable label. It replaces any earlier cable label that named the outlet only. The site lead marks each block once, above its first port, with its identifier.</p>
 
   <p>This example comes from another Kestrel job that used the same three-label rule.</p>
   <div class="figure">
@@ -1351,7 +1352,7 @@
         <th scope="col">Step</th><th scope="col">Rule</th>
       </tr></thead>
       <tbody>
-        <tr><th scope="row">Mount the panel</th><td>At the position the rack sheet gives; cage nuts or threaded holes matched to the ears; every screw started before any is tightened; nothing else in the rack moved</td></tr>
+        <tr><th scope="row">Install each jack</th><td>In its port in the team&rsquo;s block, counted from the block&rsquo;s mark; snapped in from the side the product card shows, latched flush with the panel face; nothing else in the rack moved</td></tr>
         <tr><th scope="row">Dress</th><td>Along the set route through the managers and D-rings; no bend radius under 4 &times; the outside diameter (gauge diameter 8 &times;); hook-and-loop ties, hand-tight; service loop left on the ladder</td></tr>
         <tr><th scope="row">Label</th><td>Port: the outlet identifier. Faceplate: the panel and port. Cable, both ends: the outlet identifier, then the panel and port. Machine-printed</td></tr>
         <tr><th scope="row">Verify</th><td>Wiremap and length on every link; a pass is all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft; record the result as the tester shows it</td></tr>
@@ -2127,9 +2128,8 @@ ASSUMPTIONS (not in the module plan)
   jacket crimp, latch), standard and pass-through plugs, keystone slot
   order usually not pin order, the 110 blade's cutting side: general trade
   knowledge.
-- Rack: 19 in width, 1U = 1.75 in, three holes per U per rail; a 12-port
-  panel commonly 1U and a 48-port commonly 2U; cage nuts in square holes,
-  threaded rails; all screws started before any is tightened. General
+- Rack: 19 in width, 1U = 1.75 in; a 48-port panel commonly 2U, two rows
+  of 24. General
   knowledge.
 - CMR described as riser (vertical runs between floors) and CMP as plenum
   (air-handling spaces); not expanded as acronyms (listing designations;
@@ -2169,8 +2169,8 @@ CHECK QUESTIONS AND ACTIVITIES (for the quiz writer; do not repeat)
   their definitions.
 - 527.2.9 CYU: cord with a reversed pair on pins 3 and 6; end 2 shows green
   on 3 and white-green on 6: re-terminate end 2.
-- 527.2.10 CYU: why all four rack screws are started before any is
-  tightened (ears can shift, every screw lines up).
+- 527.2.10 CYU: another job's 8-port block starting at panel port 17;
+  the block's port 06 is panel port 22.
 - 527.2.11 CYU: OD 0.30 in, bend gauge diameter (2.4 in).
 - 527.2.12 CYU 1: Mercer faceplate label for outlet 1.06-A3 (PP2-14).
 - 527.2.12 CYU 2: AI tool says the faceplate PP2-14 should carry the outlet
@@ -2221,6 +2221,8 @@ AUDITS (final build)
 - 2026-11-08 LP1 (content): 27 applied (3 reworded: U/UTP and CMR/CMP keep their bold term; the cable-label sentence says 'any earlier cable label' rather than introducing a label fixed at the pull), 0 held.
 - 2026-11-08 final consolidation: item 48, A7 pass wording "all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor, with a length not over 295 ft" (A7 paragraph, summary table, tester sentence); item 39, "crew" -> "team" for the mock-up teams (four places). audit_html.py 0 FAIL, 0 WARN.
 - 2026-11-08 LP2 (content): 20 applied (6 reworded: certification defined at first use in the opening and its later definition shortened; strip length 'inside a plug, or at the back of a jack'; pass-through trim step; punch-down cut 'between the slot and the cable'; tester lead defined in the 527.2.9 lead-in, later sentence shortened; wiremap lead-in split), 0 held.
+- 2026-11-09 tester: R-067 identified as the NOYAFA NF-8209 (Eldad); 527.2.8 length test and the Short-only screen; 527.2.9 length test procedure and range. Not re-reviewed.
+- 2026-11-09 MIR 48-port panels: no panel is mounted; each team terminates in its block of 12 ports on the MIR's two installed 48-port panels. Objective 'Mount a patch panel in a rack' replaced by 'Install keystone jacks in their assigned ports on a rack-mounted patch panel'; overview, lead-in and scenario reworded; 527.2.10 rewritten (rack units kept, ears, rails, cage nuts and the mounting steps removed; block, block mark and rack sheet defined; jack-in-port steps); 527.2.10 CYU replaced (another job's 8-port block from panel port 17: port 06 is panel port 22; answer B); 527.2.12 port in the wall's block, block mark by the site lead; summary row 'Install each jack'. Not re-reviewed.
 -->
 </body>
 </html>
