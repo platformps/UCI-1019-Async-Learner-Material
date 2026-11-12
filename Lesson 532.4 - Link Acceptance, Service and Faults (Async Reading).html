@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 532 (M08) - Certified Fiber Optic Technician
+  Lesson 532.4 - Link Acceptance, Service and Faults (Async Reading)
+  VERSION: v0.1.0  (2026-11-10)  DRAFT - for review
+
+  CHANGES IN v0.1.0
+  First issue. Adapted from the UCI 2107.1 Module 528 live lesson page
+  528.3_lanbuildtroubleshooting.html (topics 528.3.6 to 528.3.17) and
+  528.2_prepterminationtesting.html (topics 528.2.11 to 528.2.17, testing and
+  OTDR), with the Lesson 528.2 and 528.3 deck speaker notes; re-based on the
+  1019 single-mode plant and LX optics. Every change is listed under CHANGED
+  FROM 528 in the BUILD FLAGS comment at the end of this file.
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox) reused verbatim from
+  UCI-1019_M527_Lesson-527.1_Async-Reading_v0.1.0_DRAFT.html (which carries the
+  engine of UCI-2107.1_M529_Lesson-529.6_Async-Reading_v0.2.0.html). Appended
+  after it, unchanged from that page: the 2026 brand layer
+  (FORMAT-SPEC_Async-Reading_2026-Addendum_v0.1.0_DRAFT.md section 3) and the
+  .calc component sheet (worked-arithmetic panel). Logo: inline Slate SVG.
+  Only the title and the header line differ from the pattern page's chrome.
+
+  OBJECTIVES, from the module plan v0.1.0 section 3, Lesson 532.4, word for word
+  (codes removed on the page).
+    Label     a fiber run and its ports to ANSI/TIA-606-D             8.5.4
+    Inspect   a connector end face before mating                      8.4
+    Test      a single-mode link against its budget, 1310/1550 nm     8.5a
+    Verify    the duplex polarity of a link against its strand record 8.5.5
+    Correct   a polarity reversal and record the correction        8.5.6
+    Put       a link into service, transceiver and media converter    8.5, L11
+    Verify    reachability across the link with ping                  L11
+    Confirm   that a fiber is not live before inspecting it           8.4.2
+    Diagnose  a fault from inspection and test results                8.5b.2-3
+    Correct   an entry-level fault and retest with the same method    8.5b.4
+    Escalate  a fault beyond entry-level scope with its evidence      8.5b.5, 8.7
+    Check     an AI fault hypothesis against the measurements         8.5b.6
+  (Two objectives carry "and" inside one verb, as the plan words them:
+  "Correct a polarity reversal and record the correction"; "Correct an
+  entry-level fault and retest with the same method". Kept verbatim; flagged.)
+
+  TOPIC OUTLINE
+    Section 1  Labeling and Inspection
+      532.4.1   From spliced run to accepted link      entry point
+      532.4.2   Labels to ANSI/TIA-606-D               Label
+      532.4.3   Inspect before you mate                Inspect
+    Section 2  Testing Against the Budget
+      532.4.4   The one-jumper reference               Test
+      532.4.5   The budget at two wavelengths          Test
+    Section 3  Polarity and Service
+      532.4.6   Duplex polarity                        Verify (polarity)
+      532.4.7   Finding and correcting a reversal      Verify, Correct (polarity)
+      532.4.8   Putting a link into service            Put, Verify (ping)
+    Section 4  Faults and Escalation
+      532.4.9   Live fiber and the dark check          Confirm
+      532.4.10  Diagnosing from the rack end           Diagnose
+      532.4.11  Correct, retest, or escalate           Correct, Escalate
+      532.4.12  Reading a trace for an escalation      Escalate
+      532.4.13  Checking an AI hypothesis              Check
+    Section 5  Wrapping Up
+      532.4.14  What you covered                       summary
+
+  ACTIVITY GATES: 14 - 12 single-answer checks, 1 matching, 1 acknowledgement.
+  DIAGRAMS: 3 original SVG, each with a full text description (the one-jumper
+    reference and the test; A-to-B polarity on a straight-through run; a trace
+    read against the record, Northgate campus, hypothetical).
+  IMAGES: none.
+
+  Build flags, decisions, assumptions, the list of every check question and
+  worked example, and the audit results are in the BUILD FLAGS comment at the
+  end of this file.
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 532.4 - Link Acceptance, Service and Faults &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Certified Fiber Optic Technician</b> &middot; Lesson 532.4 - Link Acceptance, Service and Faults</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Certified Fiber Optic Technician</p>
+      <h2 id="ovh" tabindex="-1">Lesson 532.4 - Link Acceptance, Service and Faults</h2>
+      <p class="lead-in">How an installer labels a spliced fiber run, tests it against its loss budget, checks and corrects its polarity, puts it into service, and then works a fault on it: correcting it, or escalating it with the evidence.</p>
+
+      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. On the installation mock-up, ten single-mode runs leave the Mobile Infrastructure Rack (MIR) on the cable ladder and end in two wall boxes on each training wall. Both ends of each run are spliced. The owner, Calder Regional Services, accepts a run when it is labeled, when both of its lit fibers pass their loss budget at 1310 nm and 1550 nm, when its polarity matches the strand record, and when it carries traffic. The <span class="keyterm">strand record</span> lists each fiber of a run with its color, its rack port, and its coupler.</p>
+
+      <p>D. Okafor, the Kestrel site lead, sets out what follows acceptance: &ldquo;Once a run is in service, the trouble reports start. You work them from the rack. You fix what an installer is allowed to fix, and you test it again the same way. Anything inside a tray, a box, or the cable goes to our lead technician, with the evidence that puts it there.&rdquo;</p>
+
+      <p>The worked examples on this page use other jobs and other runs, not the values of any run on the mock-up.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>Labeling and Inspection.</b> What the owner accepts, the labels on a run and its ports, and inspecting a connector before it is mated.</li>
+        <li><b>Testing Against the Budget.</b> The one-jumper reference, and the loss budget at two wavelengths.</li>
+        <li><b>Polarity and Service.</b> Duplex polarity, finding and correcting a reversal, and putting a run into service.</li>
+        <li><b>Faults and Escalation.</b> The dark check, diagnosis from the rack end, the corrections an installer may make, reading a trace for an escalation, and checking an Artificial Intelligence (AI) tool&rsquo;s answer.</li>
+        <li><b>Wrapping Up.</b> A summary of each section.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>5</b><span>Sections</span></div>
+        <div class="ov-stat"><b>14</b><span>Topics</span></div>
+        <div class="ov-stat"><b>13</b><span>Activities</span></div>
+        <div class="ov-stat"><b>3</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the documents and the equipment</h3>
+      <p>The project document named on this page is the <strong>HSOC-26-014 Owner Telecommunications Standard - Fiber Addendum</strong>. It adds clauses F1 to F10 to the owner&rsquo;s standard for the single-mode backbone. It is a fictional document written for the mock-up. Each clause states a requirement of this owner, for this project.</p>
+      <p>Where a figure or a step depends on a product, the product&rsquo;s own documents govern: a meter&rsquo;s reference procedure, a transceiver&rsquo;s receive range, and the markings on a transceiver or a media converter.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or go to any topic
+         from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks&mdash;a
+         knowledge check or a matching exercise.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. The lesson takes ~60&ndash;75 min, including the activities.
+         The header and the contents list show your progress through the lesson.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching activity every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description. Each table has column headings and a caption.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 532.4</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="1" data-group-title="Labeling and Inspection" data-num="532.4.1" data-title="From spliced run to accepted link">
+  <p class="crumb">Lesson 532.4 &middot; Section 1 Labeling and Inspection</p>
+  <h2><span class="tnum">532.4.1</span> From spliced run to accepted link</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 532.4</span>
+    <h3>Link Acceptance, Service and Faults</h3>
+    <p>An installer labels a spliced run, inspects every connector before mating it, and tests both lit fibers against the run&rsquo;s loss budget at 1310 nm and 1550 nm. The installer then checks the polarity, corrects any reversal, puts the run into service, and confirms with a ping that traffic crosses it. When a fault is reported, the installer proves the fiber dark, finds the fault from the rack, and corrects it or escalates it with the evidence.</p>
+    <p class="lb-meta"><b>5</b> sections &nbsp;&middot;&nbsp;
+       <b>14</b> topics &nbsp;&middot;&nbsp;
+       <b>13</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 532.4 you will be able to</div>
+    <ul>
+      <li><b>Label</b> a fiber run and its ports to ANSI/TIA-606-D.</li>
+      <li><b>Inspect</b> a connector end face before mating.</li>
+      <li><b>Test</b> a single-mode link against its loss budget at 1310 nm and 1550 nm.</li>
+      <li><b>Verify</b> the duplex polarity of a link against its strand record.</li>
+      <li><b>Correct</b> a polarity reversal and record the correction.</li>
+      <li><b>Put</b> a link into service with a transceiver and a media converter.</li>
+      <li><b>Verify</b> reachability across the link with ping.</li>
+      <li><b>Confirm</b> that a fiber is not live before inspecting it.</li>
+      <li><b>Diagnose</b> a fault on a fiber link from inspection and test results.</li>
+      <li><b>Correct</b> an entry-level fault and retest with the same method.</li>
+      <li><b>Escalate</b> a fault beyond entry-level scope with its evidence.</li>
+      <li><b>Check</b> an AI fault hypothesis against the measurements.</li>
+    </ul></div>
+
+  <p class="lead-in">A spliced run becomes an accepted link only when each acceptance item is met, each on its own evidence.</p>
+
+  <p>D. Okafor briefs the teams: &ldquo;The owner&rsquo;s rep accepts these runs on the record, not on our word. Every label, every reading, and every cord position goes in it.&rdquo;</p>
+
+  <h3>The acceptance items</h3>
+  <p>A <span class="keyterm">run</span> is one length of backbone cable from a rack enclosure in the Mobile Infrastructure Rack (MIR) to a wall box. Two of its fibers, fiber 1 and fiber 2, are spliced at both ends and carry light. With its patch cords and the equipment at each end, a run becomes a <span class="keyterm">link</span>. The owner&rsquo;s fiber addendum sets what the owner checks before accepting it:</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The acceptance items for a run on the backbone, and the clause of the owner&rsquo;s fiber addendum that sets each one.</caption>
+      <thead><tr>
+        <th scope="col">Item</th><th scope="col">What is checked</th><th scope="col">Clause</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Identification</th><td>Labels on the run and on each port and coupler in service</td><td>F4</td></tr>
+        <tr><th scope="row">Inspection</th><td>Each connector end face inspected and cleaned before every mating</td><td>F8</td></tr>
+        <tr><th scope="row">Loss</th><td>The insertion loss of each lit fiber, at 1310 nm and 1550 nm, against the run&rsquo;s loss budget</td><td>F6</td></tr>
+        <tr><th scope="row">Polarity</th><td>Each transmitter reaches the receiver at the far end, as the strand record sets out</td><td>F5</td></tr>
+        <tr><th scope="row">Records</th><td>A strand record and a test record for each run</td><td>F9</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Kestrel&rsquo;s work order adds service: the run carries traffic between a switch at the rack and a laptop at the wall.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="Each acceptance item stands on its own evidence. A run can pass its loss test at both wavelengths with its polarity reversed, because the loss test measures each fiber with no transmitter or receiver in the circuit. The run is accepted only after the reversal is corrected, the patching recorded, and the polarity checked again. Retesting the loss does not correct polarity. A link light does not replace the polarity check. A reversed link brings up no link light.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A run passes its loss test at 1310 nm and 1550 nm, but its polarity check shows a reversal at one end. Is the run accepted?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Yes: loss is the acceptance test of a run</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>No: correct the reversal, record the patching, and check the polarity again</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>No: test the loss again at both wavelengths, then accept it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Yes, if the link light comes on</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="1" data-group-title="Labeling and Inspection" data-num="532.4.2" data-title="Labels to ANSI/TIA-606-D">
+  <p class="crumb">Lesson 532.4 &middot; Section 1 Labeling and Inspection</p>
+  <h2><span class="tnum">532.4.2</span> Labels to ANSI/TIA-606-D</h2>
+  <p class="lead-in">The run label names the run, and each port or coupler label names the far end it serves, so a technician at either end can trace the link without opening anything.</p>
+
+  <h3>The administration standard</h3>
+  <p>ANSI/TIA-606-D is the administration standard for telecommunications infrastructure. It gives each cable, panel, and port an <span class="keyterm">identifier</span>. Labels and records carry the same identifiers. A label that disagrees with the record is a fault in its own right: the next technician believes one of them, and either may be the wrong one.</p>
+
+  <h3>The owner&rsquo;s scheme</h3>
+  <p>Clause F4 of the owner&rsquo;s fiber addendum sets the labels for this backbone. Each is machine-printed and built from the addendum&rsquo;s run and port identifiers:</p>
+  <ul>
+    <li><strong>The run label</strong> carries the run identifier. It goes on the cable at each end of the run and where the run drops from the cable ladder.</li>
+    <li><strong>A rack port label</strong> carries the identifier of the wall box and the coupler that port serves.</li>
+    <li><strong>A coupler label</strong> carries the identifier of the rack port that coupler serves.</li>
+  </ul>
+  <p>Fix a run label around the cable close to where it enters its enclosure or box. Fix a port or coupler label beside the opening, clear of it, so that a mated connector does not cover the label. Print the labels from the strand record, not from memory, and check each one against the record before it goes on.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Labels on one backbone fiber on another job, Marlow Avenue Clinic (hypothetical), whose standard names its rooms ER1 and TR3.</caption>
+      <thead><tr>
+        <th scope="col">Where</th><th scope="col">Label</th><th scope="col">What it tells a technician standing there</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">The cable, at each end and at each ladder drop</th><td><code>BB-ER1-TR3-02</code></td><td>Which backbone cable this is, and the two rooms it joins</td></tr>
+        <tr><th scope="row">Port 5 of panel A in ER1</th><td><code>TR3-B-05</code></td><td>The far end of this port: port 5 of panel B in TR3</td></tr>
+        <tr><th scope="row">Port 5 of panel B in TR3</th><td><code>ER1-A-05</code></td><td>The far end of this port: port 5 of panel A in ER1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Match each question a technician asks with the label on this backbone that answers it.</p>
+  <div class="match gate" data-left="Question" data-right="Label that answers it">
+    <div class="pair" data-left="At the rack: which wall box and coupler does this port serve?" data-right="The rack port label"></div>
+    <div class="pair" data-left="At the wall box: which rack port does this coupler serve?" data-right="The coupler label"></div>
+    <div class="pair" data-left="Under the cable ladder: which run drops to this wall?" data-right="The run label at the ladder drop"></div>
+    <div class="pair" data-left="Inside the MIR: which run enters this enclosure here?" data-right="The run label at the enclosure entry"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="1" data-group-title="Labeling and Inspection" data-num="532.4.3" data-title="Inspect before you mate">
+  <p class="crumb">Lesson 532.4 &middot; Section 1 Labeling and Inspection</p>
+  <h2><span class="tnum">532.4.3</span> Inspect before you mate</h2>
+  <p class="lead-in">The installer inspects and cleans every connector end face before mating it, because dirt on one face moves to the other when they meet.</p>
+
+  <h3>Why every mating</h3>
+  <p>Two mated connectors press their end faces together. A particle on either face scatters or blocks light at the core. Under pressure, a hard particle can pit the glass of both faces. A dust cap keeps out dust while it is on, but it does not clean: inspect the end face after the cap comes off. Clause F8 requires inspection and cleaning before every mating. The installer judges each end face against the zones of IEC 61300-3-35. The core zone takes in the core, which carries the light, and the cladding zone surrounds it.</p>
+
+  <h3>Inspect, clean, inspect</h3>
+  <ol>
+    <li>With no source connected to the connector (clause F7), inspect the end face with an inspection microscope.</li>
+    <li>If it meets the pass criteria for the core zone and the cladding zone, mate it.</li>
+    <li>If it does not, clean it dry, then inspect it again. If dry cleaning has not cleared it, clean it wet-dry: a wipe moistened with isopropyl alcohol, then a dry pass. Inspect it again.</li>
+    <li>Mate it without letting the end face touch anything first.</li>
+  </ol>
+
+  <h3>Ports, couplers, and transceivers</h3>
+  <p>The team&rsquo;s eyepiece microscope sees a cord&rsquo;s end face only. It cannot see the connector inside an adapter, such as the pigtail behind a rack port or a coupler. Clean that connector through the adapter: one click of a push-type cleaner, the One-Click 2.5 mm for a Subscriber Connector (SC) port. A Lucent Connector (LC), the smaller connector a transceiver takes, has a 1.25 mm <span class="keyterm">ferrule</span>, the ceramic cylinder that holds the fiber. Clean an exposed LC end on a dry wipe, as any other end face. The 1.25 mm cleaning sticks are for the inside of an LC adapter.</p>
+
+  <div class="note warn"><div class="nt">Glasses and the microscope</div>
+    <p>Safety glasses stay on while anyone near you strips, cleaves, scribes, polishes, or splices. Take them off only at your team&rsquo;s inspection station, to look through the microscope.</p></div>
+
+  <div class="cyu gate" data-answer="2" data-fb="A dry clean that has not cleared the core zone is followed by a wet-dry clean and a fresh inspection; the end face is mated only once it is clean in the core and cladding zones. Mating it carries the smear onto the other face. Blowing on an end face adds moisture and debris. Cleaning the port after the mating is too late: the smear on the cord&rsquo;s end has already met the connector in the port.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You inspect a cord&rsquo;s SC end, clean it dry, and inspect it again. A smear still crosses the core zone. What do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Mate it: it has been cleaned once</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Blow on the end face, then mate it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Clean it wet-dry, then inspect it again before mating</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Mate it, then clean the port with the One-Click</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="2" data-group-title="Testing Against the Budget" data-num="532.4.4" data-title="The one-jumper reference">
+  <p class="crumb">Lesson 532.4 &middot; Section 2 Testing Against the Budget</p>
+  <h2><span class="tnum">532.4.4</span> The one-jumper reference</h2>
+  <p class="lead-in">A power meter reads how much of a light source&rsquo;s power arrives. The reference sets the meter&rsquo;s zero, so that the reading on the run is its loss.</p>
+
+  <h3>What insertion loss is</h3>
+  <p><span class="keyterm">Insertion loss</span> is the light a fiber loses from one end to the other, in decibels (dB). A <span class="keyterm">light source</span> at one end sends a steady signal at a chosen wavelength. A <span class="keyterm">power meter</span> at the other end reads it. Single-mode runs are tested at 1310 nm and 1550 nm. Reference cords match the fiber: single-mode cords for a single-mode run.</p>
+
+  <h3>Setting the reference</h3>
+  <p>Clause F6 calls for a <span class="keyterm">one-jumper reference</span>, the method ANSI/TIA-568.3-D sets for single-mode cabling:</p>
+  <ol>
+    <li>Inspect and clean both ends of both reference cords.</li>
+    <li>Connect the <span class="keyterm">launch cord</span>, the reference cord that stays on the source, from the source to the meter. At each wavelength, set the reference as the meter&rsquo;s instructions give. The meter stores the power it reads as its zero.</li>
+    <li>Disconnect the launch cord from the meter only. From here to the last reading, the launch cord stays on the source. Reconnecting it at the source can change the power it launches, and the reference then no longer holds.</li>
+    <li>At the far end, a second cord, the <span class="keyterm">receive cord</span>, joins the fiber to the meter.</li>
+  </ol>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; The one-jumper reference and the test</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:900px" viewBox="0 0 900 330" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Two rows. In the first, a launch cord joins a light source to a power meter to set the reference. In the second, the launch cord joins the source to a rack port, the run with a splice at each end reaches a coupler, and a receive cord joins the coupler to the meter. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">The one-jumper reference and the test</text>
+    <text x="24" y="62" font-size="14" font-weight="700" fill="#26282E">1. Set the reference</text>
+    <rect x="30" y="80" width="100" height="44" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="52" y="107" font-size="14" fill="#26282E">Source</text>
+    <line x1="130" y1="102" x2="420" y2="102" stroke="#611940" stroke-width="3"/>
+    <text x="220" y="94" font-size="14" fill="#26282E">Launch cord</text>
+    <rect x="420" y="80" width="100" height="44" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="446" y="107" font-size="14" fill="#26282E">Meter</text>
+    <text x="540" y="107" font-size="14" fill="#26282E">Stores its reading as 0.00 dB at each wavelength</text>
+    <text x="24" y="170" font-size="14" font-weight="700" fill="#26282E">2. Test the fiber</text>
+    <rect x="30" y="188" width="100" height="44" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="52" y="215" font-size="14" fill="#26282E">Source</text>
+    <line x1="130" y1="210" x2="230" y2="210" stroke="#611940" stroke-width="3"/>
+    <rect x="230" y="196" width="24" height="28" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+    <text x="196" y="252" font-size="14" fill="#26282E">Rack port</text>
+    <line x1="254" y1="210" x2="660" y2="210" stroke="#26282E" stroke-width="3"/>
+    <circle cx="290" cy="210" r="7" fill="#71E2FD" stroke="#26282E" stroke-width="1.2"/>
+    <circle cx="624" cy="210" r="7" fill="#71E2FD" stroke="#26282E" stroke-width="1.2"/>
+    <text x="270" y="188" font-size="14" fill="#26282E">Splice</text>
+    <text x="604" y="188" font-size="14" fill="#26282E">Splice</text>
+    <text x="410" y="200" font-size="14" fill="#26282E">The run</text>
+    <rect x="660" y="196" width="24" height="28" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+    <text x="640" y="252" font-size="14" fill="#26282E">Coupler</text>
+    <line x1="684" y1="210" x2="770" y2="210" stroke="#611940" stroke-width="3"/>
+    <rect x="770" y="188" width="100" height="44" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="796" y="215" font-size="14" fill="#26282E">Meter</text>
+    <text x="136" y="196" font-size="14" fill="#26282E">Launch cord</text>
+    <text x="684" y="196" font-size="14" fill="#26282E">Receive cord</text>
+    <text x="24" y="312" font-size="14" fill="#26282E">The reading includes both mated pairs (shaded), both splices, and the cable. The launch cord stays on the source.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled The one-jumper reference and the test. It has two rows.</p>
+    <p>1. Set the reference: a launch cord joins the source to the meter. The meter stores its reading as 0.00 dB at each wavelength.</p>
+    <p>2. Test the fiber: the launch cord, still on the source, connects to the rack port. The run follows, with a splice near each end, to the coupler. A receive cord joins the coupler to the meter. The rack port and the coupler are shaded as mated pairs. A note reads: The reading includes both mated pairs (shaded), both splices, and the cable. The launch cord stays on the source.</p>
+  </details>
+
+  <h3>The cord check</h3>
+  <p>Before testing the run, check the two cords against each other. Join the launch cord to the receive cord with a mating adapter and connect the receive cord to the meter. The reading is the loss of one mated pair. Clause F6 accepts the cord pair at 0.5 dB or less. A reading over 0.5 dB means a dirty or damaged cord: clean, inspect, and check again before any reading on the run.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="The meter&rsquo;s zero holds only while the launch cord stays connected to the source as it was when the reference was set. Once the cord has been off the source, the launched power can differ, so the reference is set again, the cords are checked again, and the run is tested from there. Correcting the readings by an estimate has no basis. Readings taken against the old zero do not count. The far end does not change the reference.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">After setting the reference, you knock the launch cord off the source and plug it back in. What do you do before the next reading?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Set the reference again and repeat the cord check</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Carry on, and subtract ~0.1 dB from every later reading</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Carry on: the meter keeps the zero it stored</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Swap the receive cord for a new one</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="2" data-group-title="Testing Against the Budget" data-num="532.4.5" data-title="The budget at two wavelengths">
+  <p class="crumb">Lesson 532.4 &middot; Section 2 Testing Against the Budget</p>
+  <h2><span class="tnum">532.4.5</span> The budget at two wavelengths</h2>
+  <p class="lead-in">A fiber passes when its loss at each wavelength is no more than its loss budget, the sum of the allowances for every connection, splice, and length of cable in the reading.</p>
+
+  <h3>Building the budget</h3>
+  <p>Clause F6 builds the <span class="keyterm">loss budget</span> from these allowances, which ANSI/TIA-568.3-D also uses:</p>
+  <ul>
+    <li>0.75 dB for each <strong>mated connector pair</strong> in the reading;</li>
+    <li>0.3 dB for each <strong>splice</strong>;</li>
+    <li>1.0 dB for each <strong>kilometer of cable</strong>, the ANSI/TIA-568.3-D maximum for inside-plant single-mode cable.</li>
+  </ul>
+  <p>Count what the reading includes. With a one-jumper reference, the connection at each end of the run counts as a mated pair, and so does every connection in between, such as a patch at a cross-connect. Take the cable length from the jacket&rsquo;s footage marks at the two ends, the larger less the smaller, and convert it to kilometers: feet &times; 0.0003048.</p>
+
+  <div class="calc">
+    <table>
+      <caption>Worked budget for a backbone fiber at Marlow Avenue Clinic (hypothetical), patched through a cross-connect on the way. The clinic uses the same allowances as clause F6.</caption>
+      <thead><tr><th scope="col">Line, and where it comes from</th><th scope="col">Loss</th></tr></thead>
+      <tbody>
+        <tr><td>Mated pairs: one at each end, two at the cross-connect: 4 &times; 0.75 dB</td><td class="n">3.00 dB</td></tr>
+        <tr><td>Splices: two on each of the two cables: 4 &times; 0.3 dB</td><td class="n">1.20 dB</td></tr>
+        <tr><td>Cable: 1,380 ft &times; 0.0003048 = 0.42 km, &times; 1.0 dB/km</td><td class="n">0.42 dB</td></tr>
+        <tr class="tot"><td>Loss budget, at 1310 nm and at 1550 nm</td><td class="n">4.62 dB</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Calling the readings</h3>
+  <p>Read each fiber at both wavelengths, and call each reading on its own: <strong>pass</strong> where it is no more than the budget, <strong>fail</strong> where it is more. A fiber passes only when both of its readings pass.</p>
+  <ul>
+    <li><strong>A reading that fails.</strong> Inspect and clean both cords, clean the port and the coupler, and test again. If it still fails, record the readings as they are and report them.</li>
+    <li><strong>A reading below zero.</strong> A fiber cannot add light. A negative reading means the reference is wrong: set it again.</li>
+    <li><strong>1550 nm well above 1310 nm.</strong> Glass loses less light at 1550 nm than at 1310 nm, but a tight bend loses more at 1550 nm. A 1550 nm reading clearly higher than the 1310 nm reading on the same fiber points to a bend somewhere on its path.</li>
+  </ul>
+
+  <div class="cyu gate" data-answer="3" data-fb="The budget is 3 &times; 0.75 + 2 &times; 0.3 + 0.85 &times; 1.0 = 2.25 + 0.60 + 0.85 = 3.70 dB. 2.41 dB at 1310 nm passes; 3.82 dB at 1550 nm is over 3.70 dB and fails, so the fiber fails. A fiber passes only when both readings pass. The higher reading at 1550 nm also points to a bend on the fiber&rsquo;s path. 4.45 dB counts a fourth mated pair, and 2.25 dB leaves out the splices and the cable. Clause F6 calls each reading on its own; it never averages them.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another job with the same allowances, a fiber&rsquo;s reading includes three mated pairs, two splices, and 0.85 km of cable. It reads 2.41 dB at 1310 nm and 3.82 dB at 1550 nm. What is the call?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Pass at both wavelengths: the budget is 4.45 dB</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Pass: the average of the two readings is under the budget</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Fail at both wavelengths: the budget is 2.25 dB</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Pass at 1310 nm, fail at 1550 nm: the budget is 3.70 dB, so the fiber fails</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="3" data-group-title="Polarity and Service" data-num="532.4.6" data-title="Duplex polarity">
+  <p class="crumb">Lesson 532.4 &middot; Section 3 Polarity and Service</p>
+  <h2><span class="tnum">532.4.6</span> Duplex polarity</h2>
+  <p class="lead-in">A duplex link uses two fibers, one for each direction. Each transmitter must reach the receiver at the far end.</p>
+
+  <h3>Transmit to receive</h3>
+  <p>A transceiver has a <span class="keyterm">Transmit (TX)</span> port, which sends light, and a <span class="keyterm">Receive (RX)</span> port, which detects it. A <span class="keyterm">duplex</span> link pairs two fibers: one carries light from end A to end B, the other from B to A. <span class="keyterm">Polarity</span> is the arrangement of the two fibers between transmitters and receivers. <span class="keyterm">A-to-B polarity</span> puts the transmitter at each end on the fiber that ends at the receiver at the other: TX to RX, both ways.</p>
+
+  <h3>Where the crossover is made</h3>
+  <p>Somewhere between the two transceivers, the two paths must cross. Clause F5 sets where on this backbone. The fibers of the run go straight through: fiber 1 from its rack port to coupler 1, fiber 2 to coupler 2. The patch cords at the wall end make the crossover. At the rack, the transceiver&rsquo;s TX goes to the rack port of fiber 1 and its RX to the port of fiber 2. At the wall, a <span class="keyterm">media converter</span> passes Ethernet between the fiber and a copper cable. Coupler 1 goes to the converter&rsquo;s RX and coupler 2 to its TX. The strand record holds the fiber assignment, and the record of the patching shows which cord sits in which port.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; A-to-B polarity on a straight-through run</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:900px" viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A duplex link: the transceiver at end A sends on fiber 1, which runs straight through to position 1 at end B, where a patch cord takes it to the receiver; fiber 2 carries the return path. The crossover is in the cords at end B. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">A-to-B polarity on a straight-through run</text>
+    <rect x="30" y="64" width="120" height="150" rx="8" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="46" y="90" font-size="14" font-weight="700" fill="#26282E">End A device</text>
+    <text x="100" y="124" font-size="14" fill="#26282E">TX</text>
+    <text x="100" y="184" font-size="14" fill="#26282E">RX</text>
+    <rect x="270" y="100" width="26" height="100" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+    <text x="250" y="226" font-size="14" fill="#26282E">End A ports</text>
+    <text x="302" y="112" font-size="14" fill="#26282E">1</text>
+    <text x="302" y="172" font-size="14" fill="#26282E">2</text>
+    <rect x="604" y="100" width="26" height="100" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+    <text x="590" y="226" font-size="14" fill="#26282E">End B ports</text>
+    <text x="588" y="112" font-size="14" fill="#26282E">1</text>
+    <text x="588" y="172" font-size="14" fill="#26282E">2</text>
+    <rect x="750" y="64" width="120" height="150" rx="8" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="766" y="90" font-size="14" font-weight="700" fill="#26282E">End B device</text>
+    <text x="766" y="124" font-size="14" fill="#26282E">TX</text>
+    <text x="766" y="184" font-size="14" fill="#26282E">RX</text>
+    <line x1="150" y1="120" x2="270" y2="120" stroke="#611940" stroke-width="3"/>
+    <line x1="150" y1="180" x2="270" y2="180" stroke="#26282E" stroke-width="3"/>
+    <line x1="296" y1="120" x2="604" y2="120" stroke="#611940" stroke-width="3"/>
+    <line x1="296" y1="180" x2="604" y2="180" stroke="#26282E" stroke-width="3"/>
+    <text x="380" y="110" font-size="14" fill="#26282E">Fiber 1, straight through</text>
+    <text x="380" y="200" font-size="14" fill="#26282E">Fiber 2, straight through</text>
+    <path d="M630 120 C690 120 690 180 750 180" fill="none" stroke="#611940" stroke-width="3"/>
+    <path d="M630 180 C690 180 690 120 750 120" fill="none" stroke="#26282E" stroke-width="3"/>
+    <text x="560" y="92" font-size="14" fill="#26282E">The cords cross here</text>
+    <text x="24" y="286" font-size="14" fill="#26282E">A&rsquo;s TX reaches B&rsquo;s RX on fiber 1; B&rsquo;s TX reaches A&rsquo;s RX on fiber 2. Swap two cords at one end and TX meets TX: no link.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled A-to-B polarity on a straight-through run. On the left is the End A device, with TX above RX. On the right is the End B device, with TX above RX. Between them are the End A ports and the End B ports, each numbered 1 and 2.</p>
+    <p>At end A, patch cords run straight: TX to port 1, RX to port 2. Fiber 1 runs straight through from port 1 at end A to port 1 at end B, and fiber 2 from port 2 to port 2. At end B, the cords cross: port 1 goes to the End B device&rsquo;s RX, and port 2 to its TX. A label reads The cords cross here.</p>
+    <p>A note reads: A&rsquo;s TX reaches B&rsquo;s RX on fiber 1; B&rsquo;s TX reaches A&rsquo;s RX on fiber 2. Swap two cords at one end and TX meets TX: no link.</p>
+  </details>
+
+  <h3>What a reversal does</h3>
+  <p>Swap the two cords at one end, and each transmitter sends into the other end&rsquo;s transmitter. Neither receiver sees light, and neither link light comes on. The loss test does not catch a reversal: it measures each fiber from end to end, with no transmitter or receiver in the circuit.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="An insertion-loss test sends light down one fiber at a time, from a source to a meter, so it measures the fiber and its connections whatever transceiver port each cord will later serve. Polarity depends on which cord sits in which port, which the loss test never sees. A reversed fiber loses no extra light. Testing at 1550 nm makes no difference to polarity, and the reference method does not swap the fibers.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Why can a run pass its insertion-loss test with its polarity reversed?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>A reversal adds only a little loss, which the budget covers</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The reversal shows only at 1550 nm</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The loss test measures each fiber from end to end, with no transmitter or receiver in the circuit</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The one-jumper reference swaps the two fibers back</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="3" data-group-title="Polarity and Service" data-num="532.4.7" data-title="Finding and correcting a reversal">
+  <p class="crumb">Lesson 532.4 &middot; Section 3 Polarity and Service</p>
+  <h2><span class="tnum">532.4.7</span> Finding and correcting a reversal</h2>
+  <p class="lead-in">A reversal sits at one end of the run. The installer finds that end from the patching as found, corrects it there, and records the patching as found and as left.</p>
+
+  <h3>Checking with a visual fault locator</h3>
+  <p>Check polarity with the cords in their ports and their device ends capped, before any transceiver or converter is connected. A <span class="keyterm">Visual Fault Locator (VFL)</span> sends visible red light into a cord&rsquo;s free end. At the far end, the light shows on the cord that carries it: a dust cap that passes light glows red, or, with the cap off, the uncapped end, pointed away from anyone&rsquo;s eyes, throws a red spot on a card held near it.</p>
+  <ol>
+    <li>Record the patching as found at each end: which tagged cord sits in which port or coupler.</li>
+    <li>At one end, say &ldquo;light on,&rdquo; and light the cord that goes to that device&rsquo;s receiver. At the far end, note which cord shows the light. It must be the cord that goes to the far device&rsquo;s transmitter.</li>
+    <li>Repeat with the other cord, then switch the VFL off and say &ldquo;light off.&rdquo;</li>
+    <li>Compare the patching as found at each end with the owner&rsquo;s rule. The end where two cords are swapped is the end with the reversal.</li>
+    <li>Correct it at that end: inspect each cord&rsquo;s end face, clean the ports, and move each cord to the port the rule gives for its tag. Check again with the VFL.</li>
+    <li>Record the patching as left, the correction, and the result of the check.</li>
+  </ol>
+  <p>Never look into a cord end to see whether it is lit. Watch the cap or the card.</p>
+
+  <h3>A worked example</h3>
+  <p>At Marlow Avenue Clinic (hypothetical), the clinic&rsquo;s rule for one backbone pair is the same as clause F5: at ER1, <code>TX</code> to the port of fiber 1 and <code>RX</code> to fiber 2; at TR3, the cord in fiber 1&rsquo;s port to the device&rsquo;s receiver. The installer in TR3 lights the cord tagged <code>TR3 RX</code>. In ER1, the cap on <code>ER1 RX</code> glows: the light has reached ER1&rsquo;s receive cord, where it should have reached <code>ER1 TX</code>. The patching as found at TR3 matches the rule. At ER1, <code>ER1 TX</code> sits in the port of fiber 2 and <code>ER1 RX</code> in fiber 1. The reversal is at ER1. The installer there swaps the two cords, checks again, and records the patching before and after.</p>
+
+  <div class="note warn"><div class="nt">One correction, at one end</div>
+    <p>Swap the two cords at the wrong end and the run is reversed at both ends. The two reversals cancel, so the VFL check passes, but neither end matches the rule. Swap the fibers in a tray and the strand record no longer describes the run. Correct the patch cords at the end where they disagree with the rule, and record the patching as found and as left.</p></div>
+
+  <div class="cyu gate" data-answer="1" data-fb="The patching at end B matches the rule, and the patching at end A has the two cords swapped, so the reversal is at end A: swap the two cords there and record the patching as found and as left. Swapping at end B alone brings the link up but leaves both ends against the rule and the record. Swapping at both ends keeps the reversal. Fibers in a splice tray are not touched for a polarity correction, and the tray stays closed.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">The patching as found at end B matches the polarity rule. At end A, the two cords are in each other&rsquo;s ports. Where do you correct the reversal?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>At end B: swap its two cords</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>At end A: swap its two cords, then record the patching as found and as left</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>At both ends: swap the two cords at each</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>In the splice tray at end A: swap fibers 1 and 2</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="3" data-group-title="Polarity and Service" data-num="532.4.8" data-title="Putting a link into service">
+  <p class="crumb">Lesson 532.4 &middot; Section 3 Polarity and Service</p>
+  <h2><span class="tnum">532.4.8</span> Putting a link into service</h2>
+  <p class="lead-in">A transceiver at the rack and a media converter at the wall turn the passive run into a working Ethernet link. A ping shows whether traffic crosses it.</p>
+
+  <h3>The equipment at each end</h3>
+  <p>A <span class="keyterm">Small Form-factor Pluggable (SFP)</span> transceiver plugs into a port on the switch. The SFP form factor says nothing about the optics: a 1000BASE-SX transceiver sends at 850 nm over multimode fiber, and a <span class="keyterm">1000BASE-LX</span> transceiver sends gigabit Ethernet at 1310 nm, normally over single-mode fiber. Read the transceiver&rsquo;s label before it goes in. The transceiver has a duplex LC receptacle, with its TX and RX ports marked. At the wall, the media converter&rsquo;s fiber ports face the run, and its copper port takes the cable to a laptop. The converter&rsquo;s own documents give its fiber connector type; on this backbone its ports take SC cords. A run lit by an LX transceiver needs an LX converter.</p>
+
+  <h3>The sequence</h3>
+  <ol>
+    <li>Check the polarity first.</li>
+    <li>Insert the transceiver into the switch port posted for the run until it latches. Change no switch setting.</li>
+    <li>Inspect each LC end and clean it on a dry wipe. Inspect and clean each SC end before it goes into the converter. Say &ldquo;light on,&rdquo; and connect each cord to the device port its tag names.</li>
+    <li>Power the converter. Connect its copper port to the laptop.</li>
+    <li>Check the link lights at both ends: the switch port&rsquo;s light at the rack, and the converter&rsquo;s fiber link light at the wall.</li>
+    <li>On the laptop, open a command prompt. Run <code>ipconfig</code> and read the Internet Protocol (IP) version 4 (IPv4) address of the Ethernet adapter. Ping the IP address the site lead posts, and read whether replies come back.</li>
+    <li>Record the results. Say &ldquo;light off&rdquo; as you disconnect each source.</li>
+  </ol>
+
+  <h3>What each result shows</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Evidence for a link in service, what each piece shows, and what it does not show.</caption>
+      <thead><tr>
+        <th scope="col">Evidence</th><th scope="col">What it shows</th><th scope="col">What it does not show</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Insertion loss within budget</th><td>Each fiber&rsquo;s loss, at each wavelength, meets the owner&rsquo;s limit</td><td>Polarity, or that the equipment works</td></tr>
+        <tr><th scope="row">Link lights on at both ends</th><td>Each optical receiver detects a signal from the far transmitter, at that moment</td><td>That the cabling meets its budget, or that IP traffic flows</td></tr>
+        <tr><th scope="row">Ping replies</th><td>A device at the posted IP address answered the laptop, at that moment</td><td>Cabling compliance, or how the link performs under load</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>A run that fails its loss budget is not accepted, however well it carries traffic on the day.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="Link lights at both ends show that each receiver detects the far transmitter, so the fibers and the optics carry light both ways and the polarity is correct. The ping failing puts the fault beyond the optical link: the copper side, the addressing, or the network, which an installer does not change; the installer records the results and reports them. A reversal brings up no link light. Nothing here measures loss. A run whose ping fails is not in service.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another job, the link lights are on at the switch and at the converter, but the ping gets no replies. Which conclusion does the evidence support?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The fiber path carries light both ways; the fault lies beyond the link lights, so record the results and report them</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The polarity is reversed at one end</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The run fails its loss budget at 1550 nm</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The link is in service: the link lights prove it</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="4" data-group-title="Faults and Escalation" data-num="532.4.9" data-title="Live fiber and the dark check">
+  <p class="crumb">Lesson 532.4 &middot; Section 4 Faults and Escalation</p>
+  <h2><span class="tnum">532.4.9</span> Live fiber and the dark check</h2>
+  <p class="lead-in">A fiber in service may carry infrared light, which the eye cannot see. A power meter, not the eye, shows whether the fiber is dark.</p>
+
+  <h3>Light you cannot see</h3>
+  <p>A VFL&rsquo;s light is visible red. A transceiver, a media converter, and a test source send at 1310 nm or 1550 nm, which is infrared: the eye cannot see it, and looking gives no warning. A microscope concentrates whatever light comes out of the end face into the eye at the eyepiece.</p>
+
+  <h3>The owner&rsquo;s rule</h3>
+  <p>Clause F7 of the owner&rsquo;s fiber addendum sets the rule for live fiber:</p>
+  <ul>
+    <li>Announce &ldquo;light on&rdquo; before connecting a light source, a transceiver, or a VFL to a fiber, and &ldquo;light off&rdquo; after disconnecting it.</li>
+    <li>Never look into a connector, an adapter, or an open port that may carry light, with a microscope or without one.</li>
+    <li>Inspect an end face only on a connector with no source connected.</li>
+    <li>Before inspecting a connector on a link that has been in service, confirm with a power meter that the fiber is dark.</li>
+  </ul>
+
+  <h3>The dark check</h3>
+  <p>A link in service carries light in both directions, one direction on each fiber. Disconnecting the transceiver at the rack stops only the rack end&rsquo;s transmitter. The converter at the far end still sends light toward the rack. Before any inspection:</p>
+  <ol>
+    <li>Say &ldquo;light off.&rdquo; Remove the cords from the transceiver at the rack, and have the installer at the wall disconnect the converter&rsquo;s power.</li>
+    <li>Set the power meter to the operating wavelength. Keep its receive cord on the meter, and put the cord&rsquo;s free end into the rack port of the fiber that carries the far end&rsquo;s light. The meter must show no light. No cord you are about to inspect goes into the meter.</li>
+    <li>Where it shows light, do not inspect. Find the source still connected, disconnect it, and check again.</li>
+  </ol>
+
+  <div class="cyu gate" data-answer="3" data-fb="The meter still reads light, so a source is still connected: on a link in service, the converter at the far end sends light toward the rack on its own fiber. The installer does not inspect, has the converter&rsquo;s power disconnected, and checks again until the meter shows no light. A reading of light is never a sign that it is safe to look. Covering one eye or looking briefly does not reduce the hazard. Changing the meter&rsquo;s wavelength does not turn the light off.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a link in service, you have removed both cords from the transceiver at the rack. The meter on the rack port of the return fiber still shows light at 1310 nm. What do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Inspect the connector briefly, with one eye at the eyepiece</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Set the meter to 1550 nm and check again</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Inspect it: the transceiver is disconnected, so the fiber is safe</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Do not inspect; have the far-end converter&rsquo;s power disconnected and check again</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="4" data-group-title="Faults and Escalation" data-num="532.4.10" data-title="Diagnosing from the rack end">
+  <p class="crumb">Lesson 532.4 &middot; Section 4 Faults and Escalation</p>
+  <h2><span class="tnum">532.4.10</span> Diagnosing from the rack end</h2>
+  <p class="lead-in">The installer diagnoses from the link as found and changes one thing at a time.</p>
+
+  <h3>As found, before anything is touched</h3>
+  <p>A <span class="keyterm">trouble report</span> states the symptom the owner sees: a device that cannot reach the network, or a low reading on the owner&rsquo;s meter of the light reaching the wall. The first touch can clear a fault or move it. Reseating a connector, or taking a cord out and putting it back, can make the link work and leave no record of why. So the installer records the link <span class="keyterm">as found</span> before touching it: where each tagged cord sits, whether each connector and the transceiver are latched or sit proud of their latches, the link light, and the result of a ping. A photograph records the cord positions, the latches, and the link light.</p>
+
+  <h3>The order of the work</h3>
+  <ol>
+    <li><strong>As found.</strong> Record and photograph the rack end, and test the link for the symptom the report describes.</li>
+    <li><strong>Received power.</strong> At a rack port, the power meter reads the light arriving from the far end, in decibels relative to one milliwatt (dBm). Compare it with the reading for that port on a healthy link: far below it means loss on that fiber&rsquo;s path; no light means no path, or no transmitter on at the far end.</li>
+    <li><strong>Dark check and inspection.</strong> Prove the fiber dark, then inspect both ends of each cord, the SC end and the LC end, with the microscope.</li>
+    <li><strong>Diagnosis.</strong> Compare the as-found record with the strand record, the port labels, and the transceiver&rsquo;s TX and RX marks. Light each cord with the VFL: its far end glows. Where the jacket lets light through, so does any point where the cord is bent too tightly.</li>
+  </ol>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Common faults an installer can reach at the rack end of a link, how each tends to show, and what finds it.</caption>
+      <thead><tr>
+        <th scope="col">Fault</th><th scope="col">How it tends to show</th><th scope="col">What finds it</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Two cords swapped (polarity)</th><td>No link</td><td>The as-found cord positions against the strand record and the TX and RX marks</td></tr>
+        <tr><th scope="row">A cord in the wrong port</th><td>No link</td><td>The as-found port against the strand record and the port label</td></tr>
+        <tr><th scope="row">A connector or transceiver off its latch</th><td>No link, or a link that comes and goes</td><td>The as-found look: it sits proud of its latch</td></tr>
+        <tr><th scope="row">A dirty end face</th><td>Errors, low received power, or no link</td><td>The microscope</td></tr>
+        <tr><th scope="row">A cord bent too tightly</th><td>Errors or low received power; worse at 1550 nm</td><td>A red glow at the bend under the VFL</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>One change at a time</h3>
+  <p>Test one cause at a time, and put each cord and cap back where the as-found record puts it before making a correction. Then the correction is the only change, and the retest shows whether it cleared the fault. &ldquo;Reseated everything and it worked&rdquo; leaves no record of which connector was at fault.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="The as-found record comes before any touch, because reseating, cleaning, or swapping can clear or move the fault and leave no evidence of what it was. Recording and photographing the rack end, then testing the link the way the report describes, keeps that evidence. Reseating or cleaning everything first destroys it. Swapping the cords changes the link before anyone knows how it stood.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You arrive at the rack with a trouble report on a link in service. What do you do first?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Reseat every connector at the rack end</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Clean every connector at the rack end</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Record and photograph the rack end as found, then test the link</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Swap the two cords and see whether the link comes up</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="4" data-group-title="Faults and Escalation" data-num="532.4.11" data-title="Correct, retest, or escalate">
+  <p class="crumb">Lesson 532.4 &middot; Section 4 Faults and Escalation</p>
+  <h2><span class="tnum">532.4.11</span> Correct, retest, or escalate</h2>
+  <p class="lead-in">An installer makes only the corrections the owner allows and tests again the same way. Everything else goes up, with the evidence.</p>
+
+  <h3>The corrections an installer may make</h3>
+  <p>Clause F10 of the owner&rsquo;s fiber addendum allows these corrections and no others:</p>
+  <ul>
+    <li>clean a connector;</li>
+    <li>reseat a connector;</li>
+    <li>replace a patch cord;</li>
+    <li>correct the polarity of a patch cord;</li>
+    <li>re-patch to the strand record.</li>
+  </ul>
+  <p>An installer does not open a splice tray, a wall box, or a rack enclosure to correct a fault, and does not re-splice or re-terminate anything in the plant. A fault inside a tray, a box, or the cable is escalated to Kestrel&rsquo;s lead technician.</p>
+
+  <h3>Retest the same way</h3>
+  <p>After a correction, test the link by the same method as the as-found test: the same link lights, the same ping, the same meter reading at the same port. The before and after results then compare directly. Record the correction and the retest result.</p>
+
+  <h3>Escalating with evidence</h3>
+  <p>An escalation note lets the lead technician go straight to the fault without repeating the installer&rsquo;s work. It carries:</p>
+  <ul>
+    <li>the run and the fiber, and the report as received;</li>
+    <li>the as-found record and the meter readings;</li>
+    <li>the VFL result;</li>
+    <li>the Optical Time-Domain Reflectometer (OTDR) trace, the instrument&rsquo;s plot of the fiber from one end, with the distance and loss of each <span class="keyterm">event</span> (a splice, connector, bend, or break) along it;</li>
+    <li>the documented length and splice points from the strand record, and the difference from the trace;</li>
+    <li>what the installer did, and that nothing was opened.</li>
+  </ul>
+  <p>If the fault is not found in the time allowed, the installer escalates it in the same way, with the evidence gathered so far.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="Replacing a patch cord is one of the five corrections clause F10 allows, so a cord with a damaged section is replaced and the link retested. Re-splicing a fiber in a wall box tray, re-terminating a pigtail behind a rack port, and opening a splice tray to reroute fibers are all work inside a tray or enclosure, which the installer escalates.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which of these may an installer do to correct a fault under clause F10?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Re-splice a fiber in the wall box tray</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Replace a patch cord that has a crushed section</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Re-terminate the pigtail behind a rack port</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Open the rack enclosure&rsquo;s splice tray to reroute a fiber</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="4" data-group-title="Faults and Escalation" data-num="532.4.12" data-title="Reading a trace for an escalation">
+  <p class="crumb">Lesson 532.4 &middot; Section 4 Faults and Escalation</p>
+  <h2><span class="tnum">532.4.12</span> Reading a trace for an escalation</h2>
+  <p class="lead-in">An OTDR trace, read against the strand record, places a fault the installer cannot reach at a distance along the cable.</p>
+
+  <h3>What the trace shows</h3>
+  <p>An OTDR sends short pulses of light into a fiber from one end and measures the light that returns over time. It converts the time into distance. The trace falls steadily along the fiber, and each event along the way changes it:</p>
+  <ul>
+    <li>a <strong>non-reflective step</strong>, a sudden drop with no spike, at a fusion splice or a bend;</li>
+    <li>a <strong>reflective spike</strong> at a connector, or at a clean break;</li>
+    <li>the <strong>fiber&rsquo;s end</strong>, where the trace falls into noise, often after a spike.</li>
+  </ul>
+  <p>Read each event on the plotted trace with the instrument&rsquo;s markers: the distance at the start of the event, and the loss across it with a marker on each side. An OTDR&rsquo;s event table can miss an event, so read the trace itself.</p>
+
+  <h3>Reading it against the record</h3>
+  <ul>
+    <li>A fiber&rsquo;s end <strong>short of the documented length</strong> is a break at that distance.</li>
+    <li>A step at a documented splice point, <strong>larger than the splice allowance</strong>, points to a poor splice in that closure. Measured from one end, a splice reading can be high or low; the lead technician confirms it from the other end.</li>
+    <li>A step where the record shows <strong>no splice</strong> points to a bend or damage at that point. A bend loses more at 1550 nm than at 1310 nm; a splice loses about the same at both.</li>
+  </ul>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; A trace read against the record, Northgate campus (hypothetical)</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:900px" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="An OTDR trace of a campus fiber at two wavelengths: a small step at the splice closure at 1.60 km, a step at 2.27 km that is much larger at 1550 nm than at 1310 nm, and the fiber's end at 3.20 km. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">A trace read against the record, Northgate campus (hypothetical)</text>
+    <line x1="80" y1="60" x2="80" y2="290" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="80" y1="290" x2="820" y2="290" stroke="#26282E" stroke-width="1.4"/>
+    <text x="24" y="70" font-size="14" fill="#5A5D66">Return</text>
+    <text x="700" y="320" font-size="14" fill="#5A5D66">Distance (km)</text>
+    <text x="74" y="310" font-size="14" fill="#26282E">0</text>
+    <text x="274" y="310" font-size="14" fill="#26282E">1</text>
+    <text x="474" y="310" font-size="14" fill="#26282E">2</text>
+    <text x="674" y="310" font-size="14" fill="#26282E">3</text>
+    <line x1="280" y1="290" x2="280" y2="296" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="480" y1="290" x2="480" y2="296" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="680" y1="290" x2="680" y2="296" stroke="#26282E" stroke-width="1.2"/>
+    <path d="M80 70 L84 70 L88 100 L400 124 L400 127 L534 137 L534 144 L720 158 L722 112 L728 160 L734 250 L744 262 L760 256 L776 266 L800 258 L820 264" fill="none" stroke="#611940" stroke-width="2.5"/>
+    <path d="M80 86 L84 86 L88 114 L400 133 L400 136 L534 144 L534 170 L720 181 L722 130 L728 184 L734 256 L748 268 L766 260 L784 270 L820 262" fill="none" stroke="#724DFD" stroke-width="2.5" stroke-dasharray="7 5"/>
+    <line x1="400" y1="118" x2="400" y2="210" stroke="#8C8F96" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="320" y="228" font-size="14" fill="#26282E">1.60 km, closure:</text>
+    <text x="320" y="246" font-size="14" fill="#26282E">0.08 dB at both</text>
+    <line x1="534" y1="128" x2="534" y2="180" stroke="#8C8F96" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="474" y="198" font-size="14" fill="#26282E">2.27 km, no splice: 0.35 dB at</text>
+    <text x="474" y="216" font-size="14" fill="#26282E">1310 nm, 1.42 dB at 1550 nm</text>
+    <text x="640" y="96" font-size="14" fill="#26282E">End, 3.20 km</text>
+    <text x="96" y="86" font-size="14" fill="#26282E">Launch connector</text>
+    <line x1="560" y1="56" x2="600" y2="56" stroke="#611940" stroke-width="2.5"/>
+    <text x="608" y="61" font-size="14" fill="#26282E">1310 nm</text>
+    <line x1="690" y1="56" x2="730" y2="56" stroke="#724DFD" stroke-width="2.5" stroke-dasharray="7 5"/>
+    <text x="738" y="61" font-size="14" fill="#26282E">1550 nm</text>
+    <text x="24" y="348" font-size="14" fill="#5A5D66">Drawn to show the events; the vertical axis is not to scale.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled A trace read against the record, Northgate campus (hypothetical). It plots the return against distance in kilometers, from 0 to beyond 3, at two wavelengths: 1310 nm drawn solid and 1550 nm drawn dashed.</p>
+    <p>Both traces start with a spike at the launch connector, then fall steadily. At 1.60 km, labeled closure, both show a small step: 0.08 dB at both wavelengths. At 2.27 km, labeled no splice, both show a step: 0.35 dB at 1310 nm and 1.42 dB at 1550 nm. At 3.20 km, labeled End, both show a spike and then fall into noise. A note reads: Drawn to show the events; the vertical axis is not to scale.</p>
+  </details>
+
+  <h3>The worked example</h3>
+  <p>The Northgate strand record (hypothetical) documents the fiber as 3.20 km long, measured from the main room, with one splice closure at 1.60 km. The trace shows the fiber&rsquo;s end at 3.20 km, so the fiber is continuous to its documented length. The step at the closure, 0.08 dB at both wavelengths, is within a 0.3 dB splice allowance. The step at 2.27 km sits where the record shows no splice, 0.67 km past the closure toward the far end. It loses four times as much at 1550 nm as at 1310 nm, the mark of a bend. The fault is a bend or crush in the cable, ~2.27 km from the main room. It lies inside the cable, so the installer escalates it with the trace, the marker readings, and the documented length.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="The fiber ends at 1.84 km on a run documented at 5.0 km, so it is broken ~1.84 km from the room, 3.16 km short. The closure at 3.1 km lies beyond the break, so the break is between the room and the closure; the trace cannot reach the closure. A break inside the cable is outside the installer&rsquo;s corrections, so it is escalated. The end is not at the documented length. A clean break can reflect, so the spike is not evidence of a connector.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another job, a fiber is documented at 5.0 km from the main room, with a splice closure at 3.1 km. Its trace shows a reflective end at 1.84 km and nothing beyond. What do you conclude?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The fiber reaches its documented length; the spike at 1.84 km is a connector</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A poor splice at the closure: re-splice it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A break ~1.84 km from the room, between the room and the closure: escalate it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A break at the far end: clean the far-end connector and retest</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="4" data-group-title="Faults and Escalation" data-num="532.4.13" data-title="Checking an AI hypothesis">
+  <p class="crumb">Lesson 532.4 &middot; Section 4 Faults and Escalation</p>
+  <h2><span class="tnum">532.4.13</span> Checking an AI hypothesis</h2>
+  <p class="lead-in">An Artificial Intelligence (AI) tool can turn a set of measurements into a fluent diagnosis. Check each claim in it against the measurements before you act on it.</p>
+
+  <h3>Where AI answers go wrong</h3>
+  <p>An AI tool writes from patterns in text, not from the instrument in front of you. Its answer can read a distance wrong, place a fault at the nearest named point rather than where the trace puts it, treat a splicer&rsquo;s estimate as a measured loss, or recommend a correction the owner does not allow. It states each of these as confidently as a correct answer.</p>
+
+  <h3>The method</h3>
+  <ol>
+    <li>Make your own reading first: the fault, its location, and the decision under clause F10.</li>
+    <li>Give the tool the whole evidence in one prompt: the meter readings, the VFL result, the documented length and splice points, and the events read on the trace. Ask what the fault is, where it lies, and whether an installer may correct it.</li>
+    <li>Mark each part of its answer (the fault, the location, and the decision) &ldquo;agrees&rdquo; or &ldquo;errs&rdquo; against your reading, and note the measurement that decides it.</li>
+  </ol>
+
+  <h3>A worked example</h3>
+  <p>Given the Northgate evidence, a tool replies: &ldquo;The 1.42 dB loss points to a failed splice at the closure at 1.60 km. A technician can re-splice it at the closure.&rdquo; Marked against the trace:</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>An AI answer on the Northgate fiber (hypothetical), marked part by part against the measurements.</caption>
+      <thead><tr>
+        <th scope="col">Part</th><th scope="col">AI answer</th><th scope="col">Mark</th><th scope="col">Measurement that decides it</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Fault</th><td>A failed splice</td><td>Errs</td><td>The 1.42 dB step is at 1550 nm, four times the 1310 nm step: a bend, not a splice</td></tr>
+        <tr><th scope="row">Location</th><td>The closure, 1.60 km</td><td>Errs</td><td>The closure&rsquo;s step is 0.08 dB; the large step is at 2.27 km, where no splice is recorded</td></tr>
+        <tr><th scope="row">Decision</th><td>Re-splice at the closure</td><td>Errs</td><td>The fault is inside the cable; clause F10 allows no correction there: escalate</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cyu gate" data-answer="3" data-fb="The trace puts the fiber&rsquo;s end at 1.84 km, not at the documented 5.0 km, so the tool&rsquo;s location errs. A break inside the cable is escalated under clause F10, so cleaning the far-end connector also errs. The documented length is what the fiber should be, not what the trace shows. The tool&rsquo;s fluent wording has no bearing on either mark.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Your reading puts a fiber&rsquo;s end at 1.84 km on a run documented at 5.0 km. An AI tool replies: &ldquo;The fiber ends at 5.0 km, as documented, so it is whole. Clean the far-end connector.&rdquo; How do you mark its location and its decision?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Location agrees; decision agrees</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Location agrees, because the record says 5.0 km; decision errs</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Location errs; decision agrees, because cleaning is an allowed correction</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Location errs; decision errs</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.4" data-lesson-title="Link Acceptance, Service and Faults" data-group-num="5" data-group-title="Wrapping Up" data-num="532.4.14" data-title="What you covered">
+  <p class="crumb">Lesson 532.4 &middot; Section 5 Wrapping Up</p>
+  <h2><span class="tnum">532.4.14</span> What you covered</h2>
+  <p class="lead-in">An installer proves a run against each acceptance item, puts it into service, and works a fault on it from the evidence.</p>
+
+  <h3>Labeling, inspection, and testing</h3>
+  <p>Labels follow clause F4: the run identifier at each end and at the ladder drop, each rack port labeled with the wall box and coupler it serves, each coupler with its rack port. Inspect and clean every end face before every mating, judged against the pass criteria for the core and cladding zones; clean the connector inside an adapter through the adapter. Set a <strong>one-jumper reference</strong>, keep the launch cord on the source, and accept the cord pair at 0.5 dB or less. The <strong>loss budget</strong> adds 0.75 dB a mated pair, 0.3 dB a splice, and 1.0 dB a kilometer. Each reading at 1310 nm and 1550 nm is called on its own.</p>
+
+  <h3>Polarity and service</h3>
+  <p>Each transmitter reaches the far receiver. On this backbone the fibers run straight through and the patch cords at the wall cross. A reversal sits at one end: find it from the patching as found, correct the cords there, and record the patching as found and as left. In service, link lights show light both ways and a ping shows that an IP device answered; neither replaces the loss test.</p>
+
+  <h3>Faults and escalation</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Working a fault, in order, and the rule that governs each step.</caption>
+      <thead><tr>
+        <th scope="col">Step</th><th scope="col">Rule</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">As found</th><td>Record and photograph the link before anything is touched</td></tr>
+        <tr><th scope="row">Dark check</th><td>Every source off at both ends; the power meter shows no light before any inspection</td></tr>
+        <tr><th scope="row">Diagnose</th><td>As found against the strand record; microscope; VFL; one change at a time</td></tr>
+        <tr><th scope="row">Correct</th><td>Only the clause F10 corrections, after putting every cord back as found</td></tr>
+        <tr><th scope="row">Retest</th><td>The same method as the as-found test</td></tr>
+        <tr><th scope="row">Escalate</th><td>Anything inside a tray, a box, or the cable, with readings, the VFL result, the trace and its events, and the documented length</td></tr>
+        <tr><th scope="row">AI check</th><td>Your own reading first; each part of the answer marked &ldquo;agrees&rdquo; or &ldquo;errs&rdquo; against a measurement</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete — continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again — this does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct>=90) msg.textContent='You answered at least 90% of the checks correctly.';
+      else if(pct>=75) msg.textContent='Revisit the topics where you missed a check.';
+      else if(pct>=50) msg.textContent='Go back over the topics where you missed a check.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+<!--
+BUILD FLAGS - UCI 1019 Lesson 532.4 Async Reading v0.1.0 DRAFT, 2026-11-10
+(Module 532, Certified Fiber Optic Technician; built under the delegated mode,
+brief Planning/_AGENT-BRIEF_M532-Readings.md). This comment is visible in the
+page source, so it carries no answer-key value. Not reviewed: language pass
+and cold read to be run by fresh subagents.
+
+SOURCES READ
+- CLAUDE.md; _writing-kit/STYLE-RULES.md (twice); style profile v1.4 to line
+  250; FORMAT-SPEC v1.0 and the 2026 addendum v0.1.0.
+- Module plan v0.1.0 (all sections); lab-build brief (fixed facts); reuse map.
+- Owner's fiber addendum v0.1.0 (F1-F10, F6 as corrected in the file).
+- ALAB 532.4.1: lab, Strand and Test Key Sheet. ALAB 532.4.2: lab, Case
+  Sheet (Sections 0-2). Work orders KC-2635, KC-2636.
+- 528 live pages, fetched 2026-11-10: 528.3_lanbuildtroubleshooting.html and
+  528.2_prepterminationtesting.html (v0.3.1) at the repository root of
+  platformps.github.io/UCI-2107.1-Async-Learner-Material (the brief's
+  trailing-slash URLs return 404). Lesson 528.3 and 528.2 deck speaker notes.
+
+DECISIONS TAKEN
+- Five sections, 14 topics, in the order of the day: labels and inspection;
+  reference and budget; polarity and service; dark check, diagnosis,
+  corrections, trace reading, AI check. No single-topic section.
+- Objectives: the plan's 12 Lesson 532.4 objectives, word for word.
+- Polarity taught as A-to-B with the owner's arrangement (F5: fibers straight
+  through, crossover in the patch cords) stated as the clause states it. The
+  diagram is generic (End A, End B, ports 1 and 2), not the mock-up's rack
+  and wall. The reversal worked example is at the equipment-room end of
+  another job (Marlow Avenue Clinic, hypothetical).
+- Budget taught with F6's values; worked example and check use 4 pairs and 4
+  splices, and 3 pairs and 2 splices, never the mock-up's count.
+- Single-mode reference cited only as F6 / ANSI/TIA-568.3-D (one-jumper);
+  ANSI/TIA-526-14 not named (multimode); ANSI/TIA-526-7 not named either
+  (the addendum avoids it as unchecked).
+- Escalation trace taught on a hypothetical campus fiber (Northgate) whose
+  fault is a bend in the cable (wavelength-dependent step, no splice there),
+  not a break; the check question uses a break before the closure. Neither
+  uses the escalation case's lengths, closure distance, event loss, or file.
+- AI check taught on the Northgate example, with a three-part marking table
+  (fault, location, decision), so the method is shown without the escalation
+  case's evidence. Copilot not named on the page (a product choice of the
+  lab).
+- The fault table (532.4.10) lists the kinds of fault an installer can reach
+  at a rack end, how each tends to show, and what finds it. The kinds match
+  those the fault lab names in its own text; no report text from a case slip
+  is quoted and no case-to-fault mapping is given ("tends to"). For the cold
+  reader to confirm this teaches diagnosis without keying the cases.
+- Received power taught as a comparison with the healthy reading for the same
+  port; no dBm figure is given (the healthy figure is measured on site).
+- Instructor not named; the site lead and the owner's representative are the
+  actors (scenario). Activity count 14 (acknowledgement included).
+
+ASSUMPTIONS (not in the module plan)
+- The learner reads this page before the Lesson 532.4 presentation on Day 4;
+  ~60-75 min (audit: ~6,900 words, ~62 min at 112 wpm, plus 13 activities).
+- Acronym expansions in Title Case (Mobile Infrastructure Rack, Subscriber
+  Connector, Lucent Connector, Small Form-factor Pluggable, Transmit,
+  Receive, Visual Fault Locator, Optical Time-Domain Reflectometer,
+  Artificial Intelligence, Internet Protocol); dB and dBm expanded as units
+  in lower case.
+- General practice stated without a project source, hedged where needed:
+  dirt transfer and pitting at mating; a dust cap does not clean; a
+  microscope concentrates emitted light; infrared at 1310/1550 nm is
+  invisible; glass attenuation lower at 1550 nm, bend loss higher; a negative
+  insertion-loss reading means a bad reference; reconnecting the launch cord
+  can change launched power; a reversal brings up no link; link light and
+  ping each prove less than acceptance; an OTDR event table can miss events;
+  a clean break can reflect; a splice loses about the same at 1310 and
+  1550 nm; AI answers can misread distances or recommend corrections outside
+  F10.
+- A dust cap that passes light glows under a VFL (hedged: the ALAB 532.4.1
+  lab carries a card fallback where caps do not glow).
+
+CONFLICTS FOUND
+1. Brief source URLs 404 (see SOURCES).
+2. Two plan objectives carry a second verb: "Correct a polarity reversal and
+   update the strand record"; "Correct an entry-level fault and retest with
+   the same method". The one-verb rule (style profile) is against them. Kept
+   verbatim as the plan words them; the fix is upstream in the plan.
+3. "Update the strand record": F9 and the addendum's Terms define the strand
+   record as fiber, color, rack port and coupler; a patch-cord reversal does
+   not change any of those. The lab records the patching "as found" and "as
+   left". The page says "record the patching" and "update the record".
+4. ANSI/TIA-568.3-D values in F6 (0.75, 0.3, 1.0 dB/km inside plant) and
+   its one-jumper reference for single-mode are inherited from the addendum,
+   which flags them unverified.
+5. The 528 page's power-window arithmetic (receiver minimum and overload)
+   is not carried: no 1019 transceiver datasheet figures are on file, and
+   the labs measure received power against a healthy reading instead.
+
+CHANGED FROM 528 (528.3 topics 528.3.6-528.3.17; 528.2 topics
+528.2.11-528.2.17; deck notes)
+- Multimode OM1 at 850/1300 nm replaced by single-mode OS2 at 1310/1550 nm;
+  3.5 dB/km replaced by F6's 1.0 dB/km; the 528 worked budget (0.025 km OM1)
+  replaced by a single-mode example on another job. Reason: plan D-532-09;
+  F6.
+- OLTS method names (Method A/B/C) and MPO polarity methods dropped: no MPO
+  in 1019, and F6 names the one-jumper reference.
+- Labels (528.3.7) re-based on ANSI/TIA-606-D and the owner's F4 scheme,
+  taught as principle with another job's identifiers.
+- Inspection before mating (taught, not assessed, in 528) given its own
+  topic: scored in ALAB 532.4.1. SC/LC cleaning split as the lab does it.
+- Polarity (528.3.6, 528.3.13): kept as transmit-to-receive; F5's
+  straight-through-plus-cord-crossover stated; VFL method of finding and
+  correcting a reversal added (ALAB 532.4.1).
+- Transceiver (528.3.11): Catalyst 3750 SFP, SX/LX table and mode-
+  conditioning cord cut to the LX transceiver and LX converter of the 1019
+  service set (plan 4.2); form factor is not optics kept.
+- Power window (528.3.12) dropped (CONFLICTS 5); received power taught as a
+  comparison with a healthy reading.
+- Evidence separation (528.3.14) kept as a table; traceroute dropped (not in
+  the 1019 service step).
+- Link down / link up but erroring (528.3.15, 528.3.16) recast as diagnosis
+  from the rack end with the as-found record first, one change at a time
+  (kept from 528), and the F10 corrections.
+- Live fiber: F7 rule and the dark check with the power meter added (plan
+  objective; F7); the 528 pages carry only "never look".
+- Escalation with evidence and the AI check are new (plan objectives; JTA
+  8.5b); OTDR event types from 528.2.15 reused for the trace reading.
+- Handover wording (528.3.10, 528.3.17) folded into the evidence table and
+  the escalation note.
+- 528 check questions not reused; all checks new. 528 register rewritten to
+  the house register; legacy brand replaced by the 2026 brand layer.
+
+CHECK QUESTIONS AND ACTIVITIES (for the quiz writer; do not repeat)
+- 532.4.1 CYU: loss passes, polarity reversed: not accepted; correct, record,
+  check again.
+- 532.4.2 Matching: rack port label / which box and coupler; coupler label /
+  which rack port; run label at the ladder drop / which run drops here; run
+  label at the enclosure entry / which run enters.
+- 532.4.3 CYU: smear on the core zone after a dry clean: wet-dry clean and
+  inspect again.
+- 532.4.4 CYU: launch cord knocked off the source: set the reference again
+  and repeat the cord check.
+- 532.4.5 CYU: 3 pairs, 2 splices, 0.85 km, readings 2.41 and 3.82 dB:
+  budget 3.70 dB; pass at 1310, fail at 1550; fiber fails.
+- 532.4.6 CYU: why a reversed run passes its loss test: the test measures
+  each fiber end to end with no transmitter or receiver.
+- 532.4.7 CYU: patching matches at end B, swapped at end A: correct at end A
+  and record as found and as left.
+- 532.4.8 CYU: link lights on, ping fails: the fiber path works; fault beyond
+  the optical link (copper side, addressing, network); record and report.
+- 532.4.9 CYU: transceiver cords removed, meter still shows light on the
+  return fiber: do not inspect; disconnect the far-end converter; check again.
+- 532.4.10 CYU: first step on a trouble report: record and photograph as
+  found, then test.
+- 532.4.11 CYU: which correction F10 allows: replace a patch cord.
+- 532.4.12 CYU: documented 5.0 km, closure at 3.1 km, reflective end at
+  1.84 km: break between the main room and the closure; escalate.
+- 532.4.13 CYU: AI says the fiber ends at 5.0 km and to clean the far-end
+  connector, against a reading of 1.84 km: location errs, decision errs.
+- 532.4.14 acknowledgement.
+
+WORKED EXAMPLES (for the quiz writer; do not repeat)
+- 532.4.2 Marlow Avenue Clinic labels: BB-ER1-TR3-02; TR3-B-05 on ER1 panel A
+  port 5; ER1-A-05 on TR3 panel B port 5.
+- 532.4.5 Marlow budget: 4 x 0.75 + 4 x 0.3 + 1,380 ft (0.42 km) x 1.0 =
+  4.62 dB at both wavelengths.
+- 532.4.7 Marlow reversal: VFL into TR3 RX lights ER1 RX; ER1 TX in fiber 2's
+  port and ER1 RX in fiber 1's; corrected at ER1.
+- 532.4.8 evidence table (loss, link lights, ping).
+- 532.4.12 Northgate trace (hypothetical): documented 3.20 km, closure at
+  1.60 km (0.08 dB at both wavelengths), step at 2.27 km (0.35 dB at 1310,
+  1.42 dB at 1550, no splice recorded), end at 3.20 km: bend in the cable;
+  escalate.
+- 532.4.13 Northgate AI answer marked: fault errs, location errs, decision
+  errs.
+
+KEY CHECK
+- Compared with the ALAB 532.4.1 Strand and Test Key Sheet (budget 2 x 0.75
+  + 2 x 0.3 + length, the 2.10 dB constant, label keys for every run, the
+  wall-end default reversal and its cord positions, team times, OTDR rows)
+  and the ALAB 532.4.2 Case Sheet (case codes and their seeds, the slip
+  reports, the healthy reading, the escalation key: ak1310.sor, ~3.96 km
+  step of ~2.2-2.3 dB, fiber end ~7.85 km, documented 9.6 km, SC-1 at
+  4.0 km, ~1.75 km short), and the lab texts. Grep of the rendered text:
+  none of 2.10, 3.96, 7.85, 9.6 km, 4.0 km, 1.75, ak1310, Eastfield, HH-07,
+  SC-1, room 2A, FP1-3, FO-W, W1-W5, KC-26xx, GLAB, ALAB, HO, Quiz, R-number,
+  D-code, "instructor", or "lab" appears. The worked budget and the check use
+  pair and splice counts other than the mock-up's two and two; the worked
+  reversal sits at the end the key does not seed; the escalation examples use
+  a bend and a break before the closure.
+
+UNVERIFIED
+- Not opened in a browser. Each SVG was rendered to PNG with PyMuPDF and
+  looked at for overlaps (four label collisions fixed); browser rendering
+  of fonts and widths not checked.
+- The general-practice statements under ASSUMPTIONS, against the standards
+  and product documents.
+- Whether the LX converter's fiber ports are SC (the labs use SC-SC cords to
+  it; the page now says the converter's documents give the connector
+  type and that on this backbone its ports take SC cords).
+
+AUDITS (final build)
+- audit_html.py: FAIL (0), WARN (0). ~6,900 words of prose, ~62 min at
+  112 wpm before activities.
+- contrast_audit.py as written: FAIL (1), .order .step.picked .seq scored
+  against the legacy amber token (known tool limitation, FORMAT-SPEC 2026
+  addendum section 6; no ordering activity on this page). REPORT (83).
+  Run again with later custom-property definitions replacing earlier ones:
+  FAIL (0).
+- Engine check: the three style blocks and the script block are
+  byte-identical to the 527.1 pattern page (checked by script).
+- Self-check: STYLE-RULES re-read; one pass sentence by sentence on the
+  extracted text, ~20 wording changes (count-announcing "five" and "three"
+  removed, agentless passives given an actor, absolute claims hedged:
+  "points to a bend", "can change the power", the dust-cap glow; a
+  position reference "the previous topic" removed; a double LC expansion
+  removed; a check's feedback rewritten to discuss only the options on the
+  page). Fresh-reviewer language pass and cold read still owed.
+
+FIX1 (2026-11-11, fresh subagent; record in
+Planning/reviews/FIX1_Readings-532.3-532.4_2026-11-11.md)
+- Defaults (orchestrator): (a) cord check: the pair is accepted at 0.5 dB or
+  less (532.4.4 and the summary); owner's addendum F6 to gain the figure
+  (not yet in the addendum file when FIX1 ran). (b) ANSI/TIA-606-D cited
+  throughout (objective, topic title, body, header comments): the module
+  plan's objective already reads 606-D (plan change log 2026-11-11), so the
+  page objective now matches the plan. TIA-568.3-D kept for the budget
+  values. No key values given.
+- TECH1 (50 claims): Wrong 0. Unverifiable 6, all applied: cord check (by
+  default a); zone pass criteria; option A feedback (swapping at end B
+  alone brings the link up but leaves both ends against the rule and the
+  record); lights on, no ping = beyond the optical link (copper side,
+  addressing, network); no light = no path or no far transmitter; VFL bend
+  glow only where the jacket lets light through. Depends on product 3, all
+  applied: the team's eyepiece microscope sees a cord's end face only;
+  converter connector type from its documents, SC on this backbone (as the
+  labs); a one-direction OTDR splice reading can be high or low, confirmed
+  from the other end by the lead technician.
+- LP1 (58): all applied, 4 adapted: 859 kept as "reads it" rather than
+  deleted (the sentence carries the power meter definition); 1062 uses the
+  TECH1 wording for option A; 1108 and 1168 merged with the TECH1 hedges.
+  STRUCTURAL fixed inside the page: strand record defined in the opening;
+  media converter defined at first use (532.4.6), its later sentence
+  reworded; OTDR trace and event defined at first use (532.4.11 list).
+- Check questions: answers, options, order and script mechanics unchanged.
+  Wording changed in 532.4.12 stem ("from the main room") and several
+  feedback texts (532.4.1, 532.4.5, 532.4.7, 532.4.8, 532.4.9). The result
+  messages in the script were replaced (LP1 script row), so the script block
+  is no longer byte-identical to the 527.1 pattern page; logic unchanged.
+- Audits after FIX1: audit_html.py FAIL 0, WARN 0 (7,071 words, ~63 min);
+  contrast_audit.py FAIL 1 (known engine-amber limitation), REPORT 83.
+- Not re-reviewed: a confirmation language pass on the FIX1 text is owed.
+- Consistency fixes 2026-11-11: objective reworded to "Correct a polarity reversal and record the correction." (header list and objectives list; conflicts 2 and 3 above closed by the plan change); topic 532.4.3: wet-dry on a wipe, exposed LC end on a dry wipe, 1.25 mm sticks for the inside of an LC adapter; topic 532.4.8 sequence: LC ends inspected and cleaned on a dry wipe; topic 532.4.7 note: a swap at the wrong end leaves the run reversed at both ends, the VFL check passes, neither end matches the rule; "record the patching as found and as left". audit_html FAIL 0 WARN 0; contrast_audit FAIL 1 (known engine-amber limitation) REPORT 83. Not re-reviewed.
+Consistency fixes 2026-11-11 (CONS): 3 applied / 0 held. 532.4.9 dark check as the fault lab does it (receive cord stays on the meter; no cord to be inspected goes into it); 532.4.10 trouble report names the owner's meter report (Case Sheet) instead of a network monitor; inspection of both ends of each cord, SC and LC. audit_html.py FAIL 0 WARN 0; contrast_audit.py FAIL 1 (known tool limitation). Each changed sentence re-read against STYLE-RULES.
+- Final language pass 2026-11-11 (LPF): 5 applied / 0 held. Activity count 14 -> 13 (12 checks + 1 matching, counted from the page) in the header and the overview stat. Strand record reworded "as 3.20 km long, measured from the main room" (not the review's exact cut). audit_html.py FAIL 0 WARN 0; contrast_audit.py FAIL 1 (known engine-amber limitation). Not re-reviewed.
+-->
+
+</body>
+</html>

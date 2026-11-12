@@ -1,0 +1,2384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 532 (M08) - Certified Fiber Optic Technician
+  Lesson 532.3 - Splicing and the Link Build (Async Reading)
+  VERSION: v0.1.0  (2026-11-10)  DRAFT - for review
+
+  CHANGES IN v0.1.0
+  First issue. Adapted from the UCI 2107.1 Module 528 live lesson page
+  528.2_prepterminationtesting.html (Section 3 Splicing, topics 528.2.7 to
+  528.2.10) and 528.3_lanbuildtroubleshooting.html (topics 528.3.3 to 528.3.7),
+  with the Lesson 528.2 and 528.3 deck speaker notes; re-based on the 1019
+  single-mode plant. Every change is listed under CHANGED FROM 528 in the
+  BUILD FLAGS comment at the end of this file.
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox) reused verbatim from
+  UCI-1019_M527_Lesson-527.1_Async-Reading_v0.1.0_DRAFT.html (which carries the
+  engine of UCI-2107.1_M529_Lesson-529.6_Async-Reading_v0.2.0.html). Appended
+  after it, unchanged from that page: the 2026 brand layer
+  (FORMAT-SPEC_Async-Reading_2026-Addendum_v0.1.0_DRAFT.md section 3) and the
+  .calc component sheet (worked-arithmetic panel). Logo: inline Slate SVG.
+  Only the title and the header line differ from the pattern page's chrome.
+
+  OBJECTIVES, from the module plan v0.1.0 section 3, Lesson 532.3, word for word
+  (codes removed on the page).
+    Prepare   fiber for fusion splicing                               8.4a.2
+    Cleave    fiber to the splicer's acceptance check                 8.4a.3-5
+    Complete  a mechanical splice                                     8.4c.2
+    Verify    a mechanical splice with a VFL                          8.4c.2
+    Mount     a fiber wall box at its drawn position                  8.5.2
+    Route     a distribution cable ... within its minimum bend radius 8.5.2, 8.5.3
+    Execute   a fusion splice on a cladding-alignment splicer                 8.4c.3
+    Verify    a splice's estimated loss against tolerance             8.4c.5
+    Protect   a fusion splice with a heat-shrink sleeve               8.4c.4
+    Store     a spliced fiber in a tray with correct routing, slack   8.4c.4
+    Confirm   the continuity and identity of a spliced fiber (VFL)    8.5.5
+
+  TOPIC OUTLINE
+    Section 1  Preparing Fiber for a Splice
+      532.3.1   From cable to spliced run              entry point
+      532.3.2   Preparing fiber for a splice           Prepare
+      532.3.3   The cleave and the cleave check        Cleave
+    Section 2  Fusion and Mechanical Splices
+      532.3.4   The fusion splice cycle                Execute
+      532.3.5   Accepting a splice                     Verify (estimate)
+      532.3.6   The mechanical splice                  Complete, Verify (VFL)
+    Section 3  Protecting and Storing the Splice
+      532.3.7   Sleeve and heater                      Protect
+      532.3.8   The splice tray                        Store
+    Section 4  Building the Run
+      532.3.9   Route and bend radius                  Route
+      532.3.10  The cut length and the pull            Route
+      532.3.11  The wall box and the rack end          Mount, Store (unspliced)
+      532.3.12  Continuity and identity, both ways     Confirm
+    Section 5  Wrapping Up
+      532.3.13  What you covered                       summary
+
+  ACTIVITY GATES: 13 - 11 single-answer checks, 1 matching, 1 acknowledgement.
+  DIAGRAMS: 7 original SVG, each with a full text description (layers of a
+    buffered fiber; four cleaved ends; the splice cycle; mechanical splice cut
+    away; sleeve ready and not ready; routing in a splice tray; the bend gauge
+    and the two limits).
+  IMAGES: none.
+
+  Build flags, decisions, assumptions, the list of every check question and
+  worked example, and the audit results are in the BUILD FLAGS comment at the
+  end of this file.
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 532.3 - Splicing and the Link Build &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Certified Fiber Optic Technician</b> &middot; Lesson 532.3 - Splicing and the Link Build</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Certified Fiber Optic Technician</p>
+      <h2 id="ovh" tabindex="-1">Lesson 532.3 - Splicing and the Link Build</h2>
+      <p class="lead-in">How an installer prepares, cleaves, and fusion splices single-mode fiber, protects and stores each splice, and builds a backbone run from a rack enclosure to a wall box.</p>
+
+      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. With the copper mock-up accepted, the owner, Calder Regional Services, wants the fiber backbone for Level 2: single-mode cable from the telecommunications room to two floor enclosures in each section of Level 2, spliced onto factory pigtails at both ends. On the installation mock-up, the Mobile Infrastructure Rack (MIR) stands in for the telecommunications room. The two wall boxes on Face 2 of each training wall stand in for the floor enclosures.</p>
+
+      <p>D. Okafor, the Kestrel site lead, sets the order of the work. Each installer qualifies on the team&rsquo;s fusion splicer at the table before splicing in the plant. Each wall&rsquo;s team then mounts its wall boxes, pulls its two runs over the cable ladder, and splices both ends. The owner&rsquo;s representative sees every splice result before the splicer&rsquo;s lid opens.</p>
+
+      <p>The worked examples on this page use other jobs and other cables, not the values of any run on the mock-up.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>Preparing Fiber for a Splice.</b> The run and its splices, the layers of a fiber and how to strip them, and the cleave and its check.</li>
+        <li><b>Fusion and Mechanical Splices.</b> The fusion splice cycle, the rule for accepting a splice, and the mechanical splice with its visual check.</li>
+        <li><b>Protecting and Storing the Splice.</b> The heat-shrink sleeve and the splice tray.</li>
+        <li><b>Building the Run.</b> Bend radius on the route, the pull and the cut length, the two ends of the run, and the continuity and identity check.</li>
+        <li><b>Wrapping Up.</b> A summary of each section.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>5</b><span>Sections</span></div>
+        <div class="ov-stat"><b>13</b><span>Topics</span></div>
+        <div class="ov-stat"><b>12</b><span>Activities</span></div>
+        <div class="ov-stat"><b>7</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the documents and the equipment</h3>
+      <p>The project documents named on this page are the <strong>Training Wall Drawing Set</strong> and the <strong>HSOC-26-014 Owner Telecommunications Standard - Fiber Addendum</strong>. The addendum adds clauses F1 to F10 to the owner&rsquo;s standard for the single-mode backbone. Both are fictional documents written for the mock-up. Each clause states a requirement of this owner, for this project.</p>
+      <p>Where a figure or a method depends on a product, the product&rsquo;s own documents govern: a strip or cleave length, a sleeve length, a splicer&rsquo;s cleave-angle limit and program, a cable&rsquo;s outside diameter and minimum bend radius, and the routing inside a splice tray.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or go to any topic
+         from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks&mdash;a
+         knowledge check or a matching exercise.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. The lesson takes ~60&ndash;75 min, including the activities.
+         The header and the contents list show your progress through the lesson.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching activity every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description. Each table has column headings and a caption.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 532.3</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="532.3" data-lesson-title="Splicing and the Link Build" data-group-num="1" data-group-title="Preparing Fiber for a Splice" data-num="532.3.1" data-title="From cable to spliced run">
+  <p class="crumb">Lesson 532.3 &middot; Section 1 Preparing Fiber for a Splice</p>
+  <h2><span class="tnum">532.3.1</span> From cable to spliced run</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 532.3</span>
+    <h3>Splicing and the Link Build</h3>
+    <p>An installer prepares and cleaves single-mode fiber, fusion splices it to a pigtail, protects the splice with a heat-shrink sleeve, and stores it in a tray. The installer then builds a run of backbone cable from a rack enclosure to a wall box: mounts the box, pulls the cable within its bend radius, splices both ends, and checks each fiber with a Visual Fault Locator (VFL) in both directions.</p>
+    <p class="lb-meta"><b>5</b> sections &nbsp;&middot;&nbsp;
+       <b>13</b> topics &nbsp;&middot;&nbsp;
+       <b>12</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 532.3 you will be able to</div>
+    <ul>
+      <li><b>Prepare</b> fiber for fusion splicing.</li>
+      <li><b>Cleave</b> fiber to the splicer&rsquo;s acceptance check.</li>
+      <li><b>Complete</b> a mechanical splice.</li>
+      <li><b>Verify</b> a mechanical splice with a VFL.</li>
+      <li><b>Mount</b> a fiber wall box at its drawn position.</li>
+      <li><b>Route</b> a distribution cable from a rack to a wall box within its minimum bend radius.</li>
+      <li><b>Execute</b> a fusion splice on a cladding-alignment splicer.</li>
+      <li><b>Verify</b> a splice&rsquo;s estimated loss against tolerance.</li>
+      <li><b>Protect</b> a fusion splice with a heat-shrink sleeve.</li>
+      <li><b>Store</b> a spliced fiber in a tray with correct routing and slack.</li>
+      <li><b>Confirm</b> the continuity and identity of a spliced fiber with a VFL.</li>
+    </ul></div>
+
+  <p class="lead-in">A fiber in a backbone run carries light only after it is joined, at both ends, to the pigtail behind its port.</p>
+
+  <p>D. Okafor briefs the teams: &ldquo;Every fiber we light in this backbone ends in a splice at each end. The owner&rsquo;s rep sees every splice screen before the lid opens. The loss test at the end of the job finds any bad splice the screen missed.&rdquo;</p>
+
+  <h3>Pigtails, splices, and the run</h3>
+  <p>A <span class="keyterm">pigtail</span> is a short length of fiber with a factory-fitted connector at one end and bare fiber at the other. Each rack enclosure in the Mobile Infrastructure Rack (MIR) and each wall box arrives with a pigtail fitted behind each of its Subscriber Connector (SC) adapters. A <span class="keyterm">run</span> is one length of backbone cable from a rack enclosure to a wall box. A <span class="keyterm">splice</span> is a permanent joint between two fibers. The installer splices each cable fiber that will carry light to the pigtail behind its port. A run therefore has a splice at each end of every fiber in use.</p>
+
+  <h3>Two ways to join fiber</h3>
+  <p>In a <span class="keyterm">fusion splice</span>, the splicer melts the two fiber ends together in an electric arc. The result is one continuous path of glass. A <span class="keyterm">mechanical splice</span> holds two cleaved ends against each other in a precision alignment element, with an index-matching gel between them, and needs no power. Kestrel&rsquo;s crews carry mechanical splices to restore a cut fiber until a fusion splicer can be brought to it. Clause F2 of the owner&rsquo;s fiber addendum accepts only fusion splices in this backbone. No mechanical splice is left in the plant.</p>
+
+  <h3>The evidence for a spliced run</h3>
+  <p>Evidence for a splice comes from each stage of the job:</p>
+  <ul>
+    <li><strong>At the splicer:</strong> the splicer&rsquo;s estimated loss and its image of the joint, which the installer judges against clause F2 before the lid opens.</li>
+    <li><strong>After the splices at both ends are stored:</strong> a VFL, a handheld red laser source, sends visible light into one end. Its light must appear at the right port or coupler at the other end.</li>
+    <li><strong>At acceptance:</strong> the insertion loss of each lit fiber, measured with a light source and a power meter at 1310 nm and 1550 nm, against the run&rsquo;s <span class="keyterm">loss budget</span>, the most loss a fiber may show and still pass (clause F6).</li>
+  </ul>
+  <p>The splicer&rsquo;s estimate is a calculation from its image. It is never recorded as a measured loss.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="Clause F6 accepts a run on the measured insertion loss of each lit fiber at 1310 nm and 1550 nm, against the run&rsquo;s loss budget. The installer decides whether to keep or re-do each splice on the splicer&rsquo;s estimate and joint image; the estimate is not the acceptance test of the run. The VFL shows that light reaches the right port, but it measures no loss.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Under the owner&rsquo;s addendum, which result decides whether a run is accepted?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The splicer&rsquo;s estimated loss of each splice in the run</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The splicer&rsquo;s image of each joint, with no bubble, gap, or offset</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The measured insertion loss of each lit fiber at 1310 nm and 1550 nm, against the run&rsquo;s budget</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A red spot from the VFL at the far end of each fiber</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.3" data-lesson-title="Splicing and the Link Build" data-group-num="1" data-group-title="Preparing Fiber for a Splice" data-num="532.3.2" data-title="Preparing fiber for a splice">
+  <p class="crumb">Lesson 532.3 &middot; Section 1 Preparing Fiber for a Splice</p>
+  <h2><span class="tnum">532.3.2</span> Preparing fiber for a splice</h2>
+  <p class="lead-in">A splice starts with two lengths of bare glass, each stripped to length, clean, and untouched since cleaning.</p>
+
+  <h3>The layers you strip</h3>
+  <p>A single-mode fiber carries light in its <span class="keyterm">core</span>, ~9 &micro;m across. The <span class="keyterm">cladding</span> around it is glass of a lower refractive index, 125 &micro;m across. Single-mode and multimode fiber share the 125 &micro;m cladding, so a splicer&rsquo;s <span class="keyterm">V-grooves</span>, the V-shaped channels that hold each bare fiber in line, take either. Outside the glass is a 250 &micro;m acrylate <span class="keyterm">coating</span>. A tight-buffered fiber adds a 900 &micro;m plastic <span class="keyterm">buffer</span> over the coating. In a cable, a layer of <span class="keyterm">aramid yarn</span> under the jacket carries any pull on the cable, so the fibers do not.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; The layers of a buffered fiber, stripped for a splice</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:880px" viewBox="0 0 880 270" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A buffered fiber drawn side-on, stepped down from the cable jacket at the left to bare glass at the right, with each layer labeled. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">The layers of a buffered fiber, stripped for a splice</text>
+    <rect x="40" y="92" width="250" height="56" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+    <rect x="290" y="104" width="80" height="32" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="370" y="108" width="170" height="24" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="540" y="113" width="120" height="14" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="660" y="116" width="180" height="8" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="40" y1="120" x2="840" y2="120" stroke="#611940" stroke-width="2"/>
+    <text x="560" y="72" font-size="14" fill="#26282E">Core, ~9 &micro;m: carries the light</text>
+    <line x1="700" y1="78" x2="760" y2="118" stroke="#26282E" stroke-width="1.2"/>
+    <text x="60" y="176" font-size="14" fill="#26282E">Jacket</text>
+    <text x="250" y="200" font-size="14" fill="#26282E">Aramid yarn: takes the pull</text>
+    <line x1="330" y1="186" x2="330" y2="138" stroke="#26282E" stroke-width="1.2"/>
+    <text x="390" y="176" font-size="14" fill="#26282E">Buffer, 900 &micro;m</text>
+    <text x="520" y="224" font-size="14" fill="#26282E">Coating, 250 &micro;m</text>
+    <line x1="600" y1="210" x2="600" y2="129" stroke="#26282E" stroke-width="1.2"/>
+    <text x="680" y="176" font-size="14" fill="#26282E">Cladding, 125 &micro;m:</text>
+    <text x="680" y="194" font-size="14" fill="#26282E">bare glass</text>
+    <text x="40" y="256" font-size="14" fill="#5A5D66">Not to scale. Each strip length comes from the splicer&rsquo;s product card.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled The layers of a buffered fiber, stripped for a splice. A fiber is drawn side-on, stepping down in width from left to right. From the left: the jacket; then the aramid yarn, labeled Aramid yarn: takes the pull; then the buffer, 900 &micro;m; then the coating, 250 &micro;m; then the cladding, 125 &micro;m, labeled bare glass, at the right-hand end.</p>
+    <p>A line runs along the center of every layer, labeled Core, ~9 &micro;m: carries the light. A note reads: Not to scale. Each strip length comes from the splicer&rsquo;s product card.</p>
+  </details>
+
+  <h3>Stripping and cleaning</h3>
+  <ol>
+    <li><strong>Sleeve first.</strong> Slide the heat-shrink splice sleeve onto one of the two fibers and push it well back before you strip anything. Once the fibers are joined, the sleeve cannot go on.</li>
+    <li><strong>Strip.</strong> A three-hole stripper has one hole sized for each layer it removes. Strip the buffer, where the fiber has one, then the coating, each in its own hole, to the strip length on the splicer&rsquo;s product card. Hold the stripper square to the fiber.</li>
+    <li><strong>Clean.</strong> Draw the bare glass once through a lint-free wipe wetted with isopropyl alcohol, from the coating toward the end. Let the alcohol dry. Keep the alcohol bottle closed and away from the splicer: the splicer&rsquo;s arc can ignite alcohol vapor.</li>
+    <li><strong>Hold it clear.</strong> Hold a prepared fiber by its buffer or coating, never by the glass. Never set a stripped fiber down. If the glass touches anything, cut it back and prepare it again.</li>
+  </ol>
+
+  <div class="note danger"><div class="nt">Glass offcuts</div>
+    <p>A fiber offcut is a sliver of glass that pierces skin and is hard to see or remove. Put every offcut into a sealed fiber trash container as soon as it leaves the stripper or the cleaver. Safety glasses stay on while anyone near you strips, cleaves, or splices. Take them off only at your team&rsquo;s inspection station, to look through the inspection microscope.</p></div>
+
+  <div class="cyu gate" data-answer="3" data-fb="The sleeve has to go onto one fiber before that fiber is prepared. Bare glass that touches anything is prepared again. So the installer cuts the prepared end back, slides the sleeve onto that fiber, and strips, cleans, and cleaves it again. Sliding the sleeve over the bare glass lets the glass touch the sleeve. Once the fibers are joined, the sleeve cannot be threaded over the joint. Every accepted splice is sleeved.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Both fibers are stripped and cleaned for a splice, and the heat-shrink sleeve is still in its bag. What do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Make the splice, then thread the sleeve over the joint</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Slide the sleeve on over the bare glass of one fiber, then make the splice</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Make the splice and store it in the tray without a sleeve</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Cut one prepared end back, slide the sleeve onto that fiber, and prepare the end again</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.3" data-lesson-title="Splicing and the Link Build" data-group-num="1" data-group-title="Preparing Fiber for a Splice" data-num="532.3.3" data-title="The cleave and the cleave check">
+  <p class="crumb">Lesson 532.3 &middot; Section 1 Preparing Fiber for a Splice</p>
+  <h2><span class="tnum">532.3.3</span> The cleave and the cleave check</h2>
+  <p class="lead-in">A cleave breaks the glass along a flat face at a right angle to the fiber&rsquo;s axis. The splicer measures each end&rsquo;s departure from that angle before it fuses the fibers.</p>
+
+  <h3>How a cleaver works</h3>
+  <p>A cleaver clamps the prepared fiber on each side of a blade. The blade scores the surface of the glass, and the cleaver then stresses the fiber, by tension or by a bend, so that the score runs across it as a crack. A good cleave leaves an end face that is flat, smooth, and square to the fiber&rsquo;s axis. The <span class="keyterm">cleave length</span> is the distance from the edge of the coating to the end face. The installer sets it to the figure on the splicer&rsquo;s product card by laying the fiber at that mark on the cleaver&rsquo;s scale. A cleaver cuts prepared glass only. Cut a buffered fiber back with scissors, never with the cleaver.</p>
+
+  <h3>The cleave angle</h3>
+  <p>The <span class="keyterm">cleave angle</span> is how far an end face departs from a right angle to the fiber&rsquo;s axis, in degrees. Once both fibers are loaded, the splicer images each end and measures its cleave angle. Two angled faces meet with a wedge-shaped gap between them. The splicer&rsquo;s program sets a <span class="keyterm">cleave-angle limit</span>. The splicer accepts an end at or under the limit and rejects one over it. Cut a rejected end back, then strip, clean, and cleave it again.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; Four cleaved ends, seen from the side</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:880px" viewBox="0 0 880 290" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Four magnified side views of a cleaved fiber end: a good flat cleave, an angled cleave, a lip, and a hackle. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Four cleaved ends, seen from the side</text>
+    <rect x="20" y="50" width="200" height="196" rx="8" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4"/>
+    <text x="36" y="76" font-size="14" font-weight="700" fill="#26282E">Good</text>
+    <rect x="36" y="110" width="140" height="30" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="176" y1="104" x2="176" y2="146" stroke="#611940" stroke-width="3.5"/>
+    <text x="36" y="180" font-size="14" fill="#26282E">Flat, smooth, and</text>
+    <text x="36" y="198" font-size="14" fill="#26282E">at a right angle</text>
+    <text x="36" y="226" font-size="14" fill="#5A5D66">Accepted</text>
+    <rect x="236" y="50" width="200" height="196" rx="8" fill="#FFFFFF" stroke="#A4262C" stroke-width="1.6"/>
+    <text x="252" y="76" font-size="14" font-weight="700" fill="#A4262C">Angled</text>
+    <polygon points="252,110 382,110 402,140 252,140" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <line x1="382" y1="106" x2="404" y2="144" stroke="#A4262C" stroke-width="3.5"/>
+    <text x="252" y="180" font-size="14" fill="#26282E">End face tilted from</text>
+    <text x="252" y="198" font-size="14" fill="#26282E">a right angle</text>
+    <text x="252" y="226" font-size="14" fill="#5A5D66">Over the limit: rejected</text>
+    <rect x="452" y="50" width="200" height="196" rx="8" fill="#FFFFFF" stroke="#A4262C" stroke-width="1.6"/>
+    <text x="468" y="76" font-size="14" font-weight="700" fill="#A4262C">Lip</text>
+    <rect x="468" y="110" width="140" height="30" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <polygon points="608,110 626,114 608,120" fill="#A4262C"/>
+    <line x1="608" y1="106" x2="608" y2="144" stroke="#A4262C" stroke-width="3"/>
+    <text x="468" y="180" font-size="14" fill="#26282E">A ridge of glass left</text>
+    <text x="468" y="198" font-size="14" fill="#26282E">at one edge</text>
+    <text x="468" y="226" font-size="14" fill="#5A5D66">Can trap a bubble</text>
+    <rect x="668" y="50" width="200" height="196" rx="8" fill="#FFFFFF" stroke="#A4262C" stroke-width="1.6"/>
+    <text x="684" y="76" font-size="14" font-weight="700" fill="#A4262C">Hackle</text>
+    <rect x="684" y="110" width="128" height="30" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <path d="M812 106 L822 114 L810 120 L824 126 L812 134 L820 144" fill="none" stroke="#A4262C" stroke-width="3"/>
+    <text x="684" y="180" font-size="14" fill="#26282E">A chipped or broken</text>
+    <text x="684" y="198" font-size="14" fill="#26282E">end face</text>
+    <text x="684" y="226" font-size="14" fill="#5A5D66">Prepare again</text>
+    <text x="20" y="276" font-size="14" fill="#5A5D66">The splicer measures the angle; a lip or a hackle shows in its image of the end.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Four cleaved ends, seen from the side. It has four panels, each showing the end of a fiber.</p>
+    <p>Good: flat, smooth, and at a right angle. Accepted. Angled: end face tilted from a right angle. Over the limit: rejected. Lip: a ridge of glass left at one edge. Can trap a bubble. Hackle: a chipped or broken end face. Prepare again.</p>
+    <p>A note reads: The splicer measures the angle; a lip or a hackle shows in its image of the end.</p>
+  </details>
+
+  <h3>When cleaves keep failing</h3>
+  <p>One rejected cleave is part of the work. A string of rejects from the same cleaver points at the cleaver or at the preparation:</p>
+  <ul>
+    <li>debris on the cleaver&rsquo;s clamp pads, or a blade worn at its current position;</li>
+    <li>coating residue left on the glass;</li>
+    <li>the fiber not lying straight in the cleaver&rsquo;s guide, or set to the wrong cleave length.</li>
+  </ul>
+  <p>Clean the cleaver&rsquo;s pads as its manual sets out, and check the stripped glass for coating residue before you prepare again. Report a cleaver that keeps failing after cleaning: its blade may need turning to a new position.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="Several rejects in a row from one cleaver point at the cleaver or the preparation, so the installer stops and cleans the cleaver&rsquo;s clamp pads as its manual sets out, checks the strip, and prepares again. Raising the limit in the program accepts poor cleaves rather than curing them. Splicing an end over the limit ignores the splicer&rsquo;s check. A mechanical splice depends on the same cleave quality.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another job, the splicer has rejected the last six ends from the same cleaver, each well over the limit. What do you do next?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Clean the cleaver&rsquo;s clamp pads, check the strip, and prepare both fibers again</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Raise the cleave-angle limit in the splicer&rsquo;s program</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Splice the next load whatever its angles, then check the estimate</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Make a mechanical splice instead, since it has no cleave check</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.3" data-lesson-title="Splicing and the Link Build" data-group-num="2" data-group-title="Fusion and Mechanical Splices" data-num="532.3.4" data-title="The fusion splice cycle">
+  <p class="crumb">Lesson 532.3 &middot; Section 2 Fusion and Mechanical Splices</p>
+  <h2><span class="tnum">532.3.4</span> The fusion splice cycle</h2>
+  <p class="lead-in">The splicer aligns the two fibers, fuses them in an arc, and calculates an estimated loss from its image of the joint.</p>
+
+  <h3>Before the first splice</h3>
+  <p>The splicer&rsquo;s <span class="keyterm">program</span> sets the arc, and the limits it checks each splice against, for one type of fiber. Single-mode fiber is spliced on a single-mode program. Check the program, the sleeve heater&rsquo;s setting for your sleeve length, and the battery or power supply before you prepare any fiber.</p>
+
+  <h3>Loading the fibers</h3>
+  <p>Lay each prepared fiber on its own side of the splicer, in the fiber holder for its coating diameter, with the bare glass in the V-groove and the end short of the electrodes, where the splicer&rsquo;s manual shows. Neither end touches anything. Close the lid before you start the cycle. A splicer set to start on its own starts the cycle when the lid closes. The electrodes carry a high voltage during the arc: keep your fingers clear of them.</p>
+
+  <h3>Two ways a splicer aligns</h3>
+  <p>A <span class="keyterm">cladding-alignment</span> splicer lines up the outsides of the two claddings in fixed V-grooves. The cores line up only as well as each core is centered in its cladding. Dirt in a V-groove lifts a fiber out of line. A <span class="keyterm">core-alignment</span> splicer images the two cores and moves the fibers to line them up. Both types show the joint on screen and give an estimated loss. The splicer&rsquo;s manual states which type it is.</p>
+
+  <h3>The cycle</h3>
+  <div class="figure">
+  <div class="cap">Figure &mdash; What the splicer does in one splice</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:900px" viewBox="0 0 900 290" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Three panels of a fusion splice: the fibers aligned with a gap between two electrodes, the arc fusing them, and the joined fiber with an estimated loss calculated from the image. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">What the splicer does in one splice</text>
+    <rect x="20" y="48" width="270" height="160" rx="8" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <text x="36" y="74" font-size="14" font-weight="700" fill="#26282E">1. Image and align</text>
+    <polygon points="145,96 165,96 155,116" fill="#26282E"/>
+    <polygon points="145,176 165,176 155,156" fill="#26282E"/>
+    <rect x="40" y="132" width="106" height="10" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="164" y="132" width="106" height="10" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4"/>
+    <text x="36" y="200" font-size="14" fill="#26282E">Cleave angles measured</text>
+    <rect x="315" y="48" width="270" height="160" rx="8" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <text x="331" y="74" font-size="14" font-weight="700" fill="#26282E">2. Arc and fuse</text>
+    <polygon points="440,96 460,96 450,116" fill="#26282E"/>
+    <polygon points="440,176 460,176 450,156" fill="#26282E"/>
+    <path d="M450 118 L444 126 L456 132 L444 140 L456 146 L450 154" fill="none" stroke="#724DFD" stroke-width="2.5"/>
+    <rect x="335" y="132" width="110" height="10" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="455" y="132" width="110" height="10" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4"/>
+    <circle cx="450" cy="137" r="9" fill="#E7FD82" stroke="#26282E" stroke-width="1"/>
+    <text x="331" y="200" font-size="14" fill="#26282E">Ends softened, pushed together</text>
+    <rect x="610" y="48" width="270" height="160" rx="8" fill="#F0F0F0" stroke="#26282E" stroke-width="1.2"/>
+    <text x="626" y="74" font-size="14" font-weight="700" fill="#26282E">3. Image the joint</text>
+    <rect x="630" y="132" width="230" height="10" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="690" y="92" width="110" height="28" fill="#FFFFFF" stroke="#26282E" stroke-width="1.2"/>
+    <text x="702" y="111" font-size="14" fill="#26282E">Est. loss</text>
+    <text x="626" y="200" font-size="14" fill="#26282E">One continuous fiber</text>
+    <text x="20" y="240" font-size="14" fill="#26282E">The estimate is calculated from the splicer&rsquo;s image of the joint.</text>
+    <text x="20" y="262" font-size="14" fill="#26282E">No light passes through the joint to produce it.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled What the splicer does in one splice. It has three panels.</p>
+    <p>Panel 1, Image and align: two fiber ends face each other with a small gap, between an upper and a lower electrode. Cleave angles measured. Panel 2, Arc and fuse: an arc runs between the electrodes across the gap. Ends softened, pushed together. Panel 3, Image the joint: one continuous fiber, with a screen reading Est. loss.</p>
+    <p>Notes beneath read: The estimate is calculated from the splicer&rsquo;s image of the joint. No light passes through the joint to produce it.</p>
+  </details>
+  <p>The splicer fires a short cleaning arc and sets a small gap between the ends. It then images each end, measures its cleave angle, and rejects the load if either end is over the limit. Next it fires the arc that fuses the fibers. The arc softens the glass, and the splicer pushes the two ends together into one fiber. Last, it images the joint, shows it on screen, and calculates the <span class="keyterm">estimated loss</span> from what the image shows, such as an offset between the two fibers.</p>
+
+  <h3>What the estimate is, and is not</h3>
+  <p>The estimate is the splicer&rsquo;s calculation. The installer uses it to decide whether to keep the splice. It is not a measurement: no light from a source passes through the joint to a meter. The splicer can estimate a joint low while the joint still loses light for a reason the image does not show. A light source and a power meter measure the loss of the whole fiber, both splices and both connectors included: the loss the acceptance test counts. An Optical Time-Domain Reflectometer (OTDR) locates each splice or connector along the fiber and estimates its loss from one direction.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The splicer calculates the estimate from its image of the joint. The installer uses it, with the image, to decide whether to keep the splice. It is not a measured loss: no light passes through the joint to a meter. The loss of the whole run is measured later with a light source and a power meter. The estimate is not given per wavelength.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">What does the splicer&rsquo;s estimated loss tell you?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The loss a power meter would read across the joint</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A loss calculated from the splicer&rsquo;s image of the joint, used to decide whether to keep the splice</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The loss of the whole run, both ends included</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The loss of the joint at 1550 nm only</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.3" data-lesson-title="Splicing and the Link Build" data-group-num="2" data-group-title="Fusion and Mechanical Splices" data-num="532.3.5" data-title="Accepting a splice">
+  <p class="crumb">Lesson 532.3 &middot; Section 2 Fusion and Mechanical Splices</p>
+  <h2><span class="tnum">532.3.5</span> Accepting a splice</h2>
+  <p class="lead-in">The installer decides whether to keep each splice at the splicer, before the lid opens, on the estimate and the joint image together.</p>
+
+  <h3>The accept rule</h3>
+  <p>A splice must meet both conditions of clause F2:</p>
+  <ul>
+    <li>the splicer&rsquo;s estimated loss is <strong>0.30 decibels (dB) or less</strong>;</li>
+    <li>the splicer&rsquo;s image of the joint shows <strong>no bubble, gap, or offset</strong>.</li>
+  </ul>
+  <p>A splice that fails either condition is a <span class="keyterm">re-do</span>. A low estimate does not excuse a visible defect. Clause F6 allows the same 0.3 dB for each splice in the run&rsquo;s loss budget.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>What the splicer&rsquo;s image of the joint can show, and the decision under clause F2.</caption>
+      <thead><tr>
+        <th scope="col">Joint image</th><th scope="col">What it shows</th><th scope="col">Decision</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Clean joint</th><td>One straight fiber, the same width through the joint, no mark at the joint</td><td>Accept if the estimate is 0.30 dB or less</td></tr>
+        <tr><th scope="row">Bubble</th><td>A dark spot or void inside the joint, often from dirt on an end or a lip on a cleave</td><td>Re-do</td></tr>
+        <tr><th scope="row">Gap</th><td>The joint is narrower than the fiber, or the ends have not closed</td><td>Re-do</td></tr>
+        <tr><th scope="row">Offset</th><td>The two claddings meet with a step: one side sits higher than the other</td><td>Re-do</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Making a re-do</h3>
+  <p>Cut out the joint. The sleeve stays on the fiber it was slid onto. Prepare both ends again and splice again. Each re-do shortens the cable fiber and the pigtail it joins, so the slack left in the enclosure shrinks with every attempt.</p>
+
+  <h3>The hold point and the record</h3>
+  <p>A <span class="keyterm">hold point</span> is a step at which work stops until a named person has seen it. On this backbone, the installer shows each result screen to the owner&rsquo;s representative before opening the lid. The installer then decides whether to keep the splice. Record every attempt, the re-dos included: the estimate, what the joint image shows, and the decision.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="Clause F2 needs both conditions: an estimate of 0.30 dB or less and an image with no bubble, gap, or offset. A bubble fails the second condition, so the splice is a re-do, however low the estimate. A note on the record does not make a failed splice acceptable. A VFL shows whether light passes, not whether the joint meets F2.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another job with the same accept rule, the splicer shows an estimated loss of 0.02 dB for a splice, and its joint image shows a small bubble. What do you decide?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Accept: the estimate is far below 0.30 dB</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Accept, and note the bubble in the record</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Re-do: the image shows a bubble</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Accept if a VFL shows no glow at the joint</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.3" data-lesson-title="Splicing and the Link Build" data-group-num="2" data-group-title="Fusion and Mechanical Splices" data-num="532.3.6" data-title="The mechanical splice">
+  <p class="crumb">Lesson 532.3 &middot; Section 2 Fusion and Mechanical Splices</p>
+  <h2><span class="tnum">532.3.6</span> The mechanical splice</h2>
+  <p class="lead-in">A mechanical splice holds two cleaved fibers end to end in an alignment element, with a gel between them, and needs no power.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; A mechanical splice, cut away</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:880px" viewBox="0 0 880 270" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A cutaway side view of a mechanical splice: two fibers enter an alignment groove from each end and meet in index-matching gel, under a cap that locks them. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">A mechanical splice, cut away</text>
+    <rect x="80" y="110" width="720" height="80" rx="10" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+    <rect x="110" y="138" width="660" height="24" fill="#FFFFFF" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="40" y="146" width="398" height="8" fill="#71E2FD" stroke="#26282E" stroke-width="1"/>
+    <rect x="442" y="146" width="398" height="8" fill="#71E2FD" stroke="#26282E" stroke-width="1"/>
+    <ellipse cx="440" cy="150" rx="22" ry="12" fill="#E7FD82" stroke="#26282E" stroke-width="1.2"/>
+    <rect x="300" y="64" width="280" height="30" rx="6" fill="#611940"/>
+    <text x="318" y="84" font-size="14" fill="#FFFFFF">Cap: closed by the assembly tool</text>
+    <line x1="440" y1="94" x2="440" y2="110" stroke="#611940" stroke-width="2.5"/>
+    <text x="40" y="100" font-size="14" fill="#26282E">Fiber in</text>
+    <text x="780" y="100" font-size="14" fill="#26282E">Fiber in</text>
+    <text x="120" y="216" font-size="14" fill="#26282E">Alignment groove: holds both claddings in line</text>
+    <line x1="200" y1="202" x2="200" y2="162" stroke="#26282E" stroke-width="1.2"/>
+    <text x="500" y="240" font-size="14" fill="#26282E">Index-matching gel where the ends meet</text>
+    <line x1="520" y1="226" x2="450" y2="160" stroke="#26282E" stroke-width="1.2"/>
+    <text x="690" y="182" font-size="14" fill="#5A5D66">Body</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled A mechanical splice, cut away. A long body holds a groove along its length. A fiber enters from each end, labeled Fiber in, and the two meet in the middle of the groove inside a drop of gel.</p>
+    <p>Labels: Alignment groove: holds both claddings in line. Index-matching gel where the ends meet. Body. Above the meeting point is a cap, labeled Cap: closed by the assembly tool.</p>
+  </details>
+
+  <h3>How it holds the fibers</h3>
+  <p>The splice element&rsquo;s groove holds the two claddings in line. The <span class="keyterm">index-matching gel</span> has a refractive index close to that of the glass. It fills the space between the two end faces, so less light reflects or scatters where they meet. Closing the cap with the assembly tool grips both fibers in the element.</p>
+
+  <h3>Making one</h3>
+  <ol>
+    <li>Strip and clean each fiber to the lengths on the mechanical splice&rsquo;s product card, not the splicer&rsquo;s.</li>
+    <li>Cleave each fiber. Nothing measures the cleave here: no screen shows the angle, and no estimate follows.</li>
+    <li>Load the element in its assembly tool. Insert one fiber as far as the product card shows, then the other from the far end until the two ends meet.</li>
+    <li>Close the cap with the tool.</li>
+  </ol>
+
+  <h3>Checking it with a VFL</h3>
+  <p>A VFL shows whether light passes through the joint. Plug the fiber&rsquo;s connector into the VFL, point the far end of the fiber at a card, say &ldquo;light on,&rdquo; and switch the VFL on. Then read two places:</p>
+  <ul>
+    <li><strong>The element.</strong> A bright red glow means light is leaving the fiber at the joint: the ends are angled, apart, or dirty. A faint glow can appear at a usable joint.</li>
+    <li><strong>The card.</strong> A red spot from the far end shows that light crosses the joint and reaches the end of the fiber.</li>
+  </ul>
+  <p>Switch the VFL off and say &ldquo;light off.&rdquo; The VFL measures no loss. A light source and a power meter measure the loss of the whole fiber, the joint included.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="A bright glow at the element means light leaves the fiber at the joint, and no spot at the far end means little or none crosses it. The ends are not meeting cleanly, so the splice is made again with fresh cleaves. A glow is not a sign of a good joint. A VFL battery that is low dims the light everywhere; it does not make the element glow brightly. A mechanical splice in single-mode fiber does pass the VFL&rsquo;s light to the far end.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You light a mechanical splice with a VFL. The element glows brightly, and no red spot appears at the far end. What does this result show?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Little or no light crosses the joint: make the splice again with fresh cleaves</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The splice is good: the glow shows light flowing through it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The VFL&rsquo;s battery is low</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The splice is good: a VFL&rsquo;s light never reaches the far end of a single-mode fiber</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.3" data-lesson-title="Splicing and the Link Build" data-group-num="3" data-group-title="Protecting and Storing the Splice" data-num="532.3.7" data-title="Sleeve and heater">
+  <p class="crumb">Lesson 532.3 &middot; Section 3 Protecting and Storing the Splice</p>
+  <h2><span class="tnum">532.3.7</span> Sleeve and heater</h2>
+  <p class="lead-in">A heat-shrink sleeve replaces the coating stripped for the splice and stiffens the joint.</p>
+
+  <h3>What the sleeve is</h3>
+  <p>A <span class="keyterm">heat-shrink splice sleeve</span> is an outer heat-shrink tube with a tube of hot-melt adhesive inside it and a strength rod, usually steel, beside the adhesive tube. When the sleeve is heated, the adhesive melts around the bare glass and the outer tube shrinks onto it. The sleeve&rsquo;s length must match the heater&rsquo;s setting and the slot in the tray. The manufacturer&rsquo;s instructions govern both.</p>
+
+  <h3>Sleeving a splice</h3>
+  <ol>
+    <li>Open the lid and lift the spliced fiber out by its buffer, keeping it straight.</li>
+    <li>Slide the sleeve along until the joint sits at its center. Both ends of the sleeve sit over coating or buffer, so no bare glass is left outside it.</li>
+    <li>Lay the sleeved joint in the heater, straight, and run the heater cycle.</li>
+    <li>When the cycle ends, lift the fiber out by the buffer and let the sleeve cool before you touch it or seat it. A warm sleeve is soft. If it bends while warm, it sets with the joint under strain.</li>
+    <li>Check it: fully shrunk along its length, the fiber straight through it, and no bare glass beyond either end.</li>
+  </ol>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; A sleeve ready to store, and one that is not</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:880px" viewBox="0 0 880 270" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Two sleeved splices compared: one centered with coating or buffer inside both ends, and one off-center with bare glass outside one end. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">A sleeve ready to store, and one that is not</text>
+    <text x="40" y="66" font-size="14" font-weight="700" fill="#26282E">Ready to store</text>
+    <rect x="40" y="90" width="230" height="10" fill="#71E2FD" stroke="#26282E" stroke-width="1"/>
+    <rect x="610" y="90" width="230" height="10" fill="#71E2FD" stroke="#26282E" stroke-width="1"/>
+    <line x1="270" y1="95" x2="610" y2="95" stroke="#26282E" stroke-width="1.6"/>
+    <rect x="240" y="80" width="400" height="30" rx="8" fill="#E7FD82" fill-opacity="0.85" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="440" y1="76" x2="440" y2="114" stroke="#611940" stroke-width="2" stroke-dasharray="4 3"/>
+    <text x="400" y="132" font-size="14" fill="#26282E">Joint at the center</text>
+    <text x="40" y="132" font-size="14" fill="#26282E">Coating or buffer inside both ends</text>
+    <text x="40" y="176" font-size="14" font-weight="700" fill="#A4262C">Not ready</text>
+    <rect x="40" y="200" width="230" height="10" fill="#71E2FD" stroke="#26282E" stroke-width="1"/>
+    <rect x="610" y="200" width="230" height="10" fill="#71E2FD" stroke="#26282E" stroke-width="1"/>
+    <line x1="270" y1="205" x2="610" y2="205" stroke="#26282E" stroke-width="1.6"/>
+    <line x1="270" y1="205" x2="330" y2="205" stroke="#A4262C" stroke-width="4"/>
+    <rect x="330" y="190" width="400" height="30" rx="8" fill="#E7FD82" fill-opacity="0.85" stroke="#26282E" stroke-width="1.4"/>
+    <line x1="440" y1="186" x2="440" y2="224" stroke="#611940" stroke-width="2" stroke-dasharray="4 3"/>
+    <text x="40" y="244" font-size="14" fill="#A4262C">Bare glass outside the sleeve</text>
+    <text x="400" y="244" font-size="14" fill="#26282E">Joint off-center: slide the sleeve before heating</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled A sleeve ready to store, and one that is not. Two spliced fibers are drawn, each with a sleeve over the joint.</p>
+    <p>Ready to store: the joint sits at the center of the sleeve, and the coating or buffer runs inside both ends of the sleeve. Not ready: the sleeve sits off to one side, the joint is off-center, and a length of bare glass is left outside the left end of the sleeve. Labels: Bare glass outside the sleeve. Joint off-center: slide the sleeve before heating.</p>
+  </details>
+
+  <div class="cyu gate" data-answer="1" data-fb="A sleeve is ready to store when it is fully shrunk, the joint is at its center, and coating or buffer sits inside both ends with no bare glass outside. Bare glass beyond an end is unprotected. A warm sleeve is soft and can set with the joint under strain. A sleeve with one end unshrunk has not gripped the fiber along its length.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which sleeved splice is ready to seat in its tray slot?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Fully shrunk, with ~5 mm of bare glass outside one end</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Fully shrunk and cool, the joint centered, coating or buffer inside both ends</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Centered and fully shrunk, still warm from the heater</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Centered and cool, with one end of the sleeve not shrunk</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.3" data-lesson-title="Splicing and the Link Build" data-group-num="3" data-group-title="Protecting and Storing the Splice" data-num="532.3.8" data-title="The splice tray">
+  <p class="crumb">Lesson 532.3 &middot; Section 3 Protecting and Storing the Splice</p>
+  <h2><span class="tnum">532.3.8</span> The splice tray</h2>
+  <p class="lead-in">A splice tray holds each sleeve in its own slot and keeps the stored fiber in curves no tighter than the tray&rsquo;s guides.</p>
+
+  <p>Each rack enclosure and each wall box comes with a <span class="keyterm">splice tray</span>: a shallow tray with a <span class="keyterm">sleeve holder</span> (a row of slots that grip the sleeves) and routing guides around its edge. The holder&rsquo;s type and slot count vary by product; the manufacturer&rsquo;s instructions govern. On this backbone each slot carries a tag with the rack port or coupler number its fiber serves. The <span class="keyterm">strand record</span> lists each fiber of a run with its color, its rack port, and its coupler.</p>
+
+  <h3>Storing a splice</h3>
+  <ul>
+    <li><strong>The slot.</strong> Seat each sleeve flat in the slot tagged for its port or coupler. A sleeve in another fiber&rsquo;s slot leaves the tray and the strand record disagreeing.</li>
+    <li><strong>The guides.</strong> Route both fibers of the splice, the cable fiber and the pigtail, along the guides. The guides keep every curve at or above the tray&rsquo;s minimum bend radius.</li>
+    <li><strong>The slack.</strong> Coil the spare fiber in even loops, all in one direction. The stored slack lets a later installer cut the splice out and make it again.</li>
+    <li><strong>Clear of the lid.</strong> Keep every fiber off the sleeve holder and away from where the lid closes. A fiber across the holder is pinched when the lid comes down.</li>
+    <li><strong>Other runs.</strong> Keep your fibers clear of every other run&rsquo;s fibers. Move no other installer&rsquo;s fiber or sleeve.</li>
+  </ul>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; Routing in a splice tray</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:880px" viewBox="0 0 880 370" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A plan view of a splice tray: fiber enters at the left, loops around the edge along the guides, and ends at a sleeve in the holder, with a wrong route cutting straight across the tray shown dashed. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Routing in a splice tray</text>
+    <rect x="90" y="50" width="700" height="250" rx="30" fill="#FFFFFF" stroke="#26282E" stroke-width="2"/>
+    <path d="M90 110 A60 60 0 0 1 150 50" fill="none" stroke="#71E2FD" stroke-width="10"/>
+    <path d="M730 50 A60 60 0 0 1 790 110" fill="none" stroke="#71E2FD" stroke-width="10"/>
+    <path d="M790 240 A60 60 0 0 1 730 300" fill="none" stroke="#71E2FD" stroke-width="10"/>
+    <path d="M150 300 A60 60 0 0 1 90 240" fill="none" stroke="#71E2FD" stroke-width="10"/>
+    <rect x="350" y="230" width="180" height="48" rx="5" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <rect x="360" y="238" width="20" height="32" rx="3" fill="#E7FD82" stroke="#26282E" stroke-width="1"/>
+    <rect x="386" y="238" width="20" height="32" rx="3" fill="#E7FD82" stroke="#26282E" stroke-width="1"/>
+    <rect x="412" y="238" width="20" height="32" rx="3" fill="#FFFFFF" stroke="#26282E" stroke-width="1"/>
+    <rect x="438" y="238" width="20" height="32" rx="3" fill="#FFFFFF" stroke="#26282E" stroke-width="1"/>
+    <rect x="464" y="238" width="20" height="32" rx="3" fill="#FFFFFF" stroke="#26282E" stroke-width="1"/>
+    <rect x="490" y="238" width="20" height="32" rx="3" fill="#FFFFFF" stroke="#26282E" stroke-width="1"/>
+    <rect x="40" y="160" width="50" height="34" rx="5" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="40" y="150" font-size="14" fill="#26282E">Entry</text>
+    <path d="M90 172 C140 172 130 92 200 86 C330 74 560 74 680 86 C740 94 752 200 730 236 C700 286 560 300 470 290 C420 284 400 276 396 270" fill="none" stroke="#611940" stroke-width="3"/>
+    <path d="M90 182 C150 192 160 120 230 114 C360 104 540 104 640 120 C700 132 704 214 680 244 C640 280 500 284 372 272" fill="none" stroke="#611940" stroke-width="3"/>
+    <text x="250" y="140" font-size="14" fill="#26282E">Even loops, one direction, along the guides</text>
+    <text x="160" y="72" font-size="14" fill="#5A5D66">Corner guide</text>
+    <text x="350" y="324" font-size="14" fill="#26282E">Sleeve holder: one sleeve a slot</text>
+    <path d="M90 190 L360 262" fill="none" stroke="#A4262C" stroke-width="3" stroke-dasharray="8 6"/>
+    <text x="130" y="284" font-size="14" fill="#A4262C">Wrong: straight across</text>
+    <text x="40" y="350" font-size="14" fill="#26282E">The wrong route bends tighter than the guides, stores no slack, and crosses the holder under the lid.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Routing in a splice tray. A rounded rectangular tray has a curved guide at each corner, labeled Corner guide. Fiber enters at the left, labeled Entry.</p>
+    <p>Two fibers loop around the inside edge of the tray along the guides and end at sleeves seated in a holder near the bottom, labeled Even loops, one direction, along the guides, and Sleeve holder: one sleeve a slot. A dashed line runs straight from the entry to the holder, labeled Wrong: straight across. A note reads: The wrong route bends tighter than the guides, stores no slack, and crosses the holder under the lid.</p>
+  </details>
+
+  <h3>Fibers not spliced</h3>
+  <p>A 12-fiber cable may have only two fibers spliced. The rest stay whole and protected: coiled in the storage area of the box or enclosure, clear of the tray lid and the cover, for later work. Close the tray lid, then the drawer or the cover, checking that no fiber is pinched at either.</p>
+
+  <p>Match each fault found in a tray with what it leads to.</p>
+  <div class="match gate" data-left="Fault in the tray" data-right="What it leads to">
+    <div class="pair" data-left="A fiber laid across the sleeve holder" data-right="The fiber is pinched when the lid closes"></div>
+    <div class="pair" data-left="A loop pulled tighter than the corner guide" data-right="Bend loss in the stored fiber"></div>
+    <div class="pair" data-left="A sleeve seated in the slot tagged for another port" data-right="The tray and the strand record disagree"></div>
+    <div class="pair" data-left="Slack cut short to tidy the tray" data-right="No fiber left to cut the splice out and make it again"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.3" data-lesson-title="Splicing and the Link Build" data-group-num="4" data-group-title="Building the Run" data-num="532.3.9" data-title="Route and bend radius">
+  <p class="crumb">Lesson 532.3 &middot; Section 4 Building the Run</p>
+  <h2><span class="tnum">532.3.9</span> Route and bend radius</h2>
+  <p class="lead-in">A fiber cable must follow a wider bend while it is pulled than once it is installed.</p>
+
+  <h3>The minimum bend radius</h3>
+  <p>The <span class="keyterm">bend radius</span> of a cable is the radius of the curve the cable follows where it changes direction. A bend tighter than the cable&rsquo;s minimum lets light escape from the fibers inside and can crack the glass. Clause F3 sets the rule for this backbone: no tighter than the cable manufacturer&rsquo;s minimum bend radius, and in no case less than</p>
+  <ul>
+    <li><strong>20 times the cable&rsquo;s outside diameter</strong> while the cable is pulled;</li>
+    <li><strong>10 times its outside diameter</strong> once it is installed.</li>
+  </ul>
+  <p>The pulling limit is the larger because a cable under tension presses against whatever it bends around, which loads the fibers inside the bend. Where the manufacturer&rsquo;s data sheet gives a larger minimum, the data sheet governs.</p>
+
+  <h3>The bend gauge</h3>
+  <p>A <span class="keyterm">bend gauge</span> is a round object 20 times the cable&rsquo;s outside diameter across. Its radius is half that, 10 times the outside diameter: the installed limit. A bend laid around the gauge, or in a wider curve, meets the installed limit. During the pull, keep every bend at least twice as wide as the gauge.</p>
+
+  <div class="figure">
+  <div class="cap">Figure &mdash; The bend gauge and the two limits</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:900px" viewBox="0 0 900 330" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Two bends of the same cable: an installed bend around a gauge whose radius is ten times the outside diameter, and a wider bend during the pull with a radius of twenty times the outside diameter. A full text description follows.">
+    <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">The bend gauge and the two limits</text>
+    <text x="40" y="62" font-size="14" font-weight="700" fill="#26282E">Installed</text>
+    <circle cx="170" cy="180" r="70" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+    <path d="M40 108 L170 108 A72 72 0 0 1 242 180 L242 300" fill="none" stroke="#611940" stroke-width="5"/>
+    <line x1="170" y1="180" x2="170" y2="112" stroke="#26282E" stroke-width="1.4"/>
+    <text x="106" y="146" font-size="14" fill="#26282E" text-anchor="end">r = 10 &times; d</text>
+    <line x1="110" y1="141" x2="168" y2="141" stroke="#26282E" stroke-width="1"/>
+    <line x1="100" y1="180" x2="240" y2="180" stroke="#26282E" stroke-width="1.2" stroke-dasharray="6 4"/>
+    <text x="114" y="206" font-size="14" fill="#26282E">gauge: 20 &times; d</text>
+    <text x="146" y="224" font-size="14" fill="#26282E">across</text>
+    <text x="440" y="56" font-size="14" font-weight="700" fill="#26282E">While pulled</text>
+    <circle cx="610" cy="210" r="70" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+    <path d="M440 70 L610 70 A140 140 0 0 1 750 210 L750 300" fill="none" stroke="#611940" stroke-width="5"/>
+    <line x1="610" y1="210" x2="610" y2="74" stroke="#26282E" stroke-width="1.4"/>
+    <text x="604" y="122" font-size="14" fill="#26282E" text-anchor="end">r = 20 &times; d</text>
+    <text x="578" y="242" font-size="14" fill="#26282E">the gauge</text>
+    <text x="764" y="200" font-size="14" fill="#26282E">at least twice as</text>
+    <text x="764" y="218" font-size="14" fill="#26282E">wide as the gauge</text>
+    <text x="40" y="320" font-size="14" fill="#5A5D66">d = the cable&rsquo;s outside diameter, from its data sheet. A larger minimum on the data sheet governs.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled The bend gauge and the two limits. It has two parts.</p>
+    <p>Installed: a cable bends around a round gauge through a quarter turn. The radius is marked r = 10 &times; d, and a dashed line across the gauge reads gauge: 20 &times; d across. While pulled: the same cable bends in a wider curve around the same gauge, leaving space between them. The radius is marked r = 20 &times; d, with the label at least twice as wide as the gauge.</p>
+    <p>A note reads: d = the cable&rsquo;s outside diameter, from its data sheet. A larger minimum on the data sheet governs.</p>
+  </details>
+
+  <div class="calc">
+    <table>
+      <caption>Worked bend limits for a 144-fiber backbone cable on another job, outside diameter 0.55 in on its data sheet.</caption>
+      <thead><tr><th scope="col">Limit</th><th scope="col">Value</th></tr></thead>
+      <tbody>
+        <tr><td>Installed minimum bend radius: 10 &times; 0.55 in</td><td class="n">5.5 in</td></tr>
+        <tr><td>Bend gauge across: 20 &times; 0.55 in</td><td class="n">11.0 in</td></tr>
+        <tr><td>Minimum bend radius while pulled: 20 &times; 0.55 in</td><td class="n">11.0 in</td></tr>
+        <tr class="tot"><td>A bend during the pull: at least twice as wide as the gauge</td><td class="n">22.0 in across</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Ties</h3>
+  <p>Clause F3 allows hook-and-loop ties only, tightened by hand, on the cable ladder, in the wall cavity, and at the MIR. No tie may deform the jacket: a tie pulled tight squeezes the fibers inside the cable.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="While the cable is pulled, clause F3 allows no bend tighter than 20 times the outside diameter: 20 &times; 0.48 in = 9.6 in. 4.8 in is the installed limit, 10 times the diameter. 19.2 in is the diameter of a bend at the pulling radius, not the radius. 1.92 in is four times the diameter, which no clause on this backbone uses.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A 96-fiber cable on another job has an outside diameter of 0.48 in on its data sheet, and the data sheet gives no larger minimum. Under the rule of clause F3, what is the tightest bend radius allowed while it is pulled?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>4.8 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>19.2 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>1.92 in</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>9.6 in</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.3" data-lesson-title="Splicing and the Link Build" data-group-num="4" data-group-title="Building the Run" data-num="532.3.10" data-title="The cut length and the pull">
+  <p class="crumb">Lesson 532.3 &middot; Section 4 Building the Run</p>
+  <h2><span class="tnum">532.3.10</span> The cut length and the pull</h2>
+  <p class="lead-in">The team plans each run&rsquo;s cut length before the cable leaves the spool, then pulls the cable by hand along its route.</p>
+
+  <h3>The parts of a cut length</h3>
+  <p>A fiber run is cut once, at the spool. The <span class="keyterm">cut length</span> covers the route and everything stored or worked at each end:</p>
+  <ul>
+    <li><strong>an allowance at each end:</strong> cable inside the enclosure or box, from its cable entry to the end the installer prepares and splices;</li>
+    <li><strong>the drop at the rack:</strong> from the cable ladder down to the enclosure&rsquo;s cable entry;</li>
+    <li><strong>a service loop at each end:</strong> spare cable coiled and tied on the cable ladder, so that an end can be prepared again, or an enclosure moved, without a new cable;</li>
+    <li><strong>the route:</strong> along the cable ladder from the drop to the point where the run leaves the ladder;</li>
+    <li><strong>the drop at the far end:</strong> from the ladder down to the far cable entry.</li>
+  </ul>
+  <p>Add the parts and round the total up to the next whole foot. A run cut long leaves a little more slack. A run cut short cannot be lengthened without a splice in the middle of it.</p>
+
+  <div class="calc">
+    <table>
+      <caption>Worked cut length for a backbone run at Marlow Avenue Clinic (hypothetical), from its equipment room to a floor enclosure.</caption>
+      <thead><tr><th scope="col">Part, and where the figure comes from</th><th scope="col">Length</th></tr></thead>
+      <tbody>
+        <tr><td>Allowance in the equipment-room enclosure, from the clinic&rsquo;s standard</td><td class="n">8 ft</td></tr>
+        <tr><td>Drop from the cable ladder to the enclosure, measured</td><td class="n">7 ft</td></tr>
+        <tr><td>Service loop, equipment-room end, from the clinic&rsquo;s standard</td><td class="n">10 ft</td></tr>
+        <tr><td>Route along the cable ladder, measured</td><td class="n">96 ft 6 in</td></tr>
+        <tr><td>Service loop, floor end, from the clinic&rsquo;s standard</td><td class="n">10 ft</td></tr>
+        <tr><td>Drop from the ladder to the floor enclosure, measured</td><td class="n">9 ft 4 in</td></tr>
+        <tr><td>Allowance in the floor enclosure, from the clinic&rsquo;s standard</td><td class="n">6 ft</td></tr>
+        <tr class="tot"><td>Total 146 ft 10 in. Cut length, rounded up to the next whole foot</td><td class="n">147 ft</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Footage marks</h3>
+  <p>Cable jackets carry <span class="keyterm">footage marks</span>, printed lengths at regular intervals, in feet or in meters, counting up or down along the spool. Read the mark nearest the free end before the pull. Pay out until the marks show the cut length from that reading: add the cut length where the marks count up, subtract it where they count down. Where the marks are in meters, convert the cut length first: feet &times; 0.3048 = meters.</p>
+
+  <h3>Pulling by hand</h3>
+  <ul>
+    <li>Mark the free end with the run identifier on tape before it leaves the spool.</li>
+    <li>Pull the cable, never a fiber. Pull steadily, without jerks, and keep every bend within the pulling limit: at each change of direction, guide the cable around in a wide curve.</li>
+    <li>Keep the cable off the floor and out of walkways.</li>
+    <li>Coil and tie each service loop no tighter than the bend gauge. Cut the cable square at the spool only once the far end is in place.</li>
+    <li>Do not stand on a chair, a table, or a tool chest to reach a cable ladder. Use a step ladder, with a second person at its foot.</li>
+  </ul>
+
+  <div class="cyu gate" data-answer="2" data-fb="98 ft &times; 0.3048 = 29.87 m. The marks count up, so the cut falls 29.87 m past 412 m, at 441.87 m. The 442 m mark is the first whole mark at or beyond it, giving 30 m, ~98 ft 5 in: a few inches long. The 441 m mark leaves the run ~3 ft short. 382 m subtracts, which is the method for marks that count down. 510 m adds 98 as if the marks were in feet.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another job, a run&rsquo;s cut length is 98 ft. The jacket&rsquo;s footage marks are in meters and count up, and the mark at the free end reads 412 m. At which mark do you cut?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>441 m</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>382 m</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>442 m</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>510 m</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.3" data-lesson-title="Splicing and the Link Build" data-group-num="4" data-group-title="Building the Run" data-num="532.3.11" data-title="The wall box and the rack end">
+  <p class="crumb">Lesson 532.3 &middot; Section 4 Building the Run</p>
+  <h2><span class="tnum">532.3.11</span> The wall box and the rack end</h2>
+  <p class="lead-in">At each end of a run, the cable&rsquo;s aramid yarn is anchored where the cable enters. Only the buffered fibers go on to the tray.</p>
+
+  <h3>Mounting the wall box</h3>
+  <p>The drawing set shows a fiber wall box zone on each Face 2 bay. The work order gives the box&rsquo;s position inside that zone, measured from the bay&rsquo;s left edge and from the bottom of the lower panel. Measure the position, hold the box there level, and mark its mounting holes and its cable entry hole. The cable entry hole sits behind the box&rsquo;s own cable entry, so the cable passes from the wall&rsquo;s cavity straight into the box. Fit a liner in the drilled hole so that the panel&rsquo;s raw edge cannot damage the jacket. Fix the box so that it does not move when pressed.</p>
+
+  <h3>Preparing an end</h3>
+  <ol>
+    <li>With a jacket ringer, ring the jacket at the allowance measured from the cable end, then slide the jacket off. Cut the jacket only.</li>
+    <li>Keep the aramid yarn. Secure the cable and its yarn at the enclosure&rsquo;s <span class="keyterm">strain-relief point</span>, just inside its cable entry. On a wall box with only a tie-down point, use that point, as the box&rsquo;s instructions show. A pull on the cable then reaches the enclosure through the yarn and never reaches the fibers. Cut off the yarn beyond that point with Kevlar cutters: aramid yarn dulls ordinary scissors.</li>
+    <li>Inside the enclosure, route only the buffered fibers. Separate the fibers to be spliced. Coil the others in the storage area, clear of the cover.</li>
+    <li>Uncoil the pigtails to be spliced. Keep every connector&rsquo;s dust cap on.</li>
+  </ol>
+
+  <h3>The strand record</h3>
+  <p>The strand record gives each fiber&rsquo;s color, rack port, and coupler. Fiber colors follow the 12-color sequence of ANSI/TIA-598: fiber 1 blue, fiber 2 orange, then green, brown, slate, white, red, black, yellow, violet, rose, and aqua. The owner&rsquo;s addendum assigns the ports and couplers. The installer copies them into the record before the cable is cut. Every splice follows the record.</p>
+
+  <h3>The rack end</h3>
+  <p>At the MIR, lay the drop from the cable ladder to the enclosure along the route posted for it and tie it at the posted points. Several teams share one enclosure. Work only on your own run&rsquo;s cable and fibers, and leave the other teams&rsquo; fibers where they lie.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="Secured at the strain-relief point, the aramid yarn carries any pull on the cable into the enclosure, so the pull never reaches the fibers. The yarn is not a ground: it is not metallic. It does not stop light leaking from the fibers. A VFL needs no yarn to work.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Why is the cable&rsquo;s aramid yarn secured at the strain-relief point inside the enclosure, rather than cut off at the end of the jacket?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The yarn grounds the cable to the enclosure</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A pull on the cable is then carried by the yarn into the enclosure, not by the fibers</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The yarn stops light leaking from the fibers inside the enclosure</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The VFL check needs the yarn in place</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.3" data-lesson-title="Splicing and the Link Build" data-group-num="4" data-group-title="Building the Run" data-num="532.3.12" data-title="Continuity and identity, both ways">
+  <p class="crumb">Lesson 532.3 &middot; Section 4 Building the Run</p>
+  <h2><span class="tnum">532.3.12</span> Continuity and identity, both ways</h2>
+  <p class="lead-in">Once both ends are spliced and stored, a red light sent into one end of a fiber must appear at that fiber&rsquo;s own port or coupler at the other end.</p>
+
+  <h3>What the check proves</h3>
+  <p>Red light at the far end shows <span class="keyterm">continuity</span>: the fiber is whole from end to end, through both splices. Red light at the port or coupler the strand record gives shows <span class="keyterm">identity</span>: the fiber lands where the record says it does. The check runs in each direction, so each installer has evidence from their own end: the light arriving at their own port or coupler.</p>
+
+  <h3>Running it</h3>
+  <ol>
+    <li>Each installer inspects and cleans the end faces of a test cord at the inspection microscope, and cleans the port or coupler with a One-Click cleaner before mating into it (clause F8).</li>
+    <li>The installer at one end plugs the cord into the fiber&rsquo;s port and connects the VFL, says &ldquo;light on,&rdquo; and switches it on.</li>
+    <li>The installer at the other end plugs a cord into the coupler the record gives and points its free end at a card. A red spot on the card shows that the light has arrived.</li>
+    <li>The installer with the VFL switches it off and says &ldquo;light off.&rdquo; The two installers swap roles and repeat, then move to the next fiber.</li>
+  </ol>
+  <p>Never look into a VFL, a connector, or a cord end to see whether it is lit. Read the card.</p>
+
+  <h3>What a VFL can and cannot show</h3>
+  <p>Red light escapes wherever a fiber is broken, bent too tightly, or poorly spliced. It shows as a glow through a light-colored buffer or through some jackets. It does not show through a black jacket. A VFL shows that light reaches a point and where it escapes on the way. It measures no loss: the loss of the fiber takes a light source and a power meter.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="The red spot at coupler 2 when fiber 1&rsquo;s port is lit means the fiber behind fiber 1&rsquo;s port ends at coupler 2. The fibers are crossed between the rack port and the coupler, in a tray or at the pigtails, so the run fails identity. The installer reports it before anything else is done. A spot from the wrong coupler is not a pass. A weak VFL dims the spot; it does not move it. No patch cords at the rack are in the circuit for this check; only the two test cords are.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You light the rack port of fiber 1. Your partner at the wall box sees the red spot from the cord in coupler 2, not coupler 1. What does this show?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Fibers 1 and 2 are crossed between the rack port and the coupler: report it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The run passes: light reached the wall box</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The VFL is too weak to reach coupler 1</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The patch cords at the rack are reversed</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="532.3" data-lesson-title="Splicing and the Link Build" data-group-num="5" data-group-title="Wrapping Up" data-num="532.3.13" data-title="What you covered">
+  <p class="crumb">Lesson 532.3 &middot; Section 5 Wrapping Up</p>
+  <h2><span class="tnum">532.3.13</span> What you covered</h2>
+  <p class="lead-in">An installer prepares and splices each fiber, protects and stores each splice, and builds the run between its two enclosures within the owner&rsquo;s limits.</p>
+
+  <h3>Preparing fiber for a splice</h3>
+  <p>The sleeve goes on before stripping. Strip the buffer and the coating to the product card&rsquo;s lengths, clean the glass once with alcohol, and let nothing touch it. The splicer measures each end&rsquo;s <strong>cleave angle</strong> and rejects one over its program&rsquo;s limit. A string of rejects points at the cleaver or the preparation.</p>
+
+  <h3>Fusion and mechanical splices</h3>
+  <p>The splicer aligns the fibers, fuses them in an arc, images the joint, then calculates an <strong>estimated loss</strong>. The estimate is never a measured loss. Clause F2 accepts a splice at <strong>0.30 dB or less</strong> with a joint image showing <strong>no bubble, gap, or offset</strong>; otherwise it is a re-do. A mechanical splice aligns two cleaved ends in gel and is checked with a VFL: a bright glow at the element means light is lost at the joint, and a spot at the far end means light crosses it. No mechanical splice stays in this plant.</p>
+
+  <h3>Protecting, storing, and building the run</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The build in order, and the rule that governs each step.</caption>
+      <thead><tr>
+        <th scope="col">Step</th><th scope="col">Rule</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Sleeve</th><td>Joint centered, coating or buffer inside both ends, fully shrunk, cool before it is handled</td></tr>
+        <tr><th scope="row">Tray</th><td>Sleeve in its tagged slot; fibers along the guides; even loops in one direction; nothing across the holder or under the lid; no other run disturbed</td></tr>
+        <tr><th scope="row">Bend radius</th><td>No tighter than the manufacturer&rsquo;s minimum, and never under 20 &times; the outside diameter while pulled or 10 &times; once installed; the gauge is 20 &times; the outside diameter across</td></tr>
+        <tr><th scope="row">Ties</th><td>Hook-and-loop only, hand-tight, no jacket deformed</td></tr>
+        <tr><th scope="row">Cut length</th><td>Allowances, both drops, service loops, and route added and rounded up to the next whole foot; cut at the footage mark</td></tr>
+        <tr><th scope="row">Each end</th><td>Box at its position, level, firm, hole lined; aramid yarn at the strain-relief point; only buffered fibers inside; unspliced fibers coiled</td></tr>
+        <tr><th scope="row">Identity</th><td>A VFL spot at the fiber&rsquo;s own port or coupler, in each direction, with &ldquo;light on&rdquo; and &ldquo;light off&rdquo;</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete — continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again — this does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct>=90) msg.textContent='You answered at least 90% of the checks correctly.';
+      else if(pct>=75) msg.textContent='Revisit the topics where you missed a check.';
+      else if(pct>=50) msg.textContent='Go back over the topics where you missed a check.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+<!--
+BUILD FLAGS - UCI 1019 Lesson 532.3 Async Reading v0.1.0 DRAFT, 2026-11-10
+(Module 532, Certified Fiber Optic Technician; built under the delegated mode,
+brief Planning/_AGENT-BRIEF_M532-Readings.md). This comment is visible in the
+page source, so it carries no answer-key value. Not reviewed: language pass
+and cold read to be run by fresh subagents.
+
+SOURCES READ
+- CLAUDE.md; _writing-kit/STYLE-RULES.md (twice); style profile v1.4 to line
+  250; FORMAT-SPEC v1.0 and the 2026 addendum v0.1.0.
+- Module plan v0.1.0 (all sections); lab-build brief (fixed facts); reuse map.
+- Owner's fiber addendum v0.1.0 (F1-F10, as corrected in the file).
+- GLAB 532.3.1: lab, Practice Key Sheet. ALAB 532.3.2: lab, Pair List and
+  Build Inspection Sheet (Sections 0-4). Work orders KC-2633, KC-2634.
+- 528 live pages, fetched 2026-11-10 from
+  platformps.github.io/UCI-2107.1-Async-Learner-Material/528.2_prepterminationtesting.html
+  and .../528.3_lanbuildtroubleshooting.html (v0.3.1). The brief's
+  trailing-slash folder URLs return 404; the pages are .html files at the
+  repository root (GitHub contents API lists 528.1/528.2/528.3 .html).
+- 528 Diagram Library v0.1.0 (SVGs 34-39 read for the splice set) and the
+  Lesson 528.2 / 528.3 .pptx speaker notes (python-pptx).
+
+DECISIONS TAKEN
+- Five sections, 13 topics, in the order of the work: preparation and cleave;
+  fusion, accept rule, mechanical; sleeve and tray; route, cut length, the two
+  ends, identity. No single-topic section.
+- Objectives: the plan's 11 Lesson 532.3 objectives, word for word, in plan
+  order. VFL expanded in the banner on the same screen, before the list.
+- All seven diagrams drawn new in the 2026 palette (Plum titles, Slate text,
+  #5A5D66 secondary, Sky/Luminous/Cloud fills, functional red for faults, UV
+  once for the arc), 1:1 scale, every label 14 px, no tspan. The 528 library
+  SVGs were not copied: they carry the legacy palette, 11 px labels at
+  scale, a tspan, and unsupported figures ("< 0.5 deg", "about 30 mm
+  radius", "about 1 m per side", "a 0.02 dB splice ... can measure 0.4 dB").
+  Their concepts are kept (cleave faults, mechanical cutaway, sleeve, tray).
+- Splicer model not named; alignment type taught both ways, "the splicer's
+  manual states which type it is" (see CONFLICTS 2).
+- No product figure that varies by product is stated: strip and cleave
+  lengths, cleave-angle limit, tray bend radius, cable OD and data-sheet
+  minimum all deferred to the product documents (note on the overview).
+- Owner's fixed values stated because the addendum and the labs state them:
+  F2 0.30 dB with no bubble, gap, or offset; F3 20 x OD while pulled, 10 x OD
+  installed, gauge 20 x OD across, twice as wide as the gauge during the pull; F6 0.3 dB
+  a splice; hook-and-loop ties only; sleeve length per the manufacturer
+  (40 mm removed, FIX1); TIA-598 colors.
+- Held back because they are graded answers or key values: the wall box
+  position (KC-2634), hole size, drilling clearances, the port table and any
+  strand-record row, any run, box or port identifier, any rung gap, route,
+  rise, allowance or cut length on the mock-up, the cable's OD and gauge size,
+  the cleave-angle limit, the re-do stop time, any Pair List figure.
+- Worked examples and checks use other jobs: Marlow Avenue Clinic
+  (hypothetical) and unnamed "other jobs". The bend examples use 144-fiber
+  (0.55 in) and 96-fiber (0.48 in) cables so that no figure can match the
+  mock-up's 12-fiber cable gauge; the cut lengths (147 ft, 98 ft) lie well
+  above the mock-up runs (~50 ft average on a 500 ft spool for ten runs).
+- Instructor not named; the site lead and the owner's representative are the
+  actors (scenario). No AI topic: no Lesson 532.3 lab uses AI (plan section 3).
+- The "string of rejects" wording keeps "run" for the backbone run only.
+- Activity count 13 (acknowledgement included), as on the 527.1 pattern page.
+
+ASSUMPTIONS (not in the module plan)
+- The learner reads this page before the Lesson 532.3 presentation on Day 2;
+  ~60-75 min (audit: ~6,700 words, ~60 min at 112 wpm, plus 12 activities).
+- Acronym expansions in Title Case (Mobile Infrastructure Rack, Subscriber
+  Connector, Visual Fault Locator); dB expanded as "decibels (dB)", unit in
+  lower case.
+- General practice stated without a project source, hedged where needed:
+  core ~9 um, cladding 125 um shared by SM and MM, 250 um coating, 900 um
+  tight buffer; three-hole stripper; alcohol vapor and the arc; cleaver
+  mechanism and the fault causes (pads, blade position, residue, seating);
+  cladding vs core alignment; the estimate computed from the image; joint
+  image defects; mechanical splice element, gel and cap; a faint glow at a
+  usable mechanical joint (from the GLAB 532.3.1 assumption); sleeve
+  construction (heat-shrink tube, hot-melt tube, steel rod) and cooling;
+  tray slack for re-splicing; pulling tension raises the bend limit; aramid
+  yarn dulls ordinary scissors; VFL glow not visible through a black jacket.
+
+CONFLICTS FOUND
+1. Brief source URLs 404 (see SOURCES); the .html files at the repository
+   root were used.
+2. Splicer type checked 2026-11-11: the Fitel Ninja NJ001 is
+   cladding-alignment (fixed V-groove); the objective is correct.
+3. Owner's addendum values (0.30 dB, 0.3 dB, 1.0 dB/km, 20x/10x OD) are
+   inherited and flagged unverified in the addendum itself; used as the
+   owner's figures.
+4. Mechanical splice VFL wording: the GLAB 532.3.1 key scores "whether the
+   element glows" as stated, not as pass/fail; the page teaches that a bright
+   glow means light lost and a faint glow can appear at a usable joint, and
+   that the far-end spot shows light crosses. Consistent with the key.
+
+CHANGED FROM 528 (528.2 topics 528.2.7-528.2.10; 528.3 topics 528.3.3-528.3.7;
+deck notes slides 19-25 of 528.2)
+- Plant: BDI SC/APC square enclosures and the OM1 LAN build replaced by the
+  1019 single-mode backbone: R-119 rack enclosures (FP1-FP3, not named on the
+  page) to R-100 wall boxes on Face 2, over the cable ladder, factory
+  pigtails at both ends, fibers 1 and 2 spliced. Reason: reuse map; plan 4.2.
+- Accept rule: 528's "approved specification" and "displayed result" made
+  concrete as clause F2 (0.30 dB, no bubble, gap, or offset). Reason: brief;
+  addendum F2.
+- Splice selection (528.2.7) cut to the owner's rule: fusion only in the
+  plant, mechanical for restoration (F2, KC-2633). The 528 generic
+  selection factors (lifecycle, cost, schedule) dropped: not a decision the
+  1019 installer makes.
+- Mechanical splice: 3M Fibrlok named in 528; no product named here (R-101
+  not confirmed against the R-097 tool). VFL check of the mechanical splice
+  added (plan objective; GLAB 532.3.1).
+- Splicer setup (528.2.8): "Confirm the exact Fitel Ninja model" dropped;
+  program, heater, power kept; alignment types kept and tightened.
+- Estimate is never measured loss: kept from 528 and made a topic of its own.
+- Hold point (screen shown before the lid opens) added: ALAB 532.3.2.
+- Sleeve and tray (528.2.9): kept and expanded; tagged slots, other runs'
+  fibers, unspliced fibers coiled, from ALAB 532.3.2.
+- Troubleshooting table (528.2.10) cut: OTDR gainer and "good estimate but
+  failed OLTS" rows are testing content; the cleave and joint-image rows kept
+  as the cleave and accept topics.
+- Pathway (528.3.3): 528's "values such as 20x pulling and 10x installed may
+  be used only when..." replaced by F3 as the owner's rule, with the
+  manufacturer's minimum governing where larger; the bend gauge (20 x OD
+  across) added from ALAB 532.3.2. Support spacing (1.2-1.5 m) dropped:
+  the ladder ties are posted by the site lead in the lab.
+- Pull (528.3.4): roles, steady pull, never by a fiber, off the floor kept;
+  firestopping dropped (no penetration on the mock-up); cut length and
+  footage marks added (ALAB 532.3.2 Section 2), worked on another job.
+- Enclosure (528.3.5): OM1/single-mode kit mismatch dropped; strain relief,
+  aramid yarn, only buffered fibers inside, unspliced fibers coiled kept;
+  wall box mounting and lined hole added (ALAB 532.3.2).
+- Polarity and labels (528.3.6, 528.3.7) moved to Lesson 532.4; the strand
+  record (fiber, color, port, coupler) kept here because the build splices
+  to it. MPO polarity dropped (no MPO in 1019).
+- Continuity and identity both ways (528 ALAB 528.3.1) given its own topic.
+- 528 check questions not reused; all checks new.
+- 528 register ("approved", "governing", "manufacturer-approved" on every
+  line) rewritten to the house register; legacy brand replaced by the 2026
+  brand layer.
+
+CHECK QUESTIONS AND ACTIVITIES (for the quiz writer; do not repeat)
+- 532.3.1 CYU: what accepts a run under the addendum: measured insertion loss
+  at 1310 and 1550 nm against the budget (not the estimate, image or VFL).
+- 532.3.2 CYU: sleeve still in the bag after stripping: cut back, slide the
+  sleeve on, prepare again.
+- 532.3.3 CYU: six rejects in a row from one cleaver: clean the pads, check
+  the strip, prepare again (not raise the limit).
+- 532.3.4 CYU: what the estimated loss is: a calculation from the joint
+  image, used to keep or re-do the splice.
+- 532.3.5 CYU: 0.02 dB estimate with a small bubble: re-do.
+- 532.3.6 CYU: mechanical splice glows brightly, no far-end spot: little or
+  no light crosses; re-make with fresh cleaves.
+- 532.3.7 CYU: which sleeve is ready to seat: fully shrunk, cool, centered,
+  coating or buffer inside both ends.
+- 532.3.8 Matching: fiber across the holder / pinched by the lid; loop
+  tighter than the guide / bend loss; sleeve in another port's slot / tray
+  and record disagree; slack cut short / no fiber to re-splice.
+- 532.3.9 CYU: 96-fiber cable, OD 0.48 in: pulling radius 9.6 in.
+- 532.3.10 CYU: cut 98 ft, meter marks counting up from 412 m: cut at 442 m.
+- 532.3.11 CYU: why the aramid yarn is secured at the strain-relief point:
+  the yarn, not the fibers, carries a pull.
+- 532.3.12 CYU: light fiber 1's port, spot at coupler 2: fibers crossed
+  between port and coupler; report.
+- 532.3.13 acknowledgement.
+
+WORKED EXAMPLES (for the quiz writer; do not repeat)
+- 532.3.5 joint-image table (clean, bubble, gap, offset) with decisions.
+- 532.3.9 144-fiber cable, OD 0.55 in: installed 5.5 in, gauge 11.0 in
+  across, pulled 11.0 in radius, 22.0 in across.
+- 532.3.10 Marlow Avenue Clinic cut length: 8 + 7 + 10 + 96 ft 6 in + 10 +
+  9 ft 4 in + 6 = 146 ft 10 in; cut 147 ft.
+
+KEY CHECK
+- Compared with the GLAB 532.3.1 Practice Key Sheet (no numeric answers;
+  photo-based rows; the F2 rule is the owner's), the ALAB 532.3.2 lab and
+  Pair List key (box x 9 1/2, y 16, 3/8 in tolerance, 7/8 in hole, 2 in
+  clearance, ~3 ft loops, 2:40 re-do stop, the strand-record table, every
+  FPn-nn and Wn-2x-F1 identifier, cut-length formula with site figures) and
+  KC-2634. Grep of the rendered text: none of 9 1/2, 3/8, 7/8, 2:40, FP1-3,
+  FO-W, W1-W5, KC-26xx, GLAB, ALAB, HO, Quiz, R-number, D-code, "instructor",
+  or "lab" appears. The cut-length parts are taught as a list, not as the
+  Pair List's formula; the mock-up figures are site-measured and unknown at
+  authoring.
+
+UNVERIFIED
+- Not opened in a browser. Each SVG was rendered to PNG with PyMuPDF and
+  looked at for overlaps (four label collisions fixed); browser rendering
+  of fonts and widths not checked.
+- The general-practice statements under ASSUMPTIONS, against product manuals.
+
+AUDITS (final build)
+- audit_html.py: FAIL (0), WARN (0). ~6,700 words of prose, ~60 min at
+  112 wpm before activities.
+- contrast_audit.py as written: FAIL (1), .order .step.picked .seq scored
+  against the legacy amber token (known tool limitation, FORMAT-SPEC 2026
+  addendum section 6; the brand layer sets White on #8A4B00, 6.8:1; this page
+  has no ordering activity). REPORT (83), as on the 527.1 pattern page.
+  Run again with later custom-property definitions replacing earlier ones
+  (scratch copy of the tool, as the addendum section 6 asks): FAIL (0).
+- Engine check: the three style blocks and the script block are
+  byte-identical to the 527.1 pattern page (checked by script).
+- Self-check: STYLE-RULES re-read; one pass sentence by sentence on the
+  extracted text, ~25 wording changes (and-tails split, agentless passives
+  given an actor, "run of rejects" renamed, unsupported claims removed or
+  hedged: splicer runs only with the lid closed, element not reopenable,
+  pigtail buffer size, alcohol drying and cleave quality). Fresh-reviewer
+  language pass and cold read still owed.
+
+FIX1 (2026-11-11, fresh subagent; record in
+Planning/reviews/FIX1_Readings-532.3-532.4_2026-11-11.md)
+- TECH1 (63 claims): 2 Wrong corrected (a light source and power meter
+  measure the whole fiber; an OTDR measures loss at each event; the VFL
+  paragraph no longer says only a meter measures the joint). Unverifiable 3:
+  2 applied (scissors cut buffered fiber back, the cleaver cuts prepared glass
+  only; "the loss of the fiber" takes a source and meter), 1 held (ladder
+  rule: site safety, outside the technical review). Depends on product 8,
+  all applied: handheld red laser source; cleaver stresses the fiber by
+  tension or a bend; end short of the electrodes as the manual shows;
+  mechanical splice lengths from its product card; sleeve length removed
+  (manufacturer governs, added to the product list in the opening);
+  "coating or buffer inside both ends" (diagram, aria-label, description,
+  option B, summary); splice tray holder type and slot count per product;
+  wall box tie-down point.
+- LP1 (62): all applied, 3 adapted: 838 scissors line merged with the TECH1
+  wording; 964 merged with the TECH1 rewrite; 1353 applied without the added
+  strain-relief clause (an unchecked claim). STRUCTURAL fixed inside the
+  page: V-groove defined at first use (532.3.2); loss budget defined at
+  first use (532.3.1, acceptance bullet); strand record defined in the tray
+  section (532.3.8), its later paragraph reworded so it does not define it
+  twice.
+- Check questions: answers, options, order and script mechanics unchanged.
+  Wording changed in 532.3.1 stem ("Under the owner's addendum, which result
+  decides whether a run is accepted?"), 532.3.3 option A (shortened),
+  532.3.6 and 532.3.12 stems ("this result" / "this"), 532.3.7 option B
+  ("coating or buffer"), and several feedback texts. The result messages in
+  the script were replaced (LP1 script row), so the script block is no
+  longer byte-identical to the 527.1 pattern page; logic unchanged.
+- Defaults: neither orchestrator default applies to this page (no cord
+  acceptance figure, no 606 citation); 532.3.12 now says "test cord".
+- Audits after FIX1: audit_html.py FAIL 0, WARN 0 (6,905 words, ~62 min);
+  contrast_audit.py FAIL 1 (known engine-amber limitation), REPORT 83.
+- Not re-reviewed: a confirmation language pass on the FIX1 text is owed.
+- Splicer fixes 2026-11-11: TECH2 4 applied / 0 held. Row 40: "before it
+  arcs" -> "before it fuses the fibers". Row 42: the program sets the arc and
+  the limits it checks each splice against (the fixed V-grooves set the
+  alignment). Row 46: the cycle paragraph in the splicer's order (cleaning
+  arc, gap, cleave check, fusion arc, joint image, estimate); "a bend in the
+  core" removed; figure panels unchanged. Row 44 and the holder gap: the
+  fiber holder for the coating diameter, and auto-start on lid close, added
+  at loading. Objective kept as written.
+- Consistency fixes 2026-11-11: topic 532.3.6 mechanical splice: first fiber inserted "as far as the product card shows" (the lab's wording; a Fibrlok element gives the first fiber no stop). audit_html FAIL 0 WARN 0; contrast_audit FAIL 1 (known engine-amber limitation) REPORT 83. Not re-reviewed.
+- Final language pass 2026-11-11 (LPF): 3 applied / 0 held. Activity count 13 -> 12 (11 checks + 1 matching, counted from the page) in the header and the overview stat. OTDR sentence in 532.3 now "locates ... and estimates its loss from one direction", as in Lesson 532.2. audit_html.py FAIL 0 WARN 0; contrast_audit.py FAIL 1 (known engine-amber limitation). Not re-reviewed. The "an OTDR measures loss at each event" line above is in these flags only, not on the page.
+-->
+
+</body>
+</html>
