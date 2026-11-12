@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 535 (M09) - Network Fundamentals for Low Voltage Technicians
+  Lesson 535.7 - Port Map, As-Built and Hand-Off (Async Reading)
+  VERSION: v0.1.0  (2026-11-11)  DRAFT - for review
+
+  CHANGES IN v0.1.0
+  First issue. Adapted from the UCI 2107.1 page
+  529.6_portmapasbuilthandoff.html (v0.2.0; the live copy at
+  platformps.github.io is byte-identical to the local file, checked
+  2026-11-11) and rebuilt for UCI 1019 (see CHANGED FROM 529 in the BUILD
+  FLAGS).
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox), the 2026 brand
+  layer and the .calc component sheet copied from
+  UCI-1019_M532_Lesson-532.1_Async-Reading_v0.1.0_DRAFT.html. Appended after
+  them: the .cli console sheet in 2026 colours, copied unchanged from
+  UCI-1019_M527_Lesson-527.3_Async-Reading_v0.1.0_DRAFT.html. Logo: inline
+  Slate SVG.
+
+  OBJECTIVES, from the module plan v0.1.0 section 5, Lesson 535.7 (plan
+  wording; MAC, VLAN, IP and AI expanded on the page).
+    Record      port-to-device assignments                           9.5.1
+    Record      the MAC address, VLAN, IP address, and addressing    9.5.2, 9.5.3
+                method of the device on each outlet (fix round 1,
+                pending item 36)
+    Cross-check cable labels against port records                    9.5.1
+    Record      verification and test results                        9.5.5
+    Generate    an AI-assisted port map and as-built                 9.5 (AI)
+    Verify      the documentation against the physical install       9.5.5
+    Hand off    the record with credentials kept out of it           9.5.6
+
+  TOPIC OUTLINE
+    Section 1  The Records You Leave Behind
+      535.7.1   What the next technician inherits          entry point; Record
+      535.7.2   A port map row and its network fields      Record (both)
+      535.7.3   Reading each value off the equipment       Record (network fields)
+      535.7.4   The as-built and the test record           Record (results)
+    Section 2  Proving the Records and Handing Them Over
+      535.7.5   Checking labels against rows               Cross-check
+      535.7.6   Drafting the records with an AI assistant  Generate
+      535.7.7   Reading the records back against the bay   Verify
+      535.7.8   Credentials and the hand-off               Hand off
+    Section 3  Wrapping Up
+      535.7.9   What you covered                           summary
+
+  ACTIVITY GATES: 10 - 8 single-answer checks, 1 card set, 1
+    acknowledgement (the page counts 9 activities; the acknowledgement is
+    not counted, as on the 532 pattern page).
+  DIAGRAMS: 2 original SVG, each with a full text description.
+  IMAGES: none.
+
+  Build flags, decisions, assumptions, the list of every check question and
+  worked example, and the audit results are in the BUILD FLAGS comment at the
+  end of this file.
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 535.7 - Port Map, As-Built and Hand-Off &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+<style>
+  /* Console transcript component sheet, recoloured to the 2026 palette.
+     Structure as the .cli sheet of the 2107.1 Module 529 pages; appended
+     after the brand layer. Slate title bar with White text (14.7:1), Slate
+     output on White, Plum command, #5A5D66 prompt (6.6:1), Cloud read-back
+     strip with Slate text (12.9:1). */
+  .cli{background:#FFFFFF;border:1.6px solid #26282E;border-radius:8px;margin:18px 0;overflow:hidden}
+  .cli .cli-ttl{background:#26282E;color:#FFFFFF;font-weight:700;font-size:.95rem;padding:9px 14px}
+  .cli .cli-body{overflow-x:auto;padding:12px 14px;background:#FFFFFF}
+  .cli pre{margin:0;min-width:520px;color:#26282E;background:#FFFFFF;
+    font-family:Consolas,ui-monospace,"Liberation Mono",monospace;font-size:.92rem;line-height:1.7}
+  .cli .pr{color:#5A5D66;background:#FFFFFF}
+  .cli .cmd{color:#611940;background:#FFFFFF;font-weight:700}
+  .cli .out{color:#26282E;background:#FFFFFF}
+  .cli .cli-foot{border-top:1px solid #D4D5D8;padding:10px 14px;color:#26282E;font-size:.95rem;background:#F0F0F0}
+  .cli .cli-foot p{margin:0 0 6px}
+  .cli .cli-foot p:last-child{margin-bottom:0}
+  .cli .cli-foot ul{margin:0;padding-left:20px}
+  .cli .cli-foot li{margin:4px 0}
+  .cli .cli-foot code{background:#FFFFFF;color:#26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Network Fundamentals for Low Voltage Technicians</b> &middot; Lesson 535.7 - Port Map, As-Built and Hand-Off</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Network Fundamentals for Low Voltage Technicians</p>
+      <h2 id="ovh" tabindex="-1">Lesson 535.7 - Port Map, As-Built and Hand-Off</h2>
+      <p class="lead-in">How an installer writes down what each outlet is connected to and which network it serves, checks the records against the labels and the equipment, and hands them to a named person with every credential kept out.</p>
+
+      <p>Kestrel Communications has turned up the network on the Level 2 installation mock-up of the Harlow Street Operations Center, project HSOC-26-014. Before the owner, Calder Regional Services, accepts it, Kestrel hands Calder&rsquo;s network team a record of every outlet: what it is connected to, which network it serves, what was tested, and what is still open.</p>
+
+      <p>Six months from now, a technician who has never been in the building arrives with a work order naming an outlet and a device. Which switch port serves that outlet? Which network is it on, and what address does the device hold? Was the run tested, and by whom? The answers are whatever the records say.</p>
+
+      <p>The worked examples on this page come from other jobs, not from the mock-up.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>The Records You Leave Behind.</b> The port map, the as-built, and the test record; the network fields of a port map row; where each value is read; and what a test record may claim.</li>
+        <li><b>Proving the Records and Handing Them Over.</b> Checking labels against the rows in both directions, drafting the records with an Artificial Intelligence (AI) assistant, reading the records back against the bay, and the hand-off with credentials kept out.</li>
+        <li><b>Wrapping Up.</b> A summary of each section.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>3</b><span>Sections</span></div>
+        <div class="ov-stat"><b>9</b><span>Topics</span></div>
+        <div class="ov-stat"><b>9</b><span>Activities</span></div>
+        <div class="ov-stat"><b>2</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the documents and the equipment</h3>
+      <p>The project document named on this page is the <strong>Kestrel Network Plan</strong>, a fictional document written for the mock-up; its sections 4, 5, and 6 give the labeling scheme, what an installer may change, and the rule on credentials. ANSI/TIA-606-D, the administration standard of the American National Standards Institute (ANSI) and the Telecommunications Industry Association (TIA), is cited by designation and described, not reproduced. Values are read from three platforms: Windows 11, Cisco switches running the Internetwork Operating System (IOS), and the UniFi Network application, whose screens change between versions.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or go to any topic
+         from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks&mdash;a
+         knowledge check or a set of cards to open.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. The lesson takes ~50&ndash;65 min, including the activities.
+         The header and the contents list show your progress through the lesson.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description, console output is plain text rather than an image, and each table has column headings and a caption.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 535.7</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="535.7" data-lesson-title="Port Map, As-Built and Hand-Off" data-group-num="1" data-group-title="The Records You Leave Behind" data-num="535.7.1" data-title="What the next technician inherits">
+  <p class="crumb">Lesson 535.7 &middot; Section 1 The Records You Leave Behind</p>
+  <h2><span class="tnum">535.7.1</span> What the next technician inherits</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 535.7</span>
+    <h3>Port Map, As-Built and Hand-Off</h3>
+    <p>The cabling and the switch ports stay in the building, and so do the records. The installer writes down what each outlet is connected to, which network it serves, and what was tested. The installer then checks the records against the labels and the equipment, and hands them to a named person with every credential kept out.</p>
+    <p class="lb-meta"><b>3</b> sections &nbsp;&middot;&nbsp;
+       <b>9</b> topics &nbsp;&middot;&nbsp;
+       <b>9</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 535.7 you will be able to</div>
+    <ul>
+      <li><b>Record</b> port-to-device assignments.</li>
+      <li><b>Record</b> the Media Access Control (MAC) address, Virtual Local Area Network (VLAN), Internet Protocol (IP) address, and addressing method of the device on each outlet.</li>
+      <li><b>Cross-check</b> cable labels against port records.</li>
+      <li><b>Record</b> verification and test results.</li>
+      <li><b>Generate</b> an Artificial Intelligence (AI)-assisted port map and as-built.</li>
+      <li><b>Verify</b> the documentation against the physical install.</li>
+      <li><b>Hand off</b> the record with credentials kept out of it.</li>
+    </ul></div>
+
+  <p class="lead-in">An installation is finished when someone else can work on it without calling the installer. Three records answer the questions that person would otherwise ask.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The three records, the question each answers, and who reads it.</caption>
+      <thead><tr>
+        <th scope="col">Record</th><th scope="col">The question it answers</th><th scope="col">Who reads it</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Port map</th><td>Which switch port serves this outlet, which network it is on, and what device is on it</td><td>Whoever takes the next fault on that outlet, or moves a device</td></tr>
+        <tr><th scope="row">As-built</th><td>Where each outlet and device is, and how each is labeled</td><td>Whoever has to find an outlet or a device, or plans work in the same space</td></tr>
+        <tr><th scope="row">Test record</th><td>What each run measured, when, with which tool, and who took the reading</td><td>Whoever is asked whether the work was done, and to what standard</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Open each card.</p>
+  <div class="revealset gate"><div class="cards stack">
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">Port map</span>
+      <span class="rcard-sub">The state of every position now</span>
+      <span class="rcard-detail" hidden><p>One row for each position the patch panel terminates, holding its identifiers and what serves it today. A row says where a cord goes now, not where it went last month; a site that wants the history keeps a change log beside the map.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">As-built</span>
+      <span class="rcard-sub">A record of what went in</span>
+      <span class="rcard-detail" hidden><p>A drawing or a schedule of the finished installation: where each outlet and device is, and the label at each end of each run. It is not the design drawing, which records what was intended before anyone pulled a cable.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">Test record</span>
+      <span class="rcard-sub">A result with a date on it</span>
+      <span class="rcard-detail" hidden><p>What was measured on a run, the result, the tool, the date, and who took the reading. It describes one day: a run that tested good in March can fail in April.</p></span>
+    </button>
+  </div></div>
+
+  <h3>The identifier joins the records</h3>
+  <p>One outlet carries the same identifier on its faceplate, in its port map row, in the as-built, and on its line in the test record. Where two records name it differently, a reader cannot move from one to the other.</p>
+  <p>ANSI/TIA-606-D, from the American National Standards Institute (ANSI) and the Telecommunications Industry Association (TIA), treats identifiers, labels, and records as one subject. It sets out how an identifier is built and leaves the values to the site. It expects the site to keep its labels and its records in step. Before you read a label or write one, find the scheme it was written to. On the mock-up, section 4 of the Kestrel Network Plan gives it.</p>
+  <p>Find out, too, where each record lives and which ones you may change. A correct record written into the wrong file leaves the site with two records that disagree.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The as-built records where each outlet and device is, so it puts you in the right place. The port map gives the switch port and the network for the outlet, which you need next. The test record gives what the run measured. The faceplate label names the outlet once you are standing at it.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You are sent to replace the camera served by outlet 3B-11 in a building you have never visited. Which record tells you where the camera is?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The port map</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The as-built</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The test record</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The label on the faceplate</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.7" data-lesson-title="Port Map, As-Built and Hand-Off" data-group-num="1" data-group-title="The Records You Leave Behind" data-num="535.7.2" data-title="A port map row and its network fields">
+  <p class="crumb">Lesson 535.7 &middot; Section 1 The Records You Leave Behind</p>
+  <h2><span class="tnum">535.7.2</span> A port map row and its network fields</h2>
+  <p class="lead-in">A port map row ties an outlet to the switch port that serves it and to the network that port puts it on.</p>
+
+  <p>The cabling fields of a row were fixed when the building was cabled: the outlet label and the panel port. The network fields describe what the outlet serves today. Each is read off the equipment.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The fields of a port map row for an outlet in service.</caption>
+      <thead><tr>
+        <th scope="col">Field</th><th scope="col">What it holds</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Outlet and panel port</th><td>The labels at each end of the run</td></tr>
+        <tr><th scope="row">Switch and port</th><td>The switch&rsquo;s label and the port, as the switch names it</td></tr>
+        <tr><th scope="row">VLAN</th><td>The VLAN the switch port is in</td></tr>
+        <tr><th scope="row">Device and MAC address</th><td>What is connected, and the MAC address the switch learned on the port</td></tr>
+        <tr><th scope="row">IP address and method</th><td>The device&rsquo;s IP address and mask, and how it got them: from a Dynamic Host Configuration Protocol (DHCP) server, or set by hand (static)</td></tr>
+        <tr><th scope="row">Gateway and DNS</th><td>The default gateway and the Domain Name System (DNS) servers the device uses</td></tr>
+        <tr><th scope="row">State, last changed, test reference</th><td>In service, spare, reserved, or retired; the date the row was last written; where the test result for the run is kept</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Part of a port map on another job: telecommunications room TR-2, panel C.</caption>
+      <thead><tr>
+        <th scope="col">Outlet</th><th scope="col">Panel port</th><th scope="col">Switch, port</th><th scope="col">VLAN</th><th scope="col">Device, MAC address</th><th scope="col">IP address, method</th><th scope="col">State</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">3B-05</th><td>C / 05</td><td>SW-2, Gi0/17</td><td>140</td><td>Laptop, aa11.bb22.cc44</td><td>192.168.70.131 /24, DHCP</td><td>In service</td></tr>
+        <tr><th scope="row">3B-06</th><td>C / 06</td><td>SW-2, Gi0/18</td><td>140</td><td>Printer, aa11.bb22.cc55</td><td>192.168.70.20 /24, static</td><td>In service</td></tr>
+        <tr><th scope="row">3B-07</th><td>C / 07</td><td>Not patched</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>Spare</td></tr>
+        <tr><th scope="row">3B-08</th><td>C / 08</td><td>Not patched</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>Retired</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The extract leaves out the gateway, DNS, last-changed, and test-reference columns to fit the page. An address is written with its mask in short form: /24 means that the first three numbers of the address name its network. Outlet 3B-07 is terminated and tested and waits for a device. Outlet 3B-08 stays in the map as retired, so that the next technician does not patch it expecting a working run.</p>
+
+  <h3>Rules for the whole map</h3>
+  <ul>
+    <li><strong>No two rows name the same switch port.</strong> A port serves one outlet at a time. Two rows naming one port mean one of them is out of date; the map cannot say which.</li>
+    <li><strong>A position taken out of service keeps its row,</strong> with its state changed to retired and dated.</li>
+    <li><strong>Write down the old value before you type the new one,</strong> in the change log or with the job paperwork. Write it at the outlet, not at the end of the day.</li>
+    <li><strong>A spare position gets a row,</strong> marked spare. A spare position with no row looks to the next technician like a position that does not exist.</li>
+  </ul>
+
+  <div class="cyu gate" data-answer="2" data-fb="A port serves one outlet at a time, so two rows naming Gi0/18 cannot both be true. The map cannot say which is current. A retired row and a spare row with nothing patched are both correct. Two rows changed on the same day mean only that two outlets were worked on that day.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which finding shows that a port map contradicts itself?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>A retired row with no switch port</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A spare row with no switch port</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Two rows naming SW-2, Gi0/18</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Two rows last changed on the same date</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.7" data-lesson-title="Port Map, As-Built and Hand-Off" data-group-num="1" data-group-title="The Records You Leave Behind" data-num="535.7.3" data-title="Reading each value off the equipment">
+  <p class="crumb">Lesson 535.7 &middot; Section 1 The Records You Leave Behind</p>
+  <h2><span class="tnum">535.7.3</span> Reading each value off the equipment</h2>
+  <p class="lead-in">Each value in a row is read on one platform. The evidence for it names that platform, so a reader knows where to read it again.</p>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; Where each value of a row is read</div>
+    <div class="tbl-scroll">
+    <svg style="min-width:900px" viewBox="0 0 900 270" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Three platforms, Windows, IOS on the switch, and the UniFi Network application, each with the values of a port map row read from it. A full text description follows.">
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Where each value of a row is read</text>
+      <rect x="24" y="46" width="270" height="44" rx="8" fill="#71E2FD" stroke="#26282E" stroke-width="1.6"/>
+      <text x="159" y="74" font-size="15" font-weight="700" text-anchor="middle" fill="#26282E">Windows: ipconfig /all</text>
+      <rect x="24" y="96" width="270" height="150" rx="8" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4"/>
+      <text x="40" y="122" font-size="13" fill="#26282E">MAC address (Physical Address)</text>
+      <text x="40" y="146" font-size="13" fill="#26282E">IPv4 address and mask</text>
+      <text x="40" y="170" font-size="13" fill="#26282E">DHCP or static (DHCP Enabled)</text>
+      <text x="40" y="194" font-size="13" fill="#26282E">Default gateway</text>
+      <text x="40" y="218" font-size="13" fill="#26282E">DNS servers</text>
+      <rect x="315" y="46" width="270" height="44" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="450" y="74" font-size="15" font-weight="700" text-anchor="middle" fill="#26282E">IOS: the switch console</text>
+      <rect x="315" y="96" width="270" height="150" rx="8" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4"/>
+      <text x="331" y="122" font-size="13" fill="#26282E">The port the MAC address is on</text>
+      <text x="331" y="146" font-size="13" fill="#26282E">The VLAN it arrived in</text>
+      <text x="331" y="170" font-size="13" fill="#26282E">The port&#8217;s Status and Vlan</text>
+      <text x="331" y="194" font-size="13" fill="#5A5D66">show mac address-table address</text>
+      <text x="331" y="218" font-size="13" fill="#5A5D66">show interfaces &lt;port&gt; status</text>
+      <rect x="606" y="46" width="270" height="44" rx="8" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <text x="741" y="74" font-size="15" font-weight="700" text-anchor="middle" fill="#26282E">UniFi Network application</text>
+      <rect x="606" y="96" width="270" height="150" rx="8" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4"/>
+      <text x="622" y="122" font-size="13" fill="#26282E">A port&#8217;s client MAC address</text>
+      <text x="622" y="146" font-size="13" fill="#26282E">The port&#8217;s native network</text>
+      <text x="622" y="170" font-size="13" fill="#26282E">Each network&#8217;s VLAN ID</text>
+      <text x="622" y="194" font-size="13" fill="#5A5D66">Port view; Settings, Networks</text>
+      <text x="622" y="218" font-size="13" fill="#5A5D66">(names vary by version)</text>
+    </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Where each value of a row is read, and shows three columns. Windows, ipconfig /all: MAC address (Physical Address); IPv4 address and mask; DHCP or static (DHCP Enabled); default gateway; DNS servers. IOS, the switch console: the port the MAC address is on; the VLAN it arrived in; the port&rsquo;s Status and Vlan; read with show mac address-table address and show interfaces followed by the port and status.</p>
+    <p>UniFi Network application: a switch port&rsquo;s client MAC address; the port&rsquo;s native network; each network&rsquo;s VLAN ID; read in the port view and in Settings, Networks; the names vary by version.</p>
+  </details>
+
+  <h3>One MAC address, two forms</h3>
+  <p>A MAC address is 12 hexadecimal digits, 0 to 9 and a to f. Windows writes them in six pairs separated by hyphens; a Cisco switch writes them in three groups of four separated by dots. <code>AA-11-BB-22-CC-44</code> in <code>ipconfig /all</code> is <code>aa11.bb22.cc44</code> on the switch.</p>
+
+  <h3>Reading the switch port</h3>
+  <p>With the laptop sending traffic, for example running <code>ping -t</code> to its gateway, look up its MAC address on the switch with <code>show mac address-table address</code> (on older releases, <code>show mac-address-table address</code>), then read that port&rsquo;s own status line. In <code>show interfaces &lt;port&gt; status</code>, the port name takes the switch&rsquo;s form: <code>Gi0/17</code> on a Catalyst 2960G, <code>Gi1/0/17</code> on a Catalyst 3750G.</p>
+  <div class="cli">
+    <div class="cli-ttl">show interfaces Gi0/17 status &mdash; one port on another job&rsquo;s switch</div>
+    <div class="cli-body"><pre><span class="pr">SW-2&gt;</span> <span class="cmd">show interfaces Gi0/17 status</span>
+
+<span class="out">Port      Name               Status       Vlan       Duplex  Speed Type
+Gi0/17                       connected    140        a-full a-1000 10/100/1000BaseTX</span></pre></div>
+    <div class="cli-foot">
+      <ul>
+        <li><b>Status</b> <code>connected</code> &mdash; the port has a link. <b>Vlan</b> <code>140</code> &mdash; the VLAN that goes in the row.</li>
+        <li><b>Duplex</b> and <b>Speed</b> &mdash; how the link came up, negotiated (<code>a-</code>) at full duplex and 1000 megabits per second (Mbps). <b>Name</b> is a description typed on the port; <b>Type</b> is what the port is built for.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>A camera&rsquo;s row</h3>
+  <p>A camera cannot be read with <code>ipconfig</code>. Take its IP address and addressing method from the card kept with the camera, and prove the address with a ping reply. The controller&rsquo;s client list gives the camera&rsquo;s MAC address and port, and may show no IP address for it.</p>
+
+  <h3>Labeling the evidence by platform</h3>
+  <p>Caption each screenshot or photograph with its platform and what it shows: <em>Windows: ipconfig /all, Ethernet adapter</em>; <em>IOS: show interfaces Gi0/17 status</em>; <em>UniFi: Networks list</em>. A reader checking a value later knows which screen to open.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="The laptop knows its own MAC address, IP address, mask, gateway, DNS servers, and whether it uses DHCP. It does not know which switch port it is connected to. The switch reports that, in its MAC address table. The other three are all in ipconfig /all.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which value of a port map row cannot be read from the laptop on the outlet?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The laptop&rsquo;s MAC address</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Whether the laptop&rsquo;s address came from DHCP</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The default gateway the laptop uses</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The switch port the outlet is patched to</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.7" data-lesson-title="Port Map, As-Built and Hand-Off" data-group-num="1" data-group-title="The Records You Leave Behind" data-num="535.7.4" data-title="The as-built and the test record">
+  <p class="crumb">Lesson 535.7 &middot; Section 1 The Records You Leave Behind</p>
+  <h2><span class="tnum">535.7.4</span> The as-built and the test record</h2>
+  <p class="lead-in">The as-built says where things are. The test record says what a tool showed, on what day, and claims nothing more.</p>
+
+  <h3>A location someone can walk to</h3>
+  <p>An as-built entry for an outlet or a device gives its location and its labels:</p>
+  <ul>
+    <li><strong>The space,</strong> such as a room or a wall.</li>
+    <li><strong>The position in it,</strong> measured from something that will still be there next year. A position measured from a desk fails the week the desks move.</li>
+    <li><strong>How it is mounted,</strong> such as on a wall, a ceiling, or a pole.</li>
+    <li><strong>Which way it faces,</strong> for a camera or a directional antenna.</li>
+    <li><strong>The label at each end of the run.</strong></li>
+  </ul>
+  <p>The as-built carries a date and a revision mark, so that a reader can tell it from the drawing it replaced. A device and the outlet it is connected to are two positions; record both.</p>
+
+  <h3>One line of a test record</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>What one line of a test record carries.</caption>
+      <thead><tr>
+        <th scope="col">Field</th><th scope="col">What goes in it</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Run</th><td>The outlet and the panel port it lands on</td></tr>
+        <tr><th scope="row">Test</th><td>Each test named: wiremap, length. The word <em>tested</em> alone does not say which</td></tr>
+        <tr><th scope="row">Result</th><td>What the tool showed, as it showed it</td></tr>
+        <tr><th scope="row">Tool</th><td>The make and model</td></tr>
+        <tr><th scope="row">Date and taken by</th><td>When the reading was taken, and the name of whoever held the tool</td></tr>
+        <tr><th scope="row">Limitation</th><td>What the test does not show, or <em>none</em></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Verified is not certified</h3>
+  <p>A wiremap tester, a <span class="keyterm">verifier</span>, shows how a run is wired: each conductor reaching its pin, and the length. A <span class="keyterm">certification tester</span> measures how the run carries a signal and reports it against the limits of a named category. A line built from a wiremap may say the run is wired correctly, on the day it was tested. It may not say the run meets a category, because nothing in it measured one. The wiremap tester on the mock-up also does not detect a split pair, a fault in which one signal pair is made of wires from two different twisted pairs. Write that on the Limitation line.</p>
+  <p>A site that wants a category on the record is asking for a certification test, with a different instrument.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="A wiremap shows how a run is wired, not how it performs, so no reading in that record supports a category. The other three report what the tool showed, or what it cannot show: the result with its tool, the tester&rsquo;s limitation, and the date with the name of the person who took it.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A test record for one run holds a wiremap result from a wiremap tester. Which line claims more than the reading supports?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Certified to Category 6 as a permanent link</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Wiremap: all eight conductors pin to pin, tester named on this line</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Limitation: split pair not detected by this tester</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Taken on 2026-06-18 by J. Ruiz</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.7" data-lesson-title="Port Map, As-Built and Hand-Off" data-group-num="2" data-group-title="Proving the Records and Handing Them Over" data-num="535.7.5" data-title="Checking labels against rows">
+  <p class="crumb">Lesson 535.7 &middot; Section 2 Proving the Records and Handing Them Over</p>
+  <h2><span class="tnum">535.7.5</span> Checking labels against rows</h2>
+  <p class="lead-in">A row&rsquo;s identifier appears on the hardware in more than one place. Check each place.</p>
+
+  <p>An outlet&rsquo;s identifier is on its faceplate. The panel port it lands on carries a label in the rack. Many sites also label the cable at each end, behind the faceplate and behind the panel. The switch port carries no site label: check its row by reading the switch.</p>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; One row, checked in the places it names</div>
+    <div class="tbl-scroll">
+    <svg style="min-width:900px" viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="One port map row at the top, with lines to the places where it is checked: the faceplate, the panel port label, and the switch, which carries no site label and is read rather than labeled. Below, the two directions of a label check. A full text description follows.">
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">One row, checked in the places it names (another job)</text>
+      <rect x="230" y="44" width="440" height="40" rx="8" fill="#71E2FD" stroke="#26282E" stroke-width="1.6"/>
+      <text x="450" y="69" font-size="14" font-weight="700" text-anchor="middle" fill="#26282E">Row: 3B-05, C / 05, SW-2 Gi0/17, VLAN 140</text>
+      <line x1="300" y1="84" x2="160" y2="120" stroke="#26282E" stroke-width="1.4"/>
+      <line x1="450" y1="84" x2="450" y2="120" stroke="#26282E" stroke-width="1.4"/>
+      <line x1="600" y1="84" x2="740" y2="120" stroke="#26282E" stroke-width="1.4" stroke-dasharray="6 5"/>
+      <rect x="40" y="120" width="240" height="50" rx="8" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4"/>
+      <text x="160" y="142" font-size="13" text-anchor="middle" fill="#26282E">Faceplate at the outlet</text>
+      <text x="160" y="160" font-size="13" font-weight="700" text-anchor="middle" fill="#26282E">3B-05</text>
+      <rect x="330" y="120" width="240" height="50" rx="8" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4"/>
+      <text x="450" y="142" font-size="13" text-anchor="middle" fill="#26282E">Panel port label in the rack</text>
+      <text x="450" y="160" font-size="13" font-weight="700" text-anchor="middle" fill="#26282E">C / 05</text>
+      <rect x="620" y="120" width="240" height="50" rx="8" fill="#FFFFFF" stroke="#26282E" stroke-width="1.4" stroke-dasharray="6 5"/>
+      <text x="740" y="142" font-size="13" text-anchor="middle" fill="#26282E">Switch port: no site label</text>
+      <text x="740" y="160" font-size="13" text-anchor="middle" fill="#26282E">read at the switch</text>
+      <rect x="40" y="196" width="400" height="66" rx="8" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+      <text x="56" y="220" font-size="13" font-weight="700" fill="#611940">Record to hardware</text>
+      <text x="56" y="244" font-size="13" fill="#26282E">Finds a label missing, wrong, or unreadable</text>
+      <rect x="460" y="196" width="400" height="66" rx="8" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+      <text x="476" y="220" font-size="13" font-weight="700" fill="#611940">Hardware to record</text>
+      <text x="476" y="244" font-size="13" fill="#26282E">Finds a label, an outlet, or a port with no row</text>
+    </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled One row, checked in the places it names (another job). At the top, a row reads 3B-05, C / 05, SW-2 Gi0/17, VLAN 140. Lines lead from it to three boxes. Two are the faceplate at the outlet, 3B-05, and the panel port label in the rack, C / 05. A dashed line leads to the third, a dashed box: the switch port, which has no site label and is read at the switch.</p>
+    <p>Below, two boxes give the two directions of a check. Record to hardware finds a label missing, wrong, or unreadable. Hardware to record finds a label, an outlet, or a port with no row.</p>
+  </details>
+
+  <h3>Run it in both directions</h3>
+  <ul>
+    <li><strong>Record to hardware.</strong> Take each row and find the labels it names. This finds a blank faceplate, a fallen label, or a panel port labeled as something else.</li>
+    <li><strong>Hardware to record.</strong> Read every label you can see and find its row. This finds what the records left out: an outlet added later, a panel port labeled and never recorded.</li>
+  </ul>
+  <p>Start from the records, because they are a finite list and tell you where to go. Take the second direction on the way back.</p>
+
+  <h3>Recording a difference</h3>
+  <p>Where a label agrees with its row, mark the row <em>agrees</em>. A label that differs gets an <span class="keyterm">exception line</span> in four parts.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The four parts of an exception line, with an example from another job.</caption>
+      <thead><tr>
+        <th scope="col">Part</th><th scope="col">Example</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">The position</th><td>Outlet 3B-06, panel port C / 06</td></tr>
+        <tr><th scope="row">What the record says</th><td>Faceplate label 3B-06</td></tr>
+        <tr><th scope="row">What was found</th><td>Faceplate blank; 3B-06 handwritten on tape inside the cover</td></tr>
+        <tr><th scope="row">Where and when</th><td>Room 3B, 2026-06-18, 10:20, initials J.R.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Where a label is missing or unreadable, a tone generator and probe identify the run before you write anything. Making or replacing a label is a separate task; where the work order does not assign it, the exception line records the difference and the decision goes to the record owner. A change to a cord or a setting is never part of a label check.</p>
+  <p>A label check compares two records, the labels and the rows, not the building. Both can agree and both be wrong where both were copied from the same drawing. Reading the switch catches part of that error. Toning the run settles the rest.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="Working from the rows finds faults on positions that are already on your list. A labeled panel port that was never written into the map is on no list, so only reading the hardware and looking for its row finds it. A blank faceplate, a wrong panel label, and a cable labeled at one end only all belong to rows you already hold.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A label check runs in one direction only: each row of the port map, then the labels it names. Which fault will it miss?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>A faceplate with no label</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A labeled panel port with no row in the map</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A panel port labeled differently from its row</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A cable labeled at one end and not the other</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.7" data-lesson-title="Port Map, As-Built and Hand-Off" data-group-num="2" data-group-title="Proving the Records and Handing Them Over" data-num="535.7.6" data-title="Drafting the records with an AI assistant">
+  <p class="crumb">Lesson 535.7 &middot; Section 2 Proving the Records and Handing Them Over</p>
+  <h2><span class="tnum">535.7.6</span> Drafting the records with an AI assistant</h2>
+  <p class="lead-in">An AI chat tool turns a day&rsquo;s field notes into a site&rsquo;s columns in seconds. That conversion is also where a wrong value gets in.</p>
+
+  <p>Field notes are short lines, written standing up, in the order you walked the job. The site wants rows in a fixed column order, worded the same way throughout. An AI tool such as Microsoft Copilot does that conversion well: it orders columns, words every row alike, and puts dates and identifiers into one format.</p>
+  <p>It also tends to complete every table it is given. Asked for a finished port map, it fills a cell it has no value for with a value that fits the pattern of the cells around it. The invented value looks the same as the ones it read. It knows nothing about the building beyond your notes, so every value it returns came from your notes or from nowhere.</p>
+
+  <h3>Before you paste anything</h3>
+  <p>Port maps, floor plans, MAC addresses, and IP addresses describe how a building is wired and how to reach its equipment. Many sites restrict them. The record owner, the contract, and your employer&rsquo;s policy on approved tools decide whether a site&rsquo;s data may go into an AI tool, and which account to use. Settle it before the job. Where the answer is no, do the conversion by hand. No credential goes into a prompt under any answer.</p>
+
+  <h3>How to ask</h3>
+  <ul>
+    <li><strong>The column names, in the site&rsquo;s order.</strong> Without them the tool chooses its own columns.</li>
+    <li><strong>Your notes, unedited.</strong> Tidying them first hides the gaps you want reported back.</li>
+    <li><strong>An instruction about gaps.</strong> Tell the tool that a cell with no value in the notes stays empty and goes on a list of gaps. Without it, the tool fills the gaps.</li>
+  </ul>
+
+  <h3>What a day of notes does not hold</h3>
+  <p>One technician&rsquo;s notes from one panel on another job, for a port map whose columns are Outlet, Panel port, Switch port, VLAN, MAC address, IP address, Method, and State:</p>
+  <div class="cli">
+    <div class="cli-ttl">Field notes &mdash; TR-2, panel C, another job</div>
+    <div class="cli-body"><pre><span class="out">3b-05 c/05 sw2 gi0/17 vlan140 aa11.bb22.cc44 .131 dhcp
+3b-06 c/06 gi0/18 printer .20 static
+c/07 term, not patched, tested ok
+c/08 dead run, do not use
+3b-05 retest 14:20 after cord swap, 4/4 ping</span></pre></div>
+    <div class="cli-foot">
+      <p>The 3B-06 line has no VLAN and no MAC address, and names no switch. The C / 07 and C / 08 lines have no outlet, and give their state in words the State column does not use. The two 3B-05 lines may be one row or two. A tool asked for full columns fills each of these gaps. A VLAN number is easy to fill plausibly and hard to catch.</p>
+    </div>
+  </div>
+
+  <h3>Checking the draft, row by row</h3>
+  <p>Read each row of the draft against your notes, value by value. Correct any value that differs from the notes, and delete any value the notes do not hold. Mark each row <em>verified</em> or <em>corrected</em>, list each change you made, and list every empty cell with why it is empty and what would fill it. The faults to look for are a value that is not in the notes, two notes merged into one row, and a location that reads well and names a different place. The name on the record is yours, not the tool&rsquo;s.</p>
+
+  <h3>The as-built from the same notes</h3>
+  <p>The as-built schedule is drafted the same way. Give the tool its columns (the space, the position, how each item is mounted, which way it faces, and the label at each end) and your location notes, with the same instruction about gaps. A position the notes do not measure stays empty and goes on the list. Check each row against the notes as you checked the port map.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="A tool asked for a finished table completes it. An instruction to report each missing value instead of filling it turns the gaps into a list you can work through. Column order matters for the file. It does not stop an invented value. Tidied notes hide the gaps. Two drafts leave you comparing two tables without knowing which cells either invented.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You paste a day of field notes into an AI tool and ask for a port map. Which instruction does most to keep invented values out of the draft?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Give it the column names in the site&rsquo;s order</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Rewrite the notes into full sentences before pasting them</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Ask it to report, not fill, each value the notes lack</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Ask for the same table twice and compare the two</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.7" data-lesson-title="Port Map, As-Built and Hand-Off" data-group-num="2" data-group-title="Proving the Records and Handing Them Over" data-num="535.7.7" data-title="Reading the records back against the bay">
+  <p class="crumb">Lesson 535.7 &middot; Section 2 Proving the Records and Handing Them Over</p>
+  <h2><span class="tnum">535.7.7</span> Reading the records back against the bay</h2>
+  <p class="lead-in">The last check holds the records against the installation itself: read the record, say what you expect to find, then look.</p>
+
+  <p>If you read the hardware first, you read the record already knowing the answer, and tend to mark it agreed. Write the expected value down, then read the outlet, the panel port label (or a photograph of it you took that day), or the switch, and mark whether it agrees. A difference becomes an exception line, in the four parts used for labels.</p>
+
+  <h3>What the closing check covers</h3>
+  <ul>
+    <li>Every row names a position you can find, carrying the label the row gives.</li>
+    <li>Every outlet and device in the as-built has an identifier, and that identifier has a row.</li>
+    <li>Every run you worked on has a line in the test record, and every line names a run that exists.</li>
+    <li>Every switch port named in a row reads what the row says: its Status and Vlan in <code>show interfaces status</code>, or its network in the controller.</li>
+    <li>No two rows name the same switch port.</li>
+    <li>Every value in the records traces back to a reading or a label in your notes.</li>
+  </ul>
+  <p>The check does not show that a run lands where its row says. Proving that means toning or tracing the run, which is its own task. Where a label and a row agree and you have reason to doubt both, say so in the record rather than marking it agreed.</p>
+  <p>Write down a check that found nothing, with its date, what it covered, and your name. With no record of it, the next person cannot tell that it happened.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="Nothing on a faceplate or a panel shows which switch port carries a link, so a working link on a port that no row names is visible only at the switch. A blank faceplate and a cable labeled at one end are found at the hardware. Reading the map itself finds two rows naming one port.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which finding can only come from reading the switch, not from walking the room with the port map in hand?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Two rows naming the same switch port</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A faceplate with no label</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A cable labeled at the panel end and not at the outlet end</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A switch port carrying a link that no row names</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.7" data-lesson-title="Port Map, As-Built and Hand-Off" data-group-num="2" data-group-title="Proving the Records and Handing Them Over" data-num="535.7.8" data-title="Credentials and the hand-off">
+  <p class="crumb">Lesson 535.7 &middot; Section 2 Proving the Records and Handing Them Over</p>
+  <h2><span class="tnum">535.7.8</span> Credentials and the hand-off</h2>
+  <p class="lead-in">A hand-off goes to a named person on a named day. It carries no password, passphrase, or sign-in name.</p>
+
+  <h3>Credentials stay out</h3>
+  <p>A record is copied, forwarded, and kept for years, so anything in it is readable by people the installer never meets. On the mock-up, section 6 of the Kestrel Network Plan sets the rule: passwords, the wireless passphrase, and controller sign-in details never appear in a record, a screenshot, a photograph, or a prompt to an AI tool.</p>
+  <ul>
+    <li><strong>Before a screenshot,</strong> close or crop out any window or field that shows a sign-in, including the account name in the corner of a controller page.</li>
+    <li><strong>In the record,</strong> state that a credential was used, never what it is: <em>signed in with the site account</em>.</li>
+    <li><strong>In a prompt,</strong> paste readings, never sign-in details.</li>
+  </ul>
+  <p>Where a credential appears in a record by mistake, tell the record owner. Deleting it from your copy does not remove it from the copies already sent. The owner decides whether to change the credential.</p>
+
+  <h3>The hand-off note</h3>
+  <p>The records go with a covering note. Read it back as the person receiving it: it should say what state the installation is in, what still needs doing, and who to call.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The parts of a hand-off note.</caption>
+      <thead><tr>
+        <th scope="col">Part</th><th scope="col">What it carries</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Handed to</th><td>The person receiving it, and the date</td></tr>
+        <tr><th scope="row">What is installed</th><td>Each outlet by its label, with its state</td></tr>
+        <tr><th scope="row">What was tested</th><td>The test, the tool, the date, and who held the tool, claiming no more than the test showed</td></tr>
+        <tr><th scope="row">What was found</th><td>Every exception line</td></tr>
+        <tr><th scope="row">What is outstanding</th><td>Anything unfinished, with what it needs and who has to act, including every run not tested</td></tr>
+        <tr><th scope="row">What is escalated</th><td>Any finding whose correction would change a setting no work order assigns, or move a rack cord where the work order does not allow patching or to any port other than the one the record or work order names. Each goes with its evidence and the decision needed</td></tr>
+        <tr><th scope="row">Who to call</th><td>Names and contacts</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Record a position you did not check as not checked, never as working. A row filled in from the work order, on the assumption that it ought to be right, reads the same as a row read off the hardware. It can send the next technician to the wrong place with confidence.</p>
+  <p>Accepted means a named person has said they hold the records. Until then, the records and anything missing from them are still the installer&rsquo;s.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="An unchecked row that nothing marks reads the same as a row read off the hardware, so the next technician trusts it. An unpatched spare, a label on order, and an escalation awaiting a decision are all written down.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Four things are true of a set of records at hand-off. Which one makes the records unsafe to work from?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>One outlet is terminated and unpatched, and the note says so</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>One faceplate label is handwritten, and the note says a printed one is on order</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Three rows were filled in from the work order and never checked, and nothing says so</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>One finding is listed as escalated and awaiting a decision</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.7" data-lesson-title="Port Map, As-Built and Hand-Off" data-group-num="3" data-group-title="Wrapping Up" data-num="535.7.9" data-title="What you covered">
+  <p class="crumb">Lesson 535.7 &middot; Section 3 Wrapping Up</p>
+  <h2><span class="tnum">535.7.9</span> What you covered</h2>
+  <p class="lead-in">Read each value off the equipment, write the three records, check them against the labels and the bay, and hand them to a named person with every credential kept out.</p>
+
+  <h3>The records you leave behind</h3>
+  <p>The port map says which switch port serves each outlet, which network it is on, and what device is on it. The as-built says where each outlet and device is and how each is labeled. The test record says what each run measured, when, with which tool, and who took the reading. One identifier, built to the site&rsquo;s scheme under ANSI/TIA-606-D, joins all three. A row in service carries the switch and port, the VLAN, the device with its MAC address, its IP address and how it got it, its gateway and DNS servers, and its state. No two rows name one switch port, a retired position keeps its row, and the installer writes down the old value before the new one.</p>
+  <p>Windows gives the laptop&rsquo;s MAC address, IP address, mask, gateway, DNS servers, and DHCP state. IOS gives the port a MAC address is on and the port&rsquo;s VLAN. The UniFi Network application gives a Power over Ethernet (PoE) port&rsquo;s client, its native network, and each network&rsquo;s VLAN ID. Each piece of evidence names its platform; a camera&rsquo;s IP address and method come from its card. A wiremap verifies wiring and certifies nothing. The test record says what each test does not show.</p>
+
+  <h3>Proving the records and handing them over</h3>
+  <p>Check labels in both directions: record to hardware finds a wrong or missing label, and hardware to record finds what the records left out. Each difference becomes an exception line: the position, what the record says, what was found, and where and when. Give an AI tool unedited notes and the site&rsquo;s columns, for the port map and for the as-built, and tell it to leave empty cells empty and list them. Then check every row against the notes and mark it verified or corrected. In the closing check, read the record first, then the bay and the switch. The hand-off note names the recipient and the date, what is installed, tested, found, outstanding, and escalated, and who to call. No password, passphrase, or sign-in name appears anywhere in the records, the screenshots, or a prompt.</p>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete—continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again. A wrong answer does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct>=90) msg.textContent='Outstanding — you are working at field-standard level and are ready for the lab.';
+      else if(pct>=75) msg.textContent='Strong work. Revisit anything you missed and you will be field-ready.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the cards and applied scenarios to close the gaps.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+<!--
+BUILD FLAGS - UCI 1019 Lesson 535.7 Async Reading v0.1.0 DRAFT, 2026-11-11
+(Module 535, Network Fundamentals for Low Voltage Technicians; built under
+the delegated mode, brief Planning/_AGENT-BRIEF_M535-Readings.md). This
+comment is visible in the page source, so it carries no answer-key value.
+Not reviewed: technical review, language pass and cold read are owed to
+fresh subagents. The drafter's own self-check is recorded at the end.
+
+SOURCES READ
+- CLAUDE.md; STYLE-RULES.md (twice); style profile v1.4 to line 250;
+  FORMAT-SPEC v1.0 and the 2026 addendum.
+- Module plan v0.1.0 sections 1-7; lab-build brief; reuse map section 3.
+- ALAB 535.7.1 lab (records, credentials, Steps 1-10, grading); reviews/
+  TECH1_ALAB-535.7.1 (MAC format wording, Settings > Networks, user EXEC);
+  Kestrel Network Plan sections 4-6.
+- 529 source: 529.6_portmapasbuilthandoff.html v0.2.0 (local and live
+  copies byte-identical, checked 2026-11-11).
+
+DECISIONS TAKEN
+- 9 topics in 3 sections; every plan objective has a topic.
+- Network fields added to the port map row (switch and port, VLAN, device
+  and MAC, IP address and method, gateway, DNS) with a topic on where each
+  value is read, by platform (Windows, IOS, UniFi), and on labeling evidence
+  by platform.
+- MAC format worded per TECH1 (twelve hexadecimal digits; six hyphenated
+  pairs in Windows, three dotted groups of four on the switch).
+- Labels verified, not assigned: the label topic records differences as
+  exception lines and leaves label making to an assigned task (lab: "Do not
+  make a label").
+- Test record gains a Limitation field (the lab's as-built column) and the
+  mock-up tester's split-pair limit.
+- AI drafting: the request (columns, unedited notes, leave empty and list),
+  the row-by-row check with verified/corrected marks, the change list and
+  the gap list, as the lab grades them; field notes sample kept in the .cli
+  block (cli-ttl is not a command: deviation, as on the 529 page).
+- Credentials topic merged with the hand-off note; the hand-off note's parts
+  follow the lab's seven headings.
+- ANSI/TIA-606-D cited (as the 532 pages), not 529's 606-C.
+
+HELD BACK (graded answers; values not repeated here)
+- No bay, outlet, panel port label or switch port of the mock-up; no CCTV
+  network or VLAN ID (graded from the controller in Step 6); no D2 result;
+  no Baseline extract item; no campus address.
+- Unavoidable overlap, for Eldad: the AI instruction (leave empty cells
+  empty and list them) and the verified/corrected marking are the method the
+  lab grades; the lab states the same instruction in Step 7.
+
+ASSUMPTIONS (not in the plan)
+- The learner reads this page before the Lesson 535.7 presentation on Day 3.
+- UniFi Settings > Networks lists each network with its VLAN ID (TECH1:
+  depends on version and role); hedged on the page.
+- A credential exposed in a record is reported to the record owner, who
+  decides whether to change it (general practice).
+
+UNVERIFIED
+- Not opened in a browser.
+- ANSI/TIA-606-D wording described, not quoted; "expects the site to keep
+  labels and records in step" is a summary.
+
+CONFLICTS FOUND
+- ALAB 535.7.1 Step 3 still words the MAC format as "a dot after every
+  fourth" (TECH1: wrong as worded); this page uses the corrected wording.
+  Lab not edited (brief).
+
+CHANGED FROM 529
+- 2026 brand shell (532.1 engine and brand layer, 527.3 .cli sheet); module
+  title in place of the module number; no 2107.1 codes.
+- Removed: show power inline and the four-reading powered-drop block; the
+  rooms-and-ceiling-tile location diagram; the cable labels "behind" each end
+  as a required check (kept as "many sites also"); the sample-of-a-room
+  section; the check list as a separate hand-off item (exception lines and
+  the closing check kept).
+- Added: network fields of a row; reading values by platform; MAC forms;
+  show interfaces <port> status; platform-labeled evidence; limitation
+  column; credentials (never in a record, screenshot, photograph or prompt;
+  crop the sign-in; state that a credential was used).
+- Examples moved to another job: TR-2 panel C, outlets 3B-05 to 3B-08, SW-2
+  Gi0/17-18, VLAN 140, MACs aa11.bb22.cc44/55, 192.168.80.131 (DHCP) and .20
+  (static); exception line on 3B-06.
+
+CHECK QUESTIONS AND ACTIVITIES (for the quiz writer; do not repeat)
+- 535.7.1 Card set: port map, as-built, test record.
+- 535.7.1 CYU: where a camera is in an unknown building: the as-built.
+- 535.7.2 CYU: map contradicts itself: two rows naming SW-2 Gi0/18.
+- 535.7.3 CYU: value not readable from the laptop: the switch port.
+- 535.7.4 CYU: overclaim in a wiremap record: "Certified to Category 6".
+- 535.7.5 CYU: one-direction label check misses: a labeled panel port with no row.
+- 535.7.6 CYU: instruction that keeps invented values out: leave empty and list gaps.
+- 535.7.7 CYU: found only at the switch: a port with a link that no row names.
+- 535.7.8 CYU: unsafe at hand-off: three unchecked rows with nothing saying so.
+- 535.7.9 acknowledgement.
+
+WORKED EXAMPLES (for the quiz writer; do not repeat)
+- Port map extract: TR-2 panel C, 3B-05 to 3B-08 (two in service, one spare, one retired).
+- MAC AA-11-BB-22-CC-44 = aa11.bb22.cc44.
+- show interfaces Gi0/17 status: connected, VLAN 140, a-full a-1000.
+- Label-check diagram: row 3B-05, C / 05, SW-2 Gi0/17, VLAN 140.
+- Exception line: outlet 3B-06, faceplate blank, tape inside, 2026-06-18 10:20, J.R.
+- Field notes: five lines for panel C, gaps named.
+- Test record line: J. Ruiz, 2026-06-18.
+
+KEY CHECK
+- Rendered text grepped against the Handover Check Sheet labels and the
+  Kestrel Network Plan: no hit (P#-##, W#-bay-D#, SW-A to SW-E, ports 13-16,
+  VLAN 20/30, CCTV, campus prefix, 3C-52). No module, lab, HO, quiz,
+  work-order or R-number code in prose.
+
+AUDITS (final build)
+- audit_html.py: FAIL (0), WARN (0). 4860 words of prose, ~43 min at 112 wpm
+  before 9 activities. Earlier runs on this build: 535.5 WARN 0 throughout
+  (7851 -> 7374 words after two cuts); 535.7 WARN 1 (a 51-word, then 49-word
+  sentence, split); 535.6 WARN 0.
+- contrast_audit.py as written: FAIL (1), .order .step.picked .seq scored
+  against the legacy amber token (known tool limitation; the brand layer
+  sets White on #8A4B00, 6.8:1; this page has no ordering activity).
+  REPORT (83) unresolvable containers, as on the pattern pages. The
+  second run the addendum asks for (later definitions replacing earlier
+  ones) was not run.
+- Engine check (script): the three style blocks and the script block are
+  byte-identical to the 532.1 pattern page; one appended .cli sheet. No
+  tspan. One &amp; on 535.5 only (Settings &gt; Network &amp; internet,
+  deliberate).
+- Gate check (script): 2 content SVG with 2 text descriptions; 9 topics, 3 sections; every data-answer in range; matching left and
+  right values unique; card and hidden-detail counts equal; tile, banner and
+  comment counts agree. Answer letters BCDABCDC (A1 B2 C3 D2).
+- Self-check against STYLE-RULES and the CLAUDE.md patterns: one pass on
+  the extracted text, sentence by sentence (and-tails split, "no one"
+  replaced with an actor or a fact, agentless passives given an actor where
+  the actor matters, acronyms expanded at first use in the topic stream,
+  referents fixed), then the audits re-run. Fresh-reviewer technical
+  review, language pass and cold read still owed.
+
+2026-11-11 READINGS FIX ROUND 1 (fresh agent; brief
+Planning/_AGENT-BRIEF_M535-Readings-Fix-1.md; record
+Planning/reviews/RFIX1_535.5-535.7_2026-11-11.md)
+- TECH1 Wrong applied: the 535.7.4 check feedback now matches its options
+  (the tester's limitation, not a length).
+- TECH1 Unverifiable applied: "The switch accepts either case" cut.
+- TECH1 Depends applied with pending item 41: new h3 "A camera's row" in
+  535.7.3 (IP address and method from the camera's card, proved by a ping
+  reply; the client list may show no IP address); summary line added.
+- Pending item 36: second objective reworded to the plan's new wording,
+  with the serial comma ("the MAC address, VLAN, IP address, and
+  addressing method of the device on each outlet").
+- Pending item 37: IOS = Internetwork Operating System. Item 43: older
+  form show mac-address-table address named in 535.7.3.
+- Pending items 33/5: 192.168.50.131 and .20 to 192.168.80.131 and .20;
+  VLAN 10 to 140 (table, console sample, field notes, diagram, text
+  description).
+- LP1: 22 wording findings applied; both STRUCTURAL items fixed (the spare
+  rule moved into the rules list; the label at each end moved into the
+  as-built list, count dropped from the lead sentence).
+- Answer option C in 535.7.6 shortened to balance the set; keys unchanged
+  (B C D A B C D C).
+- Stated time kept at ~50-65 min: audit ~44 min of prose + 9 activities.
+
+2026-11-11 READINGS FIX ROUND 2 (fresh agent; brief
+Planning/_AGENT-BRIEF_M535-Readings-Fix-2.md; record
+Planning/reviews/RFIX2_535.5-535.7_2026-11-11.md)
+- LP2: 13 wording findings applied (AI in the overview; PoE: the figure's
+  box text is now "A port's client MAC address" because the expansion does
+  not fit the box, and PoE is expanded in the summary; numerals 12; Mbps
+  expanded; caption sentence split; mount item; "no site label" in text,
+  figure and descriptions; agrees wording; photograph of the panel port
+  label; hand-off lead-in split; 535.7.8 feedback sentence cut; 535.7.6
+  feedback split; summary passive given its actor). STRUCTURAL (AI as-built)
+  fixed with a new h3 "The as-built from the same notes" in 535.7.6 and a
+  summary clause (R2-36).
+- CR1: 8 minor applied: check outlet 3B-05 -> 3B-11 (the camera outlet on
+  every page; 3B-05 stays the laptop); split pair defined; 535.7.6 "How to
+  ask" third item and option C reworded so the key does not copy the list;
+  photograph introduced; "no site label"; installer cord authority (R2-38)
+  in the hand-off table.
+- Other job (R2-37, R2-43): office VLAN 140 on 192.168.70.0/24: 3B-05 laptop
+  192.168.70.131 DHCP, 3B-06 printer 192.168.70.20 static; /24 explained
+  under the extract.
+- Check questions: 535.7.1 stem names outlet 3B-11; 535.7.6 option C "Ask it
+  to report, not fill, each value the notes lack". Keys unchanged:
+  B C D A B C D C.
+- Worked examples: port map extract now 192.168.70.131 and .20.
+- Two audit WARNs (46- and 48-word sentences, in the label-check text
+  description and the summary) split. audit_html.py FAIL 0 WARN 0, 5099
+  words (~46 min) + 9 activities; stated ~50-65 min kept.
+
+2026-11-12 readings fix round 3: fresh agent; brief
+Planning/_AGENT-BRIEF_M535-Readings-Fix-3.md; record
+Planning/reviews/RFIX3_535.5-535.7_2026-11-12.md.
+- LP3: 6 of 6 applied (column -> 'Limitation line', since the record
+  names it a line). TECH2 / R2-45: hand-off 'What is escalated' row now
+  'a setting no work order assigns' and a rack cord moved where the work
+  order does not allow patching or to any other port.
+- Keys unchanged: B C D A B C D C. audit_html.py FAIL 0 WARN 0, 5097
+  words (~46 min); stated ~50-65 min kept.
+-->
+
+</body>
+</html>

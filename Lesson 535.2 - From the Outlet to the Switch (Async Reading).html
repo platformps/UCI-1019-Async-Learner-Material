@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 535 (M09) - Network Fundamentals for Low Voltage Technicians
+  Lesson 535.2 - From the Outlet to the Switch (Async Reading)
+  VERSION: v0.1.0  (2026-11-11)  DRAFT - for review
+
+  CHANGES IN v0.1.0
+  First issue. Adapted from the UCI 2107.1 Lesson 529.2 reading
+  (UCI-2107.1_M529_Lesson-529.2_Async-Reading_v0.2.0.html, "Cabling-to-Network
+  Topology"; the live copy 529.2_cablingtonetworktopology.html, read
+  2026-11-11, differs only by one accessibility sentence); rebuilt for
+  UCI 1019 (see CHANGED FROM 529 in the BUILD FLAGS).
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox) reused verbatim from
+  UCI-1019_M532_Lesson-532.1_Async-Reading_v0.1.0_DRAFT.html (which carries the
+  engine of UCI-2107.1_M529_Lesson-529.6_Async-Reading_v0.2.0.html). Appended
+  after it, unchanged from that page: the 2026 brand layer
+  (FORMAT-SPEC_Async-Reading_2026-Addendum_v0.1.0_DRAFT.md section 3) and the
+  .calc component sheet (not used on this page). Appended after those: the
+  2026 .cli console sheet, copied unchanged from
+  UCI-1019_M527_Lesson-527.3_Async-Reading_v0.1.0_DRAFT.html. Logo: inline
+  Slate SVG.
+
+  OBJECTIVES, from the module plan v0.1.0 section 5, Lesson 535.2 (plan
+  wording; serial comma added; DHCP, DNS and MAC expanded on the page).
+    Identify     the named elements of a cabling path and their roles   9.2.3
+    Distinguish  switch, access point, gateway, DHCP, DNS roles         9.2.4 (new)
+    Identify     a laptop's adapter, MAC address and link state         9.2.1, 9.2.2, 9.2.5 (new)
+    Trace        a run from a wall outlet to a switch port              9.2.3
+    Confirm      the switch port from the MAC in the MAC table          9.2.3 (new)
+    Relate       a port assignment to the physical position             9.5.1
+    Cross-check  a physical trace against the record                    9.2.6
+
+  TOPIC OUTLINE
+    Section 1  Naming the Path
+      535.2.1   A path with named parts                 entry point; Identify (elements)
+      535.2.2   The horizontal run, end to end          Identify; Trace
+      535.2.3   Horizontal and backbone                 Identify
+    Section 2  The Devices on the Path
+      535.2.4   Switch, access point, gateway, DHCP, DNS   Distinguish
+      535.2.5   The network adapter                     Identify (adapter, MAC, link)
+      535.2.6   Reading a switch's MAC address table    Confirm
+    Section 3  Records and the Trace
+      535.2.7   Port assignment                         Relate
+      535.2.8   Tracing a live path                     Trace; Confirm
+      535.2.9   The record, and what a discrepancy means   Cross-check
+    Section 4  Wrapping Up
+      535.2.10  What you covered                        summary
+
+  ACTIVITY GATES: 9 - 6 single-answer checks, 1 card set, 1 matching,
+    1 ordering; plus the acknowledgement (not counted, as on the 532 pages).
+  DIAGRAMS: 3 original SVG, each with a full text description (permanent
+    link and channel; roles on a small network; three identifiers).
+  CONSOLE BLOCKS: 2 (.cli-ttl is the command in both).
+
+  Build flags, decisions, assumptions, the list of every check question and
+  worked example, and the audit results are in the BUILD FLAGS comment at the
+  end of this file.
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 535.2 - From the Outlet to the Switch &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+<style>
+  /* Console transcript component sheet, recoloured to the 2026 palette.
+     Structure as the .cli sheet of the 2107.1 Module 529 pages; appended
+     after the brand layer. Slate title bar with White text (14.7:1), Slate
+     output on White, Plum command, #5A5D66 prompt (6.6:1), Cloud read-back
+     strip with Slate text (12.9:1). */
+  .cli{background:#FFFFFF;border:1.6px solid #26282E;border-radius:8px;margin:18px 0;overflow:hidden}
+  .cli .cli-ttl{background:#26282E;color:#FFFFFF;font-weight:700;font-size:.95rem;padding:9px 14px}
+  .cli .cli-body{overflow-x:auto;padding:12px 14px;background:#FFFFFF}
+  .cli pre{margin:0;min-width:520px;color:#26282E;background:#FFFFFF;
+    font-family:Consolas,ui-monospace,"Liberation Mono",monospace;font-size:.92rem;line-height:1.7}
+  .cli .pr{color:#5A5D66;background:#FFFFFF}
+  .cli .cmd{color:#611940;background:#FFFFFF;font-weight:700}
+  .cli .out{color:#26282E;background:#FFFFFF}
+  .cli .cli-foot{border-top:1px solid #D4D5D8;padding:10px 14px;color:#26282E;font-size:.95rem;background:#F0F0F0}
+  .cli .cli-foot p{margin:0 0 6px}
+  .cli .cli-foot p:last-child{margin-bottom:0}
+  .cli .cli-foot ul{margin:0;padding-left:20px}
+  .cli .cli-foot li{margin:4px 0}
+  .cli .cli-foot code{background:#FFFFFF;color:#26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Network Fundamentals for Low Voltage Technicians</b> &middot; Lesson 535.2 - From the Outlet to the Switch</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Network Fundamentals for Low Voltage Technicians</p>
+      <h2 id="ovh" tabindex="-1">Lesson 535.2 - From the Outlet to the Switch</h2>
+      <p class="lead-in">How a technician names each part of the path between a wall outlet and a switch port, reads a laptop’s network adapter and a switch’s table of Media Access Control (MAC) addresses, and proves which switch port serves an outlet without interrupting the network.</p>
+
+      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. On the installation mock-up, each bay’s outlets are cabled to patch panels in the Mobile Infrastructure Rack (MIR), and the network team’s ticket reads: “Circuit delivered. Verify and hand off.” Before anyone configures a device on these links, the owner wants proof that each path runs where the network plan says it runs.</p>
+
+      <p>D. Okafor, the Kestrel site lead, sets the rule for the trace: “A label is a claim. The switch’s table is the evidence.”</p>
+
+      <p>The worked examples on this page use outlets, panel ports, switch ports, and addresses from other jobs, not the values on the mock-up.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>Naming the Path.</b> The seven elements between a device and a switch port, the length limits of the cabling, and the difference between horizontal and backbone cabling.</li>
+        <li><b>The Devices on the Path.</b> What a switch, an access point, a gateway, a Dynamic Host Configuration Protocol (DHCP) server, and a Domain Name System (DNS) server each do; how to read a laptop’s network adapter; and how to read a switch’s MAC address table.</li>
+        <li><b>Records and the Trace.</b> The identifiers that describe an outlet’s path, the port map that records them, how to trace a live path without interrupting it, and what to do when the trace and the record disagree.</li>
+        <li><b>Wrapping Up.</b> The path, the devices, and the trace.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>4</b><span>Sections</span></div>
+        <div class="ov-stat"><b>10</b><span>Topics</span></div>
+        <div class="ov-stat"><b>9</b><span>Activities</span></div>
+        <div class="ov-stat"><b>3</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the standards, the documents, and the equipment</h3>
+      <p>This page cites published standards by designation: ANSI/TIA-568 for the structure and length limits of the cabling, and ANSI/TIA-606 for identifiers, labels, and records. The project document named on this page is the <strong>Kestrel Network Plan</strong> for HSOC-26-014. It is a fictional document written for the mock-up; its section 4 gives the labeling scheme and the outlet-to-port map. The switches named are the Cisco Catalyst 3750G and 2960G learner switches. The layout of a command’s output varies a little between software releases.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or go to any topic
+         from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks: a
+         knowledge check, a set of cards to open, a matching exercise, or a set of steps to put in order.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. The lesson takes ~60&ndash;75 min, including the activities.
+         The header and the contents list show your progress through the lesson.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching and ordering activities every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description, and command output is shown as text. Each table has column headings and a caption.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 535.2</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="535.2" data-lesson-title="From the Outlet to the Switch" data-group-num="1" data-group-title="Naming the Path" data-num="535.2.1" data-title="A path with named parts">
+  <p class="crumb">Lesson 535.2 &middot; Section 1 Naming the Path</p>
+  <h2><span class="tnum">535.2.1</span> A path with named parts</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 535.2</span>
+    <h3>From the Outlet to the Switch</h3>
+    <p>Seven elements lie between a device at a wall outlet and a port on a switch. This lesson names each element and its role, shows how a laptop and a switch report what is connected, and sets out a method for proving which switch port serves an outlet and checking that proof against the record.</p>
+    <p class="lb-meta"><b>4</b> sections &nbsp;&middot;&nbsp;
+       <b>10</b> topics &nbsp;&middot;&nbsp;
+       <b>9</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 535.2 you will be able to</div>
+    <ul>
+      <li><b>Identify</b> the named elements of a structured cabling path and the role of each.</li>
+      <li><b>Distinguish</b> the roles of a switch, an access point, a gateway, a Dynamic Host Configuration Protocol (DHCP) server, and a Domain Name System (DNS) server.</li>
+      <li><b>Identify</b> a laptop’s network adapter, its Media Access Control (MAC) address, and its link state.</li>
+      <li><b>Trace</b> a run from a wall outlet to a switch port.</li>
+      <li><b>Confirm</b> the switch port from the MAC address table.</li>
+      <li><b>Relate</b> a port assignment to the physical position it describes.</li>
+      <li><b>Cross-check</b> a physical trace against the cabling record.</li>
+    </ul></div>
+
+  <p class="lead-in">In a building cabled to a standard, the same seven elements sit, in the same order, between every device and its switch port.</p>
+
+  <p>Five of the seven elements are cabling. ANSI/TIA-568, the structured cabling standard from the American National Standards Institute (ANSI) and the Telecommunications Industry Association (TIA), names each one. The standard’s names are the ones to use on a work order, on a label, and on the phone to someone who cannot see the rack.</p>
+  <p>The other two elements are the ends that the cabling joins: the network adapter in the device, and the port on the switch. Neither is cabling. Either can be the fault.</p>
+  <p>One outlet and the cabling that serves it form a <span class="keyterm">drop</span>.</p>
+  <p>Open each card, working from the device toward the switch.</p>
+
+  <div class="revealset gate"><div class="cards stack">
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">1 - Network adapter</span>
+      <span class="rcard-sub">One end of the path</span>
+      <span class="rcard-detail" hidden><p><b>What it is.</b> The network port in the laptop, camera, or access point, with its driver and settings. On a laptop without a built-in port, a USB-to-Ethernet adapter fills the role.</p><p><b>Cabling?</b> No. It is equipment.</p><p><b>How it fails.</b> The adapter is disabled in software or has failed, or the device is using its wireless adapter while someone blames the wired link.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">2 - Patch cord, device to outlet</span>
+      <span class="rcard-sub">The work area cord</span>
+      <span class="rcard-detail" hidden><p><b>What it is.</b> The flexible cord from the device to the jack in the faceplate. On the mock-up, the laptop cord.</p><p><b>What it does.</b> Covers the last few feet that the permanent cabling does not reach.</p><p><b>How it fails.</b> Crushed underfoot or by a chair, a broken latch, a plug half-seated, or a cord much longer than the distance needs.</p><p><b>Who handles it.</b> Anyone, at any time, with no record kept.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">3 - Telecommunications outlet</span>
+      <span class="rcard-sub">The jack in the faceplate</span>
+      <span class="rcard-detail" hidden><p><b>What it is.</b> The connector at the work area end of the permanent cabling. ANSI/TIA-568 calls it the telecommunications outlet; on site it is the jack or the wall port.</p><p><b>What it does.</b> Terminates the horizontal cable in a form a patch cord plugs into, and carries the label that names the drop.</p><p><b>How it fails.</b> A loose or partial punch-down, conductors in the wrong order, or a cracked jack.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">4 - Horizontal cable</span>
+      <span class="rcard-sub">The permanent run</span>
+      <span class="rcard-detail" hidden><p><b>What it is.</b> The fixed cable from the outlet back to the telecommunications room, run through walls, ceilings, or pathways. On the mock-up it runs through the wall cavity and along the cable ladder to the Mobile Infrastructure Rack (MIR), which stands in for the telecommunications room.</p><p><b>How it fails.</b> Crushed or kinked during installation, squeezed by over-tightened ties, damaged by later trades, or run beyond the length limit.</p><p><b>Who handles it.</b> The installer who pulls and terminates it. After that it is rarely touched, except by other trades working above a ceiling or inside a wall, who may damage it without knowing.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">5 - Patch panel port</span>
+      <span class="rcard-sub">Where the run lands in the room</span>
+      <span class="rcard-detail" hidden><p><b>What it is.</b> A numbered port on a rack-mounted patch panel. Each horizontal cable is terminated on one port, and only one.</p><p><b>What it does.</b> Turns a permanent cable into a numbered port that can be patched and repatched without disturbing the cable.</p><p><b>How it fails.</b> The punch-down faults of the outlet, and a port labeled for one drop but terminated as another.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">6 - Patch cord, panel to switch</span>
+      <span class="rcard-sub">The equipment cord</span>
+      <span class="rcard-detail" hidden><p><b>What it is.</b> A short cord joining a patch panel port to a switch port.</p><p><b>What it does.</b> Decides which switch, and which switch port, the drop connects to. It is the element meant to change.</p><p><b>How it fails.</b> A half-seated plug, a broken latch, wear from handling, or a cord in the wrong port.</p><p><b>Who handles it.</b> Technicians, in the rack. A change here belongs in the <b>port map</b>, the record of which switch port each panel port is patched to. A cord moved without updating the port map leaves the record wrong.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">7 - Switch port</span>
+      <span class="rcard-sub">The other end of the path</span>
+      <span class="rcard-detail" hidden><p><b>What it is.</b> The socket on the switch, with the settings attached to it.</p><p><b>Cabling?</b> No. It is network equipment, and the physical path ends there.</p><p><b>How it fails.</b> The port is shut down, assigned to the wrong Virtual Local Area Network (VLAN), or faulty.</p></span>
+    </button>
+  </div></div>
+
+  <div class="note"><div class="nt">Two cords, counted separately</div>
+    <p>Elements 2 and 6 are both patch cords. They are the parts of the path handled every day. Many faults reported as a broken cable are in a cord. They differ in what is recorded: no record exists for the cord at the outlet, while a change to the cord in the rack belongs in the port map.</p></div>
+
+  <p>ANSI/TIA-568 names two stretches of the same path. The <span class="keyterm">permanent link</span> is elements 3, 4, and 5: the outlet, the horizontal cable, and the patch panel port. It is the fixed part, the part an installer usually certifies when the building is cabled. The <span class="keyterm">channel</span> is elements 2 to 6: the permanent link plus a patch cord at each end, the cabling the device uses.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The seven elements of the path, and which of them each standard term covers.</caption>
+      <thead><tr>
+        <th scope="col">Element</th><th scope="col">Permanent link</th><th scope="col">Channel</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">1 Network adapter</th><td>No: equipment</td><td>No: equipment</td></tr>
+        <tr><th scope="row">2 Patch cord, device to outlet</th><td>No</td><td>Yes</td></tr>
+        <tr><th scope="row">3 Telecommunications outlet</th><td>Yes</td><td>Yes</td></tr>
+        <tr><th scope="row">4 Horizontal cable</th><td>Yes</td><td>Yes</td></tr>
+        <tr><th scope="row">5 Patch panel port</th><td>Yes</td><td>Yes</td></tr>
+        <tr><th scope="row">6 Patch cord, panel to switch</th><td>No</td><td>Yes</td></tr>
+        <tr><th scope="row">7 Switch port</th><td>No: equipment</td><td>No: equipment</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn"><div class="nt">A certified link and a dead connection</div>
+    <p>Certification at installation usually tests the permanent link. A drop can hold a valid certificate and still fail, because a patch cord at one end is damaged and the cords were never part of the test. When a link with a certificate behind it fails, check the cords first.</p></div>
+</section>
+
+<section class="topic" data-lesson-num="535.2" data-lesson-title="From the Outlet to the Switch" data-group-num="1" data-group-title="Naming the Path" data-num="535.2.2" data-title="The horizontal run, end to end">
+  <p class="crumb">Lesson 535.2 &middot; Section 1 Naming the Path</p>
+  <h2><span class="tnum">535.2.2</span> The horizontal run, end to end</h2>
+  <p class="lead-in">One cable serves one outlet and lands on one patch panel port, within a length limit that counts the cords.</p>
+
+  <p>Once the walls and ceilings are closed, the horizontal cable cannot be inspected. Fixed rules govern how it is installed. The rule: no splices, no shared cables, no branches. Under that rule, the panel port identifies the outlet, and the outlet identifies the panel port. A branch or a shared cable anywhere breaks the trace for every drop beyond it.</p>
+
+  <div class="figure">
+  <div class="cap">Figure: The permanent link and the channel</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:880px" viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Diagram: one drop from a device through a patch cord, an outlet, a horizontal cable, a patch panel port and a second patch cord to a switch port, with the permanent link and channel length limits marked. A full text description follows.">
+    <text x="24" y="26" font-size="16" font-weight="700" fill="#611940">One drop: the permanent link and the channel</text>
+    <text x="24" y="54" font-size="14" fill="#5A5D66">Work area</text>
+    <text x="436" y="54" font-size="14" fill="#5A5D66">Telecommunications room</text>
+    <line x1="420" y1="40" x2="420" y2="140" stroke="#8C8F96" stroke-width="1.4" stroke-dasharray="6 5"/>
+    <rect x="24" y="68" width="120" height="58" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="84" y="94" font-size="15" text-anchor="middle" fill="#26282E">Device</text>
+    <text x="84" y="114" font-size="14" text-anchor="middle" fill="#5A5D66">access point</text>
+    <line x1="144" y1="97" x2="200" y2="97" stroke="#26282E" stroke-width="2"/>
+    <text x="172" y="88" font-size="14" text-anchor="middle" fill="#5A5D66">cord</text>
+    <rect x="200" y="68" width="120" height="58" rx="6" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="260" y="94" font-size="15" text-anchor="middle" fill="#26282E">Outlet</text>
+    <text x="260" y="114" font-size="14" text-anchor="middle" fill="#26282E">2A-14</text>
+    <line x1="320" y1="97" x2="470" y2="97" stroke="#26282E" stroke-width="3"/>
+    <text x="395" y="88" font-size="14" text-anchor="middle" fill="#5A5D66">horizontal cable</text>
+    <rect x="470" y="68" width="140" height="58" rx="6" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="540" y="94" font-size="15" text-anchor="middle" fill="#26282E">Patch panel</text>
+    <text x="540" y="114" font-size="14" text-anchor="middle" fill="#26282E">port 14</text>
+    <line x1="610" y1="97" x2="680" y2="97" stroke="#26282E" stroke-width="2"/>
+    <text x="645" y="88" font-size="14" text-anchor="middle" fill="#5A5D66">cord</text>
+    <rect x="680" y="68" width="170" height="58" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="765" y="94" font-size="15" text-anchor="middle" fill="#26282E">Switch port</text>
+    <text x="765" y="114" font-size="14" text-anchor="middle" fill="#5A5D66">Gi1/0/12</text>
+    <line x1="200" y1="172" x2="610" y2="172" stroke="#611940" stroke-width="2.4"/>
+    <line x1="200" y1="162" x2="200" y2="182" stroke="#611940" stroke-width="2.4"/>
+    <line x1="610" y1="162" x2="610" y2="182" stroke="#611940" stroke-width="2.4"/>
+    <text x="200" y="200" font-size="15" font-weight="700" fill="#26282E">Permanent link: 90 m maximum</text>
+    <text x="200" y="220" font-size="14" fill="#26282E">outlet, horizontal cable, panel port: the part that is certified</text>
+    <line x1="144" y1="252" x2="680" y2="252" stroke="#611940" stroke-width="2.4"/>
+    <line x1="144" y1="242" x2="144" y2="262" stroke="#611940" stroke-width="2.4"/>
+    <line x1="680" y1="242" x2="680" y2="262" stroke="#611940" stroke-width="2.4"/>
+    <text x="144" y="280" font-size="15" font-weight="700" fill="#26282E">Channel: 100 m maximum</text>
+    <text x="144" y="300" font-size="14" fill="#26282E">the permanent link plus both patch cords: the cabling the device uses</text>
+    <text x="24" y="330" font-size="14" fill="#26282E">The 10 m difference is the allowance for both patch cords together.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram, titled One drop: the permanent link and the channel, shows one connection left to right, divided by a dashed line into a work area on the left and a telecommunications room on the right.</p>
+    <p>From the left: a box labeled Device, with the example access point, and a short line labeled cord. Next, a box labeled Outlet, 2A-14, and a long line labeled horizontal cable, which crosses into the telecommunications room. Then a box labeled Patch panel, port 14, a short line labeled cord, and a box labeled Switch port, Gi1/0/12.</p>
+    <p>Below the path, a first bar spans from the outlet to the patch panel and is labeled Permanent link: 90 m maximum, with the note: outlet, horizontal cable, panel port: the part that is certified. A second, longer bar spans from the device end of the first cord to the switch end of the second cord and is labeled Channel: 100 m maximum, with the note: the permanent link plus both patch cords: the cabling the device uses. A closing line reads: The 10 m difference is the allowance for both patch cords together.</p>
+  </details>
+
+  <p>The switch port in the figure is named Gi1/0/12. A Cisco switch names each port by type and number. The letters give the port type: Gi marks a port that runs at up to 1000 megabits per second (Mbps); Fa marks one that stops at 100 Mbps. The numbers locate the port. A Catalyst 3750G puts its switch number first, as in Gi1/0/12. A Catalyst 2960G names the same port Gi0/12.</p>
+
+  <p>Two length limits govern the run.</p>
+  <ul>
+    <li><strong>90 meters, permanent link.</strong> For twisted-pair copper, 295 feet of horizontal cable, measured along the route it takes. A cable that rises up a wall, crosses a ceiling, bends around an obstruction, and drops down again is much longer than the distance on the floor plan.</li>
+    <li><strong>100 meters, channel.</strong> For copper, 328 feet for the whole path. The 10 meters between the two figures is the allowance for the cord at the outlet and the cord in the rack together. Cords are stranded cable, which loses more signal per meter than the solid horizontal cable. A meter of extra cord therefore needs more than a meter less of horizontal cable.</li>
+  </ul>
+  <p>A cable damaged in the middle is replaced, not joined. The one permitted interruption is a consolidation point, a documented intermediate termination used where furniture layouts change often.</p>
+
+  <div class="note"><div class="nt">Fiber in the horizontal</div>
+    <p>The figures above are for twisted-pair copper, which most horizontal runs use. Fiber is also permitted in the horizontal, usually where electrical noise is a problem or the outlet feeds equipment that needs more bandwidth than copper carries.</p>
+    <p>In the usual horizontal design, the 90-meter limit applies to fiber as well, although fiber reaches much further. The limit fixes where telecommunications rooms go: every outlet within 90 meters of a room. A building whose rooms were spaced for fiber’s full reach would have no room close enough when someone later needed a copper drop, for example to a camera powered by Power over Ethernet (PoE), which fiber cannot carry. Holding both media to 90 meters keeps the building’s layout independent of the cable pulled through it. Fiber’s reach is used in the backbone, between rooms, floors, and buildings.</p></div>
+
+  <div class="note warn"><div class="nt">What an over-length run costs</div>
+    <p>An over-length link often works: it comes up, passes traffic, and goes unnoticed. It has lost margin (the difference between how the link performs and the limit it must meet), so it fails sooner under heat, electrical noise, and higher speeds. When it fails, it shows as an intermittent fault with no visible cause.</p></div>
+
+  <div class="cyu gate" data-answer="1" data-fb="The horizontal cable is within its 90 m limit, so the permanent link passes. The channel does not: 88 plus 12 plus 3 is 103 m, 3 m over the 100 m channel limit. The cord allowance is 10 m for both ends together; the 12 m cord alone exceeds it. Patch cords count toward the channel.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A horizontal cable measures 88 meters. A technician connects the device with a 12-meter patch cord and patches the panel to the switch with a 3-meter cord. Is the installation within the limits?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Yes: the horizontal cable is under 90 meters</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>No: the whole channel is over 100 meters</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Yes: patch cords are not counted in the length</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>No: the permanent link is over 90 meters</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.2" data-lesson-title="From the Outlet to the Switch" data-group-num="1" data-group-title="Naming the Path" data-num="535.2.3" data-title="Horizontal and backbone">
+  <p class="crumb">Lesson 535.2 &middot; Section 1 Naming the Path</p>
+  <h2><span class="tnum">535.2.3</span> Horizontal and backbone</h2>
+  <p class="lead-in">Horizontal and backbone cabling do different jobs. The number of people a fault affects points to one or the other.</p>
+
+  <p>Structured cabling divides into two kinds by what a run connects, not by what the cable is made of.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Horizontal and backbone cabling compared.</caption>
+      <thead><tr>
+        <th scope="col">Property</th><th scope="col">Horizontal cabling</th><th scope="col">Backbone cabling</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Connects</th><td>Work areas to the telecommunications room that serves them</td><td>Rooms to each other: floor to floor, room to equipment room, building to building</td></tr>
+        <tr><th scope="row">How many</th><td>Many runs, one per outlet</td><td>Few runs, each carrying the traffic of many</td></tr>
+        <tr><th scope="row">Usual medium</th><td>Twisted-pair copper</td><td>Optical fiber; sometimes twisted-pair over short distances</td></tr>
+        <tr><th scope="row">Length limit</th><td>90 m permanent link</td><td>Depends on the medium and the application, and reaches much further</td></tr>
+        <tr><th scope="row">If it fails</th><td>One outlet stops working</td><td>Everything beyond it stops working</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>A fiber run to an outlet is horizontal cabling. A twisted-pair run between two telecommunications rooms is backbone cabling.</p>
+  <p>One person affected, with everyone nearby working normally, points to a horizontal run, a cord, a jack, or a switch port: one drop. A whole floor or a whole room losing service at the same moment points to something shared: a backbone run, an uplink (the link from that room’s switch to the rest of the network), a switch, or the power to the rack. Testing one person’s patch cord will not find a shared fault. Pulling cords at random while people are affected makes the outage worse.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="Eight people on one floor losing service in the same minute share something. Eight horizontal runs failing at once is unlikely. Their runs meet in the telecommunications room on that floor, which connects to the rest of the network through its uplink, so start where the paths converge. Testing one person’s cord, re-terminating eight outlets, or checking eight devices tests each drop alone while eight people wait.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Eight people on the second floor lose network access within the same minute. Everyone on the first floor works normally. Where do you start?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The patch cord at the first desk that reported it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Re-terminating the outlets for all eight work areas</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The second-floor telecommunications room and its uplink</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The network settings on all eight laptops</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.2" data-lesson-title="From the Outlet to the Switch" data-group-num="2" data-group-title="The Devices on the Path" data-num="535.2.4" data-title="Switch, access point, gateway, DHCP, and DNS">
+  <p class="crumb">Lesson 535.2 &middot; Section 2 The Devices on the Path</p>
+  <h2><span class="tnum">535.2.4</span> Switch, access point, gateway, DHCP, and DNS</h2>
+  <p class="lead-in">Five roles turn installed cabling into a working network. On a small network, one device often fills several of them.</p>
+
+  <p>A <span class="keyterm">firewall</span> passes or blocks traffic between networks by rules. On the small network in the figure, it also fills three of the five roles.</p>
+
+  <div class="figure">
+  <div class="cap">Figure: The roles on a small network</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:880px" viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Diagram: a wired laptop and an access point connect to a switch; a wireless laptop reaches the access point by radio; the switch connects to a firewall that acts as gateway, DHCP server, and DNS server and joins the network to other networks. A full text description follows.">
+    <text x="24" y="26" font-size="16" font-weight="700" fill="#611940">The roles on a small network</text>
+    <rect x="24" y="70" width="170" height="50" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="109" y="100" font-size="15" text-anchor="middle" fill="#26282E">Wired laptop</text>
+    <rect x="24" y="210" width="170" height="50" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="109" y="240" font-size="15" text-anchor="middle" fill="#26282E">Wireless laptop</text>
+    <line x1="194" y1="235" x2="250" y2="235" stroke="#26282E" stroke-width="1.8" stroke-dasharray="5 5"/>
+    <text x="222" y="226" font-size="14" text-anchor="middle" fill="#5A5D66">radio</text>
+    <rect x="250" y="210" width="150" height="50" rx="6" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="325" y="240" font-size="15" text-anchor="middle" fill="#26282E">Access point</text>
+    <rect x="450" y="130" width="150" height="50" rx="6" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="525" y="160" font-size="15" text-anchor="middle" fill="#26282E">Switch</text>
+    <line x1="194" y1="95" x2="450" y2="148" stroke="#26282E" stroke-width="1.8"/>
+    <line x1="400" y1="235" x2="450" y2="165" stroke="#26282E" stroke-width="1.8"/>
+    <line x1="600" y1="155" x2="660" y2="155" stroke="#26282E" stroke-width="1.8"/>
+    <rect x="660" y="100" width="196" height="110" rx="6" fill="#E7FD82" stroke="#26282E" stroke-width="1.4"/>
+    <text x="758" y="126" font-size="15" font-weight="700" text-anchor="middle" fill="#26282E">Firewall</text>
+    <text x="758" y="150" font-size="14" text-anchor="middle" fill="#26282E">gateway</text>
+    <text x="758" y="172" font-size="14" text-anchor="middle" fill="#26282E">DHCP server</text>
+    <text x="758" y="194" font-size="14" text-anchor="middle" fill="#26282E">DNS server</text>
+    <line x1="758" y1="210" x2="758" y2="256" stroke="#26282E" stroke-width="1.8"/>
+    <path d="M752 250 L758 264 L764 250 z" fill="#26282E"/>
+    <text x="758" y="284" font-size="15" text-anchor="middle" fill="#26282E">Other networks</text>
+    <text x="24" y="306" font-size="14" fill="#5A5D66">On a small network, one device often fills the gateway, DHCP, and DNS roles.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram, titled The roles on a small network, shows a wired laptop connected by a line to a switch. A wireless laptop is joined by a dashed line, labeled radio, to an access point, and the access point is connected by a line to the same switch. The switch is connected to a box labeled Firewall, which lists three roles: gateway, DHCP server, and DNS server. An arrow from the firewall points down to the words Other networks. A note at the bottom reads: On a small network, one device often fills the gateway, DHCP, and DNS roles.</p>
+  </details>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Five roles on a network, what each does, and what a technician sees when it fails.</caption>
+      <thead><tr>
+        <th scope="col">Role</th><th scope="col">What it does</th><th scope="col">What a technician sees when it fails</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Switch</th><td>Forwards frames (the units of data on a local network) between its ports by MAC address, within one VLAN</td><td>No link, no MAC address table entry, or a device that reaches nothing on its own network</td></tr>
+        <tr><th scope="row">Access point</th><td>Joins wireless devices to the wired network. It is cabled to a switch port and passes its wireless clients’ traffic onto it</td><td>Wired devices work; wireless devices cannot find or join the network</td></tr>
+        <tr><th scope="row">Gateway</th><td>A router or firewall that moves packets between networks. A device sends anything meant for another network to its default gateway</td><td>A device reaches its own network and nothing beyond it</td></tr>
+        <tr><th scope="row">DHCP server</th><td>On request, leases a device an Internet Protocol (IP) address, a subnet mask (which marks the network part of the IP address), a gateway, and a DNS server address, for a set time</td><td>A Windows laptop with no lease gives itself an IP address beginning 169.254 and reaches almost nothing</td></tr>
+        <tr><th scope="row">DNS server</th><td>Answers a name with the IP address that belongs to it</td><td>A ping to an IP address gets a reply; the same device by name does not</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The switch and the access point carry traffic. The gateway moves traffic between networks. The DHCP server and the DNS server are services that devices use.</p>
+
+  <h3>On the mock-up</h3>
+  <p>Each team’s learner switch is a Cisco Catalyst. A UniFi PoE switch powers the cameras and the UniFi access point. The campus lab network provides the gateway (and, where the campus has set them up, DHCP and DNS) for the mock-up’s networks. The network plan lists each network and its gateway, and the values for the mock-up are posted in the room. The UniFi Network application, running on a Cloud Key, configures and monitors the PoE switch and the access point. It is a management tool, not a role in the path: traffic does not pass through it.</p>
+
+  <p>Match each description to the role that fits it.</p>
+  <div class="match gate" data-left="Description" data-right="Role">
+    <div class="pair" data-left="Forwards frames between its own ports by MAC address" data-right="Switch"></div>
+    <div class="pair" data-left="Joins wireless devices to the wired network" data-right="Access point"></div>
+    <div class="pair" data-left="Moves packets from one network to another" data-right="Gateway"></div>
+    <div class="pair" data-left="Leases an IP address to a device that asks for one" data-right="DHCP server"></div>
+    <div class="pair" data-left="Answers a name with an IP address" data-right="DNS server"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.2" data-lesson-title="From the Outlet to the Switch" data-group-num="2" data-group-title="The Devices on the Path" data-num="535.2.5" data-title="The network adapter: link, speed, and MAC address">
+  <p class="crumb">Lesson 535.2 &middot; Section 2 The Devices on the Path</p>
+  <h2><span class="tnum">535.2.5</span> The network adapter: link, speed, and MAC address</h2>
+  <p class="lead-in">The network adapter is the first element of the path. Windows reports its link, its speed, and its MAC address.</p>
+
+  <p>A laptop’s <span class="keyterm">network adapter</span>, also called a Network Interface Card (NIC), is the hardware that connects the laptop to the network. A laptop may have a built-in Ethernet port, a USB-to-Ethernet adapter, and a Wi-Fi adapter, and each one is a separate adapter with its own MAC address.</p>
+  <p>When a cord joins the adapter to a live switch port, the two agree on a speed and bring up a <span class="keyterm">link</span>. Many switch ports and USB adapters have a light that comes on with the link and flickers with traffic. Many laptops have no link light, so read the link in Windows.</p>
+
+  <h3>Reading the adapter in Windows</h3>
+  <p>In PowerShell, <code>Get-NetAdapter</code> lists each adapter on its own line. The example comes from another laptop.</p>
+  <div class="cli">
+    <div class="cli-ttl">Get-NetAdapter</div>
+    <div class="cli-body"><pre><span class="pr">PS C:\Users\tech&gt;</span> <span class="cmd">Get-NetAdapter</span>
+
+<span class="out">Name        InterfaceDescription                ifIndex Status       MacAddress          LinkSpeed
+----        --------------------                ------- ------       ----------          ---------
+Ethernet 2  Realtek USB GbE Family Controller        18 Up           5C-11-BB-22-CC-33     1 Gbps
+Wi-Fi       Intel(R) Wi-Fi 6 AX201 160MHz             7 Disconnected 8C-55-4A-0F-31-9E      0 bps</span></pre></div>
+    <div class="cli-foot">
+      <ul>
+        <li><b>Name</b> and <b>InterfaceDescription</b>: the name Windows gives the adapter, and the hardware behind it. Here, <code>Ethernet 2</code> is a USB-to-Ethernet adapter, and <code>Wi-Fi</code> is the wireless adapter. <b>ifIndex</b> is the number Windows uses for the adapter internally.</li>
+        <li><b>Status</b>: <code>Up</code> means the adapter has a link. <code>Disconnected</code> means it has none: no cord, a dead far end, or, for Wi-Fi, no wireless network joined.</li>
+        <li><b>MacAddress</b>: the adapter’s MAC address.</li>
+        <li><b>LinkSpeed</b>: the speed the adapter and the far end agreed, <code>1 Gbps</code> here. A disconnected adapter shows <code>0 bps</code>.</li>
+      </ul>
+    </div>
+  </div>
+  <p>The command <code>ipconfig /all</code> shows the same MAC address, labeled Physical Address, with the adapter’s IP settings.</p>
+
+  <div class="note"><div class="nt">A link at the wrong speed</div>
+    <p>A link at 1000 Mbps uses all four pairs of the cable; a link at 100 Mbps needs only two. Where an adapter and a switch port that both support 1000 Mbps link at 100 Mbps, the cause can be a fault on a pair that only 1000 Mbps uses. Test the cabling before blaming the adapter.</p></div>
+
+  <h3>One MAC address, three ways of writing it</h3>
+  <p>A MAC address is 12 hexadecimal digits (0 to 9 and A to F). Equipment groups and separates the digits in different ways. The case of the letters carries no meaning.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The same MAC address as three systems write it.</caption>
+      <thead><tr>
+        <th scope="col">Where you read it</th><th scope="col">Form</th><th scope="col">Example</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Windows</th><td>Six pairs, joined by hyphens, in capitals</td><td><code>5C-11-BB-22-CC-33</code></td></tr>
+        <tr><th scope="row">Cisco switch</th><td>Three groups of four, joined by dots, in lowercase</td><td><code>5c11.bb22.cc33</code></td></tr>
+        <tr><th scope="row">Many other devices and management tools</th><td>Six pairs, joined by colons</td><td><code>5c:11:bb:22:cc:33</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The digits and their order never change between the forms; only the separators and the grouping do. A Cisco switch expects the dotted form when you search its tables for an address.</p>
+
+  <div class="note warn"><div class="nt">Read the wired adapter</div>
+    <p>A trace of a wired path needs the wired adapter’s MAC address. Windows can give a Wi-Fi adapter a random hardware address, so its MAC address may change from one network to the next.</p></div>
+
+  <div class="cyu gate" data-answer="0" data-fb="A link that comes up at 100 Mbps between an adapter and a switch port that both support 1000 Mbps can mean a fault on one of the pairs that only 1000 Mbps uses, so test the cabling. The adapter shows Up, so the link exists. A missing IP address or a wrong VLAN would not change the speed the two ends agree.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q"><code>Get-NetAdapter</code> shows a laptop’s wired adapter as Up at 100 Mbps. Both the adapter and the switch port support 1000 Mbps. What does the reading suggest?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>A fault on a pair only 1000 Mbps uses</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The adapter has no IP address yet</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The switch port is in the wrong VLAN</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The adapter has no link at all</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.2" data-lesson-title="From the Outlet to the Switch" data-group-num="2" data-group-title="The Devices on the Path" data-num="535.2.6" data-title="Reading a switch’s MAC address table">
+  <p class="crumb">Lesson 535.2 &middot; Section 2 The Devices on the Path</p>
+  <h2><span class="tnum">535.2.6</span> Reading a switch’s MAC address table</h2>
+  <p class="lead-in">A switch learns which port each device is on from the frames it receives. Its MAC address table shows where a device is connected.</p>
+
+  <h3>Reaching the switch’s command line</h3>
+  <p>You type switch commands at the switch’s command line, reached through its console port. On a Windows laptop:</p>
+  <ol>
+    <li>Connect the USB console cable from the laptop to the switch’s console port.</li>
+    <li>In Device Manager, open Ports (COM &amp; LPT) and read the COM number of the USB serial port, for example COM4.</li>
+    <li>In PuTTY, select Serial, enter that COM number, and check that Speed reads 9600. Under Connection &gt; Serial, set Flow control to None.</li>
+    <li>Open the connection and press Enter. The switch usually answers with its <span class="keyterm">prompt</span>: its name followed by <code>&gt;</code>, for example <code>Switch&gt;</code>.</li>
+  </ol>
+  <p>A prompt ending in <code>&gt;</code> allows commands that read the switch without changing it. A prompt ending in <code>#</code> also allows commands that change the switch. The <code>show</code> commands on this page usually run at the <code>&gt;</code> prompt. If the switch rejects one, type <code>enable</code>.</p>
+
+  <p>On a Cisco Catalyst switch, <code>show mac address-table</code> lists every entry in the switch’s MAC address table. Older releases of the Cisco Internetwork Operating System (IOS) spell it <code>show mac-address-table</code>. Adding the keyword <code>address</code>, then a MAC address in the dotted form, narrows the list to that one device. The example comes from another switch, named Switch.</p>
+  <div class="cli">
+    <div class="cli-ttl">show mac address-table address 5c11.bb22.cc33</div>
+    <div class="cli-body"><pre><span class="pr">Switch&gt;</span> <span class="cmd">show mac address-table address 5c11.bb22.cc33</span>
+<span class="out">          Mac Address Table
+-------------------------------------------
+
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+ 140    5c11.bb22.cc33    DYNAMIC     Gi0/7
+Total Mac Addresses for this criterion: 1</span></pre></div>
+    <div class="cli-foot">
+      <ul>
+        <li><b>Vlan</b>: the VLAN in which the switch saw the address, <code>140</code>.</li>
+        <li><b>Mac Address</b>: the address, in the dotted form.</li>
+        <li><b>Type</b>: <code>DYNAMIC</code> means the switch learned the address from traffic. <code>STATIC</code> means the entry was configured, or belongs to the switch itself.</li>
+        <li><b>Ports</b>: the port on which the switch saw the address, <code>Gi0/7</code>. That port is the device’s switch port.</li>
+        <li><b>Total Mac Addresses for this criterion</b>: how many entries matched, one here.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Reading the table correctly</h3>
+  <ul>
+    <li><strong>The table records traffic, not cables.</strong> An entry appears only after the device sends a frame. A laptop that has sent nothing for a while may be missing: make it send traffic, for example with a ping, and read the table again.</li>
+    <li><strong>Entries expire.</strong> The switch removes the entry for a device that sends nothing for 300 seconds, the default on Catalyst switches. It also removes every entry on a port whose link goes down.</li>
+    <li><strong>One device, one port.</strong> The port in the entry is where the switch hears the device now. A port with many addresses on it usually leads to another switch, or to an access point with wireless clients.</li>
+    <li><strong>An empty result</strong> means the switch has not received a frame from that address. Before drawing a conclusion, check that you typed the address in the dotted form, that the device has a link, and that it has sent traffic.</li>
+  </ul>
+
+  <div class="note"><div class="nt">A followed cord and the table</div>
+    <p>Following a cord through the rack by eye and by finger shows where the cord appears to go. Rack cords run in bundles, and two cords that leave neighboring panel ports together can land several ports apart. The MAC address table shows where the switch hears the device. Record both readings. Where they disagree, record the difference and report it.</p></div>
+
+  <div class="cyu gate" data-answer="3" data-fb="An entry appears only after the switch receives a frame from the device, and entries expire after a few minutes of silence. A laptop that shows Up may not have sent anything recently, so make it send traffic and read the table again. Replacing the cord, reporting the port, or changing the VLAN would act on a reading that is not yet evidence.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You search a switch’s MAC address table for a laptop’s address, typed correctly in the dotted form, and the switch finds no entry. The laptop’s wired adapter shows Up. What do you do next?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Replace the patch cord at the outlet</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Report the switch port as faulty</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Ask for the switch port’s VLAN to be changed</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Have the laptop send traffic, then search again</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.2" data-lesson-title="From the Outlet to the Switch" data-group-num="3" data-group-title="Records and the Trace" data-num="535.2.7" data-title="Port assignment: where the path becomes a record">
+  <p class="crumb">Lesson 535.2 &middot; Section 3 Records and the Trace</p>
+  <h2><span class="tnum">535.2.7</span> Port assignment: where the path becomes a record</h2>
+  <p class="lead-in">Three identifiers describe one drop. Two are fixed by the installation, and one changes whenever a cord moves.</p>
+
+  <p>Every element of the path so far is something you can touch. The path is also written down: a label on the faceplate, a label on the patch panel, and a row in the port map. A <span class="keyterm">port assignment</span> is the record of which switch port a patch panel port is patched to. The three identifiers are not interchangeable:</p>
+  <ul>
+    <li>The <strong>outlet identifier</strong>, on the faceplate at the work area.</li>
+    <li>The <strong>patch panel port</strong>, where the drop’s horizontal cable is terminated. It has a position of its own, such as panel B, port 14, and carries a label with the identifier of the outlet it serves.</li>
+    <li>The <strong>switch port</strong>, which is whatever the patch panel port is patched to today.</li>
+  </ul>
+  <p>The first two are fixed when the building is cabled. The third changes whenever someone moves a patch cord. The port map exists to record that one changeable relationship.</p>
+
+  <div class="figure">
+  <div class="cap">Figure: Three identifiers for one drop</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:880px" viewBox="0 0 880 240" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Diagram: one drop described by three identifiers, two fixed by the installation and one that changes with the patch cord. A full text description follows.">
+    <text x="24" y="26" font-size="16" font-weight="700" fill="#611940">Three identifiers for one drop, from another job</text>
+    <rect x="24" y="48" width="260" height="124" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="154" y="76" font-size="15" text-anchor="middle" fill="#26282E">Outlet identifier</text>
+    <text x="154" y="106" font-size="18" font-weight="700" text-anchor="middle" fill="#26282E">2A-14</text>
+    <text x="154" y="132" font-size="14" text-anchor="middle" fill="#5A5D66">on the faceplate</text>
+    <text x="154" y="158" font-size="14" font-weight="700" text-anchor="middle" fill="#26282E">Fixed</text>
+    <rect x="310" y="48" width="260" height="124" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="440" y="76" font-size="15" text-anchor="middle" fill="#26282E">Patch panel port</text>
+    <text x="440" y="106" font-size="18" font-weight="700" text-anchor="middle" fill="#26282E">Panel B, port 14</text>
+    <text x="440" y="132" font-size="14" text-anchor="middle" fill="#5A5D66">where the cable is terminated</text>
+    <text x="440" y="158" font-size="14" font-weight="700" text-anchor="middle" fill="#26282E">Fixed</text>
+    <rect x="596" y="48" width="260" height="124" rx="6" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+    <text x="726" y="76" font-size="15" text-anchor="middle" fill="#26282E">Switch port</text>
+    <text x="726" y="106" font-size="18" font-weight="700" text-anchor="middle" fill="#26282E">Gi1/0/12</text>
+    <text x="726" y="132" font-size="14" text-anchor="middle" fill="#26282E">wherever it is patched today</text>
+    <text x="726" y="158" font-size="14" font-weight="700" text-anchor="middle" fill="#26282E">Changes</text>
+    <text x="24" y="206" font-size="15" fill="#26282E">The installation sets the first two. The cord in the patch panel today sets the third.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram, titled Three identifiers for one drop, from another job, shows three boxes side by side, each holding one identifier for the same drop. Outlet identifier, 2A-14, on the faceplate, marked Fixed. Patch panel port, Panel B, port 14, where the cable is terminated, marked Fixed. Switch port, Gi1/0/12, wherever it is patched today, marked Changes and highlighted. A line below reads: The installation sets the first two. The cord in the patch panel today sets the third.</p>
+  </details>
+
+  <p><strong>Reading an identifier.</strong> An identifier is built from a scheme. Under the scheme of the job in the figure, 2A-14 is outlet 14 in zone A on floor 2, served by the telecommunications room on floor 2. ANSI/TIA-606, the labeling standard, sets the format of identifiers. The site’s scheme decides the names. The standard requires each site to record its scheme. Find the site’s scheme before reading its labels. On the mock-up, section 4 of the network plan states the scheme and the outlet-to-port map.</p>
+
+  <h3>Where the port map lives</h3>
+  <p>A port map is a document, and where it is kept varies. On a small site it is a spreadsheet on a shared drive or a printed sheet inside the telecommunications room door. On a larger site it is a record in a cable management or asset system. Before you start, find out where the port map is kept, whether you may write to it or only read it, and who updates it if you may not. Where you may only read it, hand a clear note of each change to the person who owns it.</p>
+
+  <h3>What ANSI/TIA-606 requires of your work</h3>
+  <ul>
+    <li><strong>Every element has a unique identifier:</strong> every outlet, cable, patch panel port, pathway, and space.</li>
+    <li><strong>Anything with two ends is labeled at both ends</strong> with the same identifier. A cable labeled at one end only has to be traced again.</li>
+    <li><strong>The labels and the records agree.</strong> A label that no record mentions, and a record that names a label that cannot be found, are both defects.</li>
+  </ul>
+  <p>Labels go on the faceplate, on the patch panel at the port, and on the cable at both ends, close enough to the connector to read without pulling the bundle apart. Machine-printed wrap-around or flag labels last; handwriting on tape fades and peels. Patch cords are usually not labeled: they change too often for a label to stay true, and the port map records where they go.</p>
+
+  <div class="note tip"><div class="nt">Label the drop, not the person at it</div>
+    <p>A label that reads “Reception PC” is wrong the day reception gets a different computer. The identifier names a fixed position in the building. Who or what uses that position goes in the port map, in a column that is expected to change.</p></div>
+
+  <p>Read this part of a port map from another job, then answer the question below it.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Port map extract, telecommunications room TR-2, another job.</caption>
+      <thead><tr>
+        <th scope="col">Outlet</th><th scope="col">Panel and port</th><th scope="col">Switch port</th><th scope="col">Serves</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">2A-11</th><td>B / 11</td><td>Gi1/0/11</td><td>Desk, room 2A</td></tr>
+        <tr><th scope="row">2A-12</th><td>B / 12</td><td>Gi1/0/24</td><td>Ceiling access point, corridor 2</td></tr>
+        <tr><th scope="row">2A-14</th><td>B / 14</td><td>Gi1/0/12</td><td>Ceiling access point, room 2A</td></tr>
+        <tr><th scope="row">2B-03</th><td>B / 27</td><td>Gi1/0/19</td><td>Desk, room 2B</td></tr>
+        <tr><th scope="row">2B-04</th><td>B / 28</td><td>Not patched</td><td>Spare, room 2B</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cyu gate" data-answer="2" data-fb="Read down the switch port column. Gi1/0/12 appears once, on the row for outlet 2A-14, so 2A-14 loses service. Outlet 2A-12 and panel port B/12 carry the number 12 but are patched to Gi1/0/24: a number in one column says nothing about another column. Outlet 2B-03 is on Gi1/0/19, and 2B-04 is not patched, so shutting down a switch port cannot affect it.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Switch port Gi1/0/12 is shut down. Which outlet loses service?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>2A-12</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>2B-03</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>2A-14</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>2B-04</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.2" data-lesson-title="From the Outlet to the Switch" data-group-num="3" data-group-title="Records and the Trace" data-num="535.2.8" data-title="Tracing a live path without interrupting it">
+  <p class="crumb">Lesson 535.2 &middot; Section 3 Records and the Trace</p>
+  <h2><span class="tnum">535.2.8</span> Tracing a live path without interrupting it</h2>
+  <p class="lead-in">A trace proves which patch panel port and which switch port serve an outlet, on a network that other people are using while you trace it.</p>
+
+  <p>Most quick ways to trace a path break it. A broken path turns a ~5 min job into an outage.</p>
+
+  <div class="note danger"><div class="nt">Unplugging to see who complains</div>
+    <p>Unplugging a cord finds the port. It also drops a call, a camera recording, or a transaction, and the switch logs the lost link. Do not trace a live path by unplugging it.</p></div>
+
+  <p>A trace that leaves the link up reads the labels first, then confirms them at the switch.</p>
+  <p><strong>Read the labels first.</strong> The identifier on the faceplate names the outlet, and under most schemes it also points to the room and the patch panel port that serve it. Where the labeling is complete and accurate, this part of the trace takes ~1 min.</p>
+  <p>A <strong>tone generator and probe</strong> identify an unlabeled cable that is out of service: the generator puts a tone on the cable at the outlet, and the probe picks it up at the patch panel. The generator takes the device’s place at the outlet, so toning is not a method for a path in use.</p>
+  <p><strong>Then confirm.</strong> From the patch panel port, the patch cord leads to a switch. A label tells you what someone intended; a confirmation tells you what is connected. The two differ often enough that a trace without confirmation puts wrong values in the record. To confirm a live path, read the switch:</p>
+  <ul>
+    <li><strong>The switch’s MAC address table.</strong> Make the device send traffic, for example with a ping, then search the table for the MAC address of its wired adapter, read in Windows. The port in the entry is read from the switch itself, not inferred from a label or a cord.</li>
+    <li><strong>The switch port’s status, read before and after you plug in.</strong> On a drop that only your own laptop uses, plugging the laptop in brings the switch port up. The switch’s <code>show interfaces status</code> output then reports the port as <code>connected</code> where it read <code>notconnect</code> before. On a drop someone else is using, this method interrupts them.</li>
+  </ul>
+  <p><strong>Record as you go.</strong> Write the outlet, the patch panel port, and the switch port down together, at the moment you confirm them. A record rebuilt from memory at the end of the day is mostly right, but the next technician cannot tell which parts are wrong.</p>
+
+  <p>Put the steps of a trace that leaves the link up in order, working from the outlet toward the switch.</p>
+  <div class="order gate">
+    <div class="step" data-pos="1">Read the identifier on the faceplate</div>
+    <div class="step" data-pos="2">Go to the room that serves the outlet</div>
+    <div class="step" data-pos="3">Find the patch panel port labeled with that identifier</div>
+    <div class="step" data-pos="4">Follow the patch cord from that port to the switch</div>
+    <div class="step" data-pos="5">Make the laptop send traffic, then confirm the switch port from the MAC address table</div>
+    <div class="step" data-pos="6">Record the outlet, panel port, and switch port together</div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.2" data-lesson-title="From the Outlet to the Switch" data-group-num="3" data-group-title="Records and the Trace" data-num="535.2.9" data-title="The record, and what a discrepancy means">
+  <p class="crumb">Lesson 535.2 &middot; Section 3 Records and the Trace</p>
+  <h2><span class="tnum">535.2.9</span> The record, and what a discrepancy means</h2>
+  <p class="lead-in">A trace produces two findings: the path you found, and whether the record agrees with it.</p>
+
+  <p>Two documents describe the same cabling. The <span class="keyterm">design drawing</span> records what was intended before installation began. The <span class="keyterm">as-built</span> records what was installed. They often differ: a cable is rerouted around ductwork no drawing showed, an outlet moves two feet to clear a column, a patch panel port is skipped because its termination failed. Those changes are normal installation work. The mistake is leaving the record describing a building that was never built.</p>
+  <p>Record the path you found before you compare it with the record. A path written down after reading the record tends to repeat the record. Then compare the two, item by item, and mark each one as a match or a mismatch.</p>
+  <p>A discrepancy is one of three kinds. The kind decides what you may do about it.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Three kinds of discrepancy, and how each is handled.</caption>
+      <thead><tr>
+        <th scope="col">What is wrong</th><th scope="col">What it looks like</th><th scope="col">What you do</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">The label</th><td>The path is correct and recorded, but a label is missing, unreadable, or names another drop</td><td>Correct the label to match the record and the path, and note that you did</td></tr>
+        <tr><th scope="row">The record</th><td>The path is correct and labeled, but the record shows something else</td><td>Where you may write to the record, update it with the date and the change. Where you may not, hand the same note to its owner. Leave the path alone</td></tr>
+        <tr><th scope="row">The path</th><td>The cable or cord does not go where the record and the labels say</td><td>Report it before changing anything. Where the work order allows patching, you may reseat a cord or move it back to the port the record names</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>On the mock-up, a technician reports a discrepancy to the Kestrel site lead, who decides what changes and who changes it.</p>
+
+  <div class="note warn"><div class="nt">Repatch only as the work order allows</div>
+    <p>The cord may be where it is for a reason you cannot see, and someone may depend on it now. Where the work order allows patching, you may reseat a cord, or move it back to the port the record or the work order names. Any other move waits for a decision: report the difference, get the decision, then make the change. A cord moved to tidy a record can cause an outage the next technician cannot explain, because the change was never written down.</p></div>
+
+  <div class="cyu gate" data-answer="1" data-fb="The link works, so nothing is urgent. An unrecorded change made now could leave the next technician an outage to explain. You have found a difference between the record and the installation, and you do not yet know which is correct, so record it and report it. Re-terminating the cable on port 16 changes the path before anyone has decided which record is right, and interrupts the device in use. Relabeling the faceplate makes a third item disagree with the other two. Doing nothing leaves the discrepancy for the next technician to find again.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another job, you trace outlet 2A-16 and find its horizontal cable terminated on patch panel port 18. Port 16 is labeled 2A-16, and the as-built records port 16. The link is up, and the device works. What do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Re-terminate the cable on port 16 to match the as-built</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Record and report it before changing anything</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Leave it as it is, since the link works</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Relabel the faceplate as 2A-18 to match the panel</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.2" data-lesson-title="From the Outlet to the Switch" data-group-num="4" data-group-title="Wrapping Up" data-num="535.2.10" data-title="What you covered">
+  <p class="crumb">Lesson 535.2 &middot; Section 4 Wrapping Up</p>
+  <h2><span class="tnum">535.2.10</span> What you covered</h2>
+  <p class="lead-in">The path, the devices on it, the record, and a method for proving that the path and the record agree.</p>
+
+  <h3>The path</h3>
+  <p>A connection at an outlet is seven elements in series: the network adapter, a patch cord, the telecommunications outlet, the horizontal cable, the patch panel port, a second patch cord, and the switch port. The adapter and the switch port are the ends; the five between them are the cabling. The permanent link is the outlet, the horizontal cable, and the patch panel port: the part an installer usually certifies. The channel adds a patch cord at each end: the cabling the device uses.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The two length limits, and what each one covers.</caption>
+      <thead><tr>
+        <th scope="col">Measure</th><th scope="col">Limit</th><th scope="col">Covers</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Permanent link</th><td>90 m (295 ft)</td><td>Outlet, horizontal cable, patch panel port</td></tr>
+        <tr><th scope="row">Channel</th><td>100 m (328 ft)</td><td>The permanent link plus the patch cord at each end</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Horizontal cabling serves work areas from their telecommunications room; backbone cabling joins rooms, floors, and buildings. What a run connects decides its kind. One person affected points to a drop; a floor or a room affected at once points to something shared.</p>
+
+  <h3>The devices</h3>
+  <p>A switch forwards frames within a VLAN by MAC address. An access point joins wireless devices to the wired network. A gateway moves packets between networks. A DHCP server leases IP addresses; a DNS server answers names with IP addresses. Windows reports each adapter’s status, link speed, and MAC address, and a Cisco switch writes the same MAC address in dotted form. The switch’s MAC address table shows the port where the switch hears a device, once the device has sent traffic.</p>
+
+  <h3>The record and the trace</h3>
+  <p>Three identifiers describe one drop: the outlet identifier, the patch panel port, and the switch port. The first two are fixed; the third changes when a cord moves, and the port map records it. Under ANSI/TIA-606, every element has a unique identifier, anything with two ends is labeled at both, and the labels and the records agree.</p>
+
+  <div class="note"><div class="nt">The trace</div>
+    <ol>
+      <li>Read the identifier on the faceplate.</li>
+      <li>Go to the room that serves the outlet.</li>
+      <li>Find the patch panel port labeled with that identifier.</li>
+      <li>Follow the patch cord from that port to the switch.</li>
+      <li>Make the laptop send traffic, then confirm the switch port from the MAC address table.</li>
+      <li>Record the outlet, panel port, and switch port together.</li>
+    </ol>
+    <p>Record what you found before you compare it with the record. Where they disagree, the label, the record, and the path are three different problems. A label or a record may be corrected. A path is reported before anything changes, except a cord the work order allows you to reseat or move back to the port the record names.</p></div>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete—continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again. A wrong answer does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct>=90) msg.textContent='Outstanding — you are working at field-standard level and are ready for the lab.';
+      else if(pct>=75) msg.textContent='Strong work. Revisit anything you missed and you will be field-ready.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the cards and applied scenarios to close the gaps.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+<!--
+BUILD FLAGS - UCI 1019 Lesson 535.2 Async Reading v0.1.0 DRAFT, 2026-11-11
+(Module 535, Network Fundamentals for Low Voltage Technicians; built under
+the delegated mode, brief Planning/_AGENT-BRIEF_M535-Readings.md). This
+comment is visible in the page source. Not reviewed: technical review,
+language pass and cold read to be run by fresh subagents.
+
+SOURCES READ
+- As Lesson 535.1 (CLAUDE.md, STYLE-RULES.md twice, style profile, format
+  spec and 2026 addendum, 532.1 pattern shell, module plan s2 to s5,
+  lab-build brief, reuse map, Kestrel Network Plan).
+- GLAB 535.2.1 lab, HO 535.2.1, Answer Key Sheet (graded values; see HELD
+  BACK). ALAB 535.3.1 HO (to keep examples off its graded plan extract).
+- 529 source: local UCI-2107.1_M529_Lesson-529.2_Async-Reading_v0.2.0.html;
+  live copy 529.2_cablingtonetworktopology.html fetched 2026-11-11 (differs
+  by one accessibility sentence in the overview). Local Lesson 529.2 deck
+  build copy (.pptx) notes scanned: nothing beyond the reading. Drive decks
+  of record not read.
+- .cli component sheet copied unchanged from the 527.3 reading (2026 palette).
+
+DECISIONS TAKEN
+- Title "From the Outlet to the Switch" (plan s5); objectives in the plan's
+  wording with the serial comma added; DHCP, DNS and MAC expanded inside
+  the objectives (acronym rule).
+- 10 topics in 4 sections. Kept from 529.2: the seven elements (cards),
+  permanent link and channel, the horizontal run and its limits, horizontal
+  and backbone, port assignment and TIA-606, the live trace, the as-built
+  and discrepancies. Removed: 529.2.5 PoE topic (the plan moves PoE to
+  Lesson 535.5 and drops the 529 objective "Locate where PoE is injected
+  and consumed"). Added: 535.2.4 device roles (switch, access point,
+  gateway, DHCP server, DNS server, with failure signs and a matching);
+  535.2.5 the network adapter (Get-NetAdapter, link, speed, MAC in Windows,
+  Cisco and colon forms, Wi-Fi random hardware address); 535.2.6 reading a
+  Cisco MAC address table (show mac address-table address).
+- Element 5 named "patch panel port" (529: "patch panel termination") to
+  match the Kestrel Network Plan and the lab; the permanent link table and
+  the summary use the same name.
+- Trace method: labels first, then confirm by the MAC address table or by
+  the switch port's status before and after plugging in on a drop only the
+  learner uses. Tone generator and probe for an out-of-service cable or a
+  missing label (unplug the device first). 529's "port identification
+  function" (flash a port LED) dropped: not available on the Catalyst
+  3750G/2960G as far as known.
+- "Record the path you found before you compare it with the record"
+  (plan JTA 9.2.6, "record the path before configuration") added to 535.2.9.
+- Following a cord by eye and finger is taught as a reading, not a
+  confirmation; record both and report a difference (the lab grades whether
+  the followed port and the MAC table port are the same, so the page states
+  the method, never an outcome).
+- Activity count 9 (6 checks, 1 card set, 1 matching, 1 ordering); the
+  acknowledgement is not counted. Diagrams 3. Console blocks 2.
+- Reading time stated ~55-70 min (audit estimate 59 min at 112 wpm).
+- Examples use another job: outlet 2A-14, panel B port 14, switch port
+  Gi1/0/12 (529's example, outside the mock-up's ports 13-16), port map
+  extract TR-2, MAC 5C-11-BB-22-CC-33 / 5c11.bb22.cc33 / 5c:11:bb:22:cc:33,
+  Wi-Fi MAC 8C-55-4A-0F-31-9E, VLAN 40, port Gi0/7, prompt Switch#.
+
+HELD BACK OR CONSTRAINED (graded answers)
+- GLAB 535.2.1: no worked example uses a mock-up bay, outlet, faceplate or
+  panel port label, block port, switch name SW-A..SW-E, switch port 13-16,
+  VLAN 1 as the D1 VLAN, the LAN prefix or gateway, or the lab's MAC
+  example (00-1A-2B-3C-4D-5E / 001a.2b3c.4d5e). The mock-up's labeling
+  scheme is not described; the page points to section 4 of the Kestrel
+  Network Plan, which the learner opens anyway (Positions, HO s4).
+- The MAC conversion method is shown as three forms of one address, not as
+  a step-by-step conversion of the learner's own address (the lab teaches
+  and grades that step).
+- Sample command output uses values from no key.
+
+ASSUMPTIONS (not in the plan)
+- Learners read this page before the Lesson 535.2 presentation on Day 1.
+- Get-NetAdapter default columns (Name, InterfaceDescription, ifIndex,
+  Status, MacAddress, LinkSpeed) and the Catalyst IOS layout of
+  "show mac address-table address" (Mac Address Table banner, Vlan / Mac
+  Address / Type / Ports, "Total Mac Addresses for this criterion") written
+  from the known formats, not captured on the mock-up's equipment.
+- Gigabit uses four pairs, 100 Mbps two; a gigabit link "can" fall back to
+  100 Mbps on a faulty pair (hedged: depends on the equipment).
+- UniFi and many devices write MACs with colons ("many other devices and
+  management tools"; UniFi not named for this, to avoid a version claim).
+- On a small network one firewall often fills the gateway, DHCP and DNS
+  roles; on the mock-up the campus lab network provides them (plan D-535-05).
+- The UniFi Network application is out of the data path (management only).
+
+UNVERIFIED
+- Not opened in a browser; SVG layout checked by coordinates only.
+- The two console samples against a live Catalyst 3750G/2960G and a Windows
+  11 laptop (technical review to check; capture on site if needed).
+
+CONFLICTS FOUND
+- Plan objective wording lacks the serial comma; applied on the page.
+- 529.2 taught a switch "port identification function" that flashes a
+  port's LED; the 1019 learner switches are not known to offer it. Dropped.
+- 529.2 said rack cords from neighboring ports "can land three ports
+  apart"; kept as "several ports apart".
+- The Kestrel Network Plan names the Training Wall Baseline Sheet and the
+  Network Plan Sheet; this page names neither (document rule 3) and says
+  the room's values are "posted in the room".
+
+CHANGED FROM 529
+- 2026 brand shell; module title for the module number; no 2107.1 codes;
+  title hyphen; lesson renamed from "Cabling-to-Network Topology".
+- Desks and the unlabeled desk plant replaced by the wall outlet, the wall
+  cavity and cable ladder, and the MIR as the telecommunications room.
+- PoE topic, its diagram, the PSE/PD terms and the "Reading the switch is
+  part of the job" note removed (PoE moves to Lesson 535.5); PoE remains
+  only as the reason fiber is held to 90 m in the horizontal.
+- New topics 535.2.4 to 535.2.6 (roles, adapter, MAC table) and the 2026
+  .cli sheet for their console samples.
+- Cut: "exactly" (x2), "the whole point of a port map", "The last idea is
+  the one that carries into everything", "Tracing sounds like a beginner
+  task", "that is what the labeling is for", "Nobody"/"no one" phrasings,
+  count announcements; certificate note and over-length note tightened.
+- Gi port naming extended with the 3750G (Gi1/0/n) and 2960G (Gi0/n) forms.
+- Diagrams redrawn in the 2026 palette at 1:1 scale.
+
+CHECK QUESTIONS AND WORKED EXAMPLES (for the quiz writer; do not repeat them)
+- 535.2.1 cards: the seven elements and their failures; table of permanent
+  link and channel coverage.
+- 535.2.2 example: drop 2A-14, panel port 14, Gi1/0/12 with 90 m and 100 m
+  bars. CYU: 88 m run + 12 m + 3 m cords; answer B (channel 103 m).
+- 535.2.3 CYU: eight people on one floor at once; answer C (room and uplink).
+- 535.2.4 matching: switch, access point, gateway, DHCP server, DNS server
+  to their descriptions. Table of failure signs (169.254 for no lease;
+  name fails while address works for DNS).
+- 535.2.5 example: Get-NetAdapter output (Ethernet 2 Up 1 Gbps; Wi-Fi
+  Disconnected 0 bps); three forms of one MAC. CYU: Up at 100 Mbps on
+  gigabit equipment; answer A (fault on a gigabit-only pair).
+- 535.2.6 example: show mac address-table address 5c11.bb22.cc33 shows VLAN
+  150, DYNAMIC, Gi0/7. CYU: no entry, adapter Up; answer D (send traffic,
+  search again).
+- 535.2.7 example: three identifiers (2A-14, Panel B port 14, Gi1/0/12);
+  port map extract TR-2. CYU: Gi1/0/12 shut down; answer C (2A-14).
+- 535.2.8 ordering: six steps of a non-disruptive trace.
+- 535.2.9 CYU: 2A-14 found on panel port 18, record says 14; answer B
+  (record and report).
+- Answer positions: (cards), B, C, (match), A, D, C, (order), B.
+
+AUDIT (final build, 2026-11-11)
+- audit_html.py: FAIL 0, WARN 0 after splitting one 53-word sentence in the
+  535.2.2 text description.
+- contrast_audit.py as written: FAIL 1, the known engine-amber limitation
+  (.order .step.picked .seq read against the legacy token); REPORT 83.
+  Run with later definitions overriding earlier ones (addendum s6): FAIL 0.
+
+2026-11-11 READINGS FIX ROUND 1 (brief Planning/_AGENT-BRIEF_M535-Readings-Fix-1.md;
+record Planning/reviews/RFIX1_535.1-535.4_2026-11-11.md). Applied by an agent
+that did not write or review the page. Content only; head, CSS, scripts,
+navigation and lightbox checked byte-identical to the pre-fix file. Version
+not bumped (still v0.1.0 DRAFT, first issue under review).
+- TECH1 applied: TIA-606 sentence hedged (pending 47: the standard sets the
+  format of identifiers; the site's scheme decides the names); the mock-up
+  gateway sentence hedged ("the gateway (and, where the campus has set them
+  up, DHCP and DNS)"); "In the usual horizontal design, the 90-meter limit
+  applies to fiber as well"; certification "at installation usually tests
+  the permanent link" (body and summary). The SVG note "the part that is
+  certified" is unchanged.
+- Pending 43: "show mac-address-table" named as the older-release form, with
+  IOS expanded at that first use.
+- LP1: 45 of 46 applied. #41 (STRUCTURAL): the tone generator paragraph moved
+  from after the switch-reading list to after "Read the labels first", and
+  reworded per #42. #14: the rule paragraph rewritten ("The first rule: no
+  splices...", later "A horizontal cable has no splices"). #2: "Kestrel
+  Network Plan" kept once, in the note on documents; elsewhere "the network
+  plan". HELD: #5 (objective "MAC table" is the plan's wording; brief rule
+  3). Captions "Figure: ...".
+- Example VLAN 40 in the show mac address-table sample is now VLAN 150 (the
+  Vlan column right-aligned as IOS prints it).
+- Option balance: 535.2.2 B shortened ("No: the whole channel is over 100
+  meters"); 535.2.3 D "The network settings on all eight laptops"; 535.2.9 B
+  "Record and report it before changing anything", C "Leave it as it is,
+  since the link works". Keys unchanged and rechecked.
+- Re-run after the fix: audit_html.py FAIL 0, WARN 0 (6485 words, ~58 min); contrast_audit.py
+  FAIL 1 (the known engine-amber limitation), REPORT 83. Stated reading time
+  kept at ~55-70 min: the audit estimate moved by under 2 min.
+- Not re-reviewed: no language pass or technical review has run on the
+  changed text.
+2026-11-11 readings fix round 2: brief Planning/_AGENT-BRIEF_M535-Readings-Fix-2.md;
+record Planning/reviews/RFIX2_535.1-535.4_2026-11-11.md. Applied by an agent that
+did not write or review the page. Content only; style, script, header and footer
+regions checked identical to the pre-fix file. Version not bumped.
+- Objectives: "Confirm the switch port from the MAC address table." and
+  "Cross-check a physical trace against the cabling record." (plan, second
+  and fourth changes).
+- R2-41: subsection "Reaching the switch's command line" added at the top of
+  535.2.6 (USB console cable, COM number in Device Manager, PuTTY Serial 9600,
+  flow control None, the > prompt), as an h3 rather than a new topic, so no
+  topic is renumbered. Sample prompt now Switch> (the lab works at >).
+- LP2: 11 cuts applied (the channel bullet rewrite also removes "Recalculate
+  the channel"). STRUCTURAL objective fixed by the plan wording; prompt now
+  defined.
+- CR1 minors: port status read with show interfaces status (notconnect to
+  connected); trace step 5 and the summary add "Make the laptop send traffic";
+  step 3 "labeled with that identifier", and 535.2.7 says a panel port has its
+  own position and carries the outlet's identifier; 535.2.9 option A now
+  "Re-terminate the cable on port 16" (outlet 2A-16, so 2A-14 keeps one role);
+  margin, subnet mask, frame, firewall and Mbps defined; MIR expanded in the
+  body.
+- R2-38: discrepancy table and note: the installer may reseat a cord, or move
+  it back to the port the record or work order names where the work order
+  allows patching; any other move waits for a decision. Note heading "Repatch
+  only as the work order allows". Summary to match.
+- R2-39: "gigabit" to "1000 Mbps" (note, check stem, option A, feedback).
+- Examples: sample VLAN 150 to 140 (office laptop on Gi0/7, as 535.1); figure
+  device at 2A-14 now "access point" (the port map's role for 2A-14).
+- Check-question list changes: 535.2.5 option A "A fault on a pair only 1000
+  Mbps uses"; 535.2.9 outlet 2A-16, ports 18 and 16, option A re-terminate.
+  Keys unchanged; ordering step 5 text changed, order unchanged.
+- Stated time ~60-75 min (audit 6747 words, ~60 min, 9 activities).
+- audit_html.py FAIL 0 WARN 0; contrast_audit.py FAIL 1 (known engine amber).
+- Not re-reviewed.
+- 2026-11-12 readings fix round 3: LP3 (13) and TECH2 (Unverifiable 1,
+  Depends 1) applied, R2-47. Cuts: "Neither is cabling. Either can be the
+  fault."; drop-count sentence and "The two adapters have different
+  addresses." removed; "The rule:"; Switch row reordered; "IP address" in the
+  DHCP row, the matching pair and the summary; "values for the mock-up";
+  Wi-Fi random address sentence without "also"; TIA-606 "the labeling
+  standard"; discrepancy sentence split. Console: the switch "usually" answers
+  with its prompt; "# also allows commands that change the switch"; show
+  commands "usually run at the > prompt. If the switch rejects one, type
+  enable." (to be confirmed on one 3750G and one 2960G before the first
+  cohort, TECH2).
+- Check-question list: matching pair "Leases an IP address to a device that
+  asks for one". Keys unchanged.
+- Stated time unchanged ~60-75 min (audit 6742 words, ~60 min).
+- audit_html.py FAIL 0 WARN 0; contrast_audit.py FAIL 1 (known engine amber).
+- Not re-reviewed (language passes stopped after LP3, R2-49).
+-->

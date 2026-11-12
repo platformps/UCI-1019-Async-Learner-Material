@@ -1,0 +1,2259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 535 (M09) - Network Fundamentals for Low Voltage Technicians
+  Lesson 535.4 - Managed Switch VLANs (Async Reading)
+  VERSION: v0.1.0  (2026-11-11)  DRAFT - for review
+
+  CHANGES IN v0.1.0
+  First issue. Adapted from the live UCI 2107.1 page
+  529.3_managedswitchvlanandpoe.html (v0.2.0; identical to the local
+  v0.2.0 file, compared byte for byte 2026-11-11): its VLAN, console, mode,
+  verification, save and scope parts. PoE removed (it moves to Lesson 535.5,
+  on the UniFi switch). Rebuilt for UCI 1019 (see CHANGED FROM 529 in the
+  BUILD FLAGS).
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox) reused verbatim from
+  UCI-1019_M532_Lesson-532.1_Async-Reading_v0.1.0_DRAFT.html (which carries the
+  engine of UCI-2107.1_M529_Lesson-529.6_Async-Reading_v0.2.0.html, with the two
+  FIX1 message strings). Appended after it: the 2026 brand layer
+  (FORMAT-SPEC_Async-Reading_2026-Addendum_v0.1.0_DRAFT.md section 3) and the
+  .cli console sheet in 2026 colours, copied from the Lesson 527.3 page. The
+  532.1 .calc sheet is not carried (not used). Logo: inline Slate SVG.
+
+  OBJECTIVES, from the module plan v0.1.0 section 5, Lesson 535.4 (plan
+  wording, word for word; VLAN expanded in the banner above them).
+    Access       the switch command line through a console connection    9.6.5
+    Create       a VLAN                                                  9.6.2
+    Assign       a switch port to a VLAN                                 9.6.2
+    Verify       same VLAN reaches, different VLANs do not               9.6.3, 9.6.4
+    Recognize    the configuration tasks assigned to the network team    9.6.1
+    Restore      the switch ports to their starting state                9.6.6
+
+  TOPIC OUTLINE
+    Section 1  VLANs on a Managed Switch
+      535.4.1   One switch, several networks         entry point; Verify (concept)
+      535.4.2   What a VLAN changes and what it leaves alone   Verify (concept)
+    Section 2  Reaching the Command Line
+      535.4.3   The console connection               Access
+      535.4.4   Modes and prompts                    Access
+    Section 3  Building and Reading VLANs
+      535.4.5   Reading the switch before you change it   Assign; Restore (start state)
+      535.4.6   Creating a VLAN and assigning a port Create; Assign
+      535.4.7   Testing reach across VLANs           Verify
+    Section 4  Restoring and Knowing Where to Stop
+      535.4.8   Saved and unsaved configuration      Restore; Recognize
+      535.4.9   Putting the ports back               Restore
+      535.4.10  Where your scope ends                Recognize
+    Section 5  Wrapping Up
+      535.4.11  What you covered                     summary
+
+  ACTIVITY GATES: 12 - 9 single-answer checks, 1 matching, 1 reveal-card set,
+    1 acknowledgement (the page counts 11 activities: checks, matching, cards).
+  DIAGRAMS: 2 original SVG, each with a full text description (one switch,
+    two VLANs and a broadcast; a console connection).
+  IMAGES: none (the 529.3 console photographs are not carried; see flags).
+
+  Build flags, decisions, assumptions, the list of every check question and
+  worked example, and the audit results are in the BUILD FLAGS comment at the
+  end of this file.
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 535.4 - Managed Switch VLANs &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Console transcript component sheet, recoloured to the 2026 palette.
+     Structure as the .cli sheet of the 2107.1 Module 529 pages; appended
+     after the brand layer. Slate title bar with White text (14.7:1), Slate
+     output on White, Plum command, #5A5D66 prompt (6.6:1), Cloud read-back
+     strip with Slate text (12.9:1). */
+  .cli{background:#FFFFFF;border:1.6px solid #26282E;border-radius:8px;margin:18px 0;overflow:hidden}
+  .cli .cli-ttl{background:#26282E;color:#FFFFFF;font-weight:700;font-size:.95rem;padding:9px 14px}
+  .cli .cli-body{overflow-x:auto;padding:12px 14px;background:#FFFFFF}
+  .cli pre{margin:0;min-width:520px;color:#26282E;background:#FFFFFF;
+    font-family:Consolas,ui-monospace,"Liberation Mono",monospace;font-size:.92rem;line-height:1.7}
+  .cli .pr{color:#5A5D66;background:#FFFFFF}
+  .cli .cmd{color:#611940;background:#FFFFFF;font-weight:700}
+  .cli .out{color:#26282E;background:#FFFFFF}
+  .cli .cli-foot{border-top:1px solid #D4D5D8;padding:10px 14px;color:#26282E;font-size:.95rem;background:#F0F0F0}
+  .cli .cli-foot p{margin:0 0 6px}
+  .cli .cli-foot p:last-child{margin-bottom:0}
+  .cli .cli-foot ul{margin:0;padding-left:20px}
+  .cli .cli-foot li{margin:4px 0}
+  .cli .cli-foot code{background:#FFFFFF;color:#26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Network Fundamentals for Low Voltage Technicians</b> &middot; Lesson 535.4 - Managed Switch VLANs</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Network Fundamentals for Low Voltage Technicians</p>
+      <h2 id="ovh" tabindex="-1">Lesson 535.4 - Managed Switch VLANs</h2>
+      <p class="lead-in">How an installer reaches a managed switch&rsquo;s command line through its console port, reads which Virtual Local Area Network (VLAN) each port is in, places a port in a VLAN, and puts the switch back the way it was found.</p>
+
+      <p>A building owner wants the cameras, the door controllers, and the office computers kept apart, on the same switches. The network team separates them with VLANs: each switch port belongs to one VLAN, and the switch passes traffic only between ports of the same VLAN. The installer connects each device to the port the plan gives it, and checks at the switch that the port is in the VLAN the plan names.</p>
+
+      <p>On project HSOC-26-014, the Harlow Street Operations Center, the network team owns the configuration of every switch on the installation mock-up. D. Okafor, the Kestrel Communications site lead, allows an installer to change a switch port only where a work order assigns that port, and requires the installer to undo and check every change before leaving the switch.</p>
+
+      <p>The worked examples on this page use switches, ports, and VLANs from other jobs, not those of the mock-up.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>VLANs on a Managed Switch.</b> What a VLAN separates on one switch, and what it leaves alone.</li>
+        <li><b>Reaching the Command Line.</b> The console connection, the terminal settings, and the modes of the switch&rsquo;s command line.</li>
+        <li><b>Building and Reading VLANs.</b> Reading the switch before you change it, creating a VLAN, assigning a port to it, and testing which devices reach each other.</li>
+        <li><b>Restoring and Knowing Where to Stop.</b> Saved and unsaved configuration, putting the ports back, and the work that belongs to the network team.</li>
+        <li><b>Wrapping Up.</b> A summary of each section.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>5</b><span>Sections</span></div>
+        <div class="ov-stat"><b>11</b><span>Topics</span></div>
+        <div class="ov-stat"><b>11</b><span>Activities</span></div>
+        <div class="ov-stat"><b>2</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the documents and the equipment</h3>
+      <p>The commands and output on this page are those of Cisco Catalyst switches running the Cisco Internetwork Operating System (IOS), such as the Catalyst 3750G and 2960G. Other makes, and other IOS releases, word some commands and output differently; where a line varies, this page says so. The rules for what an installer may change on the mock-up are in the <strong>Kestrel Network Plan</strong>, a fictional document written for the mock-up.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or go to any topic
+         from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks&mdash;a
+         knowledge check, a set of cards to open, or a matching exercise.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. The lesson takes ~60&ndash;70 min, including the activities.
+         The header and the contents list show your progress through the lesson.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching activity every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description, console output is plain text rather than an image, and each table has column headings and a caption.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 535.4</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="535.4" data-lesson-title="Managed Switch VLANs" data-group-num="1" data-group-title="VLANs on a Managed Switch" data-num="535.4.1" data-title="One switch, several networks">
+  <p class="crumb">Lesson 535.4 &middot; Section 1 VLANs on a Managed Switch</p>
+  <h2><span class="tnum">535.4.1</span> One switch, several networks</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 535.4</span>
+    <h3>Managed Switch VLANs</h3>
+    <p>A managed switch divides its ports into Virtual Local Area Networks (VLANs). It passes traffic only between ports of the same VLAN. An installer reaches the switch&rsquo;s command line through its console port, reads which VLAN each port is in, and changes a port only where a work order assigns it. The installer undoes every change before leaving the switch.</p>
+    <p class="lb-meta"><b>5</b> sections &nbsp;&middot;&nbsp;
+       <b>11</b> topics &nbsp;&middot;&nbsp;
+       <b>11</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 535.4 you will be able to</div>
+    <ul>
+      <li><b>Access</b> the switch command line through a console connection.</li>
+      <li><b>Create</b> a VLAN.</li>
+      <li><b>Assign</b> a switch port to a VLAN.</li>
+      <li><b>Test</b> reachability between two laptops on the same VLAN and on different VLANs.</li>
+      <li><b>Recognize</b> the configuration tasks assigned to the network team.</li>
+      <li><b>Restore</b> the switch ports to their starting state.</li>
+    </ul></div>
+
+  <p class="lead-in">Out of the box, a switch keeps all its ports in one network: every device on it can reach every other.</p>
+
+  <p>A switch moves <span class="keyterm">frames</span>, the units of data on a local network, between its ports. A frame addressed to every device at once is a <span class="keyterm">broadcast</span>. A switch sends a broadcast out of every port in the same network as the port it arrived on. The ports that receive one another&rsquo;s broadcasts form a <span class="keyterm">broadcast domain</span>. Out of the box, every port of a Catalyst switch is in VLAN 1, so the whole switch is one broadcast domain.</p>
+  <p>One broadcast domain suits a few devices. In a commercial building it lets a camera, a door controller, a payment terminal, and a visitor&rsquo;s laptop reach one another. A faulty device that floods the network with broadcasts slows every device on the switch. Separate switches for each group would keep them apart, at the cost of more hardware and a cabling job for every change.</p>
+  <p>A VLAN gives the same separation as a setting. The network team assigns each switch port to a VLAN. Ports in one VLAN exchange frames and receive one another&rsquo;s broadcasts. Ports in a different VLAN do the same among themselves. The switch passes no frame from one VLAN to the other. One switch then behaves as several separate switches.</p>
+
+  <div class="figure">
+  <div class="cap">Figure: One switch, two VLANs</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:820px" viewBox="0 0 820 300" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="An eight-port switch with ports 2 to 4 in VLAN 140 and ports 5 to 7 in VLAN 150. A broadcast arriving on port 2 leaves by ports 3 and 4 only. Ports 5 to 7 receive nothing from it. A full text description follows.">
+    <text x="20" y="26" font-size="16" font-weight="700" fill="#611940">One switch, two VLANs: where a broadcast from port 2 goes</text>
+    <rect x="40" y="50" width="740" height="90" rx="10" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+    <g font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">
+      <rect x="70" y="72" width="60" height="44" rx="4" fill="#FFFFFF" stroke="#26282E"/><text x="100" y="100">1</text>
+      <rect x="160" y="72" width="60" height="44" rx="4" fill="#71E2FD" stroke="#26282E"/><text x="190" y="100">2</text>
+      <rect x="250" y="72" width="60" height="44" rx="4" fill="#71E2FD" stroke="#26282E"/><text x="280" y="100">3</text>
+      <rect x="340" y="72" width="60" height="44" rx="4" fill="#71E2FD" stroke="#26282E"/><text x="370" y="100">4</text>
+      <rect x="430" y="72" width="60" height="44" rx="4" fill="#E7FD82" stroke="#26282E"/><text x="460" y="100">5</text>
+      <rect x="520" y="72" width="60" height="44" rx="4" fill="#E7FD82" stroke="#26282E"/><text x="550" y="100">6</text>
+      <rect x="610" y="72" width="60" height="44" rx="4" fill="#E7FD82" stroke="#26282E"/><text x="640" y="100">7</text>
+      <rect x="700" y="72" width="60" height="44" rx="4" fill="#FFFFFF" stroke="#26282E"/><text x="730" y="100">8</text>
+    </g>
+    <rect x="160" y="152" width="240" height="26" rx="4" fill="#71E2FD" stroke="#26282E"/>
+    <text x="280" y="170" font-size="13" font-weight="700" fill="#26282E" text-anchor="middle">VLAN 140, ports 2 to 4</text>
+    <rect x="430" y="152" width="240" height="26" rx="4" fill="#E7FD82" stroke="#26282E"/>
+    <text x="550" y="170" font-size="13" font-weight="700" fill="#26282E" text-anchor="middle">VLAN 150, ports 5 to 7</text>
+    <line x1="190" y1="240" x2="190" y2="186" stroke="#26282E" stroke-width="2"/>
+    <polygon points="190,182 184,194 196,194" fill="#26282E"/>
+    <text x="190" y="258" font-size="13" fill="#26282E" text-anchor="middle">Arrives</text>
+    <line x1="280" y1="186" x2="280" y2="234" stroke="#26282E" stroke-width="2"/>
+    <polygon points="280,240 274,228 286,228" fill="#26282E"/>
+    <line x1="370" y1="186" x2="370" y2="234" stroke="#26282E" stroke-width="2"/>
+    <polygon points="370,240 364,228 376,228" fill="#26282E"/>
+    <text x="325" y="258" font-size="13" fill="#26282E" text-anchor="middle">Leaves by ports 3 and 4</text>
+    <text x="550" y="214" font-size="13" fill="#26282E" text-anchor="middle">Nothing reaches ports 5 to 7</text>
+    <text x="20" y="288" font-size="13" fill="#5A5D66">Ports 1 and 8 are not in either VLAN shown. The cabling is the same in both VLANs; only the port setting differs.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram, titled One switch, two VLANs: where a broadcast from port 2 goes, shows a switch with eight ports in a row. Ports 2, 3, and 4 are shaded and labeled VLAN 140. Ports 5, 6, and 7 are shaded differently and labeled VLAN 150. Ports 1 and 8 are unshaded.</p>
+    <p>An arrow shows a broadcast arriving on port 2. Arrows show it leaving by ports 3 and 4. A note under ports 5 to 7 reads: nothing reaches ports 5 to 7. A footnote reads: ports 1 and 8 are not in either VLAN shown; the cabling is the same in both VLANs, and only the port setting differs.</p>
+  </details>
+
+  <div class="cyu gate" data-answer="2" data-fb="A broadcast reaches the other ports of the VLAN it arrived in and stops there. Port 6 is in VLAN 150, so ports 5 and 7 receive it. Ports 2 to 4 are in VLAN 140 and receive nothing from it, although they are on the same switch. A broadcast is addressed to every device in the VLAN, not to one.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On one switch, ports 2 to 4 are in VLAN 140 and ports 5 to 7 are in VLAN 150. A device on port 6 sends a broadcast. Which ports receive it?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Every other port on the switch</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Ports 2, 3, and 4</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Ports 5 and 7</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>No other port</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.4" data-lesson-title="Managed Switch VLANs" data-group-num="1" data-group-title="VLANs on a Managed Switch" data-num="535.4.2" data-title="What a VLAN changes and what it leaves alone">
+  <p class="crumb">Lesson 535.4 &middot; Section 1 VLANs on a Managed Switch</p>
+  <h2><span class="tnum">535.4.2</span> What a VLAN changes and what it leaves alone</h2>
+  <p class="lead-in">A VLAN decides which ports hear each other. It does not change the cable, the link, or the power on a port.</p>
+
+  <p>Open each card.</p>
+  <div class="revealset gate"><div class="cards stack">
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">It contains broadcasts</span>
+      <span class="rcard-sub">What a VLAN changes</span>
+      <span class="rcard-detail" hidden><p>A broadcast arriving on a port leaves by the other ports of that VLAN and no others. Each VLAN on a switch is its own broadcast domain, so a device that floods the network with broadcasts slows only the devices in its own VLAN.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">It keeps groups apart</span>
+      <span class="rcard-sub">What a VLAN changes</span>
+      <span class="rcard-detail" hidden><p>Two devices in different VLANs on the same switch exchange no frames through it. Traffic between VLANs passes through a router, or a switch set up to route. Each VLAN normally has its own gateway and its own Internet Protocol (IP) subnet: a range of IP addresses that forms one network. The network team decides whether one VLAN may reach another.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">It is a port setting, not a wire</span>
+      <span class="rcard-sub">What a VLAN changes</span>
+      <span class="rcard-detail" hidden><p>Each switch port carries a VLAN assignment. Nothing on the outlet, the patch cord, or the patch panel shows it. To learn a port&rsquo;s VLAN, read the switch or the port map.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">It has a number, and usually a name</span>
+      <span class="rcard-sub">What a VLAN changes</span>
+      <span class="rcard-detail" hidden><p>The switch identifies a VLAN by its number. The name, such as <code>OFFICE-140</code>, tells the next technician what the VLAN is for. A VLAN created without a name takes a default one built from its number, such as <code>VLAN0140</code>.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">It leaves the link alone</span>
+      <span class="rcard-sub">What a VLAN does not change</span>
+      <span class="rcard-detail" hidden><p>Speed, duplex (whether a link carries traffic both ways at once), cable length, and the quality of a termination are the same in any VLAN. A link that comes up at 100 megabits per second (Mbps) where it should reach 1000 Mbps has a fault in the cabling or the equipment; moving the port to another VLAN does not fix it. A port in the wrong VLAN still links: the light is on and the device reaches the wrong devices, or none.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">It does not supply power</span>
+      <span class="rcard-sub">What a VLAN does not change</span>
+      <span class="rcard-detail" hidden><p>Power over Ethernet (PoE) is a separate function of a PoE switch port, delivered over the same cable at the physical layer. A port can be in the right VLAN and supply no power, or supply power in the wrong VLAN. A device with no power is dark; a powered device in the wrong VLAN starts up and reaches the wrong devices.</p></span>
+    </button>
+  </div></div>
+</section>
+
+<section class="topic" data-lesson-num="535.4" data-lesson-title="Managed Switch VLANs" data-group-num="2" data-group-title="Reaching the Command Line" data-num="535.4.3" data-title="The console connection">
+  <p class="crumb">Lesson 535.4 &middot; Section 2 Reaching the Command Line</p>
+  <h2><span class="tnum">535.4.3</span> The console connection</h2>
+  <p class="lead-in">A managed switch has no screen or keyboard. A console cable connects it to a laptop, which supplies both.</p>
+
+  <p>The <span class="keyterm">console port</span> of a switch accepts a terminal, and nothing else. A console session carries your keystrokes to the switch&rsquo;s command line and its replies back, with no IP address. It does not depend on the switch&rsquo;s network settings, so it works on a switch whose network settings are wrong or whose ports are all shut down. On the Catalyst 3750G and 2960G, the console port is an RJ45 socket labeled CONSOLE, on the front or the back depending on the model. It looks like a network port; a patch cord in it does nothing.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The parts of a console connection, and what to check in each.</caption>
+      <thead><tr>
+        <th scope="col">Part</th><th scope="col">What it is</th><th scope="col">What to check</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Console cable</th><td>A cable with an RJ45 plug for the console port and a USB plug for the laptop</td><td>Not a patch cord. The RJ45 end goes in the CONSOLE socket, not a network port</td></tr>
+        <tr><th scope="row">Driver</th><td>Software that makes Windows treat the cable as a serial port</td><td>With the driver installed, Device Manager lists the cable under <strong>Ports (COM &amp; LPT)</strong> with a COM number, such as COM4. No entry there means no driver</td></tr>
+        <tr><th scope="row">Terminal program</th><td>PuTTY, on the laptop</td><td>Connection type <strong>Serial</strong>, the COM number from Device Manager, and the serial settings below</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="figure">
+  <div class="cap">Figure: A console connection</div>
+  <div class="tbl-scroll">
+  <svg style="min-width:820px" viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="A laptop running PuTTY on COM4 at 9600 8-N-1, flow control None, connects through a USB console cable to the RJ45 console port of a switch. The switch's network ports are not used. A full text description follows.">
+    <text x="20" y="26" font-size="16" font-weight="700" fill="#611940">A console connection</text>
+    <rect x="20" y="60" width="230" height="120" rx="8" fill="#71E2FD" stroke="#26282E" stroke-width="1.4"/>
+    <text x="135" y="86" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">Laptop: PuTTY</text>
+    <text x="135" y="108" font-size="13" fill="#26282E" text-anchor="middle">Connection type: Serial</text>
+    <text x="135" y="127" font-size="13" fill="#26282E" text-anchor="middle">Serial line: COM4</text>
+    <text x="135" y="146" font-size="13" fill="#26282E" text-anchor="middle">9600, 8 data bits, no parity,</text>
+    <text x="135" y="165" font-size="13" fill="#26282E" text-anchor="middle">1 stop bit, flow control None</text>
+    <line x1="250" y1="120" x2="560" y2="120" stroke="#26282E" stroke-width="3"/>
+    <text x="405" y="108" font-size="13" font-weight="700" fill="#26282E" text-anchor="middle">USB console cable</text>
+    <text x="270" y="142" font-size="13" fill="#26282E">USB end</text>
+    <text x="490" y="142" font-size="13" fill="#26282E">RJ45 end</text>
+    <rect x="560" y="60" width="240" height="120" rx="8" fill="#F0F0F0" stroke="#26282E" stroke-width="1.4"/>
+    <text x="680" y="86" font-size="14" font-weight="700" fill="#26282E" text-anchor="middle">Switch</text>
+    <rect x="575" y="104" width="90" height="34" rx="4" fill="#E7FD82" stroke="#26282E" stroke-width="1.4"/>
+    <text x="620" y="126" font-size="13" font-weight="700" fill="#26282E" text-anchor="middle">CONSOLE</text>
+    <rect x="680" y="104" width="105" height="34" rx="4" fill="#FFFFFF" stroke="#8C8F96" stroke-width="1.4"/>
+    <text x="732" y="126" font-size="13" fill="#26282E" text-anchor="middle">Network ports</text>
+    <text x="680" y="165" font-size="13" fill="#26282E" text-anchor="middle">No IP address needed</text>
+    <text x="20" y="208" font-size="13" fill="#5A5D66">The COM number is the one Device Manager shows for the cable on your laptop; COM4 is an example.</text>
+  </svg>
+  </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram, titled A console connection, shows a laptop running PuTTY with connection type Serial, serial line COM4, and the settings 9600, 8 data bits, no parity, 1 stop bit, flow control None. A USB console cable runs from the laptop, USB end, to the switch, RJ45 end, where it plugs into the socket labeled CONSOLE rather than a network port. A note on the switch reads: no IP address needed.</p>
+    <p>A footnote reads: the COM number is the one Device Manager shows for the cable on your laptop; COM4 is an example.</p>
+  </details>
+
+  <h3>The serial settings</h3>
+  <p>The laptop and the switch must agree on how fast to send and how to frame each character. Most network equipment uses one set of serial settings, written <strong>9600 8-N-1</strong>: 9600 bits per second, 8 data bits, no parity bit, and 1 stop bit, with flow control off. In PuTTY, select <strong>Serial</strong> on the Session page, enter the COM number under <strong>Serial line</strong>, and check that <strong>Speed</strong> reads 9600, its default. The other values are under Connection &gt; Serial. PuTTY&rsquo;s defaults are 8 data bits, 1 stop bit, and no parity. Its default <strong>Flow control</strong> is XON/XOFF: change it to None.</p>
+
+  <h3>When the window stays blank, or shows symbols</h3>
+  <ul>
+    <li><strong>A blank window</strong> is normal. The switch prints nothing until you press <kbd>Enter</kbd>; then a prompt appears.</li>
+    <li><strong>Still nothing after Enter:</strong> check, in this order, that the cable is seated at both ends, that the COM number is the one Device Manager shows, that the speed is 9600, and that flow control is None.</li>
+    <li><strong>Unreadable symbols:</strong> the connection works, but the two ends disagree on the speed. Set the speed to 9600.</li>
+    <li><strong>A password prompt:</strong> a console can be protected by a password. On a switch the network team owns, <code>enable</code> usually asks for a password as well. Call the person who holds it to type it. Never write a switch password down. Keep it out of every screenshot.</li>
+  </ul>
+
+  <div class="cyu gate" data-answer="0" data-fb="A switch prints nothing until it receives a keystroke, so a blank window is the normal start of a session: press Enter and the prompt appears. A wrong speed shows unreadable symbols, not a blank window. Replacing the cable or restarting the switch comes after the checks. A restart interrupts every device on the switch.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You open a serial session in PuTTY on the COM number Device Manager shows. The window opens and stays blank. What do you do first?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Press Enter</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Change the speed to 115200</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Replace the console cable</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Ask for the switch to be restarted</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.4" data-lesson-title="Managed Switch VLANs" data-group-num="2" data-group-title="Reaching the Command Line" data-num="535.4.4" data-title="Modes and prompts">
+  <p class="crumb">Lesson 535.4 &middot; Section 2 Reaching the Command Line</p>
+  <h2><span class="tnum">535.4.4</span> Modes and prompts</h2>
+  <p class="lead-in">The switch&rsquo;s command line has modes, and the prompt states which one you are in.</p>
+
+  <p>Each mode accepts its own set of commands. The prompt starts with the switch&rsquo;s name, set by the network team (<code>Switch</code> on an unnamed switch), and ends with a symbol or a bracketed word that names the mode. A command typed in the wrong mode is rejected.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The command line modes used on this page, the prompt of each, how you enter it, and what it is for. NG-SW2 is the name of a switch on another job.</caption>
+      <thead><tr>
+        <th scope="col">Prompt</th><th scope="col">Mode</th><th scope="col">How you enter it</th><th scope="col">What it is for</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row"><code>NG-SW2&gt;</code></th><td>User EXEC</td><td>A console session usually starts here</td><td>A few read-only commands</td></tr>
+        <tr><th scope="row"><code>NG-SW2#</code></th><td>Privileged EXEC</td><td><code>enable</code></td><td>Every <code>show</code> command; also saving and restarting, which are not an installer&rsquo;s to do</td></tr>
+        <tr><th scope="row"><code>NG-SW2(config)#</code></th><td>Global configuration</td><td><code>configure terminal</code></td><td>Settings for the whole switch, such as creating a VLAN</td></tr>
+        <tr><th scope="row"><code>NG-SW2(config-vlan)#</code></th><td>VLAN configuration</td><td><code>vlan</code> and a number</td><td>Settings for that one VLAN, such as its name</td></tr>
+        <tr><th scope="row"><code>NG-SW2(config-if)#</code></th><td>Interface configuration</td><td><code>interface</code> and a port name</td><td>Settings for that one port, such as its VLAN</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><code>exit</code> steps back one mode. <code>end</code> leaves configuration from any configuration mode and returns to <code>#</code>, where the <code>show</code> commands run. <code>disable</code> returns from <code>#</code> to <code>&gt;</code>.</p>
+  <p>Read the prompt before you press <kbd>Enter</kbd>. Some commands are accepted in more than one mode and act on whatever that mode governs: <code>shutdown</code> at a <code>(config-if)#</code> prompt shuts down that port.</p>
+
+  <h3>Help at the command line</h3>
+  <ul>
+    <li><code>?</code> lists the commands valid at the prompt, or the ways to finish a command you have started.</li>
+    <li><kbd>Tab</kbd> completes a word you have started; nothing completes if the word is misspelled.</li>
+    <li>The <kbd>Up arrow</kbd> recalls an earlier command.</li>
+    <li>A command can be shortened while it stays unambiguous: <code>conf t</code> for <code>configure terminal</code>. Type commands in full while you learn them.</li>
+  </ul>
+
+  <h3>Error messages</h3>
+  <ul>
+    <li><code>% Invalid input detected at '^' marker.</code>: the switch did not recognize the word the caret points to: a typing error, or a command that does not belong in this mode.</li>
+    <li><code>% Incomplete command.</code>: the command needs more, such as a number or a port name. Recall it with the Up arrow and add <code>?</code> to see what it needs.</li>
+  </ul>
+  <p>A rejected command changes nothing on the switch.</p>
+
+  <p>Match each prompt to its mode.</p>
+  <div class="match gate" data-left="Prompt" data-right="Mode">
+    <div class="pair" data-left="NG-SW2&gt;" data-right="User EXEC"></div>
+    <div class="pair" data-left="NG-SW2#" data-right="Privileged EXEC"></div>
+    <div class="pair" data-left="NG-SW2(config)#" data-right="Global configuration"></div>
+    <div class="pair" data-left="NG-SW2(config-vlan)#" data-right="VLAN configuration"></div>
+    <div class="pair" data-left="NG-SW2(config-if)#" data-right="Interface configuration"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.4" data-lesson-title="Managed Switch VLANs" data-group-num="3" data-group-title="Building and Reading VLANs" data-num="535.4.5" data-title="Reading the switch before you change it">
+  <p class="crumb">Lesson 535.4 &middot; Section 3 Building and Reading VLANs</p>
+  <h2><span class="tnum">535.4.5</span> Reading the switch before you change it</h2>
+  <p class="lead-in"><code>show interfaces status</code> and <code>show vlan brief</code> list every port&rsquo;s name, state, and VLAN, and every VLAN on the switch. Record both before you type a configuration line.</p>
+
+  <h3>Port names</h3>
+  <p>A work order names a port by its number on the switch. The switch names it by type and position. The form differs between models. On a Catalyst 3750G, port 7 is <code>GigabitEthernet1/0/7</code>, shortened to <code>Gi1/0/7</code>: switch 1 in a stack, module 0, port 7. On a Catalyst 2960G, port 7 is <code>GigabitEthernet0/7</code>, or <code>Gi0/7</code>: module 0, port 7. A port name in the wrong form is rejected. A name in the right form for the wrong port is accepted, and the lines that follow change another device&rsquo;s port. Read the names on the switch in front of you.</p>
+
+  <div class="cli">
+    <div class="cli-ttl">show interfaces status: an eight-port Catalyst 2960G on another job</div>
+    <div class="cli-body"><pre><span class="pr">NG-SW2#</span> <span class="cmd">show interfaces status</span>
+
+<span class="out">Port      Name               Status       Vlan       Duplex  Speed Type
+Gi0/1     Uplink to core     connected    trunk      a-full a-1000 10/100/1000BaseTX
+Gi0/2                        connected    140        a-full a-1000 10/100/1000BaseTX
+Gi0/3                        connected    140        a-full  a-100 10/100/1000BaseTX
+Gi0/4                        notconnect   140          auto   auto 10/100/1000BaseTX
+Gi0/5                        connected    1          a-full a-1000 10/100/1000BaseTX
+Gi0/6                        notconnect   1            auto   auto 10/100/1000BaseTX
+Gi0/7                        notconnect   1            auto   auto 10/100/1000BaseTX
+Gi0/8                        disabled     1            auto   auto 10/100/1000BaseTX</span></pre></div>
+    <div class="cli-foot">
+      <ul>
+        <li><b>Port</b>: the switch&rsquo;s own name for each port, in the form to type. <b>Name</b>: a description the network team may give a port; blank on most.</li>
+        <li><b>Status</b>: <code>connected</code> means a device is on the far end and a link has formed. <code>notconnect</code> means the port is on and no link has formed (nothing plugged in, a device switched off, or a fault in the cabling). <code>disabled</code> means the port is shut down in the configuration; nothing at the outlet brings it up.</li>
+        <li><b>Vlan</b>: the VLAN the port is in. <code>trunk</code> marks a port that carries several VLANs to another switch.</li>
+        <li><b>Duplex</b> and <b>Speed</b>: <code>a-full</code> and <code>a-1000</code> mean full duplex, traffic both ways at once, at 1000 Mbps. The <code>a-</code> prefix means the two ends negotiated the value. <code>auto</code> appears where no link has formed. Gi0/3 links at <code>a-100</code>. If the device on it supports 1000 Mbps, a 100 Mbps link often points at a fault in the cabling. <b>Type</b>: the kind of port, here copper at 10, 100, or 1000 Mbps.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>The VLANs on the switch</h3>
+  <div class="cli">
+    <div class="cli-ttl">show vlan brief: the same switch</div>
+    <div class="cli-body"><pre><span class="pr">NG-SW2#</span> <span class="cmd">show vlan brief</span>
+
+<span class="out">VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Gi0/5, Gi0/6, Gi0/7, Gi0/8
+140  OFFICE-140                       active    Gi0/2, Gi0/3, Gi0/4
+1002 fddi-default                     act/unsup
+1003 token-ring-default               act/unsup
+1004 fddinet-default                  act/unsup
+1005 trnet-default                    act/unsup</span></pre></div>
+    <div class="cli-foot">
+      <ul>
+        <li><b>VLAN</b> and <b>Name</b>: each VLAN on the switch. VLAN 1, named <code>default</code>, is on every Catalyst switch and cannot be deleted.</li>
+        <li><b>Status</b>: <code>active</code> for a VLAN in use.</li>
+        <li><b>Ports</b>: the ports assigned to each VLAN. A trunk port carries several VLANs and is not listed: Gi0/1 does not appear.</li>
+        <li><b>1002</b> to <b>1005</b>: legacy VLANs present on every Catalyst switch, shown <code>act/unsup</code>. They cannot be deleted, and an installer leaves them alone.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>Both outputs record the starting state. You return the switch to it, and compare against them to prove that you did. Capture each output before the first change: take a screenshot with <kbd>Windows</kbd>&nbsp;+&nbsp;<kbd>Print Screen</kbd>, or select the text in the PuTTY window, which copies it, and paste it into your record.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="disabled means the port is shut down in the switch&rsquo;s configuration. No cord, outlet, or device brings it up, so retesting the cabling changes nothing. Turning the port back on is a configuration change outside the work order, so report it to the site lead with the reading. notconnect, not disabled, is what an empty or unpowered port shows.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A work order says a door controller is patched to port 8. In the output above, Gi0/8 reads <code>disabled</code>. What does that tell you?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The door controller is switched off</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The port is shut down in the configuration; report it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The cable from the outlet to the panel has a fault; retest it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The port is a trunk and carries several VLANs</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+
+  <div class="cyu gate" data-answer="3" data-fb="A Catalyst 3750G names its ports with three numbers: switch 1, module 0, and the port, so port 7 is GigabitEthernet1/0/7. GigabitEthernet0/7 is the 2960G form and is rejected on a 3750G. FastEthernet is a different port type. GigabitEthernet1/0/1 is port 1, not port 7.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a standalone Catalyst 3750G numbered switch 1, which command selects port 7?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span><code>interface gigabitethernet 0/7</code></button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span><code>interface fastethernet 1/0/7</code></button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span><code>interface gigabitethernet 1/0/1</code></button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span><code>interface gigabitethernet 1/0/7</code></button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.4" data-lesson-title="Managed Switch VLANs" data-group-num="3" data-group-title="Building and Reading VLANs" data-num="535.4.6" data-title="Creating a VLAN and assigning a port">
+  <p class="crumb">Lesson 535.4 &middot; Section 3 Building and Reading VLANs</p>
+  <h2><span class="tnum">535.4.6</span> Creating a VLAN and assigning a port</h2>
+  <p class="lead-in">A VLAN belongs to the switch, so it is created in global configuration. A port&rsquo;s VLAN belongs to the port, so it is set in that port&rsquo;s interface configuration.</p>
+
+  <p>Every port starts in VLAN 1 unless someone has assigned it to another. The work order below, from another job, asks for a VLAN for door controllers and for one port in it.</p>
+
+  <div class="cli">
+    <div class="cli-ttl">Creating VLAN 150 and assigning port Gi0/6: another job</div>
+    <div class="cli-body"><pre><span class="pr">NG-SW2&gt;</span> <span class="cmd">enable</span>
+<span class="pr">NG-SW2#</span> <span class="cmd">configure terminal</span>
+<span class="out">Enter configuration commands, one per line.  End with CNTL/Z.</span>
+<span class="pr">NG-SW2(config)#</span> <span class="cmd">vlan 150</span>
+<span class="pr">NG-SW2(config-vlan)#</span> <span class="cmd">name DOORS-150</span>
+<span class="pr">NG-SW2(config-vlan)#</span> <span class="cmd">exit</span>
+<span class="pr">NG-SW2(config)#</span> <span class="cmd">interface gigabitethernet 0/6</span>
+<span class="pr">NG-SW2(config-if)#</span> <span class="cmd">switchport access vlan 150</span>
+<span class="pr">NG-SW2(config-if)#</span> <span class="cmd">end</span>
+<span class="pr">NG-SW2#</span>
+<span class="out">*Mar  1 00:12:34.567: %SYS-5-CONFIG_I: Configured from console by console</span></pre></div>
+    <div class="cli-foot">
+      <ul>
+        <li><b>enable</b> and <b>configure terminal</b>: up to privileged EXEC, then into global configuration. The switch answers with a line saying commands are entered one per line, and that <kbd>Ctrl</kbd>+<kbd>Z</kbd>, like <code>end</code>, leaves configuration.</li>
+        <li><b>vlan 150</b>: enters the configuration of VLAN 150. If the VLAN does not exist, the switch creates it when you leave VLAN configuration mode.</li>
+        <li><b>name DOORS-150</b>: gives the VLAN a name a person can read. Use the name the work order or the site&rsquo;s scheme gives.</li>
+        <li><b>interface gigabitethernet 0/6</b>: selects one port. Every line after it applies to that port until you leave.</li>
+        <li><b>switchport access vlan 150</b>: places the port in VLAN 150. The change takes effect when you press <kbd>Enter</kbd>, on whatever device is connected to the port.</li>
+        <li><b>end</b>: back to <code>#</code>. The <code>%SYS-5-CONFIG_I</code> line is a log message recording that the configuration was changed from the console. The switch puts its time stamp in front of it; the time shown depends on the switch&rsquo;s clock.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>Then check: run <code>show vlan brief</code>, and confirm that VLAN 150 is listed with its name and that Gi0/6 is listed against it, no longer against VLAN 1.</p>
+
+  <h3>What the switch does without asking</h3>
+  <ul>
+    <li><strong>It creates a missing VLAN.</strong> On a switch that keeps its own VLAN list (topic 535.4.8 explains when a switch does not), typing <code>switchport access vlan 170</code> with no VLAN 170 on the switch makes it print <code>% Access VLAN does not exist. Creating vlan 170</code>. The switch then creates VLAN 170 with a default name, <code>VLAN0170</code>, and assigns the port to it. Check the VLAN number against the work order before you press Enter.</li>
+    <li><strong>It applies each line at once.</strong> There is no confirmation step. A line typed under the wrong interface changes that port, and the device on it, the moment you press Enter.</li>
+  </ul>
+
+  <p>To undo a line, type it again with <code>no</code> in front. <code>no vlan 150</code> in global configuration deletes VLAN 150. <code>no switchport access vlan</code> in interface configuration returns the port to VLAN 1, as does <code>switchport access vlan 1</code>.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="A VLAN number that does not exist is not rejected: the switch prints Access VLAN does not exist, creates the VLAN with a default name, VLAN0170, and assigns the port to it. The port does not stay in its VLAN, and the switch does not choose a VLAN of its own. Check the VLAN number against the work order before you press Enter.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">At a port&rsquo;s <code>(config-if)#</code> prompt you type <code>switchport access vlan 170</code>. VLAN 170 does not exist on the switch, which keeps its own VLAN list. What happens?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The switch rejects the command, and the port stays in its VLAN</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The port is moved to VLAN 1 until VLAN 170 is created</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The switch creates VLAN 170 and assigns the port to it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The switch assigns the port to the nearest existing VLAN</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.4" data-lesson-title="Managed Switch VLANs" data-group-num="3" data-group-title="Building and Reading VLANs" data-num="535.4.7" data-title="Testing reach across VLANs">
+  <p class="crumb">Lesson 535.4 &middot; Section 3 Building and Reading VLANs</p>
+  <h2><span class="tnum">535.4.7</span> Testing reach across VLANs</h2>
+  <p class="lead-in">Two laptops on ports of the same VLAN reach each other through the switch. On ports of different VLANs, they do not.</p>
+
+  <p>A switch sends a frame only to ports in the VLAN of the port the frame arrived on. Within that VLAN, it chooses the port by the frame&rsquo;s destination Media Access Control (MAC) address; it does not use the IP addresses inside the frame to decide. A frame reaches another VLAN only through a router, or through a switch the network team has set up to route between VLANs. Each VLAN is normally its own IP subnet, with its own gateway. The network team decides which VLANs may reach which.</p>
+
+  <h3>Showing reach, and showing its absence</h3>
+  <p>Test from a laptop on each port, with the ports in the VLANs the test calls for:</p>
+  <ul>
+    <li>Ping the other laptop&rsquo;s IP address, then run <code>arp -a</code>.</li>
+    <li>A reply from the other laptop&rsquo;s IP address shows reach. So does an <code>arp -a</code> entry for that IP address with type <code>dynamic</code>. Before it pings, the laptop asks for the other laptop&rsquo;s MAC address with an Address Resolution Protocol (ARP) request. Windows Defender Firewall blocks an incoming ping by default but not ARP, so the entry shows that the other laptop answered through the switch even where its ping timed out.</li>
+    <li>A <code>Request timed out.</code> line, or a <code>Destination host unreachable.</code> line carrying your own IP address, with no <code>dynamic</code> entry for the other laptop, shows no reach.</li>
+  </ul>
+  <p>Record the result as the screen shows it, not as you expected it.</p>
+  <p>After a port changes VLAN, the switch may hold the port for ~30 s, while it checks the new VLAN for loops, before the port passes traffic. A loop is a second path between switches, which would let frames circle without end. Wait before you test. A test run too early can show no reach on a port that is about to work.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="The switch passes frames only between ports of the same VLAN. The printer on port 2 is in VLAN 140 and the laptop on port 5 is in VLAN 1, so the switch carries nothing between them, whatever the link lights show. Both links are up, so the cabling is not the cause. Moving a port, or connecting the VLANs, is a configuration change for the network team, made only on a work order.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a switch, a laptop on Gi0/5 (VLAN 1) cannot reach a printer on Gi0/2 (VLAN 140). Both ports read <code>connected</code>. A site contact asks you to fix it. What explains the result, and what do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The ports are in different VLANs; report it with the readings</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The cable to Gi0/2 has a fault; re-terminate the jack</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The laptop needs a static IP address on the printer&rsquo;s subnet; set one</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Gi0/5 needs moving to VLAN 140; move it yourself</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.4" data-lesson-title="Managed Switch VLANs" data-group-num="4" data-group-title="Restoring and Knowing Where to Stop" data-num="535.4.8" data-title="Saved and unsaved configuration">
+  <p class="crumb">Lesson 535.4 &middot; Section 4 Restoring and Knowing Where to Stop</p>
+  <h2><span class="tnum">535.4.8</span> Saved and unsaved configuration</h2>
+  <p class="lead-in">A switch applies each change at once, and keeps it after a restart only where it is saved.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The two configurations a Catalyst switch holds.</caption>
+      <thead><tr>
+        <th scope="col"></th><th scope="col">Running configuration</th><th scope="col">Startup configuration</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">What it is</th><td>What the switch is doing now</td><td>What the switch loads when it next starts</td></tr>
+        <tr><th scope="row">When it changes</th><td>When you press Enter on a configuration line</td><td>Only when someone saves</td></tr>
+        <tr><th scope="row">After a power loss</th><td>Lost</td><td>Kept</td></tr>
+        <tr><th scope="row">How it is read</th><td><code>show running-config</code></td><td><code>show startup-config</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><code>copy running-config startup-config</code>, or its older form <code>write memory</code>, saves the running configuration as the startup configuration. On a switch the network team owns, saving is the network team&rsquo;s decision. An installer making a temporary change does not save it. The installer undoes the change before leaving, so the running configuration again matches the startup configuration the network team left.</p>
+
+  <h3>VLANs are also kept in a file of their own</h3>
+  <p>On Catalyst switches, the list of VLANs is also written to a file in flash memory, <code>vlan.dat</code>, when a VLAN is created or deleted. This file is separate from both configurations. Whether a VLAN is still there after a restart depends on that file, the startup configuration, and the switch&rsquo;s VLAN Trunking Protocol (VTP) mode. On a switch in VTP server mode, the default, a VLAN created and not saved survives a restart. Remove a test VLAN by deleting it with <code>no vlan</code>; leaving it unsaved does not remove it.</p>
+
+  <h3>VTP mode</h3>
+  <p>VTP lets switches share their list of VLANs over their trunks. Its mode decides what happens to a VLAN created on the switch:</p>
+  <ul>
+    <li><strong>Server</strong>: the switch can create VLANs and advertise them to the other switches of its VTP domain.</li>
+    <li><strong>Client</strong>: the switch takes its VLANs from a server, and refuses a VLAN typed at its own command line.</li>
+    <li><strong>Transparent</strong>: the switch keeps its VLANs to itself. A VLAN created there stays on that switch. After a restart, the switch takes its VLAN list from the startup configuration.</li>
+  </ul>
+  <p><code>show vtp status</code> shows the mode on a line beginning <code>VTP Operating Mode</code>. Some Cisco Internetwork Operating System (IOS) releases add a fourth mode, Off. The other lines of the output vary by release. VTP is set by the network team. A VLAN created on a switch in server mode can reach every switch in the domain.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="In server mode, a Catalyst switch writes its VLANs to vlan.dat in flash when they are created or deleted, separately from the running and startup configurations, so a VLAN that was never saved is still listed after a restart. Nothing was saved, so the startup configuration does not explain it. A restart does not recreate VLANs. With no trunks, no other switch can advertise VLAN 170 to it.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A technician created test VLAN 170 on a switch in VTP server mode, the default, with no trunks to other switches. The technician did not save and did not delete the VLAN. After the switch restarted overnight, <code>show vlan brief</code> still lists VLAN 170. Why?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The running configuration was saved automatically at the restart</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A restart recreates every VLAN number used that day</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Another switch advertised VLAN 170 back to it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The switch keeps its VLANs in vlan.dat, apart from the saved configuration</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.4" data-lesson-title="Managed Switch VLANs" data-group-num="4" data-group-title="Restoring and Knowing Where to Stop" data-num="535.4.9" data-title="Putting the ports back">
+  <p class="crumb">Lesson 535.4 &middot; Section 4 Restoring and Knowing Where to Stop</p>
+  <h2><span class="tnum">535.4.9</span> Putting the ports back</h2>
+  <p class="lead-in">A restore returns each port you changed to the VLAN it started in, deletes any VLAN you created, and proves the result against the starting state.</p>
+
+  <p>The starting state comes from the <code>show interfaces status</code> and <code>show vlan brief</code> outputs you captured before the first change. In the example below, from another job, port Gi0/4 started in VLAN 140. The technician moved it into a test VLAN 170 that the work order allowed.</p>
+
+  <div class="cli">
+    <div class="cli-ttl">Restoring port Gi0/4 and deleting test VLAN 170: another job</div>
+    <div class="cli-body"><pre><span class="pr">NG-SW2#</span> <span class="cmd">configure terminal</span>
+<span class="out">Enter configuration commands, one per line.  End with CNTL/Z.</span>
+<span class="pr">NG-SW2(config)#</span> <span class="cmd">interface gigabitethernet 0/4</span>
+<span class="pr">NG-SW2(config-if)#</span> <span class="cmd">switchport access vlan 140</span>
+<span class="pr">NG-SW2(config-if)#</span> <span class="cmd">exit</span>
+<span class="pr">NG-SW2(config)#</span> <span class="cmd">no vlan 170</span>
+<span class="pr">NG-SW2(config)#</span> <span class="cmd">end</span>
+<span class="pr">NG-SW2#</span> <span class="cmd">show vlan brief</span></pre></div>
+    <div class="cli-foot">
+      <ul>
+        <li><b>switchport access vlan 140</b>: returns the port to the VLAN the starting state shows.</li>
+        <li><b>exit</b>: back to global configuration, where VLANs are deleted.</li>
+        <li><b>no vlan 170</b>: deletes the test VLAN.</li>
+        <li><b>show vlan brief</b>: the proof. Compare it, line by line, with the starting capture.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>Return the ports before you delete the VLAN. A port whose VLAN has been deleted stays assigned to the deleted VLAN and passes no traffic until you assign it a VLAN that exists. <code>show vlan brief</code> then lists that port under no VLAN at all.</p>
+  <p>The restore is complete when <code>show vlan brief</code> shows every port you changed in its starting VLAN, and no VLAN you created. Leave the output on the screen for whoever checks your work. Do not save.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="A port missing from every VLAN in show vlan brief is still assigned to a VLAN that no longer exists, so it passes no traffic. Assigning it to its starting VLAN, from the captured starting state, brings it back. Recreating VLAN 170 undoes the deletion, saving keeps a broken state, and the cabling is not involved.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">After deleting a test VLAN 170, you run <code>show vlan brief</code>. VLAN 170 is gone, and port Gi0/4, which started in VLAN 140, is listed under no VLAN. What do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Create VLAN 170 again, then delete it once more</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Assign Gi0/4 to VLAN 140, then check <code>show vlan brief</code> again</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Save the configuration so the port reappears after a restart</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Test the cable on Gi0/4 for a fault</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.4" data-lesson-title="Managed Switch VLANs" data-group-num="4" data-group-title="Restoring and Knowing Where to Stop" data-num="535.4.10" data-title="Where your scope ends">
+  <p class="crumb">Lesson 535.4 &middot; Section 4 Restoring and Knowing Where to Stop</p>
+  <h2><span class="tnum">535.4.10</span> Where your scope ends</h2>
+  <p class="lead-in">An installer changes a switch port only where a work order assigns it. Everything else on the switch belongs to the network team.</p>
+
+  <p>A switch accepts far more commands than the few on this page. Some of them change how every switch in the building behaves, without an error message at the time. The line between the installer&rsquo;s work and the network team&rsquo;s follows how far a change reaches: a port assignment affects one device; a trunk or a VTP setting affects every device downstream of it. On the mock-up, section 5 of the network plan sets out what an installer may change.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Configuration tasks that belong to the network team, what each is, and why it sits there.</caption>
+      <thead><tr>
+        <th scope="col">Task</th><th scope="col">What it is</th><th scope="col">Why it belongs to the network team</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Trunks and VLAN tagging</th><td>Carrying several VLANs over one link between switches, each frame of every VLAN but one (the native VLAN) marked (tagged) with its VLAN number</td><td>A wrong trunk setting can cut off every device beyond it</td></tr>
+        <tr><th scope="row">VTP, and the VLANs a site uses</th><td>Sharing VLANs between switches; deciding which VLANs exist</td><td>A VLAN created on a VTP server can reach every switch in the domain</td></tr>
+        <tr><th scope="row">Routing between VLANs, gateways, and firewalls</th><td>Deciding which VLANs may reach which</td><td>A security decision, not a wiring one</td></tr>
+        <tr><th scope="row">The IP address plan, Dynamic Host Configuration Protocol (DHCP), and Domain Name System (DNS)</th><td>Dividing networks, and deciding which IP addresses and names devices receive</td><td>A design for the whole site</td></tr>
+        <tr><th scope="row">Spanning Tree, port security, storm control</th><td>Protections that decide which links stay up and which devices may connect</td><td>They act across the network, and a change can shut down working links</td></tr>
+        <tr><th scope="row">Wireless networks</th><td>Which wireless networks an access point broadcasts, their security, and their VLANs</td><td>Mounting and powering an access point is the installer&rsquo;s; what it broadcasts is a design decision</td></tr>
+        <tr><th scope="row">Saving, restarting, erasing</th><td><code>copy running-config startup-config</code>, <code>write memory</code>, <code>reload</code>, <code>erase</code>, deleting files from flash</td><td>They change what the switch does after its next start, or remove the network team&rsquo;s configuration</td></tr>
+        <tr><th scope="row">Software and passwords</th><td>Upgrading the switch software; recovering a lost password</td><td>Both can leave the switch unusable. The network team usually controls both through a change process</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Handing a problem over</h3>
+  <p>Where a task needs a change outside your work order, stop, record what is needed and why, and give it to the site lead with the readings you took. Compare two reports of the same finding:</p>
+  <div class="compare">
+    <div class="box danger"><h3>No evidence</h3><ul class="clean"><li>&ldquo;The printer does not work. Must be the network.&rdquo;</li></ul></div>
+    <div class="box safe"><h3>Readings and a boundary</h3><ul class="clean"><li>&ldquo;Gi0/2 is connected at 1000 Mbps full duplex, in VLAN 140, as the work order states. The laptop on Gi0/5 is in VLAN 1 and does not reach the printer. I changed nothing on the switch. Reaching VLAN 140 from VLAN 1 needs a network team decision.&rdquo;</li></ul></div>
+  </div>
+
+  <div class="cyu gate" data-answer="2" data-fb="Saving the configuration changes what the switch loads at its next start. On a switch the network team owns, that decision is the network team&rsquo;s. The installer leaves the configuration unsaved and passes the request on with the readings. A save at a site contact&rsquo;s request still saves the whole running configuration. write memory cannot save one change on its own.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">At the end of a port change on a work order, a site contact asks you to save the switch configuration &ldquo;so it is not lost.&rdquo; What do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Type <code>copy running-config startup-config</code>, since the site contact asked</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Type <code>write memory</code>, which saves only your own change</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Leave it unsaved, and pass the request to the site lead with your readings</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Restart the switch to check whether the change survives</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="535.4" data-lesson-title="Managed Switch VLANs" data-group-num="5" data-group-title="Wrapping Up" data-num="535.4.11" data-title="What you covered">
+  <p class="crumb">Lesson 535.4 &middot; Section 5 Wrapping Up</p>
+  <h2><span class="tnum">535.4.11</span> What you covered</h2>
+  <p class="lead-in">Read the switch, change only the assigned ports, test what reaches what, and put the switch back as you found it.</p>
+
+  <h3>VLANs on a managed switch</h3>
+  <p>A VLAN divides a switch&rsquo;s ports into groups. Ports in one VLAN exchange frames and broadcasts; the switch passes nothing between VLANs. Traffic between VLANs goes through a router, with each VLAN its own IP subnet. A VLAN is a port setting, invisible at the outlet. It changes neither the link nor the power on the port.</p>
+
+  <h3>Reaching the command line</h3>
+  <p>A USB console cable joins the laptop to the CONSOLE port. Device Manager shows its COM number. PuTTY runs Serial at 9600 8-N-1, flow control None. A blank window means the switch is waiting for <kbd>Enter</kbd>; unreadable symbols mean the wrong speed. The prompt names the mode: <code>&gt;</code> User EXEC, <code>#</code> Privileged EXEC, <code>(config)#</code>, <code>(config-vlan)#</code>, and <code>(config-if)#</code>. <code>end</code> returns to <code>#</code>.</p>
+
+  <h3>Building and reading VLANs</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The commands on this page and what each does, with port names in the 2960G form.</caption>
+      <thead><tr>
+        <th scope="col">Command</th><th scope="col">What it does</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row"><code>show interfaces status</code></th><td>Lists each port&rsquo;s name, state, VLAN, duplex, and speed</td></tr>
+        <tr><th scope="row"><code>show vlan brief</code></th><td>Lists each VLAN and the ports assigned to it</td></tr>
+        <tr><th scope="row"><code>show vtp status</code></th><td>Shows the VTP mode, on the VTP Operating Mode line</td></tr>
+        <tr><th scope="row"><code>configure terminal</code></th><td>Enters global configuration</td></tr>
+        <tr><th scope="row"><code>vlan 150</code>, <code>name DOORS-150</code></th><td>Creates VLAN 150 and names it</td></tr>
+        <tr><th scope="row"><code>interface gigabitethernet 0/6</code></th><td>Selects a port</td></tr>
+        <tr><th scope="row"><code>switchport access vlan 150</code></th><td>Assigns the port to VLAN 150</td></tr>
+        <tr><th scope="row"><code>no vlan 150</code></th><td>Deletes VLAN 150</td></tr>
+        <tr><th scope="row"><code>end</code></th><td>Returns to privileged EXEC</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Capture the starting state first. Test reach with ping and <code>arp -a</code>, ~30 s after a port changes VLAN, and record the result as the screen shows it.</p>
+
+  <h3>Restoring and knowing where to stop</h3>
+  <p>Changes take effect at once and are kept in the running configuration; the startup configuration changes only when someone saves. An installer does not save. VLANs are also kept in <code>vlan.dat</code>, so leaving a test VLAN unsaved does not remove it. Return each port to its starting VLAN, then delete the test VLAN with <code>no vlan</code>, and compare <code>show vlan brief</code> with the starting capture. Trunks, VTP, routing, the address plan, wireless networks, saving, and software belong to the network team: hand them over with your readings.</p>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete—continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again. A wrong answer does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct>=90) msg.textContent='Outstanding — you are working at field-standard level and are ready for the lab.';
+      else if(pct>=75) msg.textContent='Strong work. Revisit anything you missed and you will be field-ready.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the cards and applied scenarios to close the gaps.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+<!--
+BUILD FLAGS - UCI 1019 Lesson 535.4 Async Reading v0.1.0 DRAFT, 2026-11-11
+(Module 535, Network Fundamentals for Low Voltage Technicians; built under the
+delegated mode, brief Planning/_AGENT-BRIEF_M535-Readings.md). This comment is
+visible in the page source, so it carries no answer-key value. Not reviewed:
+technical review, language pass and cold read to be run by fresh subagents.
+
+SOURCES READ
+- CLAUDE.md; STYLE-RULES.md (twice); style profile v1.4 to line 250; async
+  format spec v1.0 sections 0 to 8 and the 2026 addendum; pattern page
+  532.1 v0.1.0; .cli sheet from the 527.3 page.
+- Module plan v0.1.0 sections 2 to 5 (Lesson 535.4 objectives; 9.6 changed;
+  D-535-03, D-535-12); lab-build brief (fixed facts, GLAB 535.4.1 design rule).
+- GLAB 535.4.1 lab, HO 535.4.1 record (question in Section 6), Round and Reset
+  Sheet (Section 3 key); GLAB 535.4.2 lab; work order KC-2639; Kestrel Network
+  Plan v0.1.0 sections 3 and 5.
+- 529 source: live 529.3_managedswitchvlanandpoe.html (byte-identical to the
+  local v0.2.0 file); the Lesson 529.3 deck's speaker notes scanned
+  (python-pptx) for console and VTP content: nothing the reading lacked.
+
+DECISIONS TAKEN
+- Five sections, eleven topics; every plan objective has a topic (head
+  outline). Objectives in the plan's wording.
+- Examples on a fictional eight-port Catalyst 2960G, NG-SW2, at another job:
+  VLANs 140 (CAMERAS-140), 150 (DOORS-150, created in the example), 160 (a
+  test VLAN, restored), 170 (missing-VLAN check); ports Gi0/1 trunk to Gi0/8.
+  529's VLANs 20 and 30 are not used: on the mock-up they are the CCTV and
+  Alarm VLANs. The lab's test VLANs, test subnet and ports 13 to 16 are not
+  used.
+- The output samples are consistent across topics: 535.4.5 shows the switch
+  before 535.4.6 creates VLAN 150; the 535.4.7 check and the 535.4.10
+  escalation use the same ports; the 535.4.9 restore uses Gi0/4 (VLAN 140 in
+  535.4.5).
+- The assignment taught as `switchport access vlan` alone, with the default
+  stated first (every port starts in VLAN 1); `switchport mode access` and
+  `no shutdown` not taught as steps (the lab's restore depends on not typing
+  them; a technician changes only the VLAN a work order names). `disabled`
+  and `shutdown` taught for reading only.
+- Saving: taught as recognition (what copy running-config startup-config and
+  write memory do) and as the network team's decision; the installer does not
+  save. vlan.dat and VTP modes taught (brief), hedged by IOS release.
+- Restore order taught with its reason (a port in a deleted VLAN passes no
+  traffic); the check asks what to do after the wrong order, because the end
+  state of either order is the same once the port is reassigned (STYLE-RULES:
+  test only an enforced order).
+- PuTTY flow control: taught as None, PuTTY's default XON/XOFF changed (brief).
+- PoE kept to one reveal card stating that a VLAN does not supply power and
+  that PoE is a physical-layer function of a PoE switch port; no Cisco PoE
+  command or statement.
+- Escalation worked example rebuilt on NG-SW2 (no PoE readings).
+- The summary repeats the commands as a table (a .cli sheet comment class
+  .cmt does not exist in the 2026 .cli sheet).
+- Activity count 11 (checks, matching, reveal cards); acknowledgement not
+  counted, as the 532.1 page counts.
+
+HELD BACK OR CONSTRAINED (graded answers; values not repeated here)
+- No check or example uses the lab's test VLANs, its test subnet, its laptops'
+  addresses, ports 13 to 16, the switch labels or the default VLAN names the
+  key expects.
+- Unavoidable overlap, for Eldad: the HO 535.4.1 Section 6 question asks what
+  the switch does with traffic between ports in different VLANs and whether
+  sharing a subnet changes that. The brief requires this page to teach that
+  the same VLAN reaches and different VLANs do not without a router; topic
+  535.4.7 also states that the switch does not use IP addresses to decide
+  where a frame goes (Lesson 535.1 teaches the same of Layer 2). The page
+  never discusses two VLANs sharing one subnet; the lab still grades the
+  learner's explanation of their own Test A.
+- The restore procedure (ports back, then no vlan, then compare show vlan
+  brief with the starting capture) is the procedure the lab grades from
+  screenshots; it is taught on other numbers.
+
+ASSUMPTIONS (not in the plan)
+- The learner reads this page before the Lesson 535.4 presentation on Day 2.
+- Output formats as Cisco IOS 12.2 on the Catalyst 2960G and 3750G print them:
+  show interfaces status columns; show vlan brief with VLANs 1002 to 1005
+  (act/unsup); "Enter configuration commands, one per line.  End with
+  CNTL/Z."; %SYS-5-CONFIG_I; "% Access VLAN does not exist. Creating vlan";
+  VLAN configuration mode applying on exit; "% Invalid input detected at '^'
+  marker." and "% Incomplete command.".
+- A port whose VLAN is deleted is listed under no VLAN in show vlan brief and
+  passes no traffic until reassigned (Cisco: the port goes inactive).
+- ~30 s after a VLAN change: spanning-tree listening and learning (15 s each
+  by default) on a port without PortFast; hedged "may".
+- An eight-port 2960G (2960G-8TC-L) with Gi0/1 to Gi0/8; Type column shown as
+  10/100/1000BaseTX on every port.
+- Console port: RJ45 labeled CONSOLE on both models, front or back (hedged);
+  USB console cable with a driver showing a COM port.
+
+CONFLICTS FOUND
+- GLAB 535.4.1 Step 2 sets PuTTY to Serial and 9600 only and leaves PuTTY's
+  default flow control (XON/XOFF); this page, per the brief, tells the reader
+  to set it to None. XON/XOFF usually works on a Catalyst console. For the lab
+  owner: add "Flow control None" to Step 2, or accept the difference.
+- GLAB 535.4.1 uses ncpa.cpl for the test addresses; ALAB 535.3.1 avoids it
+  (elevation). Reported on the Lesson 535.3 page as well.
+
+CHANGED FROM 529
+- 2026 brand shell (532.1 engine and brand layer, 527.3 .cli sheet); module
+  title in place of the module number; no 2107.1 course codes.
+- Objectives: 529's eight (explain broadcast domains, connect, create, assign,
+  enable PoE, verify link and PoE, save, identify network-team tasks) replaced
+  by the plan's six (save becomes restore; PoE moves to Lesson 535.5).
+- PoE removed: topic 529.3.6 (detection, classification, power inline,
+  classes, budget), show power inline and its readings, power inline auto in
+  the sequence, the PoE readings in the hand-off example. 529's wrong-layer
+  framing not carried; the one PoE card places PoE at the physical layer.
+- FastEthernet examples and model-number reading dropped; port names given in
+  the 3750G (Gi1/0/n) and 2960G (Gi0/n) forms, the lab's equipment.
+- Setup dialog, startup messages and the SSH alternative dropped (the switches
+  are in service; console only). The console photographs and PuTTY
+  screenshots of the 529.3 page are not carried (taken on 2107.1 equipment;
+  could be added after a check).
+- Five verification commands reduced to the two the lab reads (show interfaces
+  status, show vlan brief) plus show vtp status; show mac address-table is
+  taught in Lesson 535.2, and show running-config interface is not needed.
+- "Two configurations" topic reframed: the installer does not save; vlan.dat
+  and VTP added (brief); restore topic added (529 had none).
+- Scope table adapted to the Kestrel Network Plan section 5: subnet
+  calculation folded into "the IP address plan, DHCP, and DNS"; saving,
+  restarting and erasing added; stacking folded into VTP.
+- 529's "one VLAN carries one IP address range" rule kept as "each VLAN is its
+  own IP subnet" on a properly designed network; 529's "same IP range in two
+  VLANs is a design error" not carried (it touches the lab's graded question).
+- VLANs 20/30 (DATA-20, CAMERA-30) replaced by 140/150/160/170.
+
+CHECK QUESTIONS AND ACTIVITIES (for the quiz writer; do not repeat)
+- 535.4.1 CYU: ports 2 to 4 VLAN 140, 5 to 7 VLAN 150, broadcast from port 6:
+  ports 5 and 7.
+- 535.4.2 Reveal cards (6): contains broadcasts; keeps groups apart; a port
+  setting, not a wire; number and name; leaves the link alone; does not supply
+  power.
+- 535.4.3 CYU: PuTTY window stays blank: press Enter first.
+- 535.4.4 Matching: five prompts to five modes (NG-SW2>, #, (config)#,
+  (config-vlan)#, (config-if)#).
+- 535.4.5 CYU 1: Gi0/8 reads disabled: shut down in the configuration; report
+  it with the reading.
+- 535.4.5 CYU 2: port 7 on a 3750G not in a stack: interface gigabitethernet
+  1/0/7.
+- 535.4.6 CYU: switchport access vlan 170 with no VLAN 170: the switch creates
+  VLAN0170 and assigns the port.
+- 535.4.7 CYU: laptop Gi0/5 VLAN 1 cannot reach recorder Gi0/2 VLAN 140, both
+  connected, site contact asks for a fix: different VLANs; report with
+  readings for the network team.
+- 535.4.8 CYU: unsaved test VLAN 160 still listed after a restart, VTP
+  server mode (the default), no trunks: vlan.dat.
+- 535.4.9 CYU: Gi0/4 listed under no VLAN after deleting VLAN 160: assign it to
+  VLAN 140 and check again.
+- 535.4.10 CYU: site contact asks you to save: leave it unsaved; pass the
+  request to the site lead with readings.
+- 535.4.11 acknowledgement.
+
+WORKED EXAMPLES (for the quiz writer; do not repeat)
+- 535.4.1 diagram: eight ports, VLAN 140 on 2 to 4, VLAN 150 on 5 to 7,
+  broadcast from port 2.
+- 535.4.3 diagram: PuTTY COM4 9600 8-N-1, flow control None, USB console
+  cable to CONSOLE.
+- 535.4.5 show interfaces status and show vlan brief on NG-SW2 (Gi0/1 trunk;
+  Gi0/2 to Gi0/4 VLAN 140, Gi0/3 at a-100; Gi0/5 to Gi0/8 VLAN 1, Gi0/8
+  disabled).
+- 535.4.6 transcript: vlan 150, name DOORS-150, interface gigabitethernet 0/6,
+  switchport access vlan 150, end.
+- 535.4.9 transcript: Gi0/4 back to VLAN 140, no vlan 160, show vlan brief.
+- 535.4.10 two hand-off reports, without and with readings.
+
+KEY CHECK
+- Source grepped for the lab's test VLAN numbers, test subnet, test addresses,
+  ports 13 to 16 in both forms, the switch labels and the default VLAN names
+  of the key: none present. No lab, quiz, HO, work-order, module or R-number
+  code in prose. No show power inline, power inline, PoE LED, U6-Lite, Real
+  HD, crew or desk wording.
+
+UNVERIFIED
+- Not opened in a browser; SVG label placement checked by coordinates only.
+- IOS output lines listed under ASSUMPTIONS, from knowledge of IOS 12.2, not
+  captured on the course's switches.
+- Console port position on the 3750G and 2960G (hedged); the R-167 cable's
+  driver.
+- Whether VLAN 160 (or any VLAN) survives a restart on the course switches:
+  stated as "can survive", depending on vlan.dat, the startup configuration
+  and the VTP mode.
+
+AUDITS (final build)
+- audit_html.py: FAIL (0), WARN (0). 5630 words of prose, ~50 min at 112 wpm
+  before activities; with 11 activities, six of them cards, ~58 to 65 min; the
+  page states ~55 to 65 min.
+- contrast_audit.py as written: FAIL (1), .order .step.picked .seq scored
+  against the legacy amber token (known tool limitation; the brand layer sets
+  White on #8A4B00, 6.8:1; this page has no ordering activity). REPORT (83)
+  unresolvable containers, as on the 532.1 pattern page.
+- Engine check (script): engine style block, brand layer and script block
+  byte-identical to the 532.1 pattern page.
+- Gate check (script): 11 topics, 5 sections, 9 checks, 1 matching, 1 card set
+  (6 cards, 6 hidden panes); every data-answer in range; matching values
+  unique; tile, banner and comment counts agree; 2 content SVG with 2 text
+  descriptions; no tspan. Answer letters A2 B2 C3 D2.
+- Self-check against STYLE-RULES and the CLAUDE.md patterns on the extracted
+  text, sentence by sentence: and-tails split (banner, 535.4.1 three places,
+  card 2, PuTTY defaults, password rule, feedback, save paragraph, summary),
+  a repeated definition merged (a-full), a commentary sentence under the
+  hand-off example cut, a padded result sentence shortened. An internal
+  contradiction found and fixed (VLAN 150 shown as existing before the topic
+  that creates it). Fresh-reviewer language pass, technical review and cold
+  read still owed.
+
+2026-11-11 READINGS FIX ROUND 1 (brief Planning/_AGENT-BRIEF_M535-Readings-Fix-1.md;
+record Planning/reviews/RFIX1_535.1-535.4_2026-11-11.md). Applied by an agent
+that did not write or review the page. Content only; head, CSS, scripts,
+navigation and lightbox checked byte-identical to the pre-fix file. Version
+not bumped (still v0.1.0 DRAFT, first issue under review).
+- TECH1 Wrong applied (pending 45): the 535.4.8 check is now set in VTP server
+  mode, the default, with no trunks; answer D and its feedback hold there.
+  The body now says an unsaved VLAN survives a restart in server mode, and
+  the transparent-mode bullet says that after a restart the switch takes its
+  VLAN list from the startup configuration.
+- TECH1 Depends applied: "A console session usually starts here"; the
+  missing-VLAN behavior conditioned on a switch that keeps its own VLAN list
+  (wording avoids VTP, which is taught later on the page), also in the
+  535.4.6 stem; the %SYS-5-CONFIG_I sample line now carries a representative
+  time stamp (*Mar  1 00:12:34.567:) and the gloss explains it; PuTTY Speed
+  "check that Speed reads 9600, its default"; the 3750G stem now "a
+  standalone Catalyst 3750G numbered switch 1". "Some IOS releases add a
+  fourth mode, Off" kept as written (correct as hedged).
+- Pending 37: IOS expanded at first use (Internetwork Operating System).
+- LP1: all 39 applied (#4: Kestrel Network Plan kept in the note on
+  documents; section 5 reference now "the network plan"). Glosses and
+  console titles use colons instead of spaced em dashes; the Status gloss
+  restructured so it carries one colon per state.
+- Option balance: 535.4.1 D "No other port"; 535.4.5 B shortened; 535.4.6 C
+  shortened; 535.4.7 A shortened, B and D lengthened. Keys rechecked.
+- Re-run after the fix: audit_html.py FAIL 0, WARN 0 (5629 words, ~50 min); contrast_audit.py
+  FAIL 1 (the known engine-amber limitation), REPORT 83. Stated reading time
+  kept at ~55-65 min: the audit estimate moved by under 2 min.
+- Not re-reviewed: no language pass or technical review has run on the
+  changed text.
+2026-11-11 readings fix round 2: brief Planning/_AGENT-BRIEF_M535-Readings-Fix-2.md;
+record Planning/reviews/RFIX2_535.1-535.4_2026-11-11.md. Applied by an agent that
+did not write or review the page. Content only; style, script, header and footer
+regions checked identical to the pre-fix file. Version not bumped.
+- Objective: "Test reachability between two laptops on the same VLAN and on
+  different VLANs." (plan, third change).
+- R2-42 and LP2: missing-VLAN sentence rewritten so it parses; all 12 LP2
+  items applied, including the running/startup cause in 535.4.8 and the
+  summary's vlan.dat sentence. STRUCTURAL: duplex glossed in the card; loop
+  defined in 535.4.7.
+- CR1 minors: "floods ... with broadcasts"; check stem no longer says "the
+  switch above"; ARP and the firewall explained where arp -a is used; capture
+  method stated (screenshot or copy from PuTTY); Calder Regional Services
+  removed (the network team, as on 535.1 to 535.3).
+- R2-39: tag and subnet defined; IP, MAC, DHCP, DNS, IOS (body) and Mbps
+  expanded; "gigabit" to "supports 1000 Mbps".
+- Examples (R2-43): VLAN 140 is the office network (OFFICE-140; the device on
+  Gi0/2 is a printer in the check, feedback and hand-over); VLAN 150 doors
+  (DOORS-150) unchanged; test VLAN 160 to 170 in 535.4.8 and 535.4.9, since 160
+  is the camera network; the missing-VLAN example stays 170.
+- Check-question list changes: 535.4.7 printer in place of the recorder;
+  535.4.8 and 535.4.9 VLAN 170. Keys unchanged.
+- Stated time ~60-70 min (audit 5778 words, ~52 min, 11 activities).
+- audit_html.py FAIL 0 WARN 0; contrast_audit.py FAIL 1 (known engine amber).
+- Not re-reviewed.
+- 2026-11-12 readings fix round 3: LP3 (6) applied; TECH2 Wrong 1 applied,
+  Depends 1 of 2 applied (R2-48). VLAN card: "its own gateway and its own
+  Internet Protocol (IP) subnet: a range ..."; legacy VLANs "an installer
+  leaves them alone"; "A line typed under the wrong interface"; show vlan
+  brief gloss split; summary "A blank window means the switch is waiting for
+  Enter"; repeated "delete with no vlan" cut. Trunks row: "each frame of every
+  VLAN but one (the native VLAN) marked (tagged) with its VLAN number" (keeps
+  the definition of tag). Password item: "On a switch the network team owns,
+  enable usually asks for a password as well."
+- Held: "an eight-port Catalyst 2960G" (TECH2 optional). The paired show vlan
+  brief sample lists ports only to Gi0/8, so dropping "eight-port" would make
+  that sample read as incomplete; the copper line shown is plausible.
+- Check-question list: unchanged. Keys unchanged.
+- Stated time unchanged ~60-70 min (audit 5798 words, ~52 min).
+- audit_html.py FAIL 0 WARN 0; contrast_audit.py FAIL 1 (known engine amber).
+- Not re-reviewed (language passes stopped after LP3, R2-49).
+-->
