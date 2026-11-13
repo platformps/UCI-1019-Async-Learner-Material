@@ -1,0 +1,2333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 533 (M10) - Low Voltage Security Systems Installations
+  Lesson 533.1 - Security Systems and Their Drawings (Async Reading)
+  VERSION: v0.1.0  (2026-11-12)  DRAFT - for review
+
+  CHANGES IN v0.1.0
+  First issue. New content: 2107.1 has no security module.
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox), the 2026 brand
+  layer and the .calc component sheet copied byte for byte from
+  UCI-1019_M535_Lesson-535.5_Async-Reading_v0.1.0_DRAFT.html (itself copied
+  from the 532.1 page). The .cli sheet is not used. Logo: inline Slate SVG.
+
+  OBJECTIVES, from the module plan v0.1.0 section 5, Lesson 533.1 (plan
+  wording; serial comma added; IP, NVR, DVR, AI, CCTV, RFI expanded).
+    Compare    analog, IP and hybrid video surveillance systems          10.5.1
+    Compare    recording on an NVR, a DVR and a cloud VMS                10.5.2
+    Compare    standalone, networked on-premises and cloud-managed access control   10.5.3
+    Compare    125 kHz proximity, 13.56 MHz smart and mobile credentials 10.5.4
+    Recommend  a system architecture for a site scenario                 10.5.5
+    Check      an AI-generated recommendation against the documentation  10.5 (AI)
+    Identify   a procurement or security constraint to escalate          10.5.6
+    Read       a camera schedule and a CCTV riser diagram                10.4.1
+    Read       a door schedule and an access-control wiring diagram      10.4.2
+    Trace      a device to its head-end port or terminal                 10.4.3
+    Identify   a drawing-to-field discrepancy                            10.4.4, 10.4.5
+    Raise      a request for information before wiring                   10.4.5
+
+  TOPIC OUTLINE
+    Section 1  Systems on a Security Job
+      533.1.1   Analog, IP, and hybrid video surveillance           Compare
+      533.1.2   Where the video is recorded                         Compare
+      533.1.3   How access control is managed                       Compare
+      533.1.4   The credentials people carry                        Compare
+    Section 2  Choosing and Checking
+      533.1.5   A recommendation built from the site's facts        Recommend
+      533.1.6   Products from different makers: ONVIF profiles      Compare (IP)
+      533.1.7   Constraints that someone else decides               Identify (constraint)
+      533.1.8   Checking an AI tool's answer                        Check
+    Section 3  Reading the Security Drawings
+      533.1.9   The camera schedule and the CCTV riser              Read (cameras)
+      533.1.10  The door schedule and the access-control wiring
+                diagram                                             Read (doors)
+      533.1.11  Tracing a device to its head end                    Trace
+    Section 4  Discrepancies and the RFI
+      533.1.12  Drawing to drawing, drawing to field                Identify (discrepancy)
+      533.1.13  The request for information                         Raise
+    Section 5  Wrapping Up
+      533.1.14  What you covered                                    summary
+
+  ACTIVITY GATES: 15 - 13 single-answer checks, 1 matching, 1
+    acknowledgement (the page counts 14 activities; the acknowledgement is
+    not counted, as on the 535.5 pattern page).
+  DIAGRAMS: 4 original SVG, each with a full text description (three ways a
+    camera reaches its recorder; where each access-control architecture is
+    managed; CCTV riser on another job; door wiring diagram on another job).
+  IMAGES: none.
+
+  Build flags, decisions, the list of every check question and worked
+  example, and the audit results are in the BUILD FLAGS comment at the end.
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 533.1 - Security Systems and Their Drawings &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Low Voltage Security Systems Installations</b> &middot; Lesson 533.1 - Security Systems and Their Drawings</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Low Voltage Security Systems Installations</p>
+      <h2 id="ovh" tabindex="-1">Lesson 533.1 - Security Systems and Their Drawings</h2>
+      <p class="lead-in">How an installer compares camera, recorder, access-control, and credential systems and recommends one for a site. Then how the installer reads the security drawings: each device followed to the rack, and each disagreement questioned before any cable is pulled.</p>
+
+      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. The owner, Calder Regional Services, wants a camera on every bay of the Level 2 installation mock-up and one access-controlled door on every training wall. Kestrel&rsquo;s designer has issued the security drawings. Before the rough-in starts, the installers check the drawings against the walls. Kestrel&rsquo;s estimating team also wants an installer&rsquo;s field view of two new security enquiries.</p>
+
+      <p>D. Okafor, the Kestrel site lead, sets the drawing check: follow each device to the point where it lands in the rack, and say where its power comes from and where it joins the network. Wherever two documents disagree, send a Request for Information (RFI).</p>
+
+      <p>The worked examples on this page come from other jobs, not from the mock-up.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>Systems on a Security Job.</b> Analog, Internet Protocol (IP), and hybrid cameras; where the video is recorded; how access control is managed; and the credentials people carry.</li>
+        <li><b>Choosing and Checking.</b> A recommendation built from a site&rsquo;s facts, interoperability between makers, the constraints that someone other than the installer decides, and an Artificial Intelligence (AI) tool&rsquo;s answer checked against the manufacturer&rsquo;s documents.</li>
+        <li><b>Reading the Security Drawings.</b> The sheets of a security drawing set, the camera schedule and the closed-circuit television (CCTV) riser, the door schedule and the access-control wiring diagram, and a device traced to its head end.</li>
+        <li><b>Discrepancies and the RFI.</b> Where a drawing disagrees with another drawing or with the site, and the question an installer sends before wiring.</li>
+        <li><b>Wrapping Up.</b> A summary of each section.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>5</b><span>Sections</span></div>
+        <div class="ov-stat"><b>14</b><span>Topics</span></div>
+        <div class="ov-stat"><b>14</b><span>Activities</span></div>
+        <div class="ov-stat"><b>4</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the documents and the equipment</h3>
+      <p>The project documents named on this page are the <strong>Kestrel security drawings</strong> and the owner&rsquo;s <strong>security addendum</strong> for HSOC-26-014. Both are fictional documents written for the mock-up. The products in the examples are hypothetical products on other jobs. This page names federal procurement rules by their titles only: an installer recognizes them, does not interpret them, and passes them to the party who decides.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or go to any topic
+         from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks&mdash;a
+         knowledge check or a matching exercise.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. The lesson takes ~60&ndash;75 min, including the activities.
+         The header and the contents list show your progress through the lesson.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching activity every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description, and each table has column headings and a caption.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 533.1</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="1" data-group-title="Systems on a Security Job" data-num="533.1.1" data-title="Analog, IP, and hybrid video surveillance">
+  <p class="crumb">Lesson 533.1 &middot; Section 1 Systems on a Security Job</p>
+  <h2><span class="tnum">533.1.1</span> Analog, IP, and hybrid video surveillance</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 533.1</span>
+    <h3>Security Systems and Their Drawings</h3>
+    <p>Before a security device goes on a wall, the installer knows what kind of system it belongs to and where each of its cables ends. This lesson compares the systems an installer meets on a security job. It then works through the drawings for one system, device by device, and shows how each disagreement in them becomes a question for the site lead.</p>
+    <p class="lb-meta"><b>5</b> sections &nbsp;&middot;&nbsp;
+       <b>14</b> topics &nbsp;&middot;&nbsp;
+       <b>14</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 533.1 you will be able to</div>
+    <ul>
+      <li><b>Compare</b> analog, Internet Protocol (IP) and hybrid video surveillance systems.</li>
+      <li><b>Compare</b> recording on a Network Video Recorder (NVR), a Digital Video Recorder (DVR) and a cloud video management system.</li>
+      <li><b>Compare</b> standalone, networked on-premises and cloud-managed access control.</li>
+      <li><b>Compare</b> 125 kHz proximity, 13.56 MHz smart and mobile credentials.</li>
+      <li><b>Recommend</b> a system architecture for a site scenario.</li>
+      <li><b>Check</b> an Artificial Intelligence (AI)-generated recommendation against the manufacturer&rsquo;s documentation.</li>
+      <li><b>Identify</b> a procurement or security constraint to escalate.</li>
+      <li><b>Read</b> a camera schedule and a Closed-Circuit Television (CCTV) riser diagram.</li>
+      <li><b>Read</b> a door schedule and an access-control wiring diagram.</li>
+      <li><b>Trace</b> a device to its head-end port or terminal.</li>
+      <li><b>Identify</b> a drawing-to-field discrepancy.</li>
+      <li><b>Raise</b> a Request for Information (RFI) before wiring.</li>
+    </ul></div>
+
+  <p class="lead-in">A video surveillance system is a set of cameras, the cables that join them to a recorder, and the recorder that keeps the video. The kind of camera decides the cable an installer pulls and terminates.</p>
+
+  <p>An <span class="keyterm">analog camera</span> sends its picture as an analog video signal on coaxial cable. It usually takes its power on a separate pair of conductors, from a power supply at the head end or near the camera; some high-definition analog cameras take it over the coaxial cable from the recorder. An <span class="keyterm">IP camera</span> digitizes and compresses the picture in the camera and sends it as network data on twisted-pair Ethernet cable. It can take its power on the same cable, by Power over Ethernet (PoE), from a PoE switch port, a recorder&rsquo;s PoE port, or an injector. A <span class="keyterm">hybrid</span> system records both kinds of camera on one recorder: analog cameras on its coaxial inputs, IP cameras over the network.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Analog, IP, and hybrid video surveillance: what the camera sends, the cable, the power, the recorder, and what the installer terminates.</caption>
+      <thead><tr>
+        <th scope="col"></th><th scope="col">Analog</th><th scope="col">IP</th><th scope="col">Hybrid</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">The camera sends</th><td>An analog video signal</td><td>Compressed video as network data</td><td>Both, from different cameras</td></tr>
+        <tr><th scope="row">Cable to the head end</th><td>Coaxial cable, with a separate power pair</td><td>Twisted-pair Ethernet cable; fiber through a media converter on long runs</td><td>Coaxial cable to the analog cameras, twisted pair to the IP cameras</td></tr>
+        <tr><th scope="row">Power at the camera</th><td>A low-voltage power supply</td><td>PoE on the data cable, or a local supply</td><td>As each camera type</td></tr>
+        <tr><th scope="row">Recorded on</th><td>A DVR</td><td>An NVR, or a video management system on a server or in the cloud</td><td>A hybrid recorder that takes both</td></tr>
+        <tr><th scope="row">The installer terminates</th><td>Coaxial connectors and power conductors</td><td>RJ45 plugs or jacks to T568A or T568B</td><td>Both</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; Three ways a camera reaches its recorder</div>
+    <div class="tbl-scroll">
+    <svg style="min-width:900px" viewBox="0 0 900 350" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Three rows: an analog camera on coaxial cable to a DVR, an IP camera on twisted-pair cable through a PoE port to an NVR, and a hybrid recorder taking both an analog and an IP camera. A full text description follows.">
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Three ways a camera reaches its recorder</text>
+      <text x="24" y="60" font-size="13" font-weight="700" fill="#26282E">Analog</text>
+      <rect x="24" y="70" width="170" height="46" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="109" y="98" font-size="13" text-anchor="middle" fill="#26282E">Analog camera</text>
+      <line x1="194" y1="86" x2="700" y2="86" stroke="#26282E" stroke-width="2"/>
+      <text x="447" y="80" font-size="13" text-anchor="middle" fill="#26282E">Coaxial cable: video</text>
+      <line x1="194" y1="104" x2="700" y2="104" stroke="#26282E" stroke-width="1.6" stroke-dasharray="6 4"/>
+      <text x="447" y="124" font-size="13" text-anchor="middle" fill="#5A5D66">Separate pair: power from a low-voltage supply</text>
+      <rect x="706" y="70" width="170" height="46" rx="8" fill="#71E2FD" stroke="#26282E" stroke-width="1.6"/>
+      <text x="791" y="98" font-size="13" text-anchor="middle" fill="#26282E">DVR</text>
+      <text x="24" y="160" font-size="13" font-weight="700" fill="#26282E">IP</text>
+      <rect x="24" y="170" width="170" height="46" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="109" y="198" font-size="13" text-anchor="middle" fill="#26282E">IP camera</text>
+      <line x1="194" y1="193" x2="364" y2="193" stroke="#26282E" stroke-width="2"/>
+      <text x="279" y="184" font-size="13" text-anchor="middle" fill="#26282E">Twisted pair:</text>
+      <text x="279" y="212" font-size="13" text-anchor="middle" fill="#26282E">data and PoE</text>
+      <rect x="364" y="170" width="170" height="46" rx="8" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <text x="449" y="198" font-size="13" text-anchor="middle" fill="#26282E">PoE port</text>
+      <line x1="534" y1="193" x2="700" y2="193" stroke="#26282E" stroke-width="2"/>
+      <text x="617" y="184" font-size="13" text-anchor="middle" fill="#26282E">Network</text>
+      <rect x="706" y="170" width="170" height="46" rx="8" fill="#71E2FD" stroke="#26282E" stroke-width="1.6"/>
+      <text x="791" y="198" font-size="13" text-anchor="middle" fill="#26282E">NVR</text>
+      <text x="24" y="256" font-size="13" font-weight="700" fill="#26282E">Hybrid</text>
+      <rect x="24" y="266" width="170" height="34" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="109" y="288" font-size="13" text-anchor="middle" fill="#26282E">Analog camera</text>
+      <rect x="24" y="306" width="170" height="34" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="109" y="328" font-size="13" text-anchor="middle" fill="#26282E">IP camera</text>
+      <line x1="194" y1="283" x2="700" y2="296" stroke="#26282E" stroke-width="2"/>
+      <text x="447" y="280" font-size="13" text-anchor="middle" fill="#26282E">Coaxial input</text>
+      <line x1="194" y1="323" x2="700" y2="312" stroke="#26282E" stroke-width="2"/>
+      <text x="447" y="334" font-size="13" text-anchor="middle" fill="#26282E">Network input</text>
+      <rect x="706" y="280" width="170" height="46" rx="8" fill="#71E2FD" stroke="#26282E" stroke-width="1.6"/>
+      <text x="791" y="308" font-size="13" text-anchor="middle" fill="#26282E">Hybrid recorder</text>
+    </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Three ways a camera reaches its recorder. It has three rows.</p>
+    <p>Analog: an analog camera on the left joins a DVR on the right by a coaxial cable labeled video, with a dashed line under it labeled separate pair: power from a low-voltage supply.</p>
+    <p>IP: an IP camera joins a PoE port by a twisted-pair cable labeled data and PoE. A line labeled network joins the PoE port to an NVR.</p>
+    <p>Hybrid: an analog camera and an IP camera on the left both join one hybrid recorder on the right, the analog camera at a coaxial input and the IP camera at a network input.</p>
+  </details>
+
+  <p>An <span class="keyterm">encoder</span> converts an analog camera&rsquo;s signal to IP video, so a working analog camera can join an IP system without a new recorder input. Twisted-pair Ethernet reaches up to 100 m from the switch or recorder port to the camera. Longer runs go on fiber, with a media converter or a switch&rsquo;s fiber port at each end.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="A hybrid recorder takes the existing cameras on its coaxial inputs and the new cameras over the network, so one recorder keeps all of them. A DVR records analog cameras over coaxial cable, not network data. An NVR records IP cameras over the network; on its own, it has no coaxial input. A PoE switch powers and connects cameras; it records nothing.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a library renovation, the existing cameras send video on coaxial cable, each with a power pair from a supply in the equipment room. The owner adds four PoE cameras on twisted-pair cable and wants every camera on one recorder. Which recorder does that?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>A hybrid recorder, with coaxial inputs and a network connection</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A DVR, which records both kinds of camera on coaxial cable</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>An NVR, which records analog cameras on its PoE ports</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A PoE switch, which records the video it carries</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="1" data-group-title="Systems on a Security Job" data-num="533.1.2" data-title="Where the video is recorded">
+  <p class="crumb">Lesson 533.1 &middot; Section 1 Systems on a Security Job</p>
+  <h2><span class="tnum">533.1.2</span> Where the video is recorded</h2>
+  <p class="lead-in">Kestrel&rsquo;s estimators name three recording options. Each keeps the video in a different place, and each depends on something different to keep recording.</p>
+
+  <ul>
+    <li><strong>Network video recorder (NVR).</strong> A recorder on site that records IP cameras over the network. Some models power their cameras through their own PoE ports.</li>
+    <li><strong>Digital video recorder (DVR).</strong> A recorder on site that records analog cameras over coaxial cable.</li>
+    <li><strong>Cloud video management system (cloud VMS).</strong> The cameras send video over the internet to a provider&rsquo;s service, which records it and serves it to viewers. Usually a subscription.</li>
+  </ul>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The three recording options compared: where the video is kept, what recording depends on, who looks after the system, how it is paid for, and how video is viewed away from the site.</caption>
+      <thead><tr>
+        <th scope="col"></th><th scope="col">NVR</th><th scope="col">DVR</th><th scope="col">Cloud VMS</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Video kept</th><td>On the recorder&rsquo;s drives, on site</td><td>On the recorder&rsquo;s drives, on site</td><td>At the provider, off site</td></tr>
+        <tr><th scope="row">Recording depends on</th><td>Power and the local network; not the internet</td><td>Power and the coaxial cabling; not the internet</td><td>The site&rsquo;s internet connection, with enough upload capacity for every camera</td></tr>
+        <tr><th scope="row">Looked after by</th><td>The owner or a service contractor: drives, firmware, users</td><td>As the NVR</td><td>The provider runs the servers; the owner manages users and cameras</td></tr>
+        <tr><th scope="row">Paid for</th><td>Mostly at purchase: recorder and drives</td><td>Mostly at purchase</td><td>Usually a subscription, per camera or per site</td></tr>
+        <tr><th scope="row">Viewed away from the site</th><td>Over the internet, through the maker&rsquo;s phone app or another method the owner approves</td><td>As the NVR</td><td>Through the provider&rsquo;s service</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>An owner&rsquo;s data or privacy policy may say where recordings are stored and for how long. Some cloud cameras store video on a memory card, or on a bridge on site, during an internet outage and send it when the line returns; check the provider&rsquo;s documentation for the camera in front of you.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="With a cloud VMS, the cameras send their video over the internet to the provider, so a dropped line stops new video reaching the recorder, unless the cameras store it locally and send it later. An NVR and a DVR record on site over the local network or coaxial cable, so an internet outage stops only viewing away from the site. A hybrid recorder is also on site.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A site&rsquo;s internet line drops for an afternoon. With which recording option does new video stop reaching the recorder during the drop, unless the cameras store it themselves?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>An NVR in the equipment room</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>A DVR in the equipment room</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A cloud VMS</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A hybrid recorder in the equipment room</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="1" data-group-title="Systems on a Security Job" data-num="533.1.3" data-title="How access control is managed">
+  <p class="crumb">Lesson 533.1 &middot; Section 1 Systems on a Security Job</p>
+  <h2><span class="tnum">533.1.3</span> How access control is managed</h2>
+  <p class="lead-in">An access-controlled door has the same parts whatever the system. The three architectures differ in where the people, credentials, and schedules for every door are managed.</p>
+
+  <h3>The parts of an access-controlled door</h3>
+  <ul>
+    <li><strong>Reader.</strong> Reads the credential a person presents and passes it to the controller.</li>
+    <li><strong>Controller, or hub.</strong> Decides whether the credential may open the door now, switches the lock, and records each event.</li>
+    <li><strong>Lock.</strong> An electric lock, such as an electric strike or a magnetic lock, that the controller switches.</li>
+    <li><strong>Request-to-exit device.</strong> A push button or a motion sensor on the inside that tells the controller someone is leaving.</li>
+    <li><strong>Door position switch.</strong> A contact that tells the controller whether the door is shut.</li>
+    <li><strong>Power.</strong> For the controller, the reader, and the lock: from the controller&rsquo;s own outputs, PoE, or a separate power supply.</li>
+  </ul>
+
+  <h3>The three architectures</h3>
+  <ul>
+    <li><strong>Standalone.</strong> The controller is at the door, managed at the door or on a local panel. No network management.</li>
+    <li><strong>Networked on-premises.</strong> Controllers, or a console, on the site network, managed from a server or console the owner runs.</li>
+    <li><strong>Cloud-managed.</strong> Controllers on site, managed through the manufacturer&rsquo;s cloud service. Usually a subscription.</li>
+  </ul>
+  <p>Some suppliers use &ldquo;on-premises&rdquo; for any system managed on site, standalone or networked; others mean a networked system only. When a document says &ldquo;on-premises&rdquo; alone, find out which it means.</p>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; Where each architecture is managed</div>
+    <div class="tbl-scroll">
+    <svg style="min-width:900px" viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Three columns: standalone controllers each managed at its own door; networked on-premises controllers on the site network managed from a server or console the owner runs; cloud-managed controllers on site managed through the manufacturer&#8217;s cloud service over the internet. A full text description follows.">
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Where each architecture is managed</text>
+      <text x="24" y="62" font-size="14" font-weight="700" fill="#26282E">Standalone</text>
+      <rect x="24" y="76" width="120" height="44" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="84" y="103" font-size="13" text-anchor="middle" fill="#26282E">Door 1 controller</text>
+      <rect x="154" y="76" width="120" height="44" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="214" y="103" font-size="13" text-anchor="middle" fill="#26282E">Door 2 controller</text>
+      <text x="24" y="150" font-size="13" fill="#26282E">Each managed at its door</text>
+      <text x="24" y="170" font-size="13" fill="#26282E">or on a local panel</text>
+      <text x="24" y="190" font-size="13" fill="#5A5D66">No network</text>
+      <text x="318" y="62" font-size="14" font-weight="700" fill="#26282E">Networked on-premises</text>
+      <rect x="318" y="76" width="120" height="44" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="378" y="103" font-size="13" text-anchor="middle" fill="#26282E">Door 1 controller</text>
+      <rect x="448" y="76" width="120" height="44" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="508" y="103" font-size="13" text-anchor="middle" fill="#26282E">Door 2 controller</text>
+      <line x1="378" y1="120" x2="443" y2="170" stroke="#26282E" stroke-width="2"/>
+      <line x1="508" y1="120" x2="443" y2="170" stroke="#26282E" stroke-width="2"/>
+      <text x="443" y="160" font-size="13" text-anchor="middle" fill="#26282E">Site network</text>
+      <rect x="358" y="176" width="170" height="44" rx="8" fill="#71E2FD" stroke="#26282E" stroke-width="1.6"/>
+      <text x="443" y="203" font-size="13" text-anchor="middle" fill="#26282E">Owner&#8217;s server or console</text>
+      <text x="612" y="62" font-size="14" font-weight="700" fill="#26282E">Cloud-managed</text>
+      <rect x="612" y="76" width="120" height="44" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="672" y="103" font-size="13" text-anchor="middle" fill="#26282E">Door 1 controller</text>
+      <rect x="742" y="76" width="120" height="44" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="802" y="103" font-size="13" text-anchor="middle" fill="#26282E">Door 2 controller</text>
+      <line x1="672" y1="120" x2="737" y2="170" stroke="#26282E" stroke-width="2"/>
+      <line x1="802" y1="120" x2="737" y2="170" stroke="#26282E" stroke-width="2"/>
+      <text x="737" y="160" font-size="13" text-anchor="middle" fill="#26282E">Site network</text>
+      <line x1="737" y1="176" x2="737" y2="226" stroke="#26282E" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="745" y="206" font-size="13" fill="#26282E">Internet</text>
+      <rect x="652" y="232" width="170" height="44" rx="8" fill="#71E2FD" stroke="#26282E" stroke-width="1.6"/>
+      <text x="737" y="259" font-size="13" text-anchor="middle" fill="#26282E">Maker&#8217;s cloud service</text>
+    </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Where each architecture is managed, in three columns.</p>
+    <p>Standalone: two boxes, door 1 controller and door 2 controller, with no line between them. The text below reads: each managed at its door or on a local panel; no network.</p>
+    <p>Networked on-premises: door 1 controller and door 2 controller each join a line labeled site network that leads to a box labeled owner&rsquo;s server or console.</p>
+    <p>Cloud-managed: door 1 controller and door 2 controller each join the site network. A dashed line labeled internet leads from the site network to a box labeled maker&rsquo;s cloud service.</p>
+  </details>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The three access-control architectures compared.</caption>
+      <thead><tr>
+        <th scope="col"></th><th scope="col">Standalone</th><th scope="col">Networked on-premises</th><th scope="col">Cloud-managed</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">A person added or removed</th><td>At each door, one controller at a time</td><td>Once, at the console; the change reaches every door</td><td>Once, in the cloud service</td></tr>
+        <tr><th scope="row">Every door locked from one place</th><td>No</td><td>Yes, from the console</td><td>Yes, from the cloud service</td></tr>
+        <tr><th scope="row">Needs the site network</th><td>No</td><td>Yes</td><td>Yes</td></tr>
+        <tr><th scope="row">Needs the internet to manage</th><td>No</td><td>No</td><td>Yes</td></tr>
+        <tr><th scope="row">Looked after by</th><td>Whoever holds the door programming</td><td>The owner&rsquo;s IT staff or a service contractor</td><td>The manufacturer runs the service; the owner manages people and doors</td></tr>
+        <tr><th scope="row">Paid for</th><td>At purchase</td><td>Mostly at purchase</td><td>Usually a subscription</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Many networked on-premises and cloud-managed controllers keep a copy of their credential list, so a door keeps working for known credentials while the console or the internet is down. Changes wait until the connection returns. Read the maker&rsquo;s documentation for what a given controller does during an outage.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="On a standalone system, each door&rsquo;s controller holds its own list, managed at the door or on a local panel, so the departing person&rsquo;s credential is removed at each of the 12 doors. A console or cloud service that reaches every door belongs to a networked on-premises or cloud-managed system. Re-keying is for mechanical keys; an electronic credential is removed in the controller.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A clinic has a standalone controller at each of its 12 doors. A staff member leaves. What has to happen for that person&rsquo;s credential to stop opening the doors?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>One change at the console, sent to all 12 doors</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>One change in the cloud service, sent to all 12 doors</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The locks at all 12 doors are re-keyed</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The credential is removed at each door&rsquo;s controller</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="1" data-group-title="Systems on a Security Job" data-num="533.1.4" data-title="The credentials people carry">
+  <p class="crumb">Lesson 533.1 &middot; Section 1 Systems on a Security Job</p>
+  <h2><span class="tnum">533.1.4</span> The credentials people carry</h2>
+  <p class="lead-in">A credential is what a person presents at the reader. The three kinds differ in how the reader reads them, how easily they can be copied, and what the person has to carry.</p>
+
+  <ul>
+    <li><strong>125 kHz proximity.</strong> A card or fob read by radio at 125 kHz. Most carry an unencrypted number.</li>
+    <li><strong>13.56 MHz smart.</strong> A card or fob read by radio at 13.56 MHz. Many carry encrypted data.</li>
+    <li><strong>Mobile.</strong> The credential is held on a phone, in an app or the phone&rsquo;s wallet.</li>
+  </ul>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The three credential types compared: copying, what the person carries, what the reader must support, and what removing one involves.</caption>
+      <thead><tr>
+        <th scope="col"></th><th scope="col">125 kHz proximity</th><th scope="col">13.56 MHz smart</th><th scope="col">Mobile</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Copying</th><td>A card that sends an unencrypted number can be copied by anyone who can read it</td><td>Harder where the card type and the system use encryption; some early 13.56 MHz card types have published weaknesses</td><td>Depends on the app and the phone&rsquo;s own security</td></tr>
+        <tr><th scope="row">The person carries</th><td>A card or fob</td><td>A card or fob</td><td>A phone carrying the credential (in an app or the phone&rsquo;s wallet), usually charged; some wallet credentials work for a few hours after the phone shuts down</td></tr>
+        <tr><th scope="row">The reader must support</th><td>125 kHz</td><td>13.56 MHz and that card type</td><td>The maker&rsquo;s mobile credential, by Near Field Communication (NFC) or Bluetooth</td></tr>
+        <tr><th scope="row">Removing one</th><td colspan="3">The credential is removed in the access system. No lock is re-keyed, whichever type it is.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A reader reads only the frequencies and card types it is built for. A site moving from 125 kHz cards to 13.56 MHz cards runs both until every card is replaced. During the change, it needs readers that read both, or a second credential for each person. A mobile credential depends on the person: some staff will not install a work app on a personal phone, and some people do not carry a smartphone.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="A reader reads only the frequencies and card types it is built for. A 125 kHz card held to a reader that reads only 13.56 MHz sends nothing the reader can use, so the controller receives no credential and the door stays locked. A denial is logged only when the reader passes a credential the system refuses; presenting the card neither copies nor re-enrolls it.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A building&rsquo;s new readers read 13.56 MHz cards only. A staff member presents an old 125 kHz proximity card. What happens?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The reader opens the door and logs the card as old</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The reader reads nothing it can use, and the door stays locked</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The reader copies the card&rsquo;s number into a smart credential</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The controller enrolls the card for the person who presented it</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="2" data-group-title="Choosing and Checking" data-num="533.1.5" data-title="A recommendation built from the site&rsquo;s facts">
+  <p class="crumb">Lesson 533.1 &middot; Section 2 Choosing and Checking</p>
+  <h2><span class="tnum">533.1.5</span> A recommendation built from the site&rsquo;s facts</h2>
+  <p class="lead-in">An estimator asks an installer which system suits a site. The installer answers decision by decision, with the site&rsquo;s own facts.</p>
+
+  <p>A field view makes three decisions: the recording option, the access-control option, and the credential type. For each, it names one option and cites the facts of that site that support it. It also cites any fact that weighs against it, or says that none does, and gives the reason in one sentence. For most decisions more than one option can be argued. The estimator weighs the facts, so a fact cited for an option has to support it, and a fact cited against it has to count against it.</p>
+
+  <p>A fact supports an option when the site has what the option depends on: cabling that suits the camera type, a network and people to manage a console, an internet line that a cloud service can rely on, or readers that read the credential. A fact weighs against an option when the option needs something the site lacks, or when the site sets a condition the option breaks.</p>
+
+  <h3>A field view on another job</h3>
+  <p>Ashby Cold Storage, a warehouse, has asked for a security quote. Its enquiry lists these facts:</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Facts from the Ashby Cold Storage enquiry (another job, hypothetical).</caption>
+      <thead><tr><th scope="col">Fact</th><th scope="col"></th></tr></thead>
+      <tbody>
+        <tr><th scope="row">A.1</th><td>Ten working analog cameras on coaxial cable, each with a power pair, all run to the office.</td></tr>
+        <tr><th scope="row">A.2</th><td>The owner wants to keep the cameras for at least two more years.</td></tr>
+        <tr><th scope="row">A.3</th><td>Three doors to control, with 30 staff on two shifts.</td></tr>
+        <tr><th scope="row">A.4</th><td>Staff badges are 125 kHz proximity cards used for the time clock, which reads 125 kHz only.</td></tr>
+        <tr><th scope="row">A.5</th><td>A forklift driver&rsquo;s badge was copied last year and used after the driver left.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Two decisions from the field view for Ashby Cold Storage, with the facts cited.</caption>
+      <thead><tr>
+        <th scope="col">Decision</th><th scope="col">Option</th><th scope="col">For</th><th scope="col">Against</th><th scope="col">Reason</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Recording</th><td>DVR</td><td>A.1, A.2</td><td>none</td><td>The cameras the owner is keeping are analog and already cabled to the office.</td></tr>
+        <tr><th scope="row">Credential</th><td>13.56 MHz smart</td><td>A.5</td><td>A.4</td><td>Encrypted 13.56 MHz cards are harder to copy, though the time clock would need its own badge or a new reader.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The credential row cites a fact against its own option. From it, the estimator sees that a change from 125 kHz cards reaches the time clock as well as the doors.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="A fact cited against an option has to count against that option. The size of the waiting room is a fact about the site that counts neither for nor against managing the doors from a console on site, so it adds nothing to the column. A field view does cite facts against its own choice where any exist. Nothing about a waiting room calls for a cloud service.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a dental clinic job, a field view recommends networked on-premises access control. In the &ldquo;Against&rdquo; column it cites &ldquo;The clinic&rsquo;s waiting room seats 12 patients.&rdquo; What is wrong with the entry?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Nothing: any fact about the site may be cited against it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The fact does not count against networked on-premises access control</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A field view never cites a fact against its own choice</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>A clinic of that size calls for a cloud service instead</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="2" data-group-title="Choosing and Checking" data-num="533.1.6" data-title="Products from different makers: ONVIF profiles">
+  <p class="crumb">Lesson 533.1 &middot; Section 2 Choosing and Checking</p>
+  <h2><span class="tnum">533.1.6</span> Products from different makers: ONVIF profiles</h2>
+  <p class="lead-in">A camera from one maker and a recorder from another work together only for the functions both have been built and tested to share.</p>
+
+  <p>ONVIF is an industry forum that publishes interface specifications for IP security products, grouped into <span class="keyterm">profiles</span>. A product conforms to a profile, not to ONVIF as a whole, and each profile covers a set of functions. Profile S covers video streaming from a camera to a recorder or viewer. Profile T covers advanced video streaming. Profile G covers recording and storage on the device. Profiles A and C cover access control.</p>
+
+  <ul>
+    <li><strong>Read the profile, not the word.</strong> A datasheet line that reads &ldquo;ONVIF&rdquo; with no profile does not say which functions work with another maker&rsquo;s product.</li>
+    <li><strong>Check the claim.</strong> ONVIF publishes a list of conformant products by profile. A product on that list for the profile you need has passed the forum&rsquo;s conformance process.</li>
+    <li><strong>Expect gaps outside the profile.</strong> Functions a profile does not cover, such as one maker&rsquo;s video analytics, may work only between that maker&rsquo;s own products.</li>
+  </ul>
+
+  <div class="cyu gate" data-answer="0" data-fb="Profile S covers video streaming, so a conformant camera and a conformant recorder from different makers share live video. Recording on the camera&rsquo;s own storage falls under Profile G. A maker&rsquo;s analytics and firmware tools sit outside the profile and may work only with that maker&rsquo;s own products.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A recorder from one maker and a camera from another are both listed as conformant to ONVIF Profile S, and to no other profile. Which function do you expect to work between them?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Streaming the camera&rsquo;s video to the recorder</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Recording to the camera&rsquo;s own memory card from the recorder</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Setting the camera maker&rsquo;s video analytics from the recorder</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Upgrading the camera&rsquo;s firmware from the recorder</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="2" data-group-title="Choosing and Checking" data-num="533.1.7" data-title="Constraints that someone else decides">
+  <p class="crumb">Lesson 533.1 &middot; Section 2 Choosing and Checking</p>
+  <h2><span class="tnum">533.1.7</span> Constraints that someone else decides</h2>
+  <p class="lead-in">Some facts about a site set a rule that the installer does not decide. The installer recognizes the rule, names who decides it, and sends it to them through the site lead.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Kinds of constraint an installer escalates, and who usually decides each.</caption>
+      <thead><tr><th scope="col">Constraint</th><th scope="col">Who decides</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">A procurement rule on which products may be bought</th><td>The client&rsquo;s procurement or compliance office</td></tr>
+        <tr><th scope="row">An approval needed before a building is altered: under a lease, for a historic listing, or a landlord&rsquo;s consent</th><td>The party the lease, the listing, or the consent names</td></tr>
+        <tr><th scope="row">An insurer&rsquo;s or the owner&rsquo;s security requirement</th><td>The insurer, or the owner&rsquo;s security office</td></tr>
+        <tr><th scope="row">A data or privacy policy on where video is kept, and for how long</th><td>The owner, under its own policy</td></tr>
+        <tr><th scope="row">A review the client applies before using a new service</th><td>The client&rsquo;s IT department</td></tr>
+        <tr><th scope="row">A lock on a door that people use to leave the building</th><td>The designer, under the building and fire codes, and the authority having jurisdiction</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Covered equipment: escalate, never judge by brand</h3>
+  <p>Some federal rules restrict the telecommunications and video surveillance equipment that certain organizations may buy or fund. Section 889 of the National Defense Authorization Act for Fiscal Year 2019 bars federal agencies, federal contractors, and many recipients of federal funds from buying covered equipment. The Federal Communications Commission (FCC) Covered List names equipment that the FCC bars from federal subsidy and from new FCC approval. The client&rsquo;s procurement or compliance office decides, from the current text and lists, whether a rule applies to the client and whether a product falls under it. A rule can reach a component, a maker&rsquo;s subsidiary, or a product sold under another name, so a brand on the box settles nothing.</p>
+  <p>The installer&rsquo;s part: name the fact that sets the rule, the party who decides, and the products in question, and send them through the site lead with the work that waits on the answer. The installer does not state whether a product is permitted.</p>
+
+  <div class="figure">
+    <div class="cap">An escalation note on another job</div>
+    <p><strong>Job.</strong> Cameras on the street front of the Marlow Road Clinic, a designated city landmark.</p>
+    <p><strong>Fact.</strong> The city&rsquo;s landmark ordinance requires the preservation office to approve any fixing to the street facade.</p>
+    <p><strong>Who decides.</strong> The city&rsquo;s preservation office, through the owner.</p>
+    <p style="margin-bottom:0"><strong>Sent.</strong> To the site lead: the two facade camera positions and their fixings from the drawings, for the owner to submit. The facade cameras wait for the approval; the interior cameras go ahead.</p>
+  </div>
+
+  <div class="cyu gate" data-answer="2" data-fb="The rule is the client&rsquo;s, and the client&rsquo;s compliance office decides what it covers. The installer sends the model and the fact through the site lead and holds the installation of those cameras. Swapping the brand or telling the client the camera is not permitted are both judgments on the rule. Installing first leaves the client with equipment its office may refuse.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a water utility job, the client&rsquo;s funding terms require its compliance office to confirm each video surveillance product before it is installed. The cameras delivered to site are of a brand you have read about in the news. What do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Install them, since the funding terms are the client&rsquo;s concern</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Tell the client that this brand is not permitted under its terms</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Send the model to the site lead for the compliance office, and hold those cameras</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Fit cameras of another brand from the van stock instead</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="2" data-group-title="Choosing and Checking" data-num="533.1.8" data-title="Checking an AI tool&rsquo;s answer">
+  <p class="crumb">Lesson 533.1 &middot; Section 2 Choosing and Checking</p>
+  <h2><span class="tnum">533.1.8</span> Checking an AI tool&rsquo;s answer</h2>
+  <p class="lead-in">An AI tool writes a fluent description of a product in seconds. Each claim in it stays a claim until a line in the manufacturer&rsquo;s documents states the same fact.</p>
+
+  <p>Split the answer into single statements, each about one product and each stating one fact a reader could check. Then find the line in the manufacturer&rsquo;s datasheet, installation guide, or support article that covers it, and mark the statement:</p>
+  <ul>
+    <li><strong>Confirmed.</strong> A line in the manufacturer&rsquo;s documents states the same fact.</li>
+    <li><strong>Contradicted.</strong> A line states something that cannot be true if the statement is true.</li>
+    <li><strong>Unverifiable.</strong> No line covers the statement.</li>
+  </ul>
+  <p>An unverifiable statement may still be true. The documents in front of you do not confirm it, so it goes to the site lead as a question, not into a record as a fact. A statement about the site or the job, rather than about the product, is not checked against a product document.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Three statements from an AI tool about a hypothetical outdoor camera, the DC-40, checked against its datasheet.</caption>
+      <thead><tr><th scope="col">AI statement</th><th scope="col">Datasheet line</th><th scope="col">Mark</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">&ldquo;The DC-40 is rated IP66.&rdquo;</th><td>D-6: &ldquo;Ingress protection: IP66&rdquo;</td><td>Confirmed</td></tr>
+        <tr><th scope="row">&ldquo;The DC-40 operates down to &minus;40&nbsp;&deg;C.&rdquo;</th><td>D-7: &ldquo;Operating temperature: &minus;30&nbsp;&deg;C to +60&nbsp;&deg;C&rdquo;</td><td>Contradicted</td></tr>
+        <tr><th scope="row">&ldquo;The DC-40 works with most recorders on the market.&rdquo;</th><td>None: the datasheet lists no recorders</td><td>Unverifiable</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn"><div class="nt">What goes into a prompt</div>
+    <p>A prompt to an AI tool leaves the site. Keep account names, passwords, passphrases, and credential numbers out of it, and out of every screenshot of it.</p></div>
+
+  <div class="cyu gate" data-answer="3" data-fb="No datasheet line mentions an impact rating, so the statement is unverifiable: it may be true, and the documents in front of you do not confirm it. Confirmed needs a line that states the same fact; contradicted needs a line that rules it out. An unverifiable statement is not dropped as false. It goes to the site lead as a question.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">An AI tool says the DC-40&rsquo;s housing is impact-rated IK10. Its datasheet lines cover the lens, the power, the storage, the ingress protection, and the operating temperature, and none mentions impact. How do you mark the statement?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Confirmed, since the datasheet rates the housing IP66</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Contradicted, since the datasheet gives no IK rating</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>False, so it is left out of the check</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Unverifiable, and sent to the site lead as a question</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="3" data-group-title="Reading the Security Drawings" data-num="533.1.9" data-title="The camera schedule and the CCTV riser">
+  <p class="crumb">Lesson 533.1 &middot; Section 3 Reading the Security Drawings</p>
+  <h2><span class="tnum">533.1.9</span> The camera schedule and the CCTV riser</h2>
+  <p class="lead-in">A security drawing set shows each device in more than one place. Each kind of sheet answers a different question about it.</p>
+
+  <ul>
+    <li><strong>General notes and legend.</strong> The symbols, the abbreviations, the label scheme, and notes that apply to every sheet.</li>
+    <li><strong>Plans and elevations.</strong> Where each device is mounted, with its position and height.</li>
+    <li><strong>Schedules.</strong> One row for each device: its identifier, model, head-end device, port or terminal, cable label, and settings such as a channel name.</li>
+    <li><strong>Riser and wiring diagrams.</strong> How each device connects to the head end: the pathway, the cable, the port or terminal, the power, and the network. A diagram is not to scale.</li>
+  </ul>
+  <p>The <span class="keyterm">head end</span> is the equipment the devices connect back to, usually in a telecommunications room: the recorder for the cameras, the controller or hub for the doors, and the switches they join.</p>
+
+  <p>Match each question about a device to the sheet that answers it.</p>
+  <div class="match gate" data-left="The question" data-right="The sheet that answers it">
+    <div class="pair" data-left="How far along the wall is the camera mounted?" data-right="Plan or elevation"></div>
+    <div class="pair" data-left="Which port and label does the camera&rsquo;s cable take?" data-right="Schedule"></div>
+    <div class="pair" data-left="Which switch does the recorder join, and on which network?" data-right="Riser diagram"></div>
+    <div class="pair" data-left="What does the abbreviation on the symbol mean?" data-right="General notes and legend"></div>
+  </div>
+
+  <h3>Reading a camera schedule</h3>
+  <p>Read a schedule across one row at a time. Every entry in the row belongs to one camera, and the entries have to agree with each other and with the label scheme in the general notes: the identifier, the cable label, and the channel name all point to the same camera.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Camera schedule excerpt, Riverside Library Annex (another job, hypothetical).</caption>
+      <thead><tr>
+        <th scope="col">Camera</th><th scope="col">Location</th><th scope="col">Mount</th><th scope="col">Recorder</th><th scope="col">Port</th><th scope="col">Cable label</th><th scope="col">Channel name</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">C-11</th><td>Lobby, north wall</td><td>Wall, 10 ft</td><td>TR1-NVR</td><td>6</td><td>TR1-C11</td><td>C-11 Lobby</td></tr>
+        <tr><th scope="row">C-12</th><td>Reading room, east wall</td><td>Wall, 10 ft</td><td>TR1-NVR</td><td>7</td><td>TR1-C12</td><td>C-12 Reading</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Reading a CCTV riser</h3>
+  <p>A riser follows each camera from its mounting point, along its pathway, to its recorder port, then follows the recorder to the switch and the network it joins. Read it from the camera end. On this job the recorder sits on a camera network, Virtual Local Area Network (VLAN) 40, kept apart from the office network.</p>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; CCTV riser, Riverside Library Annex (another job)</div>
+    <div class="tbl-scroll">
+    <svg style="min-width:900px" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Riser diagram on another job: two cameras on Level 1 run through conduit to NVR TR1-NVR ports 6 and 7 in telecommunications room TR-1; the NVR joins switch TR1-SW02 port 30 on the camera network, VLAN 40, then a firewall. Power and network boundaries are marked. A full text description follows.">
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">CCTV riser, Riverside Library Annex (another job)</text>
+      <rect x="24" y="48" width="300" height="290" rx="6" fill="#F0F0F0" stroke="#8C8F96" stroke-width="1.2"/>
+      <text x="36" y="70" font-size="13" font-weight="700" fill="#26282E">Level 1, public areas</text>
+      <rect x="44" y="92" width="150" height="46" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="119" y="112" font-size="13" text-anchor="middle" fill="#26282E">C-11 Lobby</text>
+      <text x="119" y="130" font-size="13" text-anchor="middle" fill="#26282E">wall, 10 ft</text>
+      <rect x="44" y="190" width="150" height="46" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="119" y="210" font-size="13" text-anchor="middle" fill="#26282E">C-12 Reading</text>
+      <text x="119" y="228" font-size="13" text-anchor="middle" fill="#26282E">wall, 10 ft</text>
+      <line x1="194" y1="115" x2="520" y2="115" stroke="#26282E" stroke-width="2"/>
+      <line x1="194" y1="213" x2="470" y2="213" stroke="#26282E" stroke-width="2"/>
+      <line x1="470" y1="213" x2="470" y2="140" stroke="#26282E" stroke-width="2"/>
+      <line x1="470" y1="140" x2="520" y2="140" stroke="#26282E" stroke-width="2"/>
+      <text x="330" y="106" font-size="13" text-anchor="middle" fill="#26282E">Cat6, label TR1-C11</text>
+      <text x="330" y="204" font-size="13" text-anchor="middle" fill="#26282E">Cat6, label TR1-C12</text>
+      <text x="200" y="290" font-size="13" fill="#5A5D66">Conduit to the ceiling, then cable tray to TR-1</text>
+      <rect x="500" y="48" width="376" height="290" rx="6" fill="#FFFFFF" stroke="#8C8F96" stroke-width="1.2"/>
+      <text x="512" y="70" font-size="13" font-weight="700" fill="#26282E">Telecommunications room TR-1</text>
+      <rect x="520" y="90" width="200" height="66" rx="8" fill="#71E2FD" stroke="#26282E" stroke-width="1.6"/>
+      <text x="620" y="112" font-size="13" text-anchor="middle" fill="#26282E">NVR TR1-NVR</text>
+      <text x="620" y="130" font-size="13" text-anchor="middle" fill="#26282E">PoE port 6: C-11</text>
+      <text x="620" y="148" font-size="13" text-anchor="middle" fill="#26282E">PoE port 7: C-12</text>
+      <rect x="514" y="84" width="356" height="78" rx="4" fill="none" stroke="#A4262C" stroke-width="1.4" stroke-dasharray="5 4"/>
+      <text x="730" y="112" font-size="13" fill="#A4262C">Power boundary:</text>
+      <text x="730" y="130" font-size="13" fill="#A4262C">cameras take PoE</text>
+      <text x="730" y="148" font-size="13" fill="#A4262C">from these ports</text>
+      <line x1="620" y1="156" x2="620" y2="200" stroke="#26282E" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="628" y="184" font-size="13" fill="#5A5D66">patch cord</text>
+      <rect x="520" y="200" width="200" height="50" rx="8" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <text x="620" y="221" font-size="13" text-anchor="middle" fill="#26282E">Switch TR1-SW02, port 30</text>
+      <text x="620" y="239" font-size="13" text-anchor="middle" fill="#26282E">camera network, VLAN 40</text>
+      <rect x="514" y="194" width="356" height="62" rx="4" fill="none" stroke="#724DFD" stroke-width="1.4" stroke-dasharray="5 4"/>
+      <text x="730" y="221" font-size="13" fill="#26282E">Network boundary:</text>
+      <text x="730" y="239" font-size="13" fill="#26282E">the NVR joins here</text>
+      <line x1="620" y1="250" x2="620" y2="280" stroke="#26282E" stroke-width="2" stroke-dasharray="6 4"/>
+      <rect x="520" y="280" width="200" height="42" rx="8" fill="#FFFFFF" stroke="#26282E" stroke-width="1.6"/>
+      <text x="620" y="306" font-size="13" text-anchor="middle" fill="#26282E">Firewall to other networks</text>
+    </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled CCTV riser, Riverside Library Annex (another job). On the left, a panel labeled Level 1, public areas holds two cameras: C-11 Lobby, wall, 10 ft, and C-12 Reading, wall, 10 ft. A note reads: conduit to the ceiling, then cable tray to TR-1.</p>
+    <p>A line labeled Cat6, label TR1-C11 runs from C-11, and a line labeled Cat6, label TR1-C12 runs from C-12, into a panel on the right labeled Telecommunications room TR-1. Both end at a box labeled NVR TR1-NVR, PoE port 6: C-11, PoE port 7: C-12. A dashed outline round the NVR is labeled Power boundary: cameras take PoE from these ports.</p>
+    <p>A dashed line labeled patch cord runs from the NVR to a box labeled Switch TR1-SW02, port 30, camera network, VLAN 40. A dashed outline round the switch is labeled Network boundary: the NVR joins here. A dashed line runs on to a box labeled Firewall to other networks.</p>
+  </details>
+
+  <div class="cyu gate" data-answer="1" data-fb="The schedule gives C-12 port 7, and the riser shows port 7 on the NVR, so C-12&rsquo;s cable lands on NVR TR1-NVR, PoE port 7. Port 30 is on the switch, where the NVR&rsquo;s network port joins by a patch cord: no camera cable lands there. Port 6 is C-11&rsquo;s.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On the Riverside riser and schedule, where does the cable labeled TR1-C12 land in TR-1?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Switch TR1-SW02, port 30</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>NVR TR1-NVR, PoE port 7</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>NVR TR1-NVR, PoE port 6</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The firewall, on the camera network</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="3" data-group-title="Reading the Security Drawings" data-num="533.1.10" data-title="The door schedule and the access-control wiring diagram">
+  <p class="crumb">Lesson 533.1 &middot; Section 3 Reading the Security Drawings</p>
+  <h2><span class="tnum">533.1.10</span> The door schedule and the access-control wiring diagram</h2>
+  <p class="lead-in">A door schedule lists what each controlled door carries. The wiring diagram shows where each device&rsquo;s conductors land.</p>
+
+  <p>A <span class="keyterm">door schedule</span> gives one row per door: the door number, the lock, the reader, the request-to-exit device, the door position switch, the controller, and the power supply, often with notes on who supplies the door hardware. Read it across the row, as you read a camera schedule.</p>
+  <p>An <span class="keyterm">access-control wiring diagram</span> draws each device of a door, the cable to it, and the <span class="keyterm">terminal designation</span> where each conductor lands on the controller or on a power supply. Terminal designations are the controller maker&rsquo;s names, printed on the controller beside each terminal. Read them off the diagram and check them against the controller itself. A note such as &ldquo;to confirm&rdquo; on a diagram means the designer has not confirmed the value: ask before you land a conductor on it.</p>
+
+  <h3>Which devices take power</h3>
+  <ul>
+    <li><strong>Reader.</strong> Takes power and data from the controller: from a reader port, or from a PoE port on a controller that has them.</li>
+    <li><strong>Lock.</strong> Takes power that the controller switches: from an output of the controller, or from a separate power supply through a relay on the controller.</li>
+    <li><strong>Request-to-exit push button and door position switch.</strong> Contacts that the controller reads at an input; they take no power from the controller. An illuminated button needs power for its lamp. A push-to-exit on an egress door also breaks the lock&rsquo;s power directly. A request-to-exit motion sensor needs power, from a separate supply or an auxiliary output on the controller.</li>
+  </ul>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; Wiring diagram, door 104, Riverside Library Annex (another job)</div>
+    <div class="tbl-scroll">
+    <svg style="min-width:900px" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Wiring diagram for door 104 on another job: reader 104-R on controller ACP-1 port RDR 1, request-to-exit 104-X on IN 1, door position switch 104-P on IN 2, electric strike 104-L switched by relay RLY 1 with power from power supply PS-1 output 2; ACP-1 joins switch TR1-SW01 port 12 on the security network, VLAN 50; PS-1 is fed by a 120 V circuit from the electrician. A full text description follows.">
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Wiring diagram, door 104 (another job)</text>
+      <rect x="24" y="56" width="190" height="46" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="119" y="76" font-size="13" text-anchor="middle" fill="#26282E">Reader 104-R</text>
+      <text x="119" y="94" font-size="13" text-anchor="middle" fill="#26282E">at the door</text>
+      <rect x="24" y="126" width="190" height="46" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="119" y="146" font-size="13" text-anchor="middle" fill="#26282E">Request-to-exit 104-X</text>
+      <text x="119" y="164" font-size="13" text-anchor="middle" fill="#26282E">push button, inside</text>
+      <rect x="24" y="196" width="190" height="46" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="119" y="216" font-size="13" text-anchor="middle" fill="#26282E">Door position 104-P</text>
+      <text x="119" y="234" font-size="13" text-anchor="middle" fill="#26282E">closed with door shut</text>
+      <rect x="24" y="266" width="190" height="46" rx="8" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="119" y="286" font-size="13" text-anchor="middle" fill="#26282E">Electric strike 104-L</text>
+      <text x="119" y="304" font-size="13" text-anchor="middle" fill="#26282E">12 V DC</text>
+      <rect x="430" y="50" width="190" height="270" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <text x="525" y="44" font-size="13" font-weight="700" text-anchor="middle" fill="#26282E">Controller ACP-1</text>
+      <rect x="440" y="66" width="170" height="26" fill="#FFFFFF" stroke="#26282E" stroke-width="1"/>
+      <text x="525" y="84" font-size="13" text-anchor="middle" fill="#26282E">RDR 1 (PoE)</text>
+      <rect x="440" y="136" width="170" height="26" fill="#FFFFFF" stroke="#26282E" stroke-width="1"/>
+      <text x="525" y="154" font-size="13" text-anchor="middle" fill="#26282E">IN 1</text>
+      <rect x="440" y="206" width="170" height="26" fill="#FFFFFF" stroke="#26282E" stroke-width="1"/>
+      <text x="525" y="224" font-size="13" text-anchor="middle" fill="#26282E">IN 2</text>
+      <rect x="440" y="276" width="170" height="26" fill="#FFFFFF" stroke="#26282E" stroke-width="1"/>
+      <text x="525" y="294" font-size="13" text-anchor="middle" fill="#26282E">RLY 1 (C, NO)</text>
+      <line x1="214" y1="79" x2="440" y2="79" stroke="#26282E" stroke-width="2"/>
+      <text x="327" y="72" font-size="13" text-anchor="middle" fill="#26282E">Cat6</text>
+      <line x1="214" y1="149" x2="440" y2="149" stroke="#26282E" stroke-width="2"/>
+      <text x="327" y="142" font-size="13" text-anchor="middle" fill="#26282E">22/2</text>
+      <line x1="214" y1="219" x2="440" y2="219" stroke="#26282E" stroke-width="2"/>
+      <text x="327" y="212" font-size="13" text-anchor="middle" fill="#26282E">22/2</text>
+      <line x1="214" y1="289" x2="440" y2="289" stroke="#26282E" stroke-width="2"/>
+      <text x="327" y="282" font-size="13" text-anchor="middle" fill="#26282E">18/2</text>
+      <rect x="700" y="266" width="176" height="56" rx="8" fill="#71E2FD" stroke="#26282E" stroke-width="1.6"/>
+      <text x="788" y="288" font-size="13" text-anchor="middle" fill="#26282E">Power supply PS-1</text>
+      <text x="788" y="306" font-size="13" text-anchor="middle" fill="#26282E">output 2, 12 V DC</text>
+      <line x1="610" y1="294" x2="700" y2="294" stroke="#26282E" stroke-width="2"/>
+      <rect x="694" y="258" width="190" height="72" rx="4" fill="none" stroke="#A4262C" stroke-width="1.4" stroke-dasharray="5 4"/>
+      <text x="700" y="350" font-size="13" fill="#A4262C">Power boundary: 120 V AC circuit</text>
+      <text x="700" y="368" font-size="13" fill="#A4262C">to PS-1, by the electrician</text>
+      <rect x="700" y="70" width="176" height="56" rx="8" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <text x="788" y="92" font-size="13" text-anchor="middle" fill="#26282E">Switch TR1-SW01, port 12</text>
+      <text x="788" y="110" font-size="13" text-anchor="middle" fill="#26282E">security network, VLAN 50</text>
+      <line x1="620" y1="98" x2="700" y2="98" stroke="#26282E" stroke-width="2" stroke-dasharray="6 4"/>
+      <rect x="694" y="62" width="190" height="72" rx="4" fill="none" stroke="#724DFD" stroke-width="1.4" stroke-dasharray="5 4"/>
+      <text x="700" y="156" font-size="13" fill="#26282E">Network boundary: ACP-1</text>
+      <text x="700" y="174" font-size="13" fill="#26282E">joins the network here</text>
+      <text x="24" y="352" font-size="13" fill="#26282E">Strike: 12 V from PS-1 output 2, switched by RLY 1 (C, NO).</text>
+      <text x="24" y="372" font-size="13" fill="#26282E">104-X and 104-P: contacts that ACP-1 reads; no power from ACP-1.</text>
+      <text x="24" y="392" font-size="13" fill="#5A5D66">Terminal designations as printed on ACP-1. Not to scale.</text>
+    </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Wiring diagram, door 104 (another job). Four devices sit on the left: reader 104-R at the door; request-to-exit 104-X, push button, inside; door position 104-P, closed with door shut; and electric strike 104-L, 12 V DC.</p>
+    <p>In the middle, controller ACP-1 has four terminal blocks. The reader joins RDR 1 (PoE) by a Cat6 cable. The request-to-exit joins IN 1 by a 22/2 cable. The door position switch joins IN 2 by a 22/2 cable. The strike joins RLY 1 (C, NO) by an 18/2 cable.</p>
+    <p>On the right, RLY 1 joins power supply PS-1, output 2, 12 V DC. A dashed outline round PS-1 is labeled Power boundary: 120 V AC circuit to PS-1, by the electrician. ACP-1 joins switch TR1-SW01, port 12, security network, VLAN 50, by a dashed patch cord; a dashed outline round the switch is labeled Network boundary: ACP-1 joins the network here.</p>
+    <p>Notes below read: strike: 12 V from PS-1 output 2, switched by RLY 1 (C, NO). 104-X and 104-P: contacts that ACP-1 reads; no power from ACP-1. Terminal designations as printed on ACP-1. Not to scale.</p>
+  </details>
+
+  <div class="cyu gate" data-answer="2" data-fb="The diagram powers the strike from power supply PS-1, output 2, and the controller&rsquo;s relay RLY 1 switches that supply to the strike. RDR 1 powers the reader, not the strike. IN 1 is an input that reads the request-to-exit contact and supplies nothing. The 120 V AC circuit feeds PS-1; it never reaches the strike.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On the door 104 diagram, where does the electric strike take its power?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>From ACP-1&rsquo;s port RDR 1</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>From ACP-1&rsquo;s input IN 1</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>From PS-1 output 2, switched by ACP-1&rsquo;s relay RLY 1</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>From the 120 V AC circuit the electrician installs</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="3" data-group-title="Reading the Security Drawings" data-num="533.1.11" data-title="Tracing a device to its head end">
+  <p class="crumb">Lesson 533.1 &middot; Section 3 Reading the Security Drawings</p>
+  <h2><span class="tnum">533.1.11</span> Tracing a device to its head end</h2>
+  <p class="lead-in">A trace follows one device from its mounting point to the port or terminal where its cable lands, and names where it takes power and where it joins the network.</p>
+
+  <ol>
+    <li><strong>Device identifier.</strong> From the schedule, checked against the label scheme in the general notes.</li>
+    <li><strong>Cable label and cable type.</strong> From the schedule, the riser or wiring diagram, or the owner&rsquo;s standard.</li>
+    <li><strong>Head-end device.</strong> The identifier of the recorder, controller, or hub where the cable lands.</li>
+    <li><strong>Port or terminal.</strong> For a port, its number; for a terminal, its designation on the wiring diagram.</li>
+    <li><strong>Power source.</strong> The port, output, or power supply the device takes its power from, or &ldquo;none&rdquo; for a contact that the controller only reads.</li>
+    <li><strong>Network boundary.</strong> The switch, the port, and the network the device joins. A device with no network connection of its own, such as a lock or a contact, joins through the head-end device it lands on.</li>
+  </ol>
+  <p>Record the sheet each value came from. Where two sheets give different values for the same entry, record the value you used and its sheet, then finish the trace. The difference becomes a question for the site lead.</p>
+
+  <p>A <span class="keyterm">power boundary</span> is where one source of power ends and the next begins: a 120 V circuit that an electrician installs and a low-voltage supply that the installer wires, or a PoE port and the device it powers. A <span class="keyterm">network boundary</span> is the switch port where a device, or the head-end device it lands on, joins a network. A trace names both, because a technician investigates a dark or offline device from those two points.</p>
+
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Two traces on the door 104 wiring diagram, Riverside Library Annex (another job).</caption>
+      <thead><tr>
+        <th scope="col">Device</th><th scope="col">Cable label</th><th scope="col">Cable type</th><th scope="col">Head-end device</th><th scope="col">Port or terminal</th><th scope="col">Power source</th><th scope="col">Network boundary</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">104-R reader</th><td>TR1-104R</td><td>Cat6</td><td>ACP-1</td><td>RDR 1</td><td>ACP-1, RDR 1 (PoE)</td><td>ACP-1 at TR1-SW01, port 12, security network (VLAN 50)</td></tr>
+        <tr><th scope="row">104-L strike</th><td>TR1-104L</td><td>18/2</td><td>ACP-1</td><td>RLY 1, C and NO</td><td>PS-1, output 2, switched by RLY 1</td><td>ACP-1 at TR1-SW01, port 12, security network (VLAN 50)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cyu gate" data-answer="0" data-fb="The door position switch is a contact on IN 2 with no network connection of its own. It reaches the network through the controller it lands on, so its boundary is ACP-1&rsquo;s switch port and network. Power supply PS-1 has no network connection on this diagram. The door position switch has nothing that joins a camera network. &ldquo;None&rdquo; belongs in the power source column for a contact, not the network column.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">You trace door position switch 104-P on the door 104 diagram. What goes in its network boundary column?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>ACP-1 at TR1-SW01, port 12, security network (VLAN 50)</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>PS-1, output 2, through relay RLY 1</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The camera network switch in TR-1, port 30</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>None, since a contact takes no power</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="4" data-group-title="Discrepancies and the RFI" data-num="533.1.12" data-title="Drawing to drawing, drawing to field">
+  <p class="crumb">Lesson 533.1 &middot; Section 4 Discrepancies and the RFI</p>
+  <h2><span class="tnum">533.1.12</span> Drawing to drawing, drawing to field</h2>
+  <p class="lead-in">A discrepancy is two values for one thing. The installer records both, with where each came from, and installs neither until the site lead decides.</p>
+
+  <ul>
+    <li><strong>Drawing to drawing.</strong> Two sheets, or two entries on one sheet, give different values for the same element: a different device, port, label, position, or model.</li>
+    <li><strong>Drawing to field.</strong> A drawing gives a value that the site does not match: a position that measures differently, a box or pathway that is not what the drawing shows, or something already mounted where the device is drawn.</li>
+  </ul>
+
+  <h3>Where to look</h3>
+  <ul>
+    <li>Each schedule row against itself: the identifier, the cable label, and the channel name point to the same device.</li>
+    <li>Each identifier against the label scheme in the general notes.</li>
+    <li>Each device against its other appearances: the schedule against the plan or elevation, the riser, and the wiring diagram.</li>
+    <li>Each drawn position and element against the site, measured with a tape from the reference the drawing uses.</li>
+  </ul>
+
+  <h3>Two discrepancies on another job</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Two discrepancies found at door 104, Riverside Library Annex (another job).</caption>
+      <thead><tr>
+        <th scope="col">Kind</th><th scope="col">Sheet</th><th scope="col">Element</th><th scope="col">Value on the drawing</th><th scope="col">Conflicts with, and its source</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Drawing to drawing</th><td>Door schedule</td><td>Door 104, lock</td><td>Magnetic lock</td><td>Electric strike 104-L: the door 104 wiring diagram</td></tr>
+        <tr><th scope="row">Drawing to field</th><td>Elevation of door 104</td><td>Reader 104-R, position</td><td>Latch side, 8 in from the frame</td><td>A fire alarm pull station is mounted at that position: seen at the door</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The installer chooses neither value in the field. A strike and a magnetic lock take different door preparation, different power, and different wiring at the controller. A reader cannot share a position with a fire alarm device that the fire alarm contractor owns.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="A drawing-to-field discrepancy is a drawing value that the site does not match: a conduit stub 6 ft from the column, where the plan shows the camera 2 ft from it, is the site disagreeing with the drawing. The other three compare one document with another: a schedule with a riser, a schedule row with the label scheme, and a door schedule with an elevation.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which of these is a drawing-to-field discrepancy?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The camera schedule gives a camera recorder port 4; the riser shows port 5</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The plan shows a camera 2 ft from a column; the conduit stub on site is 6 ft from it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>A schedule row&rsquo;s cable label does not follow the label scheme in the general notes</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The door schedule lists a reader the door&rsquo;s elevation does not show</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="4" data-group-title="Discrepancies and the RFI" data-num="533.1.13" data-title="The request for information">
+  <p class="crumb">Lesson 533.1 &middot; Section 4 Discrepancies and the RFI</p>
+  <h2><span class="tnum">533.1.13</span> The request for information</h2>
+  <p class="lead-in">An RFI puts a discrepancy to the person who can decide it, in writing, before anyone wires to a guess.</p>
+
+  <p>An RFI goes to the site lead, who answers it or passes it to the designer. One RFI can cover several discrepancies in one area. It carries these parts:</p>
+  <ul>
+    <li><strong>Number, to, from, and date.</strong> They tie each answer to its question.</li>
+    <li><strong>Sheets and elements.</strong> Each sheet and each element identifier, with both values and their sources.</li>
+    <li><strong>Question.</strong> One the site lead can answer with a decision: &ldquo;Which lock does door 104 take?&rdquo;, not &ldquo;The lock is wrong.&rdquo;</li>
+    <li><strong>Proposed resolution.</strong> The answer the installer recommends, for the site lead to accept or overrule.</li>
+    <li><strong>Work held.</strong> The work that waits for the answer. Other work goes ahead.</li>
+  </ul>
+
+  <div class="figure">
+    <div class="cap">An RFI on another job</div>
+    <p><strong>RFI RLA-014.</strong> To: site lead. From: installer, door 104. Date: the day it is sent.</p>
+    <p><strong>Sheets and elements.</strong> Door schedule, door 104: the lock is listed as a magnetic lock; the door 104 wiring diagram shows electric strike 104-L on RLY 1. Elevation of door 104, reader 104-R: drawn on the latch side, 8 in from the frame, where a fire alarm pull station is mounted.</p>
+    <p><strong>Question.</strong> Which lock does door 104 take, and where does reader 104-R go?</p>
+    <p><strong>Proposed resolution.</strong> Electric strike 104-L, as the wiring diagram shows, with the door schedule revised. Reader 104-R moved up the frame clear of the pull station, at a position the designer sets.</p>
+    <p style="margin-bottom:0"><strong>Work held.</strong> Lock and reader rough-in at door 104. The request-to-exit and the door position switch go ahead.</p>
+  </div>
+
+  <div class="cyu gate" data-answer="2" data-fb="A question the site lead can answer with a decision names the element and asks which value applies: the riser and the schedule give two ports, and the site lead picks one. A statement that the drawings are wrong asks nothing. A request to fix the drawings names no element and no decision. A report that a port was chosen leaves the site lead nothing to decide. The cable may already sit on the wrong port.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">Which line, written as the question of an RFI, can the site lead answer with a decision?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>&ldquo;The camera schedule and the riser are wrong for camera C-20.&rdquo;</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>&ldquo;Please fix the drawings for this area before we start.&rdquo;</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>&ldquo;Does camera C-20 land on recorder port 4, as the schedule gives, or port 5, as the riser shows?&rdquo;</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>&ldquo;Camera C-20 has been landed on port 4 to keep the job moving.&rdquo;</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.1" data-lesson-title="Security Systems and Their Drawings" data-group-num="5" data-group-title="Wrapping Up" data-num="533.1.14" data-title="What you covered">
+  <p class="crumb">Lesson 533.1 &middot; Section 5 Wrapping Up</p>
+  <h2><span class="tnum">533.1.14</span> What you covered</h2>
+  <p class="lead-in">Know which system a device belongs to, recommend from the site&rsquo;s facts, check every claim against the maker&rsquo;s documents, and follow each device on the drawings to the rack before you pull a cable.</p>
+
+  <h3>Systems on a security job</h3>
+  <p>An analog camera sends video on coaxial cable to a DVR and usually takes power on a separate pair. An IP camera sends network data on twisted pair to an NVR or a video management system and can take its power by PoE. A hybrid recorder takes both. An NVR and a DVR keep video on site; a cloud VMS keeps it at a provider and depends on the site&rsquo;s internet line. Standalone access control is managed at each door or on a local panel; networked on-premises access control is managed from a server or console the owner runs; cloud-managed access control is managed through the manufacturer&rsquo;s cloud service. Some suppliers use &ldquo;on-premises&rdquo; for both of the first two; others mean a networked system only. A 125 kHz proximity credential usually carries an unencrypted number; a 13.56 MHz smart credential often carries encrypted data; a mobile credential lives on a phone, in an app or the phone&rsquo;s wallet. Each reader reads only what it is built for.</p>
+
+  <h3>Choosing and checking</h3>
+  <p>A field view names one option per decision, the facts that support it, any fact against it, and a reason. ONVIF conformance is by profile. A procurement rule, an approval, an insurer&rsquo;s requirement, or a data policy goes to the party who decides it, through the site lead; the installer never judges covered equipment by brand. Each statement from an AI tool is marked confirmed, contradicted, or unverifiable against a line in the manufacturer&rsquo;s documents.</p>
+
+  <h3>Reading the security drawings</h3>
+  <p>General notes give the symbols and the label scheme, plans and elevations the positions, schedules one row per device, and riser and wiring diagrams the connections. A trace records the identifier, the cable label and type, the head-end device, the port or terminal, the power source, and the network boundary, each with its sheet.</p>
+
+  <h3>Discrepancies and the RFI</h3>
+  <p>A discrepancy is drawing to drawing or drawing to field. Record both values and their sources, install neither, and send one RFI with a question the site lead can answer with a decision, a proposed resolution, and the work held.</p>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete—continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again. A wrong answer does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct===100) msg.textContent='You answered every check correctly.';
+      else if(pct>=90) msg.textContent='You answered nearly every check correctly. Go back over the one you missed.';
+      else if(pct>=75) msg.textContent='Strong work. Go back over any check you missed.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the topics behind the checks you missed.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+<!--
+BUILD FLAGS - UCI 1019 Lesson 533.1 Async Reading v0.1.0 DRAFT, 2026-11-12
+(Module 533, Low Voltage Security Systems Installations; delegated build,
+brief Planning/_AGENT-BRIEF_M533-Readings-Decks-Quizzes.md). This comment is
+visible in the page source, so it carries no answer-key value. Not reviewed:
+technical review, language pass and cold read are owed to fresh subagents.
+
+SOURCES READ
+- CLAUDE.md; STYLE-RULES.md (twice); style profile v1.4 to line 250;
+  FORMAT-SPEC v1.0 (sections 5-14) and the 2026 addendum.
+- Module plan v0.1.0 sections 1-6, 10, 11 and change log; tech facts v0.1.0;
+  lab-build brief.
+- GLAB 533.1.1 lab, HO, Discrepancy Key Sheet, instructor guide; work order
+  KC-2643; Kestrel Site Enquiries and Manufacturer Extract; Security
+  Addendum; SEC-201 and SEC-301 (issued-for-construction PNG, read for form).
+- Coordinator note, 2026-11-12: access-control options renamed Standalone /
+  Networked on-premises / Cloud-managed, with "on-premises" in trade use
+  covering the first two; phone viewing not taught as cloud-only.
+
+DECISIONS TAKEN
+- The nine options: recording (NVR, DVR, cloud VMS) and credentials (125 kHz
+  proximity, 13.56 MHz smart, mobile) use the enquiries document's
+  definitions word for word. Access control uses the coordinator's renamed
+  labels and definitions (topic 533.1.3); the enquiries document and key are
+  being changed to match by another agent. If they are not, this page and
+  the lab disagree on the names of options 1 and 2.
+- Objective 3 kept in plan wording ("on-premises, networked, and
+  cloud-managed"), which reads correctly under the trade sense the page
+  teaches. For Eldad: change it to the new labels if the plan changes.
+- Every example is "another job" (Riverside Library Annex, Ashby Cold
+  Storage, Marlow Road Clinic, a dental clinic, a water utility, the DC-40
+  hypothetical camera). Kestrel's "Level 3 production drawings", used by the
+  lab, were not used: the 530 project fact sheet gives HSOC-26-014 two levels
+  (conflict reported, not edited).
+- Other-job identifiers chosen so none contains a wall identifier or a key
+  form: TR1-NVR, TR1-SW02 port 30 (VLAN 40), TR1-SW01 port 12 (VLAN 50),
+  ACP-1 terminals RDR 1, IN 1, IN 2, RLY 1 (C, NO), PS-1 output 2.
+- The door example uses an electric strike on a relay (C, NO) powered from an
+  external supply, so no example terminal matches the hub's.
+- Covered-equipment rules (Section 889 of the FY2019 NDAA; FCC Covered List)
+  are not in the tech facts sheet. Stated at title level only, with the
+  escalate-never-judge rule; no brand, no list content. For technical
+  review.
+- ONVIF profiles S, T, G, A and C named with one-line scopes; not in the
+  tech facts sheet. For technical review.
+- Credential statements beyond the enquiries' definitions: "some early
+  13.56 MHz card types have published weaknesses"; mobile by NFC or
+  Bluetooth; readers for both during a migration. For technical review.
+- "Many networked on-premises and cloud-managed controllers keep a copy of
+  their credential list" hedged with "many" and "read the maker's
+  documentation". Cloud cameras that buffer to a memory card hedged ("some").
+- NVR viewing away from the site: "through the maker's phone app or another
+  method the owner approves" (coordinator note).
+- "On site, the network still matters" note cut for length.
+
+HELD BACK (graded answers)
+- No wall, bay, team, switch, port, VLAN, address, terminal name, hub or NVR
+  identifier of the mock-up; no Review Set discrepancy; no trace key value.
+- No AMLINK or UniFi product fact (the AI-check key turns on them); no
+  extract line; no Granger Street or Northfield fact or close paraphrase.
+- Unavoidable overlap, for Eldad: the option comparison tables teach what
+  makes a fact count for or against an option, the reasoning the lab's Part
+  A grades; the trace columns and the confirmed / contradicted / unverifiable
+  marks are the lab's scheme, taught so the lab is answerable.
+
+CHECK QUESTIONS AND ACTIVITIES (for the quiz writer; do not repeat)
+- 533.1.1 CYU: library renovation, coax cameras plus four PoE cameras, one
+  recorder: hybrid recorder.
+- 533.1.2 CYU: internet drops; new video stops reaching the recorder: cloud VMS.
+- 533.1.3 CYU: standalone controller at 12 clinic doors, staff member leaves:
+  removed at each door's controller.
+- 533.1.4 CYU: 13.56 MHz-only reader, 125 kHz card: reads nothing, door stays locked.
+- 533.1.5 CYU: dental clinic, "waiting room seats 12" cited against
+  networked on-premises: the fact does not count against it.
+- 533.1.6 CYU: both Profile S only: video streaming works.
+- 533.1.7 CYU: water utility, compliance office, brand in the news: send
+  the model to the site lead, hold the cameras.
+- 533.1.8 CYU: DC-40 IK10 claim, no line: unverifiable, sent as a question.
+- 533.1.9 Matching: position along the wall / plan or elevation; port and label /
+  schedule; recorder's switch and network / riser diagram; abbreviation /
+  general notes and legend.
+- 533.1.9 CYU: cable TR1-C12 lands on NVR TR1-NVR, PoE port 7.
+- 533.1.10 CYU: strike power: PS-1 output 2, switched by RLY 1.
+- 533.1.11 CYU: door position switch network boundary: ACP-1 at TR1-SW01 port 12.
+- 533.1.12 CYU: drawing-to-field: conduit stub 6 ft from a column, drawn at 2 ft.
+- 533.1.13 CYU: RFI question answerable with a decision: port 4 or port 5
+  for camera C-20.
+- 533.1.14 acknowledgement.
+
+WORKED EXAMPLES (for the quiz writer; do not repeat)
+- Analog / IP / hybrid table, five rows; diagram of three ways a camera
+  reaches its recorder; encoder; 100 m twisted-pair reach.
+- Recording comparison table (NVR, DVR, cloud VMS), five rows.
+- Access-control parts list; architecture diagram; comparison table, six rows.
+- Credential comparison table, four rows.
+- Ashby Cold Storage field view: facts A.1-A.5; DVR for A.1, A.2, against
+  none; 13.56 MHz smart for A.5, against A.4.
+- Constraint table (six kinds); Marlow Road Clinic facade escalation note.
+- DC-40 AI check: "rated IP66" confirmed (D-6); -40 C contradicted (D-7, -30 to
+  +60 C); "works with most recorders" unverifiable.
+- Riverside camera schedule: C-11 Lobby port 6 TR1-C11; C-12 Reading port 7
+  TR1-C12; riser with TR1-NVR, TR1-SW02 port 30, VLAN 40, firewall.
+- Door 104 wiring diagram: 104-R RDR 1 Cat6; 104-X IN 1 22/2; 104-P IN 2
+  22/2; 104-L RLY 1 (C, NO) 18/2, PS-1 output 2 12 V DC; ACP-1 at TR1-SW01
+  port 12 VLAN 50; 120 V AC to PS-1 by the electrician.
+- Traces: 104-R and 104-L (cable labels TR1-104R, TR1-104L).
+- Discrepancies: door 104 lock magnetic (door schedule) vs strike (wiring
+  diagram); reader 104-R position vs a fire alarm pull station.
+- RFI RLA-014 covering both.
+
+ASSUMPTIONS
+- The learner reads this page before Day 1 (the Lesson 533.1 presentation
+  is at 9:30 on Day 1).
+
+UNVERIFIED
+- Not opened in a browser; SVG label placement checked by coordinates only.
+- The technical claims listed under DECISIONS as "for technical review".
+
+CONFLICTS FOUND
+- Stated time ~60-75 min: prose ~61 min at 112 wpm (the auditor's count
+  includes tables, diagram descriptions and feedback) plus 14 activities, so
+  the page may run past 75 min. Smallest cut if wanted: the ONVIF topic into
+  533.1.1, or the 533.1.4 comparison table.
+- GLAB 533.1.1 uses "Kestrel's Level 3 production drawings" for HSOC-26-014;
+  the 530 fact sheet gives the building two levels.
+
+AUDITS (final build)
+- audit_html.py: FAIL 0, WARN 0.
+- contrast_audit.py as written: FAIL 1, .order .step.picked .seq against the
+  legacy amber token (known tool limitation; no ordering activity on this
+  page). REPORT 83, as on the pattern pages. The second run the addendum
+  asks for was not run.
+- Engine check (script): the three style blocks and the toast-to-script
+  block are byte-identical to the 535.5 page. No tspan.
+- Gate check (script): 4 content SVG, 4 text descriptions; 14 topics, 5
+  sections; 13 checks, answers A C D B B A C D B C A B C (A3 B4 C4 D2).
+- Key grep: no wall identifier, SW-A to SW-E, 192.168.254, VLAN 1 or 20,
+  port 24 or 25, LOCK, BUTTON, DOOR POSITION, -N1, -H1, Granger,
+  Northfield, AMLINK, UniFi, M-0x, Level 3, GLAB, Quiz or HO in the page text.
+
+TECH1 fixes 2026-11-12 (review TECH1_Lesson-533.1-Content_2026-11-12.md; applied by a fresh agent, not the drafter)
+- Objectives: the four Compare lines set word for word to plan section 5 (no serial comma; acronyms still expanded at first use). Objective 3 now "Compare standalone, networked on-premises and cloud-managed access control" (R-01; supersedes the DECISIONS line on objective 3).
+- Wrong (1): R-29 DC-40 statement now "The DC-40 is rated IP66." (IP66 alone does not rate a product for outdoor use).
+- Unverifiable (3): R-01 objective; R-11 "on-premises" hedged to "some suppliers ... others" in 533.1.3 and the summary; R-27 FCC Covered List described as a list barring federal subsidy and new FCC approval; Section 889 now names federal contractors.
+- Depends (12): R-02 analog power "usually" on a separate pair (533.1.1 and summary; power over coax noted); R-07 "a media converter, or a switch's fiber port"; R-08 "or on a bridge on site"; R-10 "An electric lock, such as ..."; R-14 mobile credential in an app or the phone's wallet, "usually charged", wallet credentials working a few hours after shutdown (533.1.4 list, table, summary); R-15 Ashby reason "Encrypted 13.56 MHz cards"; R-17 riser sentence: the recorder, not the cameras, sits on VLAN 40; R-18 matching question now "How far along the wall is the camera mounted?" (the schedule's Mount column answers height); R-20 contacts take no power, illuminated button and egress push-to-exit noted; R-21 motion sensor power from a separate supply or an auxiliary output; R-28 "designated city landmark", the landmark ordinance; R-32 CYU 5 fact changed from "six doors" to "waiting room seats 12" (stem, two options, feedback), key unchanged (B).
+- The analog figure (533.1.1 SVG and its long description) still draws one camera with a separate power pair: true of the camera drawn; left.
+- Quiz-writer list above updated for 533.1.5, 533.1.9 and the DC-40 example.
+LP1 language pass 2026-11-12: 12 applied, 0 held
+LP2 language pass 2026-11-12: 8 applied, 1 held
+LP2 held items resolved 2026-11-12: "Networked on-premises" definition kept as written (graded definition, coordinator G1); score message for 90% and above replaced with "You answered every check correctly." (coordinator G5).
+LP3 language pass 2026-11-12: 5 applied, 1 held
+LP4 language pass 2026-11-12: 4 applied, 0 held
+COORDINATOR 2026-11-12: score messages harmonized across the four 533 readings (every check only at 100%; 90% 'nearly every'; 75% and 50% messages make no field-readiness claim).
+-->
+
+
+</body>
+</html>

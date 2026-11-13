@@ -1,0 +1,2192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 533 (M10) - Low Voltage Security Systems Installations
+  Lesson 533.2 - Camera Installation and Termination (Async Reading)
+  VERSION: v0.1.0  (2026-11-12)  DRAFT - for review
+
+  CHANGES IN v0.1.0
+  First issue. New content: UCI 2107.1 has no security module.
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox), the 2026 brand
+  layer and the .calc component sheet copied from
+  UCI-1019_M535_Lesson-535.5_Async-Reading_v0.1.0_DRAFT.html (itself copied
+  from the 532.1 page). The .cli console sheet of that page is not carried:
+  this page has no console output. Logo: inline Slate SVG.
+
+  OBJECTIVES, word for word from the module plan v0.1.0 section 5,
+  Lesson 533.2 (one verb each).
+    Interpret  a camera's position, field of view and observation    10.1.1
+               target from a coverage drawing
+    Confirm    the pathway, cable identifier and mounting surface   10.1.2
+               before installation
+    Pull       a camera cable through a conduit to the head end     10.1
+    Terminate  a camera cable with an RJ45 plug at each end         10.3.2
+    Verify     the camera cable with a wiremap test                 10.3.5
+    Label      the camera cable at both ends                        10.3.3
+    Mount      the camera to the manufacturer's instructions        10.1.3
+    Aim        the camera at its observation target                 10.1.4, 10.1.5
+    Explain    where a media converter is used between fiber and    10.8.1
+               copper
+
+  TOPIC OUTLINE
+    Section 1  The Coverage Drawing
+      533.2.1   What a coverage drawing tells the installer        Interpret
+      533.2.2   Field of view, and the test target                 Interpret; Aim (acceptance)
+    Section 2  Before the Pull
+      533.2.3   Checking the pathway before you work               Confirm
+      533.2.4   The cut length                                     Pull (length)
+      533.2.5   Pulling the cable through the conduit              Pull
+    Section 3  Plug, Test, and Label
+      533.2.6   Fitting an RJ45 plug to T568B                      Terminate
+      533.2.7   The wiremap test, and what it does not prove       Verify
+      533.2.8   Labeling the cable                                 Label
+    Section 4  Mount, Power, and Aim
+      533.2.9   Mounting the camera                                Mount
+      533.2.10  Power from the NVR's own ports                     Mount (power; brief content)
+      533.2.11  Aiming the camera at its target                    Aim
+    Section 5  Where Fiber Meets Copper
+      533.2.12  Where a camera link meets fiber                    Explain
+      533.2.13  Matching the two ends of a fiber link              Explain
+    Section 6  Wrapping Up
+      533.2.14  What you covered                                   summary
+
+  ACTIVITY GATES: 14 - 11 single-answer checks, 1 matching, 1 card set,
+    1 acknowledgement (the page counts 13 activities; the acknowledgement is
+    not counted, as on the 535.5 pattern page).
+  DIAGRAMS: 4 original SVG, each with a full text description (reading a
+    coverage drawing; the six parts of a cut length; T568B on an RJ45 plug;
+    copper, fiber, and copper again).
+  IMAGES: none.
+
+  Build flags, decisions, assumptions, the list of every check question and
+  worked example, and the self-check results are in the BUILD FLAGS comment
+  at the end of this file.
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 533.2 - Camera Installation and Termination &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Low Voltage Security Systems Installations</b> &middot; Lesson 533.2 - Camera Installation and Termination</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Low Voltage Security Systems Installations</p>
+      <h2 id="ovh" tabindex="-1">Lesson 533.2 - Camera Installation and Termination</h2>
+      <p class="lead-in">How an installer reads where a camera goes and what it must show, runs and terminates its cable, tests and labels the cable, then mounts the camera and aims it at its target.</p>
+
+      <p>Kestrel Communications holds the telecommunications contract for the Harlow Street Operations Center, project HSOC-26-014. The owner, Calder Regional Services, wants a camera on every bay of the Level 2 installation mock-up before it lets the security subcontract. Each camera box on the walls has an empty conduit to the cable ladder. Each team&rsquo;s Network Video Recorder (NVR) sits on a shelf in the Mobile Infrastructure Rack (MIR). The NVR powers each camera through a Power over Ethernet (PoE) port, over the camera&rsquo;s own cable.</p>
+
+      <p>D. Okafor, the Kestrel site lead, states how the owner&rsquo;s representative accepts a camera: on its picture. The target card for the bay sits wholly in the frame, the right way up, with its identification line readable.</p>
+
+      <p>The worked examples on this page come from other jobs, not from the mock-up.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>The Coverage Drawing.</b> A camera&rsquo;s position, its field of view, and its observation target, and why an owner accepts a camera on a test target.</li>
+        <li><b>Before the Pull.</b> The pathway check, the cut length, and pulling the cable through a conduit.</li>
+        <li><b>Plug, Test, and Label.</b> An RJ45 plug fitted to T568B, the wiremap test and its limits, and the cable label.</li>
+        <li><b>Mount, Power, and Aim.</b> The camera on its mounting surface, its power from the NVR&rsquo;s own ports, and the aim at its target.</li>
+        <li><b>Where Fiber Meets Copper.</b> Where a camera link changes between fiber and copper, and what must match at the two ends of a fiber link.</li>
+        <li><b>Wrapping Up.</b> A summary of each section.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>6</b><span>Sections</span></div>
+        <div class="ov-stat"><b>14</b><span>Topics</span></div>
+        <div class="ov-stat"><b>13</b><span>Activities</span></div>
+        <div class="ov-stat"><b>4</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the documents and the equipment</h3>
+      <p>The project documents named on this page are the <strong>Kestrel security drawings</strong> and the owner&rsquo;s standard for HSOC-26-014, with its cabling addendum and its <strong>Security Addendum</strong>. They are fictional documents written for the mock-up. The camera and NVR figures come from the manufacturer&rsquo;s datasheets for the camera kit on the mock-up. The conductor order of an RJ45 plug comes from the ANSI/TIA-568 cabling standard. Where a manufacturer&rsquo;s installation instructions differ from this page, the instructions govern.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or go to any topic
+         from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks&mdash;a
+         knowledge check, a set of cards to open, or a matching exercise.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. The lesson takes ~60&ndash;75 min, including the activities.
+         The header and the contents list show your progress through the lesson.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching activity every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description, and each table has column headings and a caption.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 533.2</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="1" data-group-title="The Coverage Drawing" data-num="533.2.1" data-title="What a coverage drawing tells the installer">
+  <p class="crumb">Lesson 533.2 &middot; Section 1 The Coverage Drawing</p>
+  <h2><span class="tnum">533.2.1</span> What a coverage drawing tells the installer</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 533.2</span>
+    <h3>Camera Installation and Termination</h3>
+    <p>A camera installation ends when the camera shows what the owner asked to see. The installer reads the camera&rsquo;s position and its target from the coverage drawing, checks the pathway, and runs a cable from the camera box to its Network Video Recorder (NVR). The installer terminates, tests, and labels that cable, then mounts the camera and aims it at its target.</p>
+    <p class="lb-meta"><b>6</b> sections &nbsp;&middot;&nbsp;
+       <b>14</b> topics &nbsp;&middot;&nbsp;
+       <b>13</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 533.2 you will be able to</div>
+    <ul>
+      <li><b>Interpret</b> a camera&rsquo;s position, field of view and observation target from a coverage drawing.</li>
+      <li><b>Confirm</b> the pathway, cable identifier and mounting surface before installation.</li>
+      <li><b>Pull</b> a camera cable through a conduit to the head end.</li>
+      <li><b>Terminate</b> a camera cable with an RJ45 plug at each end.</li>
+      <li><b>Verify</b> the camera cable with a wiremap test.</li>
+      <li><b>Label</b> the camera cable at both ends.</li>
+      <li><b>Mount</b> the camera to the manufacturer&rsquo;s instructions.</li>
+      <li><b>Aim</b> the camera at its observation target.</li>
+      <li><b>Explain</b> where a media converter is used between fiber and copper.</li>
+    </ul></div>
+
+  <p class="lead-in">A coverage drawing shows where each camera goes, the area it is expected to cover, and what it must show.</p>
+
+  <p>The security designer issues the coverage drawing. It is usually a floor plan, sometimes with a section or an elevation that gives heights. For each camera, the installer reads three things from it.</p>
+  <ul>
+    <li><strong>The camera&rsquo;s position.</strong> Its location identifier, the surface it mounts on, and its mounting height. The camera schedule in the same set of drawings gives its model and the port it connects to at the head end.</li>
+    <li><strong>The field of view.</strong> A wedge drawn from the camera across the area it covers. Where the designer drew the wedge from the camera&rsquo;s datasheet, the sheet prints its angle. Where the designer drew it to show direction only, the sheet marks it <em>schematic</em>.</li>
+    <li><strong>The observation target.</strong> What the camera must show, such as a door, a counter, a gate, or a vehicle lane, and the detail the owner requires there.</li>
+  </ul>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; Reading a coverage drawing</div>
+    <div class="tbl-scroll">
+    <svg style="min-width:900px" viewBox="0 0 900 350" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="A plan view of one wall camera on a warehouse job, with its field-of-view wedge and its target card, beside a panel listing the three things an installer reads from a coverage drawing. A full text description follows.">
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">A coverage drawing, plan view (a warehouse job, hypothetical)</text>
+      <rect x="24" y="52" width="470" height="14" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <text x="40" y="46" font-size="13" fill="#5A5D66">Wall, dock side</text>
+      <polygon points="250,80 30,300 470,300" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <circle cx="250" cy="76" r="11" fill="#FFFFFF" stroke="#26282E" stroke-width="1.6"/>
+      <circle cx="250" cy="76" r="5" fill="#26282E"/>
+      <text x="286" y="104" font-size="13" font-weight="700" fill="#26282E">CAM-D4, on the wall at 12 ft</text>
+      <text x="250" y="196" font-size="13" text-anchor="middle" fill="#26282E">Field of view: 90&#176; horizontal</text>
+      <text x="250" y="214" font-size="13" text-anchor="middle" fill="#26282E">(angle from the datasheet)</text>
+      <rect x="200" y="244" width="100" height="34" fill="#FFFFFF" stroke="#611940" stroke-width="2"/>
+      <text x="250" y="266" font-size="13" text-anchor="middle" fill="#26282E">Target card</text>
+      <text x="24" y="330" font-size="13" fill="#26282E">Observation target: the approach to dock door 4, with the card&#8217;s line readable</text>
+      <rect x="520" y="60" width="356" height="250" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <text x="540" y="88" font-size="14" font-weight="700" fill="#611940">What the installer reads</text>
+      <text x="540" y="120" font-size="13" font-weight="700" fill="#26282E">1  Camera position</text>
+      <text x="560" y="140" font-size="13" fill="#26282E">Identifier, mounting surface, height</text>
+      <text x="540" y="174" font-size="13" font-weight="700" fill="#26282E">2  Field of view</text>
+      <text x="560" y="194" font-size="13" fill="#26282E">A wedge from the camera; its angle</text>
+      <text x="560" y="212" font-size="13" fill="#26282E">from the datasheet, or marked schematic</text>
+      <text x="540" y="246" font-size="13" font-weight="700" fill="#26282E">3  Observation target</text>
+      <text x="560" y="266" font-size="13" fill="#26282E">What the camera must show, and</text>
+      <text x="560" y="284" font-size="13" fill="#26282E">the detail the owner requires</text>
+    </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled A coverage drawing, plan view (a warehouse job, hypothetical). Along the top runs a wall labeled Wall, dock side. A camera symbol on the wall is labeled CAM-D4, on the wall at 12 ft. A wedge spreads down from the camera, labeled Field of view: 90&deg; horizontal (angle from the datasheet). Inside the wedge, on its center line, is a box labeled Target card. A line under the plan reads: Observation target: the approach to dock door 4, with the card&rsquo;s line readable.</p>
+    <p>A panel on the right, headed What the installer reads, lists three items. 1, Camera position: identifier, mounting surface, height. 2, Field of view: a wedge from the camera; its angle from the datasheet, or marked schematic. 3, Observation target: what the camera must show, and the detail the owner requires.</p>
+  </details>
+
+  <p>A wedge marked schematic shows the direction the camera faces and the area the designer intends it to cover. It gives no angle to measure. The camera&rsquo;s datasheet states its horizontal and vertical field of view.</p>
+  <p>Read the drawing against the site before you work. A camera position that lands on a window, a target hidden behind a column, or a wedge that cannot reach its target from the mounting height is a difference to report to the site lead. The installer does not correct it by moving the camera.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="A schematic wedge shows direction and intent only. The camera&rsquo;s angle of view comes from its datasheet, not from a measurement on the sheet. The marking says nothing about the type of lens. A wedge drawn across the target places the target inside the intended view.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a coverage drawing for another job, a camera&rsquo;s field-of-view wedge is marked schematic. What does the wedge tell the installer?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The angle the camera covers, measured off the sheet</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The direction the camera faces and the area it is meant to cover</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>That the camera has a lens whose angle is set on site</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>That the target lies outside the camera&rsquo;s view</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="1" data-group-title="The Coverage Drawing" data-num="533.2.2" data-title="Field of view, and the test target">
+  <p class="crumb">Lesson 533.2 &middot; Section 1 The Coverage Drawing</p>
+  <h2><span class="tnum">533.2.2</span> Field of view, and the test target</h2>
+  <p class="lead-in">A wider field of view shows more of the scene, with each object in it smaller.</p>
+
+  <p>A camera spreads its image across its field of view. Take two cameras with the same resolution, one with a wide lens and one with a narrow lens, aimed at the same door from the same position. The narrow lens shows less of the scene, and the door larger. A camera farther from its target also shows the target smaller.</p>
+  <p>A <span class="keyterm">fixed lens</span> has one field of view, set by its maker. Aiming is the only adjustment the installer makes to it. A <span class="keyterm">varifocal lens</span> lets the installer set the field of view on site, then the focus. A fixed-focus lens gives a sharp image only beyond a nearest distance, which its datasheet states as the close-focus distance. A target nearer than that blurs.</p>
+  <p>Whether a printed line or a face is readable at the target depends on more than the lens. The camera&rsquo;s resolution, the distance, the light, and the compression the NVR applies all affect it. A datasheet figure cannot settle it for a given site.</p>
+
+  <h3>Why an owner accepts a camera on a test target</h3>
+  <p>An owner can accept a camera on what it shows rather than on a calculation. A <span class="keyterm">test target</span> is a card placed at the observation target. It carries an <span class="keyterm">identification line</span> in large type and a strip of smaller characters. The owner&rsquo;s documents state the acceptance. On HSOC-26-014, the Security Addendum (clause E3) requires the whole card in the frame, its identification line legible in recorded video, and the image upright.</p>
+  <p>Anyone on the job can repeat the check: the installer, the site lead, or the owner&rsquo;s representative. A camera that shows the line on the card shows the detail the owner asked for at that position.</p>
+  <p>Recorded video can carry less detail than the live view. The stream an NVR records is not always the stream it shows live, and compression removes fine detail. Where the acceptance names recorded video, read the line in a recorded clip.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="The acceptance has more than one part, and the camera meets only one of them. Moving the card changes the position the owner set, so the check no longer tests what the owner asked for. The installer changes a recording setting only where the work order assigns that change. The installer records the result and reports it to the site lead, with the image.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a parking garage job, the target card at the exit lane sits wholly in the frame, but its identification line is a blur in the recorded image. What follows?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The camera passes, because the whole card is in the frame</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Move the card nearer the camera until its line reads</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The camera fails its acceptance so far; record and report it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Raise the recording quality on the NVR until the line reads</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="2" data-group-title="Before the Pull" data-num="533.2.3" data-title="Checking the pathway before you work">
+  <p class="crumb">Lesson 533.2 &middot; Section 2 Before the Pull</p>
+  <h2><span class="tnum">533.2.3</span> Checking the pathway before you work</h2>
+  <p class="lead-in">Before you work with tools, check the box, the conduit, and the mounting surface against the drawings.</p>
+
+  <p>You make the check by eye, in a few minutes. It confirms that the cable has a clear path, that the camera has a surface to fix to, and that the identifier at the position matches the drawings. A fault recorded before the work starts cannot be the installer&rsquo;s. Found after the pull, the same fault is hard to tell apart from the installer&rsquo;s own work.</p>
+  <p>Record each item as you find it: in place, missing, loose, or what you see. Report a missing or different item to the site lead before you work around it. A workaround the site lead has not agreed to changes the installation without changing the drawings.</p>
+
+  <p>Open each card.</p>
+  <div class="revealset gate"><div class="cards stack">
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">The box</span>
+      <span class="rcard-sub">At the camera position</span>
+      <span class="rcard-detail" hidden><p>The box is fixed and firm at the position the drawings give.</p><p>Its label carries the identifier that the camera schedule gives for that position. Report a box with no label, or with another identifier, before any cable is cut for it.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">The conduit</span>
+      <span class="rcard-sub">From the box to its open end</span>
+      <span class="rcard-detail" hidden><p>The conduit runs unbroken from the box to the end the drawings show. Its fittings are in place, and its ends are open.</p><p>Look into the open end with a flashlight where you can reach it. Report a conduit that holds a cable or a string the drawings do not show, or anything that would stop a pull.</p></span>
+    </button>
+    <button class="rcard" aria-expanded="false">
+      <span class="rcard-ttl">The mounting surface</span>
+      <span class="rcard-sub">Where the camera&rsquo;s base sits</span>
+      <span class="rcard-detail" hidden><p>The camera fixes to a plate, a box cover, a bracket, or the structure, as the drawings and the camera&rsquo;s instructions give. Check that the surface is in place, firm, and drilled or marked as the camera&rsquo;s template requires.</p><p>Check any orientation mark. A plate fitted upside down turns the template&rsquo;s holes with it.</p></span>
+    </button>
+  </div></div>
+</section>
+
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="2" data-group-title="Before the Pull" data-num="533.2.4" data-title="The cut length">
+  <p class="crumb">Lesson 533.2 &middot; Section 2 Before the Pull</p>
+  <h2><span class="tnum">533.2.4</span> The cut length</h2>
+  <p class="lead-in">A camera cable is one continuous run with no join. You cut it once, to a length worked out before the pull.</p>
+
+  <p>A cable cut short cannot be spliced to make up the length. The installer cuts a new one; the short length is scrap. A cable cut far too long leaves coils on the cable ladder that the design does not provide for.</p>
+  <p>On HSOC-26-014, the owner&rsquo;s standard (clause 27 05 00 4.7) sets a cable&rsquo;s cut length as the sum of six parts. The Security Addendum (clause E2) applies the rule to a camera cable, with the drop measured from the cable ladder down to the NVR&rsquo;s shelf.</p>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; The six parts of a cut length</div>
+    <div class="tbl-scroll">
+    <svg style="min-width:900px" viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="An elevation showing the six parts of a camera cable's cut length, from the box on a wall, up the conduit, up to the cable ladder, along the ladder past a service loop, and down to a shelf in the rack. A full text description follows.">
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">The six parts of a cut length (schematic)</text>
+      <rect x="40" y="56" width="660" height="14" fill="#FFFFFF" stroke="#26282E" stroke-width="1.6"/>
+      <text x="300" y="50" font-size="13" fill="#26282E">4  Route along the ladder</text>
+      <rect x="60" y="120" width="170" height="190" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <text x="70" y="140" font-size="13" fill="#5A5D66">Wall</text>
+      <line x1="110" y1="248" x2="110" y2="120" stroke="#26282E" stroke-width="4"/>
+      <circle cx="110" cy="260" r="12" fill="#FFFFFF" stroke="#26282E" stroke-width="1.6"/>
+      <text x="130" y="292" font-size="13" fill="#26282E">1  Slack at the box</text>
+      <text x="122" y="196" font-size="13" fill="#26282E">2  Run on the wall</text>
+      <line x1="110" y1="120" x2="110" y2="63" stroke="#611940" stroke-width="2.4"/>
+      <text x="122" y="100" font-size="13" fill="#26282E">3  Rise to the ladder</text>
+      <line x1="110" y1="63" x2="680" y2="63" stroke="#611940" stroke-width="2.4"/>
+      <circle cx="560" cy="63" r="12" fill="none" stroke="#611940" stroke-width="2.4"/>
+      <text x="470" y="98" font-size="13" fill="#26282E">6  Service loop on the ladder</text>
+      <line x1="680" y1="63" x2="680" y2="232" stroke="#611940" stroke-width="2.4"/>
+      <text x="692" y="130" font-size="13" fill="#26282E">5  Drop</text>
+      <rect x="650" y="160" width="130" height="150" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <rect x="660" y="232" width="110" height="20" fill="#FFFFFF" stroke="#26282E" stroke-width="1.6"/>
+      <text x="715" y="276" font-size="13" text-anchor="middle" fill="#26282E">NVR shelf</text>
+      <text x="715" y="298" font-size="13" text-anchor="middle" fill="#5A5D66">Rack</text>
+      <text x="24" y="334" font-size="13" fill="#26282E">Cut length = the sum of the six parts, rounded up to the next whole foot.</text>
+    </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled The six parts of a cut length (schematic). On the left is a wall with a camera box low on it. A conduit runs up from the box to the top of the wall. The cable rises from the top of the conduit to a cable ladder that runs across the top of the drawing. It follows the ladder to the right, past a coiled loop, and drops into a rack on the right, to a shelf labeled NVR shelf.</p>
+    <p>The parts are numbered. 1, Slack at the box. 2, Run on the wall. 3, Rise to the ladder. 4, Route along the ladder. 5, Drop. 6, Service loop on the ladder. A line at the foot reads: Cut length = the sum of the six parts, rounded up to the next whole foot.</p>
+  </details>
+
+  <ol>
+    <li><strong>Slack at the box:</strong> a fixed allowance at the camera end, for terminating the cable.</li>
+    <li><strong>Run on the wall:</strong> along the conduit, from the box to the conduit&rsquo;s open end.</li>
+    <li><strong>Rise:</strong> from the conduit&rsquo;s open end up to the cable ladder.</li>
+    <li><strong>Route along the ladder:</strong> from above the conduit&rsquo;s end to the head end.</li>
+    <li><strong>Drop:</strong> from the ladder down to the equipment at the head end.</li>
+    <li><strong>Service loop:</strong> spare cable coiled on the ladder near the head end, for a later re-termination or a moved rack.</li>
+  </ol>
+  <p>Measure each part you can reach with a tape. Take the parts you cannot reach, such as a route along a ladder above a ceiling, from the figures the site lead posts. Add the parts in inches, convert the total to feet and inches, and round it up to the next whole foot.</p>
+
+  <div class="calc">
+    <table>
+      <caption>A camera on another job (hypothetical): a library reading room, with its cable to an NVR in the telecommunications room.</caption>
+      <thead><tr><th scope="col">Part</th><th scope="col">Length</th></tr></thead>
+      <tbody>
+        <tr><td>Slack at the box, the owner&rsquo;s figure</td><td class="n">12 in</td></tr>
+        <tr><td>Run on the wall, measured: 7 ft 4 in</td><td class="n">88 in</td></tr>
+        <tr><td>Rise, measured: 1 ft 6 in</td><td class="n">18 in</td></tr>
+        <tr><td>Route along the ladder, posted: 64 ft</td><td class="n">768 in</td></tr>
+        <tr><td>Drop, posted: 8 ft</td><td class="n">96 in</td></tr>
+        <tr><td>Service loop, the owner&rsquo;s figure: 10 ft</td><td class="n">120 in</td></tr>
+        <tr class="tot"><td>Total: 1,102 in, which is 91 ft 10 in</td><td class="n">1,102 in</td></tr>
+        <tr class="tot"><td>Cut length, rounded up to the next whole foot</td><td class="n">92 ft</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Most horizontal cable carries footage marks along its jacket, at the interval printed on the jacket. Record the mark at each end after the cut: the difference between the two marks is the length you cut.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="The parts add to 731 in, which is 60 ft 11 in. Rounded up to the next whole foot, the cut length is 61 ft. 60 ft rounds down and leaves the cable 11 in short. 51 ft leaves out the 120 in service loop, and 55 ft leaves out the 72 in drop.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another job, a camera cable&rsquo;s parts are: slack 12 in, run on the wall 86 in, rise 21 in, route along the ladder 420 in, drop 72 in, and a 10 ft service loop. What is the cut length?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>51 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>55 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>60 ft</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>61 ft</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="2" data-group-title="Before the Pull" data-num="533.2.5" data-title="Pulling the cable through the conduit">
+  <p class="crumb">Lesson 533.2 &middot; Section 2 Before the Pull</p>
+  <h2><span class="tnum">533.2.5</span> Pulling the cable through the conduit</h2>
+  <p class="lead-in">The cable goes into the conduit at its open end and comes out at the box with no kink, no cut in its jacket, and no more pull on it than the cable allows.</p>
+
+  <p>Tape the leading end of the cable into a smooth point with one wrap of electrical tape, so that it does not catch on the joints inside the conduit. Push it in at the open end and feed it steadily toward the box. A short run with few bends often takes a push alone.</p>
+  <p>Where the cable stops, push a <span class="keyterm">fish tape</span>, a flat steel or fiberglass tape on a reel, from the box to the open end. Tape the cable to its head and draw it back through. Where the fish tape will not pass the bends, push a <span class="keyterm">pull string</span> through instead, and draw the cable through on it.</p>
+
+  <h3>The limits on the cable</h3>
+  <p>The owner&rsquo;s cabling addendum sets the limits below. It takes the bend radius and the pulling tension from ANSI/TIA-568, the cabling standard of the American National Standards Institute and the Telecommunications Industry Association (ANSI/TIA).</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Limits on a camera cable, on HSOC-26-014. Where the cable maker gives a larger bend radius under pulling tension, the maker&rsquo;s figure governs during the pull.</caption>
+      <thead><tr>
+        <th scope="col">Limit</th><th scope="col">Value</th><th scope="col">Source</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Bend radius</th><td>Not less than four times the cable&rsquo;s outside diameter</td><td>Owner&rsquo;s cabling addendum</td></tr>
+        <tr><th scope="row">Pulling tension</th><td>Not more than 25 lbf (110 N)</td><td>Owner&rsquo;s cabling addendum</td></tr>
+        <tr><th scope="row">Ties</th><td>Hook-and-loop only, tightened by hand; no tie deforms the jacket</td><td>Owner&rsquo;s cabling addendum</td></tr>
+        <tr><th scope="row">Support</th><td>From no other service</td><td>Owner&rsquo;s cabling addendum</td></tr>
+        <tr><th scope="row">Service loop</th><td>10 ft at the head end, stored on the cable ladder</td><td>Owner&rsquo;s standard 27 15 00 3.1</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>A <span class="keyterm">bend gauge</span>, a round object eight times the cable&rsquo;s diameter across, checks a bend by eye: no bend may be tighter than its curve. Hold it against the bend where the cable leaves the conduit.</p>
+  <p>Check the jacket where the cable leaves each end of the conduit. Record a cut or scuffed jacket, or a kink, and show it to the site lead before you terminate the cable.</p>
+  <div class="note tip"><div class="nt">Safety glasses</div>
+    <p>Wear safety glasses whenever you cut, strip, or crimp cable, and whenever you drill. A conductor end or a chip of metal or plastic can fly toward the eye.</p></div>
+
+  <div class="cyu gate" data-answer="1" data-fb="A fish tape pushed from the box end carries the cable through the bends on its head. Pliers crush the jacket and can pull past the tension limit. A camera cable is one continuous run, so a join is not allowed. A conduit end without its fitting can leave a sharp edge against the cable.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another job, a camera cable stops partway through a conduit with two bends. Pushing harder moves it no farther. What do you do next?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Grip the jacket with pliers at the open end and pull harder</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Push a fish tape from the box, tape on the cable, and draw it through</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Cut the cable at the bend and join the two lengths in the box</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Remove the conduit&rsquo;s end fitting and feed the cable at an angle</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="3" data-group-title="Plug, Test, and Label" data-num="533.2.6" data-title="Fitting an RJ45 plug to T568B">
+  <p class="crumb">Lesson 533.2 &middot; Section 3 Plug, Test, and Label</p>
+  <h2><span class="tnum">533.2.6</span> Fitting an RJ45 plug to T568B</h2>
+  <p class="lead-in">Each end of a camera cable takes a plug. At the head end, the plug goes straight into the NVR&rsquo;s port; at the camera end, it joins the camera&rsquo;s lead.</p>
+
+  <p>An <span class="keyterm">RJ45 plug</span> is an eight-position modular plug, the connector on the end of an Ethernet cord. The <span class="keyterm">T568B</span> assignment of the ANSI/TIA-568 standard sets which conductor goes to each of its eight pins. Both ends of the cable take the same assignment.</p>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; T568B on an RJ45 plug</div>
+    <div class="tbl-scroll">
+    <svg style="min-width:900px" viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="The eight pins of an RJ45 plug with the conductor that T568B puts on each, the four pairs bracketed beneath, and a panel explaining how to read the plug. A full text description follows.">
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">T568B: the conductor on each pin of an RJ45 plug</text>
+      <rect x="60" y="50" width="420" height="176" rx="10" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <rect x="84" y="66" width="40" height="140" fill="#FFFFFF" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="132" y="66" width="40" height="140" fill="#FFFFFF" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="180" y="66" width="40" height="140" fill="#FFFFFF" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="228" y="66" width="40" height="140" fill="#FFFFFF" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="276" y="66" width="40" height="140" fill="#FFFFFF" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="324" y="66" width="40" height="140" fill="#FFFFFF" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="372" y="66" width="40" height="140" fill="#FFFFFF" stroke="#26282E" stroke-width="1.2"/>
+      <rect x="420" y="66" width="40" height="140" fill="#FFFFFF" stroke="#26282E" stroke-width="1.2"/>
+      <text x="104" y="90" font-size="14" font-weight="700" text-anchor="middle" fill="#611940">1</text>
+      <text x="152" y="90" font-size="14" font-weight="700" text-anchor="middle" fill="#611940">2</text>
+      <text x="200" y="90" font-size="14" font-weight="700" text-anchor="middle" fill="#611940">3</text>
+      <text x="248" y="90" font-size="14" font-weight="700" text-anchor="middle" fill="#611940">4</text>
+      <text x="296" y="90" font-size="14" font-weight="700" text-anchor="middle" fill="#611940">5</text>
+      <text x="344" y="90" font-size="14" font-weight="700" text-anchor="middle" fill="#611940">6</text>
+      <text x="392" y="90" font-size="14" font-weight="700" text-anchor="middle" fill="#611940">7</text>
+      <text x="440" y="90" font-size="14" font-weight="700" text-anchor="middle" fill="#611940">8</text>
+      <text x="104" y="144" font-size="13" text-anchor="middle" fill="#26282E">W-O</text>
+      <text x="152" y="144" font-size="13" text-anchor="middle" fill="#26282E">O</text>
+      <text x="200" y="144" font-size="13" text-anchor="middle" fill="#26282E">W-G</text>
+      <text x="248" y="144" font-size="13" text-anchor="middle" fill="#26282E">Bl</text>
+      <text x="296" y="144" font-size="13" text-anchor="middle" fill="#26282E">W-Bl</text>
+      <text x="344" y="144" font-size="13" text-anchor="middle" fill="#26282E">G</text>
+      <text x="392" y="144" font-size="13" text-anchor="middle" fill="#26282E">W-Br</text>
+      <text x="440" y="144" font-size="13" text-anchor="middle" fill="#26282E">Br</text>
+      <path d="M104 232 V244 H152 V232" fill="none" stroke="#26282E" stroke-width="1.6"/>
+      <text x="128" y="262" font-size="13" text-anchor="middle" fill="#26282E">Orange pair</text>
+      <path d="M248 232 V244 H296 V232" fill="none" stroke="#26282E" stroke-width="1.6"/>
+      <text x="272" y="262" font-size="13" text-anchor="middle" fill="#26282E">Blue pair</text>
+      <path d="M392 232 V244 H440 V232" fill="none" stroke="#26282E" stroke-width="1.6"/>
+      <text x="416" y="262" font-size="13" text-anchor="middle" fill="#26282E">Brown pair</text>
+      <path d="M200 232 V282 H344 V232" fill="none" stroke="#611940" stroke-width="1.6"/>
+      <text x="272" y="302" font-size="13" text-anchor="middle" fill="#26282E">Green pair: pins 3 and 6</text>
+      <rect x="520" y="50" width="356" height="230" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <text x="540" y="78" font-size="14" font-weight="700" fill="#611940">Reading the plug</text>
+      <text x="540" y="106" font-size="13" fill="#26282E">Contacts toward you, clip away;</text>
+      <text x="540" y="124" font-size="13" fill="#26282E">pin 1 is on the left.</text>
+      <text x="540" y="156" font-size="13" fill="#26282E">W- is the white conductor striped</text>
+      <text x="540" y="174" font-size="13" fill="#26282E">with its pair&#8217;s color: W-O is</text>
+      <text x="540" y="192" font-size="13" fill="#26282E">white-orange.</text>
+      <text x="540" y="224" font-size="13" fill="#26282E">O orange, G green, Bl blue,</text>
+      <text x="540" y="242" font-size="13" fill="#26282E">Br brown.</text>
+    </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled T568B: the conductor on each pin of an RJ45 plug. It shows the eight contact positions of a plug, numbered 1 to 8 from the left. Pin 1 white-orange, pin 2 orange, pin 3 white-green, pin 4 blue, pin 5 white-blue, pin 6 green, pin 7 white-brown, pin 8 brown.</p>
+    <p>Brackets beneath group the pairs: the orange pair on pins 1 and 2, the blue pair on pins 4 and 5, the brown pair on pins 7 and 8, and the green pair on pins 3 and 6, its bracket passing under the blue pair. A panel on the right, headed Reading the plug, says: contacts toward you, clip away; pin 1 is on the left. W- is the white conductor striped with its pair&rsquo;s color: W-O is white-orange. O orange, G green, Bl blue, Br brown.</p>
+  </details>
+
+  <p>Hold the plug with its contacts toward you and its clip away from you: pin 1 is on the left. Each pair is a solid-colored conductor twisted with a white conductor striped in the same color. Three pairs sit side by side. The green pair lands on pins 3 and 6, on either side of the blue pair.</p>
+
+  <h3>The order of work</h3>
+  <ol>
+    <li>Strip the jacket back far enough to set the conductors in order. If a conductor&rsquo;s insulation is nicked, cut the end square and strip again.</li>
+    <li>Untwist each pair only as far as the plug needs, and keep each pair twisted to within ~1/2 in of the plug. Lay the eight conductors flat in the T568B order.</li>
+    <li>Trim the conductors straight across to the length the plug needs. On a pass-through plug, leave them long.</li>
+    <li>Push the conductors into the plug until each reaches the front, with the jacket inside the plug under its strain relief.</li>
+    <li>Crimp. The conductors of a pass-through plug come out through its front; a pass-through crimper with a blade trims them flush as it crimps. Without a blade, trim them flush with cutters after the crimp.</li>
+    <li>Inspect the plug from the contact side, clip away, for the conductor order, and from the side for the jacket.</li>
+  </ol>
+  <p>Plugs are made for solid conductors, for stranded conductors, or for both; the packaging states which. A camera cable cut from horizontal cable has solid conductors. The plug maker&rsquo;s instructions set the strip length and the crimper to use.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="T568B puts blue on pin 4 and green on pin 6, so that the green pair sits on pins 3 and 6, either side of the blue pair. This plug has green on pin 4 and blue on pin 6. The orange pair on pins 1 and 2 and the brown pair on pins 7 and 8 are in order.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">An inspection photograph of a plug on another job, contacts toward the lens and clip away, shows, from pin 1: white-orange, orange, white-green, green, white-blue, blue, white-brown, brown. What does it show?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>A plug wired correctly to T568B</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Green and blue swapped on pins 4 and 6</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The orange pair reversed on pins 1 and 2</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The brown pair reversed on pins 7 and 8</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="3" data-group-title="Plug, Test, and Label" data-num="533.2.7" data-title="The wiremap test, and what it does not prove">
+  <p class="crumb">Lesson 533.2 &middot; Section 3 Plug, Test, and Label</p>
+  <h2><span class="tnum">533.2.7</span> The wiremap test, and what it does not prove</h2>
+  <p class="lead-in">A wiremap tester shows whether each conductor runs from a pin at one end to the same pin at the other, touching no other conductor.</p>
+
+  <p>The tester has two parts: a <span class="keyterm">main unit</span>, plugged onto one end of the cable, and a <span class="keyterm">remote</span>, plugged onto the other. The main unit sends a signal down each conductor in turn and reads where it arrives. Its screen shows the pin map, or names the fault and the pins it involves.</p>
+  <p>On HSOC-26-014, a cable passes when the tester shows all eight conductors continuous, each reaching the same pin at the far end and connected to no other conductor. The Security Addendum (clause E2) requires that pass before the head-end plug goes into the NVR.</p>
+
+  <h3>The faults a wiremap test finds</h3>
+  <ul>
+    <li><strong>Open.</strong> A conductor does not reach the far end: it is nicked through, cut, or short of its contact in the plug.</li>
+    <li><strong>Short.</strong> Two conductors touch, where their insulation is damaged or a crimp has cut through it.</li>
+    <li><strong>Reversed pair.</strong> The two conductors of one pair are swapped at one end.</li>
+    <li><strong>Crossed pairs.</strong> Two pairs are swapped at one end, as in a plug wired to another assignment.</li>
+  </ul>
+
+  <p>Match each tester reading to its fault.</p>
+  <div class="match gate" data-left="What the tester shows" data-right="The fault">
+    <div class="pair" data-left="Pin 4 reaches no pin at the far end" data-right="Open"></div>
+    <div class="pair" data-left="Pins 7 and 8 shown joined to each other" data-right="Short"></div>
+    <div class="pair" data-left="Pin 1 arrives at pin 2, and pin 2 at pin 1" data-right="Reversed pair"></div>
+    <div class="pair" data-left="Pins 1 and 2 arrive at pins 3 and 6" data-right="Crossed pairs"></div>
+  </div>
+
+  <h3>What a pass does not prove</h3>
+  <p>A <span class="keyterm">split pair</span> uses one conductor from each of two pairs as if the two were a pair. When both ends are wired the same wrong way, every pin still reaches the same pin. The cable passes a wiremap test. The two conductors are not twisted together, so they lose the twist&rsquo;s protection against interference. The link can then fail at speed. A certification tester finds a split pair; a wiremap tester that checks only continuity and pin map, such as the one on this job, does not. The owner&rsquo;s cabling addendum names this limit.</p>
+  <p>A pass also says nothing about how the cable performs at its rated speed, or about whether the NVR&rsquo;s port will power the camera. A wiremap test verifies a cable. It does not certify it.</p>
+</section>
+
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="3" data-group-title="Plug, Test, and Label" data-num="533.2.8" data-title="Labeling the cable">
+  <p class="crumb">Lesson 533.2 &middot; Section 3 Plug, Test, and Label</p>
+  <h2><span class="tnum">533.2.8</span> Labeling the cable</h2>
+  <p class="lead-in">A cable label names the position the cable serves, so that a technician at either end can tell where the cable leads without tracing it.</p>
+
+  <p>The label carries the location identifier from the label scheme of the drawings; on HSOC-26-014, the scheme on sheet SEC-001 of the Kestrel security drawings. The same identifier goes on both ends. The owner&rsquo;s standard sets how the label is made and where it sits: machine printed, flat, legible, and within a set distance of each end.</p>
+  <p>Label each end of a camera cable once that end is cut to its final length: the head end before the cable is laid among other cables, and the camera end after the final trim at the box. An unlabeled cable on a full ladder has to be traced to find its far end.</p>
+
+  <h3>The position, not the camera</h3>
+  <p>The identifier names where the camera is, not which camera it is. When a camera fails, its replacement takes the same position, the same cable, and the same identifier. The installer records the camera&rsquo;s own identity against the position: its model, and its Media Access Control (MAC) address, which most cameras carry on their label.</p>
+  <p>On a hospital job whose scheme reads floor and zone, device type, and number, the camera numbered 12 in zone 3C takes the identifier 3C-CAM-12. Its cable carries 3C-CAM-12 at both ends.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The label names the position, and the position has not changed. The record carries the camera&rsquo;s identity, so the new camera&rsquo;s MAC address goes there, against 3C-CAM-12. A new number would point at a position that does not exist. A label changed at one end leaves the two ends disagreeing.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On that hospital job, the camera at 3C-CAM-12 fails and is replaced with a new camera of the same model. What changes?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Both cable labels, to carry the new camera&rsquo;s serial number</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The record only: the new MAC address against 3C-CAM-12</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The identifier, to 3C-CAM-13, because the camera is new</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The label at the camera end only, to show the change</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="4" data-group-title="Mount, Power, and Aim" data-num="533.2.9" data-title="Mounting the camera">
+  <p class="crumb">Lesson 533.2 &middot; Section 4 Mount, Power, and Aim</p>
+  <h2><span class="tnum">533.2.9</span> Mounting the camera</h2>
+  <p class="lead-in">The manufacturer&rsquo;s instructions set how the camera fixes to its surface. The job&rsquo;s documents set what it fixes to.</p>
+
+  <p>A turret camera has a base, and a ball that holds the lens and turns in the base. The manufacturer&rsquo;s template gives the hole pattern for the base and the position of the cable entry. The instructions give the fixings and the order of work.</p>
+  <p>On a job such as HSOC-26-014, where the camera sits on a plate over a box, the joint between the camera&rsquo;s lead and the cable sits inside the box. Fold the joint and the slack into the box before the plate goes on. Once the camera is fixed, no connector, conductor, or loop of cable shows outside the box and the plate.</p>
+  <p>Fit a plate or template marked TOP with that mark up. Fit every fixing the instructions name, and seat the base flat. Pressed lightly by hand, neither the camera nor the plate moves.</p>
+
+  <h3>An upright image</h3>
+  <p>A turret camera has three adjustments. <strong>Pan</strong> turns the camera left and right. <strong>Tilt</strong> raises and lowers the lens. <strong>Rotation</strong> turns the lens about its own axis, which turns the image. After pan and tilt bring the target into view, the image can lean. Rotation brings it level.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="Rotation turns the lens about its own axis, so the image turns with it. Tilt raises or lowers the view, and pan swings it sideways; neither levels it. An image-flip setting turns the picture over by 180&deg;, not by 30&deg;. It is also a camera or NVR setting, outside the mounting work.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another job, a turret camera on a wall shows its target in the frame, but the whole image leans by about 30&deg;. Which adjustment corrects it?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Tilt</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Pan</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Rotation</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The image-flip setting</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="4" data-group-title="Mount, Power, and Aim" data-num="533.2.10" data-title="Power from the NVR&rsquo;s own ports">
+  <p class="crumb">Lesson 533.2 &middot; Section 4 Mount, Power, and Aim</p>
+  <h2><span class="tnum">533.2.10</span> Power from the NVR&rsquo;s own ports</h2>
+  <p class="lead-in">Many NVRs carry Power over Ethernet (PoE) ports of their own. A camera on one of them takes its power and sends its video over the same cable.</p>
+
+  <p>Each camera&rsquo;s cable ends at an NVR port. The port supplies power only after it detects a powered device on the cable, so a laptop plugged into it receives none. A separate network port joins the NVR to the building network.</p>
+  <p>Two limits apply: the most one port supplies, and the total the NVR supplies across all its ports. The camera&rsquo;s datasheet gives its maximum draw. The NVR&rsquo;s datasheet gives both limits.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>PoE figures from the manufacturer&rsquo;s datasheets for the camera kit on HSOC-26-014.</caption>
+      <thead><tr>
+        <th scope="col">Device</th><th scope="col">PoE</th><th scope="col">Power</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">NVR, AMLINK ALN-4108E</th><td>Eight ports, 10/100, Institute of Electrical and Electronics Engineers (IEEE) 802.3af/at</td><td>72 W in all; 25.5 W at most on one port</td></tr>
+        <tr><th scope="row">Camera, AMLINK AL8M-T8198EW</th><td>IEEE 802.3af</td><td>8.2 W at most</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="calc">
+    <table>
+      <caption>The kit&rsquo;s four cameras on one NVR, at each camera&rsquo;s maximum draw.</caption>
+      <thead><tr><th scope="col">Line</th><th scope="col">Watts</th></tr></thead>
+      <tbody>
+        <tr><td>One camera, against the 25.5 W one port supplies</td><td class="n">8.2 W</td></tr>
+        <tr><td>Four cameras: 4 &times; 8.2</td><td class="n">32.8 W</td></tr>
+        <tr class="tot"><td>Left of the NVR&rsquo;s 72 W: 72 &minus; 32.8</td><td class="n">39.2 W</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The NVR&rsquo;s datasheet does not say whether it counts a port at the camera&rsquo;s class or at its draw. The camera&rsquo;s datasheet states no class. The arithmetic above uses each camera&rsquo;s maximum draw. A camera that draws 8.2 W is above the 6.49 W a Class 2 device may draw, so it declares Class 0 or Class 3; counted at 15.4 W a port, four cameras still fit within 72 W. A camera link on these ports runs at 100 megabits per second (Mbps) at most: the NVR&rsquo;s PoE ports and the camera&rsquo;s network port are both rated 10/100.</p>
+  <p>Plug the head-end plug into the NVR port that the camera schedule gives for its position, and only after the cable has passed its wiremap test.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="Six cameras at 9.5 W hold 57 W. The seventh brings the total to 70 W, above the NVR&rsquo;s 60 W. 13 W is within the 15.4 W one port supplies, so the port limit is not the one that stops it. A port within its own limit still cannot draw on a total that is spent. The number of ports is a separate figure on the datasheet.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another job, an NVR supplies 60 W of PoE in all and up to 15.4 W on one port. It counts each port at the camera&rsquo;s maximum draw. Six cameras on it draw up to 9.5 W each. A seventh camera draws up to 13 W. Which limit stops the seventh camera?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The port limit: 13 W is more than one port supplies</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The NVR&rsquo;s total: 57 W and 13 W make 70 W, above 60 W</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Neither: 13 W is below 15.4 W, so the camera runs</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The port count: the NVR has room for six cameras</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="4" data-group-title="Mount, Power, and Aim" data-num="533.2.11" data-title="Aiming the camera at its target">
+  <p class="crumb">Lesson 533.2 &middot; Section 4 Mount, Power, and Aim</p>
+  <h2><span class="tnum">533.2.11</span> Aiming the camera at its target</h2>
+  <p class="lead-in">Aiming takes two people: one at the camera, and one reading its live view on the NVR.</p>
+
+  <p>The partner opens the camera&rsquo;s channel in the NVR&rsquo;s live view, on a laptop or on a monitor at the NVR, and calls the moves. Where the live view offers a choice of stream, choose the main stream. On many cameras, the one on HSOC-26-014 among them, the second stream has a far lower resolution than the main stream.</p>
+  <ol>
+    <li>Loosen the adjustments as the manufacturer&rsquo;s instructions show.</li>
+    <li>Pan and tilt to the partner&rsquo;s calls until the whole target, its border included, sits in the frame.</li>
+    <li>Rotate until the target stands upright in the image.</li>
+    <li>Lock the adjustments.</li>
+    <li>Check with the partner that the view has not moved. Tightening a ring or a screw can shift the camera.</li>
+    <li>Capture the view as the work order asks.</li>
+  </ol>
+  <p>Capture the NVR&rsquo;s page only, with no account name in view. On HSOC-26-014, no password, credential, or account name appears in any record, photograph, or screenshot (Security Addendum, clause E9).</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="Locking moved the camera, so the view no longer meets the acceptance. Loosen, aim again, lock, and check again. A capture of a view with the border cut off does not show the whole target. Moving the card or cropping the image changes the evidence instead of the aim.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another job, the partner confirms the whole target in the frame. The installer tightens the locking ring, and the partner reports that the target now sits at the edge of the frame with part of its border cut off. What next?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Capture the view: most of the target is still in the frame</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Loosen the ring, aim again, lock it, and check again</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Move the target card to the center of the new view</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Crop the capture so that the border appears whole</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="5" data-group-title="Where Fiber Meets Copper" data-num="533.2.12" data-title="Where a camera link meets fiber">
+  <p class="crumb">Lesson 533.2 &middot; Section 5 Where Fiber Meets Copper</p>
+  <h2><span class="tnum">533.2.12</span> Where a camera link meets fiber</h2>
+  <p class="lead-in">A camera beyond the reach of copper, on a pole across a yard or in another building, is reached on fiber. The link changes between fiber and copper on the way.</p>
+
+  <p>An Ethernet channel on twisted-pair copper reaches 100 m (328 ft), cords included. On HSOC-26-014, the owner&rsquo;s standard limits a permanent link to 90 m (295 ft) (27 15 00 2.2). Fiber carries Ethernet far beyond either figure. A fiber cable with no metal in it also conducts no electricity between buildings.</p>
+  <p>Where the link changes between fiber and copper, a device converts the signal between light and electrical pulses. Two kinds of device do it.</p>
+  <ul>
+    <li><strong>A Small Form-factor Pluggable (SFP) transceiver.</strong> A module that plugs into a fiber port on a switch, or on another device built to take one. The switch then carries the fiber link like any other port.</li>
+    <li><strong>A media converter.</strong> A standalone unit with a fiber port and a copper port, usually on its own power supply. It sits where the fiber ends: in a cabinet on the pole, or in a rack. Some models also supply PoE on their copper port; the datasheet states the standard and the power.</li>
+  </ul>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; Copper, fiber, and copper again</div>
+    <div class="tbl-scroll">
+    <svg style="min-width:900px" viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="A camera on a pole linked by copper to a media converter, the converter linked by two fiber strands to an SFP transceiver in a head-end switch, and the switch linked by copper to an NVR, with a panel of the checks at the two ends of the fiber link. A full text description follows.">
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Copper, fiber, and copper again (a campus job, hypothetical)</text>
+      <rect x="24" y="70" width="120" height="60" rx="6" fill="#FFFFFF" stroke="#26282E" stroke-width="1.6"/>
+      <text x="84" y="96" font-size="13" text-anchor="middle" fill="#26282E">Camera</text>
+      <text x="84" y="116" font-size="13" text-anchor="middle" fill="#26282E">on a pole</text>
+      <line x1="144" y1="100" x2="214" y2="100" stroke="#26282E" stroke-width="3"/>
+      <text x="179" y="90" font-size="13" text-anchor="middle" fill="#26282E">Copper</text>
+      <rect x="214" y="60" width="170" height="80" rx="6" fill="#71E2FD" stroke="#26282E" stroke-width="1.6"/>
+      <text x="299" y="86" font-size="13" font-weight="700" text-anchor="middle" fill="#26282E">Media converter</text>
+      <text x="299" y="106" font-size="13" text-anchor="middle" fill="#26282E">copper and fiber ports</text>
+      <text x="299" y="126" font-size="13" text-anchor="middle" fill="#26282E">local power</text>
+      <line x1="384" y1="82" x2="578" y2="82" stroke="#611940" stroke-width="2"/>
+      <polygon points="576,77 586,82 576,87" fill="#611940"/>
+      <text x="484" y="74" font-size="13" text-anchor="middle" fill="#26282E">TX to RX</text>
+      <text x="484" y="105" font-size="13" text-anchor="middle" fill="#26282E">Fiber, two strands</text>
+      <line x1="392" y1="118" x2="584" y2="118" stroke="#611940" stroke-width="2"/>
+      <polygon points="394,113 384,118 394,123" fill="#611940"/>
+      <text x="484" y="138" font-size="13" text-anchor="middle" fill="#26282E">TX to RX</text>
+      <rect x="584" y="60" width="170" height="80" rx="6" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="669" y="86" font-size="13" font-weight="700" text-anchor="middle" fill="#26282E">Head-end switch</text>
+      <text x="669" y="106" font-size="13" text-anchor="middle" fill="#26282E">SFP transceiver</text>
+      <text x="669" y="126" font-size="13" text-anchor="middle" fill="#26282E">in a fiber port</text>
+      <line x1="754" y1="100" x2="790" y2="100" stroke="#26282E" stroke-width="3"/>
+      <rect x="790" y="70" width="86" height="60" rx="6" fill="#FFFFFF" stroke="#26282E" stroke-width="1.6"/>
+      <text x="833" y="105" font-size="13" text-anchor="middle" fill="#26282E">NVR</text>
+      <rect x="24" y="170" width="852" height="110" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <text x="40" y="196" font-size="13" font-weight="700" fill="#611940">At the two ends of the fiber link</text>
+      <text x="40" y="220" font-size="13" fill="#26282E">Match the optics, the fiber mode, the connector, and the speed.</text>
+      <text x="40" y="242" font-size="13" fill="#26282E">Each TX reaches the RX at the far end, in both directions.</text>
+      <text x="40" y="264" font-size="13" fill="#26282E">A link light shows a usable signal. It is not a loss test.</text>
+    </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Copper, fiber, and copper again (a campus job, hypothetical). From left to right, a camera on a pole connects by a copper cable to a media converter, labeled copper and fiber ports, local power. Two fiber strands run from the converter to a head-end switch with an SFP transceiver in a fiber port. A copper cable runs from the switch to the NVR. The upper strand carries light from the converter to the switch, labeled TX to RX. The lower strand carries light from the switch to the converter, also labeled TX to RX. Between them is the label Fiber, two strands.</p>
+    <p>A panel below, headed At the two ends of the fiber link, reads: match the optics, the fiber mode, the connector, and the speed. Each TX reaches the RX at the far end, in both directions. A link light shows a usable signal. It is not a loss test.</p>
+  </details>
+
+  <div class="cyu gate" data-answer="1" data-fb="240 m is past the 100 m an Ethernet channel on copper reaches, so fiber covers the distance. The fiber ends at a converter near the gate, and a short copper cable runs on to the camera. PoE adds power to a copper channel; it does not lengthen it. A Category 6 cable is held to the same 100 m channel.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">A coverage drawing for another job places a camera at a gate 240 m from the head end. Where does the camera&rsquo;s link change between fiber and copper?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Nowhere: a Category 6 cable reaches the gate</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Near the gate, at a media converter fed by fiber</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Nowhere: PoE carries the camera&rsquo;s link over 240 m</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>At the head end, with copper run the rest of the way</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="5" data-group-title="Where Fiber Meets Copper" data-num="533.2.13" data-title="Matching the two ends of a fiber link">
+  <p class="crumb">Lesson 533.2 &middot; Section 5 Where Fiber Meets Copper</p>
+  <h2><span class="tnum">533.2.13</span> Matching the two ends of a fiber link</h2>
+  <p class="lead-in">The two ends of a fiber link work together only when their optics match and each transmitter reaches the receiver at the other end.</p>
+
+  <p>Read four things on the labels and datasheets of the transceiver and the converter at each end.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>What must match at the two ends of a fiber link.</caption>
+      <thead><tr>
+        <th scope="col">What must match</th><th scope="col">Where to read it</th><th scope="col">For example</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Optics and wavelength</th><td>The optical type on the label</td><td>1000BASE-SX sends at 850 nanometers (nm); 1000BASE-LX at 1310 nm</td></tr>
+        <tr><th scope="row">Fiber mode</th><td>The datasheet, and the cable&rsquo;s jacket</td><td>SX runs on multimode fiber; LX normally on single-mode</td></tr>
+        <tr><th scope="row">Connector</th><td>The port, and the device&rsquo;s documents</td><td>Most SFPs take an LC duplex connector; a converter&rsquo;s documents state its own</td></tr>
+        <tr><th scope="row">Speed</th><td>The Ethernet type on the label</td><td>A gigabit transceiver at one end, a gigabit converter at the other</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A duplex link uses two fibers, one for each direction. Each end has a transmit port (TX) and a receive port (RX). The fiber from the TX at one end reaches the RX at the other, in both directions. With the two fibers swapped at one end, each TX faces the other end&rsquo;s TX: neither receiver sees light, and neither link light comes on.</p>
+
+  <h3>A link light is not a loss test</h3>
+  <p>A link light on a switch port or on a converter shows that its receiver detects a signal it can use. It does not show how much light the run loses against its loss budget. A run close to its limit can light both ends and still fail its loss test. The loss test, made with a light source and a power meter, is the acceptance test of the run.</p>
+  <div class="note warn"><div class="nt">Light you cannot see</div>
+    <p>Transceivers and converters send infrared light, which the eye cannot see. Never look into a fiber end, a cord, or a port. Cap any port or cord that is not connected.</p></div>
+
+  <div class="cyu gate" data-answer="0" data-fb="An SX transceiver sends at 850 nm and is built for multimode fiber. An LX transceiver sends at 1310 nm, normally on single-mode fiber. The two ends do not form a link. Polarity is already right here. You cannot judge the loss of the run until both ends match. On a converter with link fault pass-through, a dead copper port also darkens the fiber link; here the optics are the fault.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On another job, the head-end switch holds a 1000BASE-LX SFP on single-mode fiber. The converter at the camera end is labeled 1000BASE-SX. The connectors fit and the polarity is right, but neither link light comes on. What is wrong?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The optics: SX and LX send at different wavelengths</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The polarity, which fitting connectors cannot prove</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The run loses too much light for the SX converter</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The converter needs a camera powered on its copper port</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.2" data-lesson-title="Camera Installation and Termination" data-group-num="6" data-group-title="Wrapping Up" data-num="533.2.14" data-title="What you covered">
+  <p class="crumb">Lesson 533.2 &middot; Section 6 Wrapping Up</p>
+  <h2><span class="tnum">533.2.14</span> What you covered</h2>
+  <p class="lead-in">Read the camera&rsquo;s position and target, check the pathway, cut and pull the cable, terminate, test, and label it, then mount the camera, power it, and aim it.</p>
+
+  <h3>The coverage drawing</h3>
+  <p>A coverage drawing gives each camera&rsquo;s position, its field of view as a wedge, and its observation target. A wedge marked schematic shows direction only; the angle comes from the datasheet. A wider field of view shows more of the scene, with each object smaller. An owner who accepts a camera on a test target accepts it when the card&rsquo;s identification line reads in the image the acceptance names.</p>
+
+  <h3>Before the pull</h3>
+  <p>Check the box, the conduit, and the mounting surface by eye, record what you find, and report a difference before you work around it. Cut the cable once, to the sum of its six parts rounded up to the next whole foot. Push it through the conduit, or draw it with a fish tape or a pull string, within the bend radius and the pulling tension.</p>
+
+  <h3>Plug, test, and label</h3>
+  <p>T568B puts white-orange, orange, white-green, blue, white-blue, green, white-brown, and brown on pins 1 to 8. A wiremap test finds opens, shorts, reversed pairs, and crossed pairs. It does not find a split pair, and it does not certify the cable. The label names the position, at both ends; the record carries the camera&rsquo;s identity.</p>
+
+  <h3>Mount, power, and aim</h3>
+  <p>The manufacturer&rsquo;s instructions set the fixings. The joint sits inside the box, and the base seats flat. An NVR&rsquo;s PoE ports power its cameras within a per-port limit and a total. Aim with a partner on the main stream: pan, tilt, rotate until the target is upright, lock, and check again.</p>
+
+  <h3>Where fiber meets copper</h3>
+  <p>Beyond the reach of copper, an SFP transceiver or a media converter changes the link between fiber and copper. The optics, the fiber mode, the connector, and the speed match at both ends, and each TX reaches the RX at the far end. A link light is not a loss test.</p>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete—continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again. A wrong answer does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct===100) msg.textContent='You answered every check correctly.';
+      else if(pct>=90) msg.textContent='You answered nearly every check correctly. Go back over the one you missed.';
+      else if(pct>=75) msg.textContent='Strong work. Go back over any check you missed.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the topics behind the checks you missed.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+<!--
+BUILD FLAGS - UCI 1019 Lesson 533.2 Async Reading v0.1.0 DRAFT, 2026-11-12
+(Module 533, Low Voltage Security Systems Installations; built under the
+delegated mode, brief Planning/_AGENT-BRIEF_M533-Readings-Decks-Quizzes.md).
+This comment is visible in the page source, so it carries no answer-key
+value. Not reviewed: technical review, language pass and cold read are owed
+to fresh subagents. The drafter's own self-check is recorded at the end.
+
+SOURCES READ
+- CLAUDE.md; STYLE-RULES.md (twice); style profile v1.4 to line 250;
+  FORMAT-SPEC v1.0 (sections 2, 5-9) and the 2026 addendum.
+- Module plan v0.1.0 sections 2-6 and the change log; tech facts
+  v0.1.0 (sections 6, 7 and "Consequences"); lab-build brief (fixed facts,
+  E1-E10, SEC sheets, day clock).
+- ALAB 533.2.1 lab, HO 533.2.1, instructor guide (setup, keys, marking
+  notes); work order KC-2644; Security Addendum v0.1.0 DRAFT; Kestrel
+  security drawings, Issue for Construction, SEC-001, SEC-101, SEC-201 (PNG);
+  owner's standard mock-up edition 27 05 00 4.7; cabling addendum A1-A7.
+  The project documents were already in Project-Documents when this page was
+  written; the page follows them, not the brief's E-clause summary.
+- Pattern: Lesson 535.5 page (engine, brand layer, .calc, layout, flags).
+  Media conversion wording checked against the Lesson 532.4 reading
+  (SFP, SX 850 nm multimode, LX 1310 nm single-mode, TX to RX, link light
+  is not a loss test).
+
+DECISIONS TAKEN
+- 14 topics in 6 sections; every plan objective has a topic (head comment).
+  Section 5 (media conversion, recognition only) has two topics, because the
+  format allows no one-topic section.
+- Worked examples on other jobs: warehouse (coverage), library (cut length),
+  hospital (label scheme), campus (fiber). The mock-up appears only as the
+  scenario and as the source of the clauses the learner must read.
+- The six-part cut-length rule taught from 27 05 00 4.7 with E2's drop to
+  the NVR shelf. The lab's record splits part 4 into "route along your wall"
+  and "route to the MIR"; the page keeps the owner's six parts (the clause
+  wording) and says the unreachable parts come from posted figures.
+- RJ45 explained as "an eight-position modular plug" at first use, not
+  expanded (a connector designation; SEC-001 lists it the same way).
+- The camera kit's PoE figures stated in a table with the arithmetic for four
+  cameras (brief: "the NVR's budget (tech facts)").
+- Activity count 13 (11 CYU, 1 matching, 1 card set); the acknowledgement is
+  not counted, as on the pattern page.
+
+CHECK QUESTIONS AND WORKED EXAMPLES (for the quiz writer; one line each)
+- 533.2.1 Figure: warehouse, CAM-D4 on the wall at 12 ft, 90 deg wedge,
+  target card at the approach to dock door 4.
+- 533.2.1 CYU: what a wedge marked schematic tells the installer (direction
+  and intended area).
+- 533.2.2 CYU: garage exit lane, card in frame, line blurred in recording ->
+  fails so far; record and report.
+- 533.2.3 Card set: the box (fixed, identifier against the schedule), the
+  conduit (unbroken, open, holds nothing unshown), the mounting surface (in
+  place, drilled to template, orientation mark).
+- 533.2.4 Worked example: library reading room, 12 + 88 + 18 + 768 + 96 +
+  120 = 1,102 in = 91 ft 10 in -> 92 ft.
+- 533.2.4 CYU: 12 + 86 + 21 + 420 + 72 + 120 = 731 in = 60 ft 11 in ->
+  61 ft (distractors 51, 55, 60).
+- 533.2.5 CYU: cable stuck in a conduit with two bends -> fish tape from the
+  box.
+- 533.2.6 CYU: top view wo, o, wg, g, wb, b, wbr, br -> green and blue
+  swapped on pins 4 and 6.
+- 533.2.7 Matching: pin 4 reaches no pin = open; pins 7 and 8 joined =
+  short; 1 to 2 and 2 to 1 = reversed pair; 1 and 2 to 3 and 6 = crossed
+  pairs.
+- 533.2.8 Example and CYU: hospital, 3C-CAM-12 at both ends; replaced
+  camera -> record only (new MAC address against 3C-CAM-12).
+- 533.2.9 CYU: wall turret image leans about 30 deg -> rotation.
+- 533.2.10 Worked sum: kit, 4 x 8.2 = 32.8 W; 72 - 32.8 = 39.2 W left;
+  8.2 W against 25.5 W a port.
+- 533.2.10 CYU: NVR 60 W total, 15.4 W a port, six cameras at 9.5 W, a
+  seventh at 13 W -> the total stops it (70 W).
+- 533.2.11 CYU: view shifts when the locking ring is tightened -> loosen,
+  re-aim, lock, check.
+- 533.2.12 Figure: campus, camera on a pole, converter, two strands, SFP in
+  the head-end switch, NVR.
+- 533.2.12 CYU: gate 240 m from the head end -> converter near the gate,
+  fiber back (distractors Category 6, PoE, copper from the head end).
+- 533.2.13 CYU: LX SFP against an SX converter, polarity right, no link
+  light -> optics mismatch.
+
+HELD BACK (graded answers; values not repeated here)
+- No SEC-101 value: no card distance, height or position across the bay,
+  and no field-of-view angle for the kit's camera (the lab's Coverage row
+  grades "the field of view as the sheet gives it"). The page says the angle
+  comes from the datasheet and does not state it. The close-focus distance
+  is taught as a datasheet term, without the kit's figure.
+- No route list figure, no key run/rise/route, no cut length for any bay; no
+  mock-up label, no NVR port by bay, no card characters.
+- The T568B order is on the page (figure, summary): the lab states it in
+  Step 7 and on the room display; the lab grades each learner's own plug.
+
+PRODUCT AND STANDARD CLAIMS NOT IN THE TECH FACTS (for the technical review)
+- 100 m Ethernet channel on twisted pair; no category extends it (533.2.12).
+- 1000BASE-SX 850 nm multimode; 1000BASE-LX 1310 nm, normally single-mode;
+  most SFPs take LC duplex (533.2.13; as the 532.4 reading).
+- A fiber cable with no metal conducts no electricity between buildings.
+- Some media converters supply PoE on their copper port.
+- Plugs made for solid, stranded or both; pass-through plugs and their
+  crimper (533.2.6).
+- Turret camera: base and ball; pan, tilt, rotation (the kit's datasheet
+  gives pan, tilt and rotation ranges, tech facts 6).
+- Fixed-focus close-focus distance (the kit's datasheet states one; tech
+  facts 6); a second stream of lower resolution (the kit's sub stream is D1,
+  tech facts 6).
+- PoE ports supply power only after detecting a powered device (802.3af/at
+  behavior; the lab states the same).
+- Split pair passes a continuity-and-mapping wiremap test (cabling addendum
+  A7; state file: the NF-8209 has no split-pair detection).
+
+ASSUMPTIONS (not in the plan)
+- The learner reads this page before the Lesson 533.2 presentation on Day 1
+  (11:40).
+- Document titles "Kestrel security drawings" and "Security Addendum" as the
+  project documents carry them (SEC title block; addendum heading).
+
+UNVERIFIED
+- Not opened in a browser. The four SVGs were rendered to PNG with PyMuPDF
+  and checked by eye for overlaps; fonts differ from a browser.
+- Reading time: the audit counts ~57 min of prose at 112 wpm before 13
+  activities; the page states ~60-75 min. It may run past 75 (for the cold
+  read). Smallest cut, if wanted: the 533.2.10 kit table and sum, or the
+  533.2.3 card set.
+
+CONFLICTS FOUND
+- ALAB 533.2.1 Step 7 describes trimming before insertion (a standard plug);
+  its build flags and the guide's setup item 8 call R-076 a pass-through
+  plug. This page teaches both and leaves the plug maker's instructions to
+  govern. For the consistency check; the lab is not edited here.
+- Plan section 6 runs the 533.2 presentation as one ~30 min block on Day 1;
+  the brief's clock splits it 11:40-12:00 and 1:00-1:10 (the deck follows
+  the brief). No effect on this page.
+
+SELF-CHECK
+- audit_html.py: FAIL 0, WARN 0 (two long text-description sentences split
+  after the first run). contrast_audit.py: FAIL 1, the known engine-amber
+  .order .step.picked .seq rule (the 2026 brand layer overrides it; the
+  pattern page shows the same result); REPORT 83.
+- STYLE-RULES.md re-read; one drafter pass over every sentence, check
+  question, option and feedback string. Changed in that pass: and-tails split
+  (533.2.2, 533.2.7, 533.2.9, 533.2.10 feedback); agentless passives given
+  an actor (533.2.3, 533.2.4, 533.2.8); "plainly" and "On many jobs"
+  removed. Counts checked against lists: 6 sections, 14 topics, 13
+  activities, 4 diagrams (tiles, banner, head comment); "six parts" against
+  the figure and the list; "four things" against the four-row table;
+  "three adjustments" against pan, tilt, rotation; "three things" in
+  533.2.1 against the three bullets.
+- Numbers checked against the keys: no SEC-101 card value or angle, no
+  route list figure; the 72 W / 25.5 W / 8.2 W kit figures match
+  tech facts 6 and SEC-201.
+
+TECH1 fixes 2026-11-12 (review TECH1_Lesson-533.2-Content_2026-11-12.md; applied by a fresh agent, not the drafter)
+- Wrong (1): 533.2.13 CYU feedback: "The converter's fiber link light does not wait on its copper port" replaced: on a converter with link fault pass-through a dead copper port also darkens the fiber link; here the optics are the fault (key A unchanged).
+- Unverifiable (3): bend gauge (533.2.5) now "eight times the cable's diameter across ... no bend may be tighter than its curve" (radius 4 x OD, gauge 8 x OD across; consistent with the deck and Quiz Q7); plug inspected "from the contact side, clip away" (533.2.6 step and CYU stem); 533.2.12 CYU feedback "Standard Ethernet over four-pair category cable is limited to a 100 m channel". MAC on the label (533.2.8) hedged "which most cameras carry on their label" (reviewer: acceptable; hedged).
+- Depends (5): 533.2.2 recorded vs live stream ("The stream an NVR records is not always the stream it shows live"); 533.2.5 caption (cable maker's figure governs during the pull where larger); 533.2.6 untwist limit ~1/2 in added and pass-through crimper trims flush only with a blade; 533.2.7 split pair: "a wiremap tester that checks only continuity and pin map, such as the one on this job, does not"; 533.2.12 converter "usually on its own power supply"; 533.2.10 PoE class sentence added (8.2 W is above Class 2's 6.49 W, so Class 0 or 3; at 15.4 W a port four cameras still fit 72 W; the 61.6 W figure is not printed).
+- Quiz-writer lists above unchanged except the 533.2.6 CYU stem wording.
+LP1 language pass 2026-11-12: 7 applied, 1 held
+LP2 language pass 2026-11-12: 3 applied, 0 held
+LP1 held items resolved 2026-11-12: label timing matches the lab (each end labeled once cut to final length; camera end after the final trim at the box); cabling addendum clause numbers A4/A7 replaced by the requirement in words (table column Clause -> Source); footage marks at the interval printed on the jacket.
+LP2 held items resolved 2026-11-12: score message at 90% and above replaced with "You answered every check correctly." (coordinator decision G5). Note: the message shows from 90%, so a score of 90-99% also reads "every check" (script threshold not changed).
+LP3 language pass 2026-11-12: 2 applied, 3 held
+COORDINATOR 2026-11-12: score messages harmonized across the four 533 readings (every check only at 100%; 90% 'nearly every'; 75% and 50% messages make no field-readiness claim).
+LP4 language pass 2026-11-12: 1 applied, 0 held
+-->
+
+</body>
+</html>

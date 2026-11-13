@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  UCI 1019 - AI-Enhanced Low Voltage Fiber Technician
+  Module 533 (M10) - Low Voltage Security Systems Installations
+  Lesson 533.3 - NVR Commissioning and Recording (Async Reading)
+  VERSION: v0.1.0  (2026-11-12)  DRAFT - for review
+
+  CHANGES IN v0.1.0
+  First issue. New development: 2107.1 has no security module.
+
+  Engine (CSS, JS, header, sidebar, navigation, lightbox), the 2026 brand
+  layer, the .calc component sheet and the .cli console sheet copied
+  unchanged from UCI-1019_M535_Lesson-535.5_Async-Reading_v0.1.0_DRAFT.html
+  (the brief's pattern page). The .cli sheet is carried but not used on this
+  page. Logo: inline Slate SVG.
+
+  OBJECTIVES, from the module plan v0.1.0 section 5, Lesson 533.3, word for
+  word (NVR expanded at first use on the page).
+    Confirm   that the NVR detects its recording drive              10.7.1
+    Set       the NVR's date, time and time zone                    10.7.2
+    Confirm   a camera's identity, firmware version and NVR port    10.2.1
+    Name      a camera channel to its installed location            10.1.6, 10.2.3
+    Apply     a recording schedule to a camera channel              10.7.3
+    Estimate  recording retention from bitrate, schedule and        10.7.3
+              drive capacity
+    Retrieve  a recorded event by channel and time                  10.7.4
+    Export    a playable video clip                                 10.7.4
+    Save      a settings backup or a manual recovery record         10.2.5, 10.7.6
+
+  TOPIC OUTLINE
+    Section 1  The Recorder, Its Drive, and Its Clock
+      533.3.1   What a network video recorder does                 entry point
+      533.3.2   The recording drive                                Confirm (drive)
+      533.3.3   Date, time, and time zone                          Set
+    Section 2  Cameras, Channels, and Recording Settings
+      533.3.4   Confirming the camera on its port                  Confirm (camera)
+      533.3.5   Naming the channel for its location                Name
+      533.3.6   Recording schedules                                Apply
+      533.3.7   Resolution, codec, and bitrate                     Estimate (inputs)
+    Section 3  Retention
+      533.3.8   Estimating retention                               Estimate
+      533.3.9   Units, and what the estimate leaves out            Estimate
+    Section 4  Getting Video Back and Leaving the System Recoverable
+      533.3.10  Searching and playing back by channel and time     Retrieve
+      533.3.11  Exporting a clip that plays                        Export
+      533.3.12  Settings backup, or a manual recovery record       Save
+      533.3.13  The camera network and remote viewing              brief: CCTV zone, remote viewing
+    Section 5  Wrapping Up
+      533.3.14  What you covered                                   summary
+
+  ACTIVITY GATES: 14 - 12 single-answer checks, 1 matching, 1
+    acknowledgement (the page counts 13 activities; the acknowledgement is
+    not counted, as on the 535.5 pattern page).
+  DIAGRAMS: 2 original SVG, each with a full text description (a full drive
+    keeps a moving window of days; where the recorder sits).
+  IMAGES: none.
+
+  Build flags, decisions, assumptions, the list of every check question and
+  worked example, and the audit results are in the BUILD FLAGS comment at the
+  end of this file.
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 533.3 - NVR Commissioning and Recording &middot; Async Reading &middot; UCI 1019</title>
+<style>
+  :root{
+    /* Per Scholas brand palette (extracted from the lesson deck) */
+    --green:#0079C0; --green-d:#09507C; --green-l:#4FA3D4; --green-bg:#EAF4FB;
+    --navy:#0A1B33; --gold:#FEC14F; --gold-d:#D99B2B; --brand-light:#CFEBFC;
+    --ink:#1b2a3a; --muted:#5a6772; --line:#d9e3ec; --band:#eef4f9; --card:#fff;
+    --bg:#f5f8fb; --amber:#B8860B; --amber-bg:#fdf6e3; --blue:#09507C; --blue-bg:#e6f1fa;
+    --ok:#0079C0; --ok-bg:#e3f0fa; --bad:#c0392b; --bad-bg:#fbeae8;
+    --shadow:0 2px 10px rgba(9,45,80,.08); --radius:10px;
+    --nav-w:340px; --head-h:60px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:16px}
+  h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em;color:var(--ink)}
+  p{margin:0 0 1em}
+  a{color:var(--green-d)}
+  :focus-visible{outline:3px solid var(--green-l);outline-offset:2px;border-radius:3px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--green);color:#fff;padding:10px 16px;
+    z-index:1000;border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- HEADER ---------- */
+  header.site{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--green);
+    height:var(--head-h);display:flex;align-items:center;gap:16px;padding:0 18px;box-shadow:0 1px 6px rgba(9,45,80,.06)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;flex:0 0 auto}
+  .ps-logo{height:34px;width:auto;display:block}
+  .head-mid{flex:1;min-width:0;border-left:1px solid var(--line);padding-left:16px}
+  .head-title{font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .head-title b{color:var(--green)}
+  .progress-wrap{display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  .pbar{width:150px;height:8px;background:#e6ecf1;border-radius:20px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .35s}
+  .menu-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 12px;
+    font-weight:700;cursor:pointer;font-size:1rem}
+  @media(max-width:900px){.menu-btn{display:inline-block}.progress-wrap .lbl{display:none}}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:var(--nav-w) 1fr;align-items:start}
+  nav.toc{position:sticky;top:var(--head-h);height:calc(100vh - var(--head-h));overflow-y:auto;
+    background:#fff;border-right:1px solid var(--line);padding:0 0 40px}
+  .toc-tabs{display:flex;gap:18px;padding:14px 20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+  .toc-tabs button{padding:8px 2px 12px;font-weight:700;color:var(--muted);font-size:1rem;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit}
+  .toc-tabs button:hover{color:var(--ink)}
+  .toc-tabs button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green);margin-bottom:-1px}
+  /* overview landing panel */
+  .overview{max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  .overview .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .overview h2{font-size:1.9rem}
+  .overview .lead-in{font-size:1.12rem;color:var(--muted)}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+  .ov-stat{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center}
+  .ov-stat b{display:block;font-size:1.55rem;color:var(--green-d);line-height:1}
+  .ov-stat span{font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+  .ov-obj{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 4px}
+  @media(max-width:640px){.ov-obj{grid-template-columns:1fr}}
+  .ov-obj .o{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .ov-obj .o .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800}
+  .ov-begin{margin-top:24px;background:var(--green);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit}
+  .ov-begin:hover{background:var(--green-d)}
+
+  .toc-group{border-bottom:1px solid var(--line)}
+  .toc-group > .grp-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--band);
+    border:none;padding:14px 18px;cursor:pointer;text-align:left;font-family:inherit}
+  .grp-btn .toggle{flex:0 0 26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:1rem;transition:transform .25s}
+  .toc-group[aria-expanded="false"] .toggle{transform:rotate(-90deg)}
+  .grp-btn .grp-title{font-weight:800;font-size:1rem;color:var(--ink)}
+  .grp-title-static{margin:0;padding:14px 18px 8px;font-size:1rem;color:var(--ink)}
+  .grp-list{list-style:none;margin:0;padding:6px 0 12px}
+  .toc-group[aria-expanded="false"] .grp-list{display:none}
+  .grp-list li{position:relative;padding-left:44px}
+  /* dotted connector line */
+  .grp-list li::before{content:"";position:absolute;left:29px;top:0;bottom:0;
+    border-left:2px dotted #c8d0d6}
+  .grp-list li:first-child::before{top:50%}
+  .grp-list li:last-child::before{bottom:50%}
+  .sub-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;
+    padding:9px 16px 9px 0;text-align:left;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--ink);border-radius:6px}
+  .sub-btn:hover{background:var(--green-bg)}
+  .node{position:absolute;left:20px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:2px solid #b9c2c9;display:grid;place-items:center;font-size:1rem;color:#fff}
+  .sub-btn .lbl-num{color:var(--muted);font-weight:700;margin-right:2px}
+  li.active .sub-btn{color:var(--green-d);font-weight:700}
+  li.active .node{border-color:var(--green);background:var(--green-l)}
+  li.done .node{border-color:var(--green);background:var(--green);}
+  li.done .node::after{content:"✓"}
+  li.active .sub-btn .lbl-num{color:var(--green-d)}
+
+  /* ---------- MAIN ---------- */
+  main{padding:0;min-height:calc(100vh - var(--head-h));display:flex;flex-direction:column}
+  main:focus{outline:none}
+  .topic-wrap{max-width:820px;width:100%;margin:0 auto;padding:30px 30px 20px;flex:1}
+  .crumb{font-size:1rem;color:var(--muted);margin-bottom:6px}
+  .crumb b{color:var(--green-d)}
+  .topic h2{font-size:1.8rem}
+  .topic h2 .tnum{color:var(--green);font-weight:800}
+  .topic h3{font-size:1.2rem;margin-top:1.6em;color:var(--green-d)}
+  .topic h4{font-size:1.02rem;margin-top:1.2em}
+  .topic > p, .topic .prose p{font-size:1.02rem}
+  .lead-in{font-size:1.1rem;color:var(--muted)}
+  .topic{display:none;max-width:820px;margin:0 auto;padding:24px 18px 40px}
+  @media(max-width:640px){.topic{padding:18px 14px 32px}.overview{padding:18px 14px 32px}}
+  .topic.showing{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* full-bleed navy "bookend" topics (opening + closing), echoing the deck's title/closing slides */
+  main.dark-topic{background:var(--navy)}
+  .topic.dark > p, .topic.dark .lead-in{color:#cfe0f2}
+  .topic.dark h2{color:#fff}
+  .topic.dark h2 .tnum{color:var(--gold)}
+  .topic.dark h3, .topic.dark h4{color:var(--gold)}
+  .topic.dark .crumb{color:#9db8d6}
+  .topic.dark .crumb b{color:var(--gold)}
+  .topic.dark .keyterm{color:var(--gold)}
+  .topic.dark ul.clean li{color:#cfe0f2}
+  .topic.dark #scoreLine{color:#fff}
+  .topic.dark .pc{color:#fff}
+  .topic.dark #ringFill{stroke:var(--gold)}
+  .topic.dark .ring svg circle:first-of-type{stroke:rgba(255,255,255,.22)}
+
+  .figure{background:var(--band);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin:18px 0;font-size:.9rem;color:var(--muted)}
+  .figure .cap{font-weight:700;color:var(--ink);font-size:1rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+
+  /* callouts */
+  .note{border-left:5px solid var(--blue);background:var(--blue-bg);padding:14px 18px;border-radius:8px;margin:18px 0}
+  .note.tip{border-left-color:var(--green);background:var(--green-bg)}
+  .note.warn{border-left-color:var(--amber);background:var(--amber-bg)}
+  .note.danger{border-left-color:var(--bad);background:var(--bad-bg)}
+  .note .nt{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .note p:last-child{margin-bottom:0}
+  .uptime{border:1px dashed var(--green);background:var(--green-bg);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:.95rem}
+  .uptime b{color:var(--green-d)}
+
+  ul.clean{margin:0 0 1em;padding-left:22px}
+  ul.clean li{margin-bottom:8px}
+  .keyterm{font-weight:700;color:var(--green-d)}
+
+  /* ---------- COMPONENTS ---------- */
+  /* tabs */
+  .tabs{margin:20px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .tablist{display:flex;flex-wrap:wrap;background:var(--band);border-bottom:1px solid var(--line)}
+  .tablist button{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+  .tablist button[aria-selected="true"]{color:var(--green-d);border-bottom-color:var(--green-l);background:#fff}
+  .tabpanel{padding:18px 20px}
+  .tabpanel[hidden]{display:none}
+  .tabpanel h4{margin-top:0}
+
+  /* accordion */
+  .acc{margin:18px 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .acc h4{margin:0}
+  .acc .ac-btn{width:100%;text-align:left;background:#fff;border:none;border-top:1px solid var(--line);
+    padding:14px 18px;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+  .acc > div:first-child .ac-btn{border-top:none}
+  .ac-btn .chev{color:var(--green);font-size:1.1rem;transition:transform .25s}
+  .ac-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .ac-panel{padding:0 18px 16px;color:var(--ink)}
+  .ac-panel[hidden]{display:none}
+
+  /* reveal cards (click to expand — robust, no 3D transform) */
+  .cards.stack{grid-template-columns:1fr}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0;align-items:start}
+  .rcard{display:flex;flex-direction:column;text-align:left;width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:0;cursor:pointer;font-family:inherit;color:var(--ink);
+    overflow:hidden;transition:border-color .15s}
+  .rcard:hover{border-color:var(--green-l)}
+  .rcard[aria-expanded="true"]{border-color:var(--green)}
+  .rcard > span{display:block}
+  .rcard-ttl{font-weight:800;font-size:1.05rem;padding:15px 16px 0;border-top:4px solid var(--green)}
+  .rcard-sub{color:var(--muted);font-size:1rem;padding:3px 16px 12px}
+  .rcard-detail{padding:12px 16px 14px;background:var(--green-bg);margin-top:12px;border-top:1px solid var(--line)}
+  .rcard-detail ul{margin:0;padding-left:18px;font-size:1rem}
+  .rcard-detail li{margin-bottom:6px}
+  .rcard-detail[hidden]{display:none}
+  .longdesc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .longdesc summary{padding:12px 16px;font-weight:700;font-size:1rem;cursor:pointer;color:var(--green-d)}
+  .longdesc summary:hover{background:var(--band)}
+  .longdesc > :not(summary){padding:0 16px;font-size:1rem}
+  .longdesc ol{padding:0 16px 4px 34px;font-size:1rem}
+  .longdesc li{margin-bottom:8px}
+  .rcard-cue{font-size:1rem;color:var(--green-d);font-weight:700;padding:12px 16px 14px;margin-top:auto}
+  /* version badge */
+  .ver{font-size:1rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:.3px}
+
+  /* matching */
+  .match{margin:20px 0}
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:620px){.match-cols{grid-template-columns:1fr;gap:12px}}
+  .match .col-h{font-size:1rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:9px;
+    padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .chip:hover:not(.done){border-color:var(--green-l)}
+  .chip.sel{border-color:var(--amber);background:var(--amber-bg)}
+  .chip.done{border-color:var(--green);background:var(--green-bg);color:var(--green-d);cursor:default}
+  .chip.done::after{content:" ✓";font-weight:800}
+  .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .activity-status{margin-top:8px;font-weight:700;font-size:1rem;color:var(--muted)}
+  .activity-status.good{color:var(--green-d)}
+  .activity-status.bad{color:var(--bad)}
+
+  /* ordering */
+  .order{margin:20px 0}
+  .order ol{list-style:none;margin:0;padding:0}
+  .order .step{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);
+    border-radius:9px;padding:11px 14px;margin-bottom:9px;cursor:pointer;font-size:1rem;transition:.12s}
+  .order .step:hover{border-color:var(--green-l)}
+  .order .step .seq{flex:0 0 28px;height:28px;border-radius:50%;background:var(--band);color:var(--muted);
+    display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .order .step.picked .seq{background:var(--amber);color:#fff}
+  .order .step.correct{border-color:var(--green);background:var(--green-bg)}
+  .order .step.incorrect{border-color:var(--bad);background:var(--bad-bg)}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  @media(max-width:620px){.compare{grid-template-columns:1fr}}
+  .compare .box{border-radius:var(--radius);padding:18px}
+  .compare .safe{background:var(--ok-bg);border:1.5px solid var(--ok)}
+  .compare .danger{background:var(--bad-bg);border:1.5px solid var(--bad)}
+  .compare h4{margin-top:0}
+  .compare .safe h4{color:var(--green-d)} .compare .danger h4{color:var(--bad)}
+  .compare ul{margin:0;padding-left:18px;font-size:1rem} .compare li{margin-bottom:6px}
+
+  /* power flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0}
+  .flow .node2{flex:1 1 110px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px;
+    text-align:center;font-size:.8rem;color:var(--muted);box-shadow:var(--shadow)}
+  .flow .node2 b{display:block;color:var(--green-d);font-size:.88rem;margin-bottom:3px}
+  .flow .ar{align-self:center;color:var(--green-l);font-weight:800;font-size:1.1rem}
+
+  /* tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+  table.tbl caption{text-align:left;font-weight:700;color:var(--muted);font-size:1rem;padding:0 0 8px}
+  .tbl th{background:var(--green-d);color:#fff;text-align:left;padding:10px 13px;font-size:1rem}
+  .tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:#f8fafb}
+  .tbl .tm{font-weight:700;color:var(--green-d);white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+
+  /* CYU quiz */
+  .cyu{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green-l);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0 8px}
+  .cyu .cyu-h{font-size:1rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .cyu .cyu-q{font-weight:700;margin-bottom:12px}
+  .cyu .multi-note{font-size:.8rem;color:var(--muted);margin:-6px 0 10px}
+  .opt{display:block;width:100%;text-align:left;background:#fafbfc;border:2px solid var(--line);border-radius:9px;
+    padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink);transition:.12s}
+  .opt:hover:not(.locked){border-color:var(--green-l)}
+  .opt.chosen{border-color:var(--amber);background:var(--amber-bg)}
+  .opt .mk{display:inline-grid;place-items:center;width:28px;height:28px;border:1.5px solid var(--muted);border-radius:50%;
+    margin-right:9px;font-size:1rem;line-height:1;font-weight:800;color:var(--muted);vertical-align:middle}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--green-d);font-weight:600}
+  .opt.correct .mk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+  .opt.incorrect .mk{background:var(--bad);border-color:var(--bad);color:#fff}
+  .opt.locked{cursor:default}
+  .cyu-fb{margin-top:10px;padding:12px 14px;border-radius:8px;font-size:1rem;display:none}
+  .cyu-fb.show{display:block}
+  .cyu-fb.right{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--green-d)}
+  .cyu-fb.wrong{background:var(--bad-bg);border-left:4px solid var(--bad);color:var(--bad)}
+  .btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:1rem;font-family:inherit}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;color:var(--green-d);border:1.5px solid var(--green)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* footer nav */
+  .topnav{border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0;z-index:40}
+  .topnav .inner{max-width:820px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;border:none;
+    padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;font-family:inherit}
+  .navbtn:hover:not(:disabled){background:var(--green-d)}
+  .navbtn.prev{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .navbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gate-msg{font-size:1rem;color:var(--amber);font-weight:700;text-align:center;flex:1;min-width:0}
+  .gate-msg.ok{color:var(--green-d)}
+
+  /* results */
+  .ring{width:170px;height:170px;position:relative;margin:10px auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:2.2rem;font-weight:800;color:var(--green-d)}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--green-d);
+    color:#fff;padding:11px 20px;border-radius:30px;font-weight:700;z-index:200;transition:transform .35s;font-size:1rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* mobile drawer */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    nav.toc{position:fixed;top:var(--head-h);left:0;width:min(360px,86vw);height:calc(100vh - var(--head-h));
+      z-index:70;transform:translateX(-105%);transition:transform .3s;box-shadow:6px 0 24px rgba(0,0,0,.18)}
+    nav.toc.open{transform:none}
+    .scrim{position:fixed;inset:var(--head-h) 0 0 0;background:rgba(0,0,0,.35);z-index:65;display:none}
+    .scrim.show{display:block}
+  }
+
+  /* presentation photos */
+  .photo{margin:20px auto;text-align:center;max-width:560px}
+  .photo img{max-width:100%;max-height:360px;width:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .photo figcaption{font-size:1rem;color:var(--muted);margin-top:8px;line-height:1.4}
+  .photo-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:20px 0}
+  .photo-row .photo{margin:0;max-width:210px}
+  .photo-row .photo img{max-height:280px}
+  .topic.dark .photo figcaption{color:#9db8d6}
+  /* (reveal-card styles defined in the cards block above) */
+  /* click-to-enlarge images */
+  .photo img{cursor:zoom-in}
+  .photo img:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+  .zoom-hint{display:block;font-size:1rem;color:var(--green-d);font-weight:700;margin-top:4px;letter-spacing:.2px}
+  .topic.dark .zoom-hint{color:var(--gold)}
+  .lightbox{position:fixed;inset:0;z-index:300;background:rgba(10,27,51,.93);display:flex;align-items:center;justify-content:center;padding:34px}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;max-width:94vw;max-height:94vh}
+  .lb-fig img{max-width:94vw;max-height:80vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff}
+  .lb-fig figcaption{color:#dfe9f5;margin-top:14px;font-size:1rem;text-align:center;max-width:820px;line-height:1.5}
+  .lb-close{position:absolute;top:16px;right:20px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);color:#fff;cursor:pointer;display:grid;place-items:center}
+  .lb-close:hover{background:rgba(255,255,255,.28)}
+  .lb-close svg{width:20px;height:20px}
+
+/* ============================================================
+   Module-page additions: multi-lesson nav + WCAG 2.1 AA fixes
+   ============================================================ */
+
+/* --- visually hidden (available to screen readers only) --- */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- contrast-corrected tokens (all >=4.5:1 on white) ------
+   Audited: --muted was #5a6772 (5.6:1 ok). --gold text never used on white.
+   Added --amber-ink and --ok-ink for text that must sit on tinted panels. */
+:root{
+  --amber-ink:#6b4a00;    /* on --amber-bg #fdf6e3  -> 7.4:1 */
+  --ok-ink:#0a4a70;       /* on --ok-bg   #e3f0fa  -> 7.1:1 */
+  --bad-ink:#8f2418;      /* on --bad-bg  #fbeae8  -> 6.6:1 */
+  --lesson-h:44px;
+}
+
+/* --- three-level TOC: lesson > section > topic --- */
+.toc-lesson{border-bottom:1px solid var(--line)}
+.les-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--navy);color:#fff;
+  border:0;padding:11px 14px;font:600 14px/1.3 inherit;text-align:left;cursor:pointer}
+.les-btn:hover{background:#12294a}
+.les-btn .les-num{background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;
+  font-variant-numeric:tabular-nums;font-size:1rem;flex:0 0 auto}
+.les-btn .les-ttl{flex:1 1 auto}
+.les-btn .les-pc{font-size:1rem;opacity:.9;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.les-btn .toggle{transition:transform .18s}
+.toc-lesson[aria-expanded="false"] .les-btn .toggle{transform:rotate(-90deg)}
+.toc-lesson[aria-expanded="false"] .les-body{display:none}
+.toc-lesson.current .les-btn{background:var(--green-d)}
+
+/* --- lesson banner at the top of each lesson's first topic --- */
+.les-banner{background:var(--green-bg);border-left:5px solid var(--green);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.les-banner .lb-k{font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-d);display:block;margin-bottom:6px}
+.les-banner h3{margin:0 0 6px;font-size:19px}
+.les-banner p{margin:0;color:var(--muted);font-size:1rem}
+.les-banner .lb-meta{margin-top:10px;font-size:1rem;color:var(--muted)}
+.les-banner .lb-meta b{color:var(--ink)}
+
+/* --- module progress: two bars in the header --- */
+.progress-wrap .pbar.module i{background:var(--gold)}
+.prog-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.prog-row .lbl{min-width:0}
+
+/* --- keyboard/AT support for activities --------------------- */
+.chip[aria-pressed="true"]{outline:3px solid var(--green-d);outline-offset:2px}
+.activity-help{font-size:1rem;color:var(--muted);margin:0 0 10px}
+.step .pos{display:inline-block;min-width:1.6em;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums}
+.step.correct::after{content:"correct";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:#0a5c2e;background:#dff3e6;
+  padding:4px 7px;border-radius:4px}
+.step.incorrect::after{content:"wrong place";margin-left:auto;font:700 11px/1 inherit;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bad-ink);background:var(--bad-bg);
+  padding:4px 7px;border-radius:4px}
+.opt .opt-mark{margin-left:auto;font:700 11px/1 inherit;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 7px;border-radius:4px;flex:0 0 auto}
+.opt.correct .opt-mark{color:#0a5c2e;background:#dff3e6}
+.opt.incorrect .opt-mark{color:var(--bad-ink);background:var(--bad-bg)}
+
+/* --- photo buttons (real button, not img[role=button]) --- */
+.photo .zoom-btn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.photo .zoom-btn:focus-visible{outline:3px solid var(--green-l);outline-offset:3px}
+
+/* --- video placeholder slots --- */
+.vslot{border:2px dashed var(--green-l);border-radius:var(--radius);background:var(--green-bg);
+  padding:0;overflow:hidden;margin:16px 0}
+.vslot figure{margin:0}
+.vslot img{display:block;width:100%;height:auto}
+.vslot .vs-tag{display:flex;align-items:center;gap:8px;background:var(--green-d);color:#fff;
+  padding:8px 14px;font:600 13px/1.3 inherit}
+.vslot .vs-body{padding:12px 16px}
+.vslot .vs-body p{margin:0 0 8px;font-size:14.5px}
+.vslot .vs-body p:last-child{margin:0}
+.vslot details{margin-top:10px;font-size:14px}
+.vslot summary{cursor:pointer;font-weight:600;color:var(--green-d);padding:4px 0}
+.vslot summary:focus-visible{outline:3px solid var(--green-l);outline-offset:2px}
+
+/* --- attribution / credits --- */
+.cap .attrib{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.credits li{margin-bottom:8px;font-size:14px}
+
+/* --- nested sub-headings ------------------------------------
+   The 528.6 pilot used <h4> inside tab panels, comparison boxes and callouts
+   with no intervening <h3>, which skipped a heading level. Those are now <h3>
+   for a valid outline; these rules keep them looking exactly as they did. */
+.tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{
+  font-size:1.02rem;margin-top:1.2em;color:var(--ink)}
+.tabpanel h3:first-child,.compare h3:first-child,.box h3:first-child,
+.acc h3:first-child,.note h3:first-child{margin-top:0}
+.topic.dark .tabpanel h3,.topic.dark .compare h3,.topic.dark .box h3{color:#fff}
+.compare .safe h3{color:var(--green-d)}
+.compare .danger h3{color:var(--bad)}
+
+/* --- print --- */
+@media print{
+  .toc,.topnav,header.site,.scrim,.toast{display:none!important}
+  .topic{display:block!important;page-break-after:always}
+}
+
+</style>
+<style>
+  /* =========================================================
+     Per Scholas 2026 brand layer (FORMAT-SPEC 2026 addendum v0.1.0).
+     Appended after the engine stylesheet; the engine is untouched.
+     Re-points the engine tokens, then overrides the few engine
+     rules that hard-code a colour, a gradient, caps or a font.
+     ========================================================= */
+  :root{
+    --ps-slate:#26282E; --ps-cloud:#F0F0F0; --ps-white:#FFFFFF; --ps-sky:#71E2FD;
+    --ps-luminous:#E7FD82; --ps-uv:#724DFD; --ps-plum:#611940;
+    --ps-muted:#5A5D66; --ps-line:#D4D5D8; --ps-zebra:#F7F7F7;
+    --ps-amber:#8A4B00; --ps-amber-bg:#FFF3E6; --ps-red:#A4262C; --ps-red-bg:#FDECEC;
+    --font-body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-head:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+    --font-mono:Consolas,ui-monospace,"Liberation Mono",monospace;
+  }
+  /* token re-pointing: every engine rule that reads these changes with them */
+  :root{
+    --green:var(--ps-plum); --green-d:var(--ps-plum); --green-l:var(--ps-uv); --green-bg:var(--ps-cloud);
+    --navy:var(--ps-slate); --gold:var(--ps-luminous); --gold-d:var(--ps-luminous); --brand-light:var(--ps-sky);
+    --ink:var(--ps-slate); --muted:var(--ps-muted); --line:var(--ps-line); --band:var(--ps-cloud);
+    --card:#fff; --bg:#fff;
+    --amber:var(--ps-amber); --amber-bg:var(--ps-amber-bg); --blue:var(--ps-sky); --blue-bg:var(--ps-cloud);
+    --ok:var(--ps-plum); --ok-bg:var(--ps-luminous); --bad:var(--ps-red); --bad-bg:var(--ps-red-bg);
+    --amber-ink:var(--ps-amber); --ok-ink:var(--ps-slate); --bad-ink:var(--ps-red);
+    --shadow:0 2px 10px rgba(38,40,46,.08);
+  }
+  /* type: brand fallback stacks (brand spec section 3, HTML) */
+  body{font-family:var(--font-body);color:var(--ps-slate);background:var(--ps-white)}
+  h1,h2,h3,h4{font-family:var(--font-head);color:var(--ps-plum)}
+  .topic h2 .tnum,.topic h3{color:var(--ps-plum)}
+  .tabpanel h3,.compare h3,.box h3,.acc h3,.note h3{color:var(--ps-slate)}
+  .topic code,.overview code,.longdesc code{font-family:var(--font-mono);color:var(--ps-slate);
+    background:var(--ps-cloud);border-color:var(--ps-line)}
+  /* links: UV on White; Plum inside Cloud panels, where UV is 4.4:1 */
+  a{color:var(--ps-uv)}
+  .note a,.figure a,.les-banner a,.rcard-detail a,.ov-stat a{color:var(--ps-plum)}
+  /* header: White ground, Slate logo (inline SVG), Sky rule */
+  header.site{background:var(--ps-white);border-bottom:4px solid var(--ps-sky);box-shadow:none}
+  .ps-logo{display:block;height:auto;width:310px;flex:0 0 auto}
+  .ps-logo svg{display:block;width:100%;height:auto}
+  @media(max-width:1180px){.ps-logo{width:220px}}
+  @media(max-width:640px){.ps-logo{width:150px}}
+  .head-mid{border-left-color:var(--ps-line)}
+  .head-title{color:var(--ps-slate)}
+  .head-title b{color:var(--ps-plum)}
+  .ver{color:var(--ps-slate);border-color:var(--ps-slate)}
+  /* the engine's progress fill is a gradient; the brand allows none */
+  .pbar{background:var(--ps-cloud);border:1px solid var(--ps-line)}
+  .pbar i{background:var(--ps-uv)}
+  /* sidebar */
+  .les-btn{background:var(--ps-slate);color:var(--ps-white)}
+  .les-btn:hover{background:#3A3D45}
+  .toc-lesson.current .les-btn{background:var(--ps-plum)}
+  /* rules and bars in Sky */
+  .les-banner{border-left-color:var(--ps-sky)}
+  .rcard-ttl{border-top-color:var(--ps-sky)}
+  .cyu{border-left-color:var(--ps-sky)}
+  .ov-stat{border-top:4px solid var(--ps-sky)}
+  /* no all-caps text (brand spec section 3) */
+  .figure .cap,.les-banner .lb-k,.cyu .cyu-h,.match .col-h,
+  .step.correct::after,.step.incorrect::after,.opt .opt-mark{text-transform:none;letter-spacing:0}
+  .figure .cap{color:var(--ps-plum)}
+  .les-banner .lb-k{color:var(--ps-plum)}
+  .cyu .cyu-h{color:var(--ps-plum)}
+  /* tables: Cloud header row with bold Slate text and a Slate rule, as in the
+     2026 documents (brand spec section 5); row headers bold Slate on White */
+  .tbl th{background:var(--ps-white);color:var(--ps-slate)}
+  .tbl thead th{background:var(--ps-cloud);color:var(--ps-slate);border-bottom:2px solid var(--ps-slate)}
+  .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--ps-zebra)}
+  .tbl .tm{color:var(--ps-plum)}
+  /* engine hard-codes green for the correct badges; Luminous with Slate text */
+  .step.correct::after,.opt.correct .opt-mark{color:var(--ps-slate);background:var(--ps-luminous)}
+  /* ordering: the engine's picked badge is White on the token amber; stated
+     here with its own ground so the pair is explicit (6.8:1) */
+  .order .step.picked .seq{background:var(--ps-amber);color:var(--ps-white)}
+  /* lightbox ground re-tinted from legacy navy to Slate */
+  .lightbox{background:rgba(38,40,46,.94)}
+  .lb-fig figcaption{color:var(--ps-white)}
+</style>
+<style>
+  /* Component sheet for the 2026 Module pages: a worked-figure panel for
+     arithmetic laid out line by line. Appended after the brand layer. */
+  .calc{background:#fff;border:1.6px solid #26282E;border-radius:8px;padding:12px 16px;margin:18px 0}
+  .calc table{border-collapse:collapse;width:100%}
+  .calc td{padding:4px 8px;border-bottom:1px solid #D4D5D8;vertical-align:top}
+  .calc td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .calc tr.tot td{font-weight:700;border-bottom:none;border-top:2px solid #26282E}
+</style>
+<style>
+  /* Console transcript component sheet, recoloured to the 2026 palette.
+     Structure as the .cli sheet of the 2107.1 Module 529 pages; appended
+     after the brand layer. Slate title bar with White text (14.7:1), Slate
+     output on White, Plum command, #5A5D66 prompt (6.6:1), Cloud read-back
+     strip with Slate text (12.9:1). */
+  .cli{background:#FFFFFF;border:1.6px solid #26282E;border-radius:8px;margin:18px 0;overflow:hidden}
+  .cli .cli-ttl{background:#26282E;color:#FFFFFF;font-weight:700;font-size:.95rem;padding:9px 14px}
+  .cli .cli-body{overflow-x:auto;padding:12px 14px;background:#FFFFFF}
+  .cli pre{margin:0;min-width:520px;color:#26282E;background:#FFFFFF;
+    font-family:Consolas,ui-monospace,"Liberation Mono",monospace;font-size:.92rem;line-height:1.7}
+  .cli .pr{color:#5A5D66;background:#FFFFFF}
+  .cli .cmd{color:#611940;background:#FFFFFF;font-weight:700}
+  .cli .out{color:#26282E;background:#FFFFFF}
+  .cli .cli-foot{border-top:1px solid #D4D5D8;padding:10px 14px;color:#26282E;font-size:.95rem;background:#F0F0F0}
+  .cli .cli-foot p{margin:0 0 6px}
+  .cli .cli-foot p:last-child{margin-bottom:0}
+  .cli .cli-foot ul{margin:0;padding-left:20px}
+  .cli .cli-foot li{margin:4px 0}
+  .cli .cli-foot code{background:#FFFFFF;color:#26282E}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to lesson content</a>
+
+<header class="site">
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false"
+          aria-controls="toc">Contents</button>
+  <div class="brand">
+    <span class="ps-logo" id="psLogo" role="img" aria-label="Per Scholas logo.">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 128">
+  <path d="M55.27,3.16H1.08v121.68h21.81v-43.11h31.87c27.78,0,46.01-15.17,46.01-39.2S82.88,3.16,55.27,3.16ZM53.74,63.83h-30.84V21.23h30.84c16.36,0,24.71,7.84,24.71,21.3s-8.35,21.3-24.71,21.3Z" fill="#26282e"/>
+  <path d="M151.9,111.21c-13.29,0-23.18-9.71-24.03-28.8h61.69c1.36-28.63-11.76-48.91-38.85-48.91-24.88,0-43.46,18.4-43.46,46.69s18.4,46.69,43.97,46.69c20.79,0,35.79-12.95,38.51-31.7h-17.55c-1.87,8.69-8.86,16.02-20.28,16.02ZM150.87,47.98c9.37,0,17.72,5.45,19.6,20.79h-41.58c2.73-13.63,10.57-20.79,21.98-20.79Z" fill="#26282e"/>
+  <path d="M224.66,59.74v-24.2h-20.11v89.3h20.45v-45.67c0-18.24,7.5-24.54,20.28-24.54h9.2v-19.43c-1.88-.68-3.75-.85-6.82-.85-11.59,0-19.77,9.03-23.01,25.39Z" fill="#26282e"/>
+  <path d="M685.03,79.97c0-.56-.02-1.12-.03-1.68l-19.56.18,19.3-4.02c-.18-1.75-.43-3.45-.76-5.11l-20.3,4.22,19.33-8.21c-.46-1.59-.98-3.12-1.58-4.6l-19.36,8.22c.4,1.53.73,3.15.97,4.86h.01c.19,1.48.31,3.05.37,4.66h0c0,.13.01.26.02.4h0s0,0,0,0c.02.44.04.89.05,1.35-.09,19.69-10.67,30.39-23.46,30.39s-23.47-10.79-23.47-30.65h-21.57c0,.08,0,.16,0,.24h0v.42h.01c.31,28.39,20.22,46.26,45.02,46.26s43.38-16.7,44.93-43.44h.02c0-.13,0-.26.01-.39.05-1.02.09-2.04.09-3.08h-.02Z" fill="#26282e"/>
+  <path d="M616.7,76.68l-21.19-4.02c-.03.19-.04.4-.07.61l21.23,4.02c0-.21,0-.41.03-.61Z" fill="#26282e"/>
+  <path d="M617.31,71.93h.01l-19.85-8.02c-.1.29-.18.58-.28.87l19.94,8.06c.06-.32.11-.61.17-.91Z" fill="#26282e"/>
+  <path d="M618.54,66.97l-17.44-11.43c-.19.36-.4.7-.58,1.06l17.66,11.58c.11-.41.22-.83.36-1.22Z" fill="#26282e"/>
+  <path d="M620.64,61.92l-14.19-13.94c-.33.37-.66.76-.99,1.16l14.5,14.23c.22-.48.44-.98.69-1.45Z" fill="#26282e"/>
+  <path d="M623.93,57.14l-10.52-15.44c-.5.36-.98.72-1.45,1.09l10.78,15.84c.39-.51.77-1.02,1.19-1.49Z" fill="#26282e"/>
+  <path d="M628.48,53.16l-6.81-16.04c-.65.28-1.3.57-1.93.87l6.98,16.45c.57-.46,1.16-.88,1.77-1.27Z" fill="#26282e"/>
+  <path d="M634.13,50.62h0s-3.39-16.24-3.39-16.24c-.8.15-1.59.33-2.36.53l3.44,16.51c.76-.32,1.52-.58,2.31-.8Z" fill="#26282e"/>
+  <path d="M640.04,49.76c.11,0,.22.01.33.01l-.15-16.28h-.18c-.86,0-1.7.03-2.54.07l.15,16.32c.78-.08,1.58-.12,2.4-.12Z" fill="#26282e"/>
+  <path d="M649.84,34.48c-1.08-.22-2.18-.41-3.29-.55l-3.05,16.14c1.11.18,2.2.41,3.25.76l3.1-16.35Z" fill="#26282e"/>
+  <path d="M652.37,53.73h0s6.61-16.36,6.61-16.36c-1.11-.48-2.24-.94-3.39-1.33l-6.37,15.78c1.11.53,2.14,1.17,3.15,1.91Z" fill="#26282e"/>
+  <path d="M656.86,58.04h0l10.39-15.87c-1.05-.79-2.16-1.51-3.28-2.2l-9.91,15.12c1,.88,1.92,1.85,2.79,2.94Z" fill="#26282e"/>
+  <polygon points="660.03 63.19 660.02 63.19 660.01 63.19 660.03 63.19" fill="#26282e"/>
+  <path d="M660.02,63.19l14.21-14.47c-.93-1.09-1.89-2.11-2.9-3.1l-13.49,13.74c.8,1.17,1.53,2.45,2.18,3.83Z" fill="#26282e"/>
+  <path d="M661.98,68.56h0l17.57-11.97c-.7-1.37-1.49-2.67-2.32-3.92l-16.78,11.43c.59,1.38,1.11,2.89,1.53,4.46Z" fill="#26282e"/>
+  <path d="M355.14,53.09c-19.94-3.58-29.65-8.01-29.65-19.09,0-9.89,8.69-15.34,24.71-15.34s25.73,6.99,26.41,19.43h19.77c0-25.39-17.89-36.98-46.52-36.98s-45.84,14.49-45.84,33.91c0,23.01,14.83,31.87,44.31,36.98,21.3,3.75,31.36,8.69,31.36,20.11,0,10.39-9.37,17.21-27.95,17.21-19.6,0-30.67-7.67-31.7-22.32h-19.77c0,25.56,19.26,39.88,51.81,39.88s49.08-14.83,49.08-35.96c0-22.83-15.68-32.38-46.01-37.83Z" fill="#26282e"/>
+  <path d="M454.14,110.69c-12.44,0-22.84-10.39-22.84-30.5s10.4-30.5,22.84-30.5c10.91,0,16.7,6.47,19.09,17.04h17.89c-1.88-20.45-15.51-33.23-38-33.23s-43.28,18.4-43.28,46.69,19.26,46.69,43.28,46.69c22.49,0,35.96-13.29,38.52-33.23h-17.89c-2.39,10.57-8.52,17.04-19.6,17.04Z" fill="#26282e"/>
+  <path d="M554,33.5c-14.83,0-25.22,8.01-29.99,20.28V1.12h-20.28v123.72h20.45v-52.32c0-14.31,7.16-22.49,19.09-22.49s18.74,8.18,18.74,22.49v52.32h20.45v-57.94c0-20.62-10.05-33.4-28.46-33.4Z" fill="#26282e"/>
+  <rect x="699.12" y="1.12" width="20.45" height="123.72" fill="#26282e"/>
+  <path d="M808.69,66.56c0-20.96-10.4-33.06-35.28-33.06-21.3,0-36.3,10.39-36.98,33.23h18.06c.68-14.15,6.99-17.72,17.21-17.72,10.74,0,16.87,5.28,16.87,17.89v3.92l-20.62,3.41c-23.01,3.92-33.23,13.12-33.23,28.46,0,16.7,12.44,24.2,25.05,24.2,14.48,0,24.71-8.52,29.14-19.77.17,7.67.85,12.78,2.39,17.72h20.11c-1.7-6.14-2.73-14.15-2.73-25.39v-32.89ZM788.92,91.78c0,13.63-9.03,19.94-20.62,19.94-9.03,0-13.29-4.43-13.29-11.59,0-7.84,5.62-12.78,18.57-14.83l15.34-2.39v8.86Z" fill="#26282e"/>
+  <path d="M862.71,71.16c-13.12-3.24-18.92-5.62-18.92-12.78s6.14-9.88,14.66-9.88c9.54,0,15.51,4.26,16.19,12.27h17.72c0-16.19-11.42-27.27-33.91-27.27-20.62,0-34.08,10.91-34.08,26.58,0,16.87,11.93,23.35,31.36,28.29,13.46,3.41,19.43,6.13,19.43,12.95s-6.13,10.57-16.36,10.57c-13.12,0-18.92-5.11-19.77-13.63h-17.72c.17,17.89,13.29,28.63,37.49,28.63,21.98,0,36.13-10.57,36.13-27.1s-11.59-23.51-32.21-28.63Z" fill="#26282e"/>
+</svg>
+    </span>
+  </div>
+  <div class="head-mid">
+    <div class="head-title"><b>Low Voltage Security Systems Installations</b> &middot; Lesson 533.3 - NVR Commissioning and Recording</div>
+  </div>
+  <div class="progress-wrap">
+    <span class="ver" title="Version">v0.1.0</span>
+    <span class="lbl" id="progText">0% of lesson complete</span>
+    <div class="pbar" role="progressbar" aria-label="Lesson progress"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pbarFill"></i></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Lesson contents">
+    <div class="toc-tabs" role="tablist" aria-label="Sidebar view">
+      <button role="tab" id="tab-overview" aria-controls="overviewPanel"
+              aria-selected="true">Overview</button>
+      <button role="tab" id="tab-curriculum" aria-controls="tocList"
+              aria-selected="false">Curriculum</button>
+    </div>
+    <div id="tocList" role="tabpanel" aria-labeledby="tab-curriculum"></div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <section id="overviewPanel" class="overview" role="tabpanel"
+             aria-labelledby="tab-overview" hidden>
+      <p class="crumb"><b>UCI 1019 &middot; AI-Enhanced Low Voltage Fiber Technician</b>
+         &middot; Low Voltage Security Systems Installations</p>
+      <h2 id="ovh" tabindex="-1">Lesson 533.3 - NVR Commissioning and Recording</h2>
+      <p class="lead-in">How an installer sets up a Network Video Recorder (NVR) so that its recordings carry the right time and the right camera name, how long its drive keeps them, and how a recording comes back out as a clip somebody else can play.</p>
+
+      <p>At 7:40 on a Monday morning, the security manager of a distribution warehouse asks for the video of a loading-dock door from 2:10 on Saturday morning. The recorder holds three weeks of video. The search finds nothing at 2:10, because the recorder&rsquo;s clock was set by hand at installation and never moved for daylight saving time. Its recording of the door is stamped an hour off, on a channel named &ldquo;Camera 7&rdquo;. The clip that is finally exported opens only in the recorder maker&rsquo;s own player, which the insurer&rsquo;s investigator does not have.</p>
+
+      <p>Each of those faults dates from the day the recorder was commissioned. On project HSOC-26-014, Kestrel Communications is bringing the cameras on the Level 2 installation mock-up onto their recorders. The owner, Calder Regional Services, sets the terms in its Security Addendum: every channel named for its camera&rsquo;s location, the recorder&rsquo;s time taken from a named time source, a retention estimate for each recorder, and a settings backup or a manual recovery record at hand-off.</p>
+
+      <p>The worked examples on this page come from other jobs, not from the mock-up.</p>
+
+      <h3>How the lesson is organized</h3>
+      <ul>
+        <li><b>The Recorder, Its Drive, and Its Clock.</b> What a recorder does, the drive it writes to, and the time it stamps on every frame.</li>
+        <li><b>Cameras, Channels, and Recording Settings.</b> Confirming which camera is on which port, naming the channel for the camera&rsquo;s location, the recording schedule, and the stream settings that set how much the recorder writes.</li>
+        <li><b>Retention.</b> How many days of video a drive keeps, worked from the bitrate, the schedule, and the capacity, and what that estimate leaves out.</li>
+        <li><b>Getting Video Back and Leaving the System Recoverable.</b> Searching by channel and time, exporting a clip that plays, saving the settings, and the network the recorder sits on.</li>
+        <li><b>Wrapping Up.</b> A summary of each section.</li>
+      </ul>
+
+      <div class="ov-grid">
+        <div class="ov-stat"><b>5</b><span>Sections</span></div>
+        <div class="ov-stat"><b>14</b><span>Topics</span></div>
+        <div class="ov-stat"><b>13</b><span>Activities</span></div>
+        <div class="ov-stat"><b>2</b><span>Diagrams</span></div>
+      </div>
+
+      <h3>A note on the documents and the equipment</h3>
+      <p>The project documents named on this page are the owner&rsquo;s <strong>Security Addendum</strong>, which sets the recording, retention, and hand-off requirements, and the <strong>Kestrel security drawings</strong>, whose sheet SEC-201 shows each camera&rsquo;s path to its recorder. Both are fictional documents written for the mock-up. The recorders on the mock-up are AMLINK ALN-4108E units. Recorder makers name and arrange their menus differently. The names also change between software versions. This page describes what each setting does. The site lead posts the names the recorders in the room use.</p>
+
+      <h3>How this page works</h3>
+      <p>Work through the topics in order using the <strong>Next</strong> button, or go to any topic
+         from the <strong>Curriculum</strong> tab in the sidebar. Some topics contain
+         an activity you need to complete before <strong>Next</strong> unlocks&mdash;a
+         knowledge check or a matching exercise.
+         Getting a knowledge check wrong never blocks you: the answer is shown
+         and you can try again. The lesson takes ~60&ndash;75 min, including the activities.
+         The header and the contents list show your progress through the lesson.</p>
+
+      <h3>Working without a mouse, or with a screen reader</h3>
+      <p>Everything here is operable from the keyboard. <kbd>Tab</kbd> moves between
+         controls and <kbd>Enter</kbd> or <kbd>Space</kbd> activates them; the arrow keys
+         move between the sidebar tabs. In the matching activity every item is
+         a button, and your selections are announced as you make them. Right and wrong answers
+         are always labeled in words as well as by color. Each diagram carries a full text
+         description, and each table has column headings and a caption.</p>
+
+      <button class="btn" id="ovBegin" type="button">Begin Lesson 533.3</button>
+    </section>
+
+    <div id="topicWrap">
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="1" data-group-title="The Recorder, Its Drive, and Its Clock" data-num="533.3.1" data-title="What a network video recorder does">
+  <p class="crumb">Lesson 533.3 &middot; Section 1 The Recorder, Its Drive, and Its Clock</p>
+  <h2><span class="tnum">533.3.1</span> What a network video recorder does</h2>
+  <div class="les-banner">
+    <span class="lb-k">Lesson 533.3</span>
+    <h3>NVR Commissioning and Recording</h3>
+    <p>A camera that shows a live picture is not yet a surveillance system. The installer fits the recorder&rsquo;s drive, sets its clock from the site&rsquo;s time source, names each channel for its camera&rsquo;s location, and applies the owner&rsquo;s recording schedule. The installer then proves that a recording can be found and exported, states how many days of video the drive keeps, and leaves the settings in a form the next technician can rebuild from.</p>
+    <p class="lb-meta"><b>5</b> sections &nbsp;&middot;&nbsp;
+       <b>14</b> topics &nbsp;&middot;&nbsp;
+       <b>13</b> activities</p>
+  </div>
+
+  <div class="note note"><div class="nt">By the end of Lesson 533.3 you will be able to</div>
+    <ul>
+      <li><b>Confirm</b> that the Network Video Recorder (NVR) detects its recording drive.</li>
+      <li><b>Set</b> the NVR&rsquo;s date, time and time zone.</li>
+      <li><b>Confirm</b> a camera&rsquo;s identity, firmware version and NVR port.</li>
+      <li><b>Name</b> a camera channel to its installed location.</li>
+      <li><b>Apply</b> a recording schedule to a camera channel.</li>
+      <li><b>Estimate</b> recording retention from bitrate, schedule and drive capacity.</li>
+      <li><b>Retrieve</b> a recorded event by channel and time.</li>
+      <li><b>Export</b> a playable video clip.</li>
+      <li><b>Save</b> a settings backup or a manual recovery record.</li>
+    </ul></div>
+
+  <p class="lead-in">An NVR receives each camera&rsquo;s video over the network, writes it to a drive, and gives it back on request.</p>
+
+  <p>On a small or mid-sized site, one recorder does all of this.</p>
+  <ul>
+    <li><strong>It powers the cameras</strong>, where it has Power over Ethernet (PoE) ports. Each camera then needs one cable, to its port on the recorder.</li>
+    <li><strong>It receives each camera&rsquo;s video stream.</strong> The recorder keeps one <span class="keyterm">channel</span> for each camera: the camera&rsquo;s name, its recording schedule, and its recordings.</li>
+    <li><strong>It writes the video to its drive</strong>, on each channel&rsquo;s schedule, stamped with the recorder&rsquo;s own date and time.</li>
+    <li><strong>It shows live and recorded video</strong>, on a monitor connected to it or in a web browser on a computer that can reach it over the network.</li>
+    <li><strong>It gives recordings back</strong>: it searches them by channel and time, plays them, and exports a clip to a file.</li>
+  </ul>
+
+  <p>A recorder without a drive shows live video and keeps none of it. The camera&rsquo;s picture on the screen proves the camera, its cable, and its port. The recording proves the drive, the schedule, and the clock.</p>
+
+  <h3>Where the settings are made</h3>
+  <p>Most recorders accept the same settings from a monitor and mouse connected to the recorder and from a web browser on the network. The two screens are organized alike but are not always identical: a maker may offer a function on one and not on the other. On the mock-up, the site lead posts which screen each step uses and the menu names on it.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="A recorder with no drive still powers its cameras and shows their live video, so a live picture on the screen proves the camera, its cable, and its port. It keeps no recording, so a search returns nothing and nothing can be exported. The cameras do not store the recording on the recorder&rsquo;s behalf, and the live view does not hold a buffer that can be exported.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a medical office job, a recorder&rsquo;s drive failed overnight and has been removed for replacement. The office manager asks what the cameras and the recorder do until the new drive is fitted. What do you tell her?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The cameras record to the recorder&rsquo;s memory until the drive is fitted</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The live view keeps the last hour, which can be exported</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Nothing is shown or kept until the drive is fitted</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Live video shows on the monitor, and none of it is kept</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="1" data-group-title="The Recorder, Its Drive, and Its Clock" data-num="533.3.2" data-title="The recording drive">
+  <p class="crumb">Lesson 533.3 &middot; Section 1 The Recorder, Its Drive, and Its Clock</p>
+  <h2><span class="tnum">533.3.2</span> The recording drive</h2>
+  <p class="lead-in">The drive is where every recording lives. The recorder has to detect the drive. The drive has to be initialized before the recorder writes to it.</p>
+
+  <h3>What kind of drive</h3>
+  <p>A recorder writes to its drive around the clock, from several cameras at once. Drive makers sell lines rated for that load, labeled for surveillance or video recording. A drive made for a desktop computer is rated for fewer hours of use a day. The recorder maker&rsquo;s documentation states the drive types, sizes, and number of bays the recorder takes. The recorders on the mock-up take one drive each.</p>
+
+  <h3>Fitting it</h3>
+  <p>The recorder&rsquo;s quick start guide sets out the steps. Disconnect the recorder&rsquo;s power before the cover comes off, and reconnect it only with the cover back on. Photograph the drive&rsquo;s label before it goes in: the model and capacity on the label are the record of what was fitted. They cannot be read once the cover is closed.</p>
+
+  <h3>Detected, and initialized</h3>
+  <p>When the recorder starts, its disk page lists each drive it detects, with a status and a capacity. A drive missing from the list is not connected, not seated, or not working. Check the data and power cables inside, with the power disconnected, before anything else.</p>
+  <p>A new drive is usually listed as unformatted or uninitialized. <span class="keyterm">Initializing</span> the drive, which some recorders call formatting, prepares it for the recorder&rsquo;s own file layout. <strong>Initializing erases everything on the drive.</strong> On a new drive nothing is lost. On a drive taken from another recorder, the erased recordings may be the only copy of an incident. The site lead authorizes each initialization, at the disk page, after confirming which recorder and which drive it is.</p>
+  <p>Once initialized, the drive shows a status such as normal. The recorder then begins writing to it. Record the status and capacity as the disk page shows them, with the unit the recorder uses.</p>
+
+  <div class="note warn"><div class="nt">When the drive is full</div>
+    <p>By default, most recorders overwrite the oldest recording once the drive is full. The drive then always holds a moving window of the most recent days. A recorder set to stop when full keeps the oldest video and records nothing new.</p>
+  </div>
+
+  <div class="cyu gate" data-answer="1" data-fb="Initializing a drive erases it. A drive taken from the old recorder may hold the only copy of recordings the owner still needs, so the decision belongs to the site lead and the owner, not the installer. Fitting it in the new recorder is not the problem; initializing it is. Recordings from one recorder are not copied off by fitting the drive and pressing format, and a new recorder does not merge them.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a retail store job, a replacement recorder arrives. The store manager hands you the drive taken out of the failed recorder and asks you to fit it. The new recorder lists the drive as uninitialized and offers to format it. What do you do?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Format it: the new recorder copies the old video across first</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Stop, and ask the site lead: formatting erases the old recordings</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Format it: an uninitialized drive holds no recordings</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Fit it in a second bay so the recorder merges both drives</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="1" data-group-title="The Recorder, Its Drive, and Its Clock" data-num="533.3.3" data-title="Date, time, and time zone">
+  <p class="crumb">Lesson 533.3 &middot; Section 1 The Recorder, Its Drive, and Its Clock</p>
+  <h2><span class="tnum">533.3.3</span> Date, time, and time zone</h2>
+  <p class="lead-in">The recorder stamps every frame with its own clock. A search by time, and any account of what happened when, is only as good as that clock.</p>
+
+  <p>Video becomes evidence when somebody can say where and when it was recorded. The &ldquo;when&rdquo; is the timestamp the recorder wrote. The settings below make that timestamp right.</p>
+  <ul>
+    <li><strong>The time zone</strong> of the site, and its daylight saving rule, so the recorder&rsquo;s clock reads local time through the year. Some recorders apply daylight saving with the zone; others have a separate daylight saving setting.</li>
+    <li><strong>The time source.</strong> A recorder can take its time from a server using the <span class="keyterm">Network Time Protocol (NTP)</span>. It then corrects its clock against that server instead of drifting. The site names the server; the recorder has to be able to reach it from the network it sits on.</li>
+    <li><strong>The date and time</strong>, set by hand only where no time source can be reached. A clock set by hand drifts, and its error grows until somebody corrects it.</li>
+  </ul>
+
+  <h3>Why the clock matters beyond one camera</h3>
+  <p>An incident is often followed across several cameras: a car enters the gate, then crosses the yard, then stops at the dock. Where two recorders keep different times, the sequence cannot be read across them. A report that cites those times becomes open to challenge. Recorders that take their time from the same source agree with each other.</p>
+
+  <h3>Checking it</h3>
+  <p>After you save the settings, compare the recorder&rsquo;s displayed time with a reference clock the site names, in one screenshot. Record both times and the difference in seconds. A difference of a few seconds is the time the screens took to refresh; a difference of an hour is a time zone or daylight saving error.</p>
+
+  <p>The owner&rsquo;s Security Addendum, clause E4, requires the recorder to keep its time from the posted time source, in the site&rsquo;s time zone.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="The recorder writes its own clock into every recording. If its time zone is set one hour ahead of the site&rsquo;s, the event at 14:05 local time is stamped 15:05, so a search from 14:00 to 14:10 finds nothing from that minute. The drive and the schedule are not at fault: the recording exists, under a different time. A wider window finds it only if it reaches 15:05.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a transit depot job, a guard reports a person at the fence at 14:05. The recorder&rsquo;s time zone was set one hour ahead of the site&rsquo;s. A search of the fence channel from 14:00 to 14:10 shows no recording of the person. Where is the recording?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Nowhere: the time zone error stopped the recording</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>On the drive, stamped 13:05, an hour earlier</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>On the drive, stamped 15:05, an hour later</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>In the recorder&rsquo;s memory, until the clock is corrected</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="2" data-group-title="Cameras, Channels, and Recording Settings" data-num="533.3.4" data-title="Confirming the camera on its port">
+  <p class="crumb">Lesson 533.3 &middot; Section 2 Cameras, Channels, and Recording Settings</p>
+  <h2><span class="tnum">533.3.4</span> Confirming the camera on its port</h2>
+  <p class="lead-in">Before a channel gets a name, confirm which camera is on it. A cable crossed at the recorder puts the right name on the wrong picture.</p>
+
+  <p>A recorder lists the cameras it has added, by port or channel. Some recorders add a camera as soon as it is connected to a PoE port. Others need a device search and an add step, as the maker&rsquo;s guide describes. Either way, the recorder&rsquo;s camera pages usually give these facts about each camera.</p>
+  <ul>
+    <li><strong>The model</strong>, as the camera reports it.</li>
+    <li><strong>The firmware version</strong>: the software inside the camera. The hand-off record carries it, so the next technician knows what the camera runs before updating it or reporting a fault.</li>
+    <li><strong>The Media Access Control (MAC) address</strong>: the hardware address set in the camera at manufacture, usually printed on the camera&rsquo;s own label.</li>
+  </ul>
+  <p>The port number says where the cable lands. The MAC address says which camera is on the other end. Compare the MAC address the recorder shows with the one on the label of the camera at the location the drawing gives for that port. A match ties the channel to the camera on the wall. A mismatch means the cables are crossed or the labels are wrong. Naming the channel before that is resolved puts the error into the record.</p>
+  <p>Where the recorder shows no firmware version or no MAC address, record &ldquo;not shown&rdquo; and the pages you looked at. Do not copy a value from another camera of the same model.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The port number shows only where a cable lands at the recorder. The MAC address identifies the camera. If port 3 reports the MAC address printed on the stairwell camera, the cable from the stairwell reaches port 3: the cables or their labels are crossed. Find which, and correct it or report it, before naming the channel. A MAC address does not change when a camera starts, and a firmware difference does not swap one camera&rsquo;s address for another&rsquo;s.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On an office building job, the camera schedule puts the lobby camera on recorder port 3. The recorder&rsquo;s port 3 shows a MAC address that matches the label on the stairwell camera. What does that tell you?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Nothing yet: a camera takes a new MAC address each time it starts</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The stairwell cable reaches port 3: find the crossing before naming</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The lobby camera runs older firmware than the stairwell camera</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Port 3 is correct, so name the channel for the lobby</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="2" data-group-title="Cameras, Channels, and Recording Settings" data-num="533.3.5" data-title="Naming the channel for its location">
+  <p class="crumb">Lesson 533.3 &middot; Section 2 Cameras, Channels, and Recording Settings</p>
+  <h2><span class="tnum">533.3.5</span> Naming the channel for its location</h2>
+  <p class="lead-in">A channel name tells the person searching the recordings where the camera looks. It names the location, not the camera.</p>
+
+  <p>A recorder gives each channel a default name, such as a number or the camera&rsquo;s model. Neither tells a security officer which door or corridor the channel covers. The owner&rsquo;s standard sets the name: on most sites, the camera&rsquo;s location identifier, the same identifier printed on its cable label and shown on the camera schedule. On a parking structure, for example, the third camera on the level 2 ramp might be <code>P2-RAMP-C3</code> on the drawing, on both ends of its cable, and on its channel.</p>
+  <p>The identifier belongs to the location. When a failed camera is replaced with another model on the same cable, the channel keeps its name; the hand-off record takes the new camera&rsquo;s model, firmware version, and MAC address.</p>
+  <p>Enter the name character for character, as the label shows it, with its hyphens and capitals. A search screen, a report, and an exported file name all carry it.</p>
+  <p>The owner&rsquo;s Security Addendum, clause E4, requires each channel to carry its camera&rsquo;s identifier.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="The channel name identifies the location, so it stays when the camera at that location is replaced. What changes is the record of the camera: its model, firmware version, and MAC address. Renaming the channel for the new model, or adding a suffix, breaks the match between the drawing, the cable label, and the channel. The recorder does not rename channels when a camera is replaced.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a parking structure job, the camera on channel <code>P2-RAMP-C3</code> fails and is replaced with a different model, on the same cable and port. What happens to the channel name?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>It stays; the record takes the new camera&rsquo;s details</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>It changes to the new camera&rsquo;s model</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>It gains a suffix that marks the replacement</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The recorder resets it to its default name</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="2" data-group-title="Cameras, Channels, and Recording Settings" data-num="533.3.6" data-title="Recording schedules">
+  <p class="crumb">Lesson 533.3 &middot; Section 2 Cameras, Channels, and Recording Settings</p>
+  <h2><span class="tnum">533.3.6</span> Recording schedules</h2>
+  <p class="lead-in">A schedule sets, for each channel, the hours of each day the recorder writes, and what makes it write.</p>
+
+  <p>A schedule is a grid of days and hours for one channel. Each block of the grid takes a recording type.</p>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>Recording types a schedule commonly assigns, and what each one keeps.</caption>
+      <thead><tr>
+        <th scope="col">Type</th><th scope="col">The recorder writes</th><th scope="col">What it keeps</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Continuous</th><td>All the time in the block</td><td>Everything, at the highest use of the drive</td></tr>
+        <tr><th scope="row">Event</th><td>Only when an event is detected, such as motion in the picture</td><td>The detected events; nothing between them</td></tr>
+        <tr><th scope="row">None</th><td>Nothing</td><td>Live video only</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Many recorders record each channel continuously, every day, until a schedule changes it. Where the owner&rsquo;s schedule is continuous recording, open the channel&rsquo;s schedule, check each day, and save it: the saved schedule is the evidence that you checked it. On a playback timeline, many recorders draw continuous and event recordings in different colors.</p>
+  <p>Apply the schedule to the channel the work order names. Most recorders offer to copy a schedule to other channels. Copy it only where the work order covers those channels too.</p>
+  <p>The owner&rsquo;s Security Addendum, clause E4, sets the schedule: as posted on the Security Plan Sheet, or continuous, 24 hours a day, seven days a week where none is posted.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="Overnight the schedule records on events only, so the recorder writes only when it detects one, such as motion. The gaps are the periods with no detected event. A full drive overwrites the oldest recordings across the whole timeline, not the nights only. A wrong time zone moves recordings to other times; it leaves no gaps. A camera with its infrared lights on still sends video.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a school job, each channel records continuously from 6:00 to 20:00 and on events only from 20:00 to 6:00. The night custodian asks why the overnight timeline is full of gaps. What do you tell him?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The drive is full, and the recorder overwrites the night hours first</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The recorder&rsquo;s time zone is wrong, so the night hours are shifted</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>At night the recorder writes only when it detects an event</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>At night the cameras switch to their infrared lights and stop sending</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="2" data-group-title="Cameras, Channels, and Recording Settings" data-num="533.3.7" data-title="Resolution, codec, and bitrate">
+  <p class="crumb">Lesson 533.3 &middot; Section 2 Cameras, Channels, and Recording Settings</p>
+  <h2><span class="tnum">533.3.7</span> Resolution, codec, and bitrate</h2>
+  <p class="lead-in">The stream settings decide how much video data a channel sends. The recorder writes what it receives, so they decide how fast the drive fills.</p>
+
+  <p>A camera usually sends two streams. The <span class="keyterm">main stream</span>, at the camera&rsquo;s full resolution, is the one most recorders write to the drive. A smaller <span class="keyterm">sub stream</span> serves views where many cameras share one screen. The settings below are those of the main stream.</p>
+  <ul>
+    <li><strong>Resolution</strong>: the width and height of each frame, in pixels, such as 1920 &times; 1080. More pixels show more detail and need more data.</li>
+    <li><strong>Codec</strong>: the method that compresses the video, such as H.264 or H.265. H.265 typically needs a lower bitrate than H.264 for a similar picture. A computer that plays the exported file has to support the same codec.</li>
+    <li><strong>Bitrate</strong>: the amount of data the stream sends each second, shown in kilobits per second (kbit/s) or megabits per second (Mbit/s). 1 Mbit/s is 1,000 kbit/s.</li>
+    <li><strong>Bitrate type</strong>: a <span class="keyterm">Constant Bitrate (CBR)</span> stream sends close to the set figure all the time. A <span class="keyterm">Variable Bitrate (VBR)</span> stream sends less when the scene is still and more when it moves; on most cameras the set figure is its ceiling.</li>
+  </ul>
+  <p>Read these settings on the channel&rsquo;s video or encoding page, and record them as the recorder shows them. They belong to the camera. On a commissioning job, you read and record them without changing them: a change alters the picture the owner approved and the retention the drive gives.</p>
+
+  <p>Match each stream setting to what it sets.</p>
+  <div class="match gate" data-left="Setting" data-right="What it sets">
+    <div class="pair" data-left="Resolution" data-right="The number of pixels in each frame"></div>
+    <div class="pair" data-left="Codec" data-right="The method that compresses the video"></div>
+    <div class="pair" data-left="Bitrate" data-right="The data the stream sends each second"></div>
+    <div class="pair" data-left="Bitrate type" data-right="Whether the data rate holds steady or follows the scene"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="3" data-group-title="Retention" data-num="533.3.8" data-title="Estimating retention">
+  <p class="crumb">Lesson 533.3 &middot; Section 3 Retention</p>
+  <h2><span class="tnum">533.3.8</span> Estimating retention</h2>
+  <p class="lead-in">Retention is how far back the recordings reach once the drive is full. It is estimated from the bitrate, the hours recorded each day, and the drive&rsquo;s capacity.</p>
+
+  <p>A recorder that overwrites the oldest recording when the drive is full keeps a moving window of days. The owner wants to know how wide that window is, because an incident reported after it has passed can no longer be retrieved.</p>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; A full drive keeps a moving window of days</div>
+    <div class="tbl-scroll">
+    <svg style="min-width:900px" viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="A bar standing for a full recording drive. New video is written at the right-hand end while the oldest video at the left-hand end is overwritten. The span of the bar is the retention. A full text description follows.">
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">A full drive keeps a moving window of days (another job)</text>
+      <rect x="120" y="70" width="660" height="56" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <rect x="120" y="70" width="70" height="56" rx="6" fill="#FFFFFF" stroke="#A4262C" stroke-width="2"/>
+      <text x="155" y="103" font-size="13" text-anchor="middle" fill="#A4262C">Oldest</text>
+      <rect x="710" y="70" width="70" height="56" rx="6" fill="#71E2FD" stroke="#26282E" stroke-width="1.6"/>
+      <text x="745" y="103" font-size="13" text-anchor="middle" fill="#26282E">Newest</text>
+      <text x="450" y="103" font-size="15" font-weight="700" text-anchor="middle" fill="#26282E">6,000 GB of recordings, every channel</text>
+      <line x1="24" y1="98" x2="112" y2="98" stroke="#A4262C" stroke-width="2"/>
+      <polygon points="24,92 12,98 24,104" fill="#A4262C"/>
+      <text x="24" y="150" font-size="13" fill="#A4262C">Overwritten first</text>
+      <line x1="788" y1="98" x2="876" y2="98" stroke="#26282E" stroke-width="2"/>
+      <polygon points="788,92 776,98 788,104" fill="#26282E"/>
+      <text x="876" y="150" font-size="13" text-anchor="end" fill="#26282E">New video written here</text>
+      <line x1="120" y1="176" x2="780" y2="176" stroke="#26282E" stroke-width="1.6"/>
+      <line x1="120" y1="168" x2="120" y2="184" stroke="#26282E" stroke-width="1.6"/>
+      <line x1="780" y1="168" x2="780" y2="184" stroke="#26282E" stroke-width="1.6"/>
+      <text x="450" y="204" font-size="15" font-weight="700" text-anchor="middle" fill="#611940">Retention: about 21.7 days</text>
+      <text x="450" y="230" font-size="13" text-anchor="middle" fill="#5A5D66">6,000 GB &#247; 276.5 GB written a day, all channels together</text>
+    </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled A full drive keeps a moving window of days (another job). A long bar stands for a full drive and reads 6,000 GB of recordings, every channel. At its left end a block marked Oldest has an arrow leaving it to the left, labeled Overwritten first. At its right end a block marked Newest has an arrow entering it from the right, labeled New video written here.</p>
+    <p>A bracket under the whole bar reads Retention: about 21.7 days, and under it: 6,000 GB divided by 276.5 GB written a day, all channels together.</p>
+  </details>
+
+  <h3>The method</h3>
+  <ol>
+    <li><strong>Bitrate in Mbit/s.</strong> Divide a figure in kbit/s by 1,000.</li>
+    <li><strong>Gigabytes (GB) a camera a day.</strong> Multiply the bitrate in Mbit/s by the seconds recorded in a day (3,600 &times; the hours), divide by 8 to turn bits into bytes, and divide by 1,000 to turn megabytes (MB) into GB.</li>
+    <li><strong>GB a day for the recorder.</strong> Add the figures of every channel. Where every channel has the same bitrate and schedule, multiply one channel&rsquo;s figure by the number of channels.</li>
+    <li><strong>Retention in days.</strong> Divide the capacity on the drive&rsquo;s label, in GB, by the GB a day for the recorder.</li>
+  </ol>
+  <p>For a channel recording 24 hours a day, step 2 comes to the bitrate in Mbit/s &times; 10.8.</p>
+
+  <div class="calc">
+    <table>
+      <caption>A recorder on another job (hypothetical): a 6 terabyte (TB) drive, ten cameras each at 2,560 kbit/s, continuous recording 24 hours a day.</caption>
+      <thead><tr><th scope="col">Line</th><th scope="col">Result</th></tr></thead>
+      <tbody>
+        <tr><td>Capacity: 6 TB &times; 1,000</td><td class="n">6,000 GB</td></tr>
+        <tr><td>Bitrate: 2,560 &divide; 1,000</td><td class="n">2.56 Mbit/s</td></tr>
+        <tr><td>GB a camera a day: 2.56 &times; 3,600 &times; 24 &divide; 8 &divide; 1,000</td><td class="n">27.6 GB</td></tr>
+        <tr><td>GB a day, ten cameras: 27.648 &times; 10</td><td class="n">276.5 GB</td></tr>
+        <tr class="tot"><td>Retention: 6,000 &divide; 276.5</td><td class="n">21.7 days, estimated</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Carry the unrounded figure from one line to the next, and round the result to one decimal place.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="1,536 kbit/s is 1.536 Mbit/s. For 12 hours a day, one camera writes 1.536 &times; 3,600 &times; 12 &divide; 8 &divide; 1,000 = 8.29 GB, and five cameras write 41.5 GB a day. 3,000 &divide; 41.5 = 72.3 days. 36.2 days is the figure for 24 hours a day, 361.7 days the figure for one camera alone, and 9.0 days the result of leaving out the division by 8.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a library job, a recorder has a 3 TB drive. Five cameras each send 1,536 kbit/s, and the schedule records 12 hours a day, every day. What is the estimated retention?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>36.2 days</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>72.3 days</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>9.0 days</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>361.7 days</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="3" data-group-title="Retention" data-num="533.3.9" data-title="Units, and what the estimate leaves out">
+  <p class="crumb">Lesson 533.3 &middot; Section 3 Retention</p>
+  <h2><span class="tnum">533.3.9</span> Units, and what the estimate leaves out</h2>
+  <p class="lead-in">The figure is an estimate of what the settings allow. The owner&rsquo;s Security Addendum, clause E5, asks for it by that name: an estimate, not an observed retention.</p>
+
+  <h3>Two ways of counting a gigabyte</h3>
+  <p>Drive makers count 1 GB as 1,000 MB and 1 TB as 1,000 GB. The method above counts the same way. Some recorders and computers count in powers of two, where 1 TB is 1,099,511,627,776 bytes. A drive labeled 8 TB then shows as about 7.3 TB. Work the estimate on the capacity printed on the drive&rsquo;s label, in decimal GB. Record the figure the recorder displays beside it, with its unit. A figure in binary units would shorten only an estimate worked from it; the drive holds the same video whatever unit the recorder&rsquo;s screen shows. A recorder also reserves part of a drive when it initializes it, so the space left for video is slightly less than either figure.</p>
+
+  <h3>What moves the real figure</h3>
+  <ul>
+    <li><strong>Variable bitrate.</strong> A VBR stream sends less than its set figure when the scene is still, so over a quiet scene the drive can keep recordings for longer. Where the set figure is the stream&rsquo;s ceiling, an estimate at the set figure gives the shortest retention. An audio track, or a camera&rsquo;s smart codec, also changes the real figure.</li>
+    <li><strong>Event recording.</strong> A channel that records on events writes only when something happens. Its hours a day are an assumption about activity, so state the assumption beside the estimate.</li>
+    <li><strong>Mixed channels.</strong> Channels with different bitrates or schedules each get their own line; the recorder&rsquo;s figure is their sum.</li>
+    <li><strong>Changed settings.</strong> A higher resolution, a different codec, or a new camera changes the figure. The estimate holds only for the settings it was worked from, so record them with it.</li>
+  </ul>
+  <p>The observed retention is read later from the recorder: the date of the oldest recording still on a full drive. Where it differs from the estimate, the settings above usually explain why.</p>
+
+  <div class="cyu gate" data-answer="3" data-fb="The estimate assumed every camera sent its set figure all day. A variable bitrate stream sends less when the scene is still, so a quiet warehouse writes less than the estimate assumed, and the drive keeps more days. Binary units change the capacity a screen shows, not the video the drive holds; the estimate uses the label capacity. A time zone error shifts timestamps; it does not add days. A drive does not compress recordings once it is full.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a warehouse job, the estimate for a recorder was 18.4 days, worked from each camera&rsquo;s set bitrate. The cameras use variable bitrate. Six weeks later, the oldest recording on the full drive is 23 days old. What best explains the difference?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The recorder counts the drive in binary units</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The recorder&rsquo;s time zone is set a day ahead</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The drive compresses old recordings once it is full</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Quiet scenes send less than the set bitrate</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="4" data-group-title="Getting Video Back and Leaving the System Recoverable" data-num="533.3.10" data-title="Searching and playing back by channel and time">
+  <p class="crumb">Lesson 533.3 &middot; Section 4 Getting Video Back and Leaving the System Recoverable</p>
+  <h2><span class="tnum">533.3.10</span> Searching and playing back by channel and time</h2>
+  <p class="lead-in">A request for video names a place and a time. The search uses the same two keys: the channel, and a window of time.</p>
+
+  <p>Every retrieval starts the same way.</p>
+  <ol>
+    <li><strong>Choose the channel.</strong> The channel name is the location identifier, so the location in the request gives the channel.</li>
+    <li><strong>Set the date and a window of time.</strong> A reported time is rarely exact. Start a few minutes before it and end a few minutes after it, then widen the window if the search finds nothing.</li>
+    <li><strong>Run the search, and read the result.</strong> The recorder lists the recordings in the window, or draws them on a timeline. A window with no recording in it points to the schedule, the drive, or the camera, not the search.</li>
+    <li><strong>Play from the start of the window</strong> and pause on the moment requested. The frame carries the recorder&rsquo;s timestamp. Record it beside the time in the request, and state any difference.</li>
+  </ol>
+  <p>A search on the wrong channel, or a window around the wrong time, returns recordings that look like an answer and are not. Confirm the channel name and the recorder&rsquo;s time before you report that nothing was recorded.</p>
+
+  <div class="cyu gate" data-answer="0" data-fb="Start where the request points: the channel of the door named in the report, over a window of a few minutes either side of the reported time, which is rarely exact. Widen the window if that search finds nothing. A search of every channel for the whole day returns far more than anyone can review. A window that opens at the exact reported minute misses anything a little earlier. A different camera is a later step, after the door&rsquo;s own channel has been searched.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a clinic job, the practice manager reports that the rear door was forced &ldquo;around 10:15&rdquo; this morning. The recorder&rsquo;s time has been checked against the site&rsquo;s time source. Which search do you run first?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The rear door&rsquo;s channel, from about 10:05 to 10:25</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Every channel, from midnight to the time of the report</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The rear door&rsquo;s channel, from exactly 10:15:00 onward</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The parking lot channel, which covers the rear door&rsquo;s approach</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="4" data-group-title="Getting Video Back and Leaving the System Recoverable" data-num="533.3.11" data-title="Exporting a clip that plays">
+  <p class="crumb">Lesson 533.3 &middot; Section 4 Getting Video Back and Leaving the System Recoverable</p>
+  <h2><span class="tnum">533.3.11</span> Exporting a clip that plays</h2>
+  <p class="lead-in">An export copies part of a recording into a file that leaves the recorder. The file has to open on the computer of whoever receives it.</p>
+
+  <h3>Making the export</h3>
+  <ul>
+    <li><strong>Range.</strong> Export from a little before the event to a little after it, so the clip shows what led up to it and what followed.</li>
+    <li><strong>Destination.</strong> Recorders export to a USB flash drive in one of their ports; many also let the web interface download a clip to the computer running the browser. A recorder may need the flash drive in a particular format: the recorders on the mock-up use FAT32.</li>
+    <li><strong>File type.</strong> Some recorders write a format of their own that opens only in the maker&rsquo;s player. Where the recorder offers a standard format such as MP4, choose it.</li>
+  </ul>
+
+  <h3>Proving that it plays</h3>
+  <p>Open the file on a computer that does not have the recorder maker&rsquo;s software, in its ordinary video player, and watch the event in it. A clip recorded in H.265 needs a player or computer that supports H.265; on Windows 11, the built-in player needs the HEVC Video Extensions. Record the file name, its type, its size, the length of the clip, and whether it played, or what the player showed if it did not.</p>
+
+  <h3>Who receives it</h3>
+  <p>A clip of an incident can become evidence. The owner decides who receives a copy. The work order or the site lead names that person. Hand the file to the person named, keep the original export unaltered, and record when and to whom it went.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="The clip was most likely exported in a format that only the maker&rsquo;s player opens. Export it again in a standard format such as MP4, where the recorder offers one, and play it on a computer without the maker&rsquo;s software before you send it. Changing the file name does not change the format inside the file. The administrator password belongs to the owner and is never sent. The live view shows what is happening now, not the recording the request asked for.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a hotel job, you export a clip for the hotel&rsquo;s insurer. The investigator replies that the file will not open on any of her computers. Which step should come next?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Change the file name to end in MP4, and send it again</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Send her the recorder&rsquo;s address and its administrator password</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Export again in a standard format, and play it before sending it</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Record the live view on a laptop screen, and send that file</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="4" data-group-title="Getting Video Back and Leaving the System Recoverable" data-num="533.3.12" data-title="Settings backup, or a manual recovery record">
+  <p class="crumb">Lesson 533.3 &middot; Section 4 Getting Video Back and Leaving the System Recoverable</p>
+  <h2><span class="tnum">533.3.12</span> Settings backup, or a manual recovery record</h2>
+  <p class="lead-in">A recorder that fails, or is reset, loses its settings. A backup, or a written record of the settings, lets the next technician rebuild the settings.</p>
+
+  <p>The settings can be kept in either of these forms.</p>
+  <ul>
+    <li><strong>A settings backup.</strong> Many recorders export their configuration to a file, on a USB flash drive or through the web interface, and import it into the same model later. Record the file&rsquo;s name and date, and store it where the owner keeps equipment records.</li>
+    <li><strong>A manual recovery record.</strong> Where the recorder offers no export, write the settings down from the screens.
+      <ul>
+        <li>For the recorder: its identifier and Internet Protocol (IP) address, its time zone, and its time source.</li>
+        <li>For each channel: its number or port, its name, the camera&rsquo;s model and firmware version, the stream settings, and the recording schedule.</li>
+      </ul></li>
+  </ul>
+  <p>Neither form carries a password, a passphrase, or an account name. The owner holds the accounts and issues access to whoever needs it. The owner&rsquo;s Security Addendum, clause E9, keeps credentials out of every record, photograph, screenshot, and prompt to an Artificial Intelligence (AI) tool. Clause E10 asks for a settings backup or a manual recovery record for each device at hand-off.</p>
+
+  <div class="cyu gate" data-answer="1" data-fb="The password does not belong in the record. The owner holds the accounts and issues access to the next technician. The stream settings and the time source stay in the record: a rebuild needs them.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a factory job, a colleague&rsquo;s manual recovery record holds every setting a rebuild needs. It also holds the administrator password, &ldquo;so the next technician can get in.&rdquo; What do you change before the record is handed over?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>Remove the stream settings, which belong to the cameras</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>Remove the password; the owner issues access</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>Remove the time source, which the network team owns</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>Nothing: a complete record includes the password</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="4" data-group-title="Getting Video Back and Leaving the System Recoverable" data-num="533.3.13" data-title="The camera network and remote viewing">
+  <p class="crumb">Lesson 533.3 &middot; Section 4 Getting Video Back and Leaving the System Recoverable</p>
+  <h2><span class="tnum">533.3.13</span> The camera network and remote viewing</h2>
+  <p class="lead-in">On many sites, cameras and recorders sit on a network of their own, behind a firewall. The firewall decides what can open a connection to the recorder, and what the recorder can reach.</p>
+
+  <p>The camera network is a zone of its own, with a firewall between it and the office network. The network team writes the firewall&rsquo;s rules. A common set, and the one the network team set on the mock-up, reads like this.</p>
+  <ul>
+    <li><strong>The office network may start a session into the camera network</strong>: a laptop opens the recorder&rsquo;s web page.</li>
+    <li><strong>The camera network may not start a session into the office network.</strong> The firewall lets the recorder&rsquo;s replies through, and nothing the recorder starts.</li>
+  </ul>
+  <p>Under these rules, video stays on the camera network unless somebody on the office network asks for it. A camera or recorder cannot open a connection to an office computer. The rules also explain what an installer meets on site. A laptop on the office network reaches the recorder&rsquo;s web interface. A recorder cannot reach a time server, a mail server, or anything else on the office network unless the network team adds a rule, so the site names a time source the camera network can reach.</p>
+
+  <div class="figure">
+    <div class="cap">Figure &mdash; Where the recorder sits</div>
+    <div class="tbl-scroll">
+    <svg style="min-width:900px" viewBox="0 0 900 330" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Cameras connect to the recorder&rsquo;s PoE ports. The recorder&rsquo;s network port connects to a switch port on the camera network, which reaches the office network through a firewall. A full text description follows.">
+      <text x="24" y="28" font-size="16" font-weight="700" fill="#611940">Where the recorder sits (a typical site)</text>
+      <rect x="24" y="60" width="140" height="40" rx="6" fill="#FFFFFF" stroke="#26282E" stroke-width="1.6"/>
+      <text x="94" y="85" font-size="13" text-anchor="middle" fill="#26282E">Camera</text>
+      <rect x="24" y="120" width="140" height="40" rx="6" fill="#FFFFFF" stroke="#26282E" stroke-width="1.6"/>
+      <text x="94" y="145" font-size="13" text-anchor="middle" fill="#26282E">Camera</text>
+      <rect x="24" y="180" width="140" height="40" rx="6" fill="#FFFFFF" stroke="#26282E" stroke-width="1.6"/>
+      <text x="94" y="205" font-size="13" text-anchor="middle" fill="#26282E">Camera</text>
+      <line x1="164" y1="80" x2="250" y2="110" stroke="#26282E" stroke-width="1.6"/>
+      <line x1="164" y1="140" x2="250" y2="140" stroke="#26282E" stroke-width="1.6"/>
+      <line x1="164" y1="200" x2="250" y2="170" stroke="#26282E" stroke-width="1.6"/>
+      <text x="24" y="250" font-size="13" fill="#5A5D66">One cable each to a PoE port:</text>
+      <text x="24" y="268" font-size="13" fill="#5A5D66">power out, video in</text>
+      <rect x="250" y="60" width="210" height="170" rx="8" fill="#71E2FD" stroke="#26282E" stroke-width="1.6"/>
+      <text x="355" y="88" font-size="15" font-weight="700" text-anchor="middle" fill="#26282E">Recorder (NVR)</text>
+      <text x="355" y="110" font-size="13" text-anchor="middle" fill="#26282E">PoE ports, clock, channels</text>
+      <rect x="275" y="140" width="160" height="70" rx="6" fill="#FFFFFF" stroke="#26282E" stroke-width="1.6"/>
+      <text x="355" y="168" font-size="13" font-weight="700" text-anchor="middle" fill="#26282E">Recording drive</text>
+      <text x="355" y="190" font-size="13" text-anchor="middle" fill="#26282E">Recordings kept here</text>
+      <line x1="460" y1="145" x2="520" y2="145" stroke="#26282E" stroke-width="1.6"/>
+      <rect x="520" y="110" width="150" height="70" rx="6" fill="#F0F0F0" stroke="#26282E" stroke-width="1.6"/>
+      <text x="595" y="138" font-size="13" font-weight="700" text-anchor="middle" fill="#26282E">Switch port</text>
+      <text x="595" y="160" font-size="13" text-anchor="middle" fill="#26282E">Camera network</text>
+      <line x1="670" y1="145" x2="730" y2="145" stroke="#26282E" stroke-width="1.6"/>
+      <rect x="730" y="110" width="146" height="70" rx="6" fill="#FFFFFF" stroke="#A4262C" stroke-width="2.4"/>
+      <text x="803" y="150" font-size="15" font-weight="700" text-anchor="middle" fill="#A4262C">Firewall</text>
+      <line x1="803" y1="180" x2="803" y2="236" stroke="#26282E" stroke-width="1.6"/>
+      <rect x="700" y="236" width="176" height="64" rx="6" fill="#E7FD82" stroke="#26282E" stroke-width="1.6"/>
+      <text x="788" y="262" font-size="13" font-weight="700" text-anchor="middle" fill="#26282E">Office network</text>
+      <text x="788" y="284" font-size="13" text-anchor="middle" fill="#26282E">Laptop: web interface</text>
+      <text x="250" y="270" font-size="13" fill="#26282E">Office network to camera network: sessions allowed</text>
+      <text x="250" y="292" font-size="13" fill="#26282E">Camera network to office network: replies only</text>
+      <text x="250" y="314" font-size="13" fill="#5A5D66">The network team writes the firewall&#8217;s rules</text>
+    </svg>
+    </div>
+  </div>
+  <details class="longdesc"><summary>Text description of this diagram</summary>
+    <p>The diagram is titled Where the recorder sits (a typical site). Three boxes labeled Camera stand at the left. A line runs from each to a box labeled Recorder (NVR), PoE ports, clock, channels. A note under the cameras reads: one cable each to a PoE port: power out, video in. Inside the recorder box, a smaller box reads Recording drive, recordings kept here.</p>
+    <p>A line runs from the recorder to a box labeled Switch port, camera network, and from there to a box labeled Firewall. Below the firewall, a line runs down to a box labeled Office network, laptop: web interface.</p>
+    <p>Three lines of text at the bottom read: office network to camera network: sessions allowed; camera network to office network: replies only; the network team writes the firewall&rsquo;s rules.</p>
+  </details>
+
+  <h3>Remote viewing</h3>
+  <p>Owners often ask to watch their cameras from outside the site. Recorders offer several routes: a phone app that reaches the recorder through the maker&rsquo;s cloud service, a port opened through the site&rsquo;s firewall, or a connection through the owner&rsquo;s own remote-access system. Each route opens a way into the camera network from outside. The owner and the network team decide whether any route is allowed, and which. An installer sets up only a method the owner has approved, and never enables a cloud or remote feature on a recorder without that approval. Some recorders offer the maker&rsquo;s cloud service during first start-up: leave it off unless the owner has approved it, and check its state at hand-off. Whether the camera network can reach the internet, as a phone-app route needs, is a separate firewall rule, written by the network team.</p>
+
+  <div class="cyu gate" data-answer="2" data-fb="The firewall lets the office network start a session into the camera network, so the laptop opens the recorder&rsquo;s page. The recorder&rsquo;s request to the time server is a session started from the camera network, which the rule blocks. The fix is the network team&rsquo;s: a time source the camera network can reach, or a rule for it. The recorder&rsquo;s time zone does not affect whether it reaches a server, and a recorder that answers a laptop has a working network port.">
+    <p class="cyu-h">Check Your Understanding</p>
+    <p class="cyu-q">On a campus job, a laptop on the office network opens the recorder&rsquo;s web page. The recorder, on the camera network, cannot reach the time server on the office network that the site named. What is the most likely cause?</p>
+    <button class="opt"><span class="mk" aria-hidden="true">A</span>The recorder&rsquo;s network port is faulty</button>
+    <button class="opt"><span class="mk" aria-hidden="true">B</span>The recorder&rsquo;s time zone is set wrong</button>
+    <button class="opt"><span class="mk" aria-hidden="true">C</span>The firewall blocks sessions the recorder starts</button>
+    <button class="opt"><span class="mk" aria-hidden="true">D</span>The time server is too busy to reply</button>
+    <div class="cyu-fb" role="status"></div>
+  </div>
+</section>
+
+<section class="topic" data-lesson-num="533.3" data-lesson-title="NVR Commissioning and Recording" data-group-num="5" data-group-title="Wrapping Up" data-num="533.3.14" data-title="What you covered">
+  <p class="crumb">Lesson 533.3 &middot; Section 5 Wrapping Up</p>
+  <h2><span class="tnum">533.3.14</span> What you covered</h2>
+  <p class="lead-in">Fit and check the drive, set the clock from the site&rsquo;s time source, confirm and name each channel, apply the schedule, work out how many days of video the drive keeps, and prove that a recording comes back out as a clip that plays.</p>
+
+  <h3>The recorder, its drive, and its clock</h3>
+  <p>A recorder powers its cameras where it has PoE ports, writes each channel to its drive, and gives recordings back by channel and time. Without a drive it shows live video and keeps none. Initializing a drive erases it, so the site lead authorizes each initialization. The recorder takes its time from the site&rsquo;s named time source, in the site&rsquo;s time zone. A screenshot against a reference clock proves the setting.</p>
+
+  <h3>Cameras, channels, and recording settings</h3>
+  <p>The MAC address the recorder shows, matched to the camera&rsquo;s label, confirms which camera is on a port. The channel takes the location identifier, character for character, and keeps it when the camera is replaced. A schedule sets continuous, event, or no recording for each block of each day. Resolution, codec, bitrate, and bitrate type set how much data the main stream sends; the installer reads and records them without changing them.</p>
+
+  <h3>Retention</h3>
+  <div class="tbl-scroll">
+    <table class="tbl">
+      <caption>The retention estimate, line by line.</caption>
+      <thead><tr>
+        <th scope="col">Line</th><th scope="col">Arithmetic</th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row">Bitrate</th><td>kbit/s &divide; 1,000 = Mbit/s</td></tr>
+        <tr><th scope="row">GB a camera a day</th><td>Mbit/s &times; 3,600 &times; hours &divide; 8 &divide; 1,000 (&times; 10.8 for 24 hours)</td></tr>
+        <tr><th scope="row">GB a day for the recorder</th><td>The sum of every channel</td></tr>
+        <tr><th scope="row">Retention</th><td>Label capacity in GB &divide; GB a day for the recorder</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The figure is an estimate, worked on the capacity on the drive&rsquo;s label, with the recorder&rsquo;s displayed figure recorded beside it. Variable bitrate and event recording move the retention observed on the recorder; the unit the recorder counts in moves only an estimate worked from its display.</p>
+
+  <h3>Getting video back and leaving the system recoverable</h3>
+  <p>Search the channel of the place in the request, over a window either side of the reported time. Export from before the event to after it, in a standard format where the recorder offers one, and play the file on a computer without the maker&rsquo;s software. Leave a settings backup or a manual recovery record, with no password, passphrase, or account name in it. The camera network sits behind a firewall that lets the office network in and keeps the recorder from starting sessions out; remote viewing runs only by a method the owner has approved.</p>
+
+  <button class="ack gate btn" data-done-label="Lesson complete">I have worked through this lesson</button>
+</section>
+</div>
+
+    <nav class="topnav" aria-label="Topic navigation">
+      <button class="navbtn" id="prevBtn" type="button">&lsaquo; Previous</button>
+      <span class="gate-msg" id="gateMsg" role="status" aria-live="polite"></span>
+      <button class="navbtn" id="nextBtn" type="button">Next &rsaquo;</button>
+    </nav>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="srAnnounce" class="vh" role="status" aria-live="polite"></div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true"
+     aria-label="Enlarged image">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close enlarged image">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <figure class="lb-fig">
+    <img id="lbImg" src="" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* =========================================================
+   UCI 2107.1 · Module 528 self-study engine
+   Multi-lesson topic reader. WCAG 2.1 AA target.
+   Deliberate changes from the 528.6 pilot engine:
+     - #main no longer carries aria-live. A whole-region live
+       area makes screen readers re-read the entire topic on
+       every change; topic changes now go through a dedicated
+       polite status region (#srAnnounce).
+     - Three-level contents: lesson > section > topic.
+     - Correctness is never signalled by color alone. Every
+       right/wrong state also carries text.
+     - Matching chips expose aria-pressed; wrong attempts are
+       announced in text, not only as a color flash.
+     - Ordering positions are announced instead of aria-hidden.
+     - Lightbox traps focus and restores it on close.
+     - Enlargeable photos use real buttons, not img[role=button].
+   ========================================================= */
+(function(){
+  "use strict";
+  const topics   = Array.from(document.querySelectorAll('.topic'));
+  const tocList  = document.getElementById('tocList');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+  const gateMsg  = document.getElementById('gateMsg');
+  const pbarFill = document.getElementById('pbarFill');
+  const pbar     = document.querySelector('.pbar');
+  const progText = document.getElementById('progText');
+  const announcer= document.getElementById('srAnnounce');
+  let current = 0;
+
+  function announce(msg){
+    if(!announcer) return;
+    announcer.textContent='';
+    setTimeout(function(){ announcer.textContent=msg; },60);
+  }
+
+  /* ---------- sidebar view: Overview / Curriculum ---------- */
+  const tabOverview  = document.getElementById('tab-overview');
+  const tabCurriculum= document.getElementById('tab-curriculum');
+  const overviewPanel= document.getElementById('overviewPanel');
+  const topicWrap    = document.getElementById('topicWrap');
+  const topnav       = document.querySelector('.topnav');
+  function setView(overview){
+    tabOverview.setAttribute('aria-selected',String(overview));
+    tabCurriculum.setAttribute('aria-selected',String(!overview));
+    tabOverview.tabIndex  = overview?0:-1;
+    tabCurriculum.tabIndex= overview?-1:0;
+    overviewPanel.hidden=!overview;
+    topicWrap.style.display=overview?'none':'';
+    if(topnav) topnav.style.display=overview?'none':'';
+    if(overview){ const h=document.getElementById('ovh'); if(h) h.focus({preventScroll:true}); }
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  tabOverview.addEventListener('click',function(){ setView(true); });
+  tabCurriculum.addEventListener('click',function(){ setView(false); });
+  [tabOverview,tabCurriculum].forEach(function(b,i,arr){
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        e.preventDefault();
+        const n=arr[(i+1)%2]; n.focus(); setView(n===tabOverview);
+      }
+    });
+  });
+
+  /* ---------- gating + scoring state ---------- */
+  const gateNeeded    = topics.map(function(t){ return t.querySelectorAll('.gate').length; });
+  const gateDone      = topics.map(function(){ return new Set(); });
+  const topicComplete = topics.map(function(t,i){ return gateNeeded[i]===0; });
+  let score=0, scoreMax=0;
+  document.querySelectorAll('.cyu').forEach(function(c){ if(c.dataset.scored!=='false') scoreMax++; });
+
+  function toast(msg){
+    const t=document.getElementById('toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+
+  /* ---------- build three-level contents ---------- */
+  const lessons=[];
+  topics.forEach(function(t,i){
+    const ln=t.dataset.lessonNum, lt=t.dataset.lessonTitle;
+    let L=lessons.find(function(x){ return x.num===ln; });
+    if(!L){ L={num:ln,title:lt,groups:[],items:[]}; lessons.push(L); }
+    L.items.push(i);
+    const gn=t.dataset.groupNum, gt=t.dataset.groupTitle;
+    let g=L.groups.find(function(x){ return x.num===gn; });
+    if(!g){ g={num:gn,title:gt,items:[]}; L.groups.push(g); }
+    g.items.push(i);
+  });
+  const lessonOf = topics.map(function(t){
+    return lessons.findIndex(function(L){ return L.num===t.dataset.lessonNum; });
+  });
+
+  lessons.forEach(function(L,li){
+    const wrap=document.createElement('div');
+    wrap.className='toc-lesson';
+    wrap.setAttribute('aria-expanded', li===0?'true':'false');
+    wrap.id='tl-'+li;
+    const btn=document.createElement('button');
+    btn.className='les-btn'; btn.type='button';
+    btn.setAttribute('aria-expanded', li===0?'true':'false');
+    btn.innerHTML='<span class="toggle" aria-hidden="true">&#9662;</span>'+
+      '<span class="les-num">'+L.num+'</span>'+
+      '<span class="les-ttl">'+L.title+'</span>'+
+      '<span class="les-pc" id="lespc-'+li+'">0%</span>';
+    const body=document.createElement('div');
+    body.className='les-body'; body.id='lb-'+li;
+    btn.setAttribute('aria-controls',body.id);
+    btn.addEventListener('click',function(){
+      const open=wrap.getAttribute('aria-expanded')==='true';
+      wrap.setAttribute('aria-expanded',String(!open));
+      btn.setAttribute('aria-expanded',String(!open));
+    });
+    L.groups.forEach(function(g){
+      const gh=document.createElement('div'); gh.className='grp-title-static';
+      gh.innerHTML='<span class="grp-title">'+g.num+' '+g.title+'</span>';
+      const ul=document.createElement('ul'); ul.className='grp-list';
+      g.items.forEach(function(ti){
+        const t=topics[ti];
+        const item=document.createElement('li');
+        item.dataset.idx=ti; item.id='li-'+ti;
+        const sb=document.createElement('button');
+        sb.className='sub-btn'; sb.type='button';
+        sb.innerHTML='<span class="node" aria-hidden="true"></span><span>'+
+          '<span class="lbl-num">'+t.dataset.num+'</span> '+t.dataset.title+'</span>';
+        sb.addEventListener('click',function(){ setView(false); goTo(ti); closeDrawer(); });
+        item.appendChild(sb); ul.appendChild(item);
+      });
+      body.appendChild(gh); body.appendChild(ul);
+    });
+    wrap.appendChild(btn); wrap.appendChild(body); tocList.appendChild(wrap);
+  });
+
+  function refreshTOC(){
+    topics.forEach(function(t,i){
+      const item=document.getElementById('li-'+i); if(!item) return;
+      item.classList.toggle('active',i===current);
+      item.classList.toggle('done',topicComplete[i]);
+      const sb=item.querySelector('.sub-btn');
+      if(i===current) sb.setAttribute('aria-current','step');
+      else sb.removeAttribute('aria-current');
+    });
+    lessons.forEach(function(L,li){
+      const done=L.items.filter(function(i){ return topicComplete[i]; }).length;
+      const pc=Math.round(done/L.items.length*100);
+      const el=document.getElementById('lespc-'+li);
+      if(el){
+        el.textContent=pc+'%';
+        el.setAttribute('aria-label','Lesson '+L.num+' '+pc+' percent complete');
+      }
+      const wrap=document.getElementById('tl-'+li);
+      if(wrap) wrap.classList.toggle('current', li===lessonOf[current]);
+    });
+  }
+  function openLessonOf(idx){
+    const wrap=document.getElementById('tl-'+lessonOf[idx]);
+    if(wrap && wrap.getAttribute('aria-expanded')==='false'){
+      wrap.setAttribute('aria-expanded','true');
+      wrap.querySelector('.les-btn').setAttribute('aria-expanded','true');
+    }
+  }
+
+  /* ---------- navigation ---------- */
+  function updateProgress(){
+    const done=topicComplete.filter(Boolean).length;
+    const pct=Math.round(done/topics.length*100);
+    pbarFill.style.width=pct+'%';
+    pbar.setAttribute('aria-valuenow',pct);
+    progText.textContent=pct+'% of lesson complete';
+  }
+  function updateNav(){
+    prevBtn.disabled = current===0;
+    const last = current===topics.length-1;
+    nextBtn.style.visibility = last?'hidden':'visible';
+    const gated = !topicComplete[current];
+    nextBtn.disabled = gated;
+    if(last){
+      /* Completion is a whole-lesson claim, so test every topic, not just this
+         one. Reaching the final topic by the sidebar and clicking its
+         acknowledgement used to report the lesson complete on its own. */
+      const remaining = topicComplete.filter(function(v){return !v;}).length;
+      if(remaining===0){
+        gateMsg.textContent='✓ Lesson complete';
+        gateMsg.className='gate-msg ok';
+      } else if(topicComplete[current]){
+        gateMsg.textContent = remaining===1
+          ? '1 topic still has an activity to complete — use the Curriculum tab to find it'
+          : remaining+' topics still have activities to complete — use the Curriculum tab to find them';
+        gateMsg.className='gate-msg';
+      } else {
+        gateMsg.textContent='';
+        gateMsg.className='gate-msg';
+      }
+    } else if(gated){
+      gateMsg.textContent='Complete the activity to continue ('+
+        gateDone[current].size+' of '+gateNeeded[current]+')';
+      gateMsg.className='gate-msg';
+    } else {
+      gateMsg.textContent='✓ Topic complete—continue';
+      gateMsg.className='gate-msg ok';
+    }
+  }
+  function goTo(i){
+    if(i<0||i>=topics.length) return;
+    topics[current].classList.remove('showing');
+    current=i;
+    const t=topics[current];
+    t.classList.add('showing');
+    openLessonOf(i); refreshTOC(); updateNav();
+    const h=t.querySelector('h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    announce('Topic '+t.dataset.num+', '+t.dataset.title+'. Lesson '+t.dataset.lessonNum+'.');
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  prevBtn.addEventListener('click',function(){ goTo(current-1); });
+  nextBtn.addEventListener('click',function(){ if(!nextBtn.disabled) goTo(current+1); });
+
+  function markGate(topicIdx,gateEl){
+    const gid=gateEl.dataset.gid||
+      Array.prototype.indexOf.call(gateEl.parentNode.querySelectorAll('.gate'),gateEl);
+    const set=gateDone[topicIdx];
+    if(set.has(gid)) return;
+    set.add(gid);
+    if(set.size>=gateNeeded[topicIdx] && !topicComplete[topicIdx]){
+      topicComplete[topicIdx]=true;
+      toast('Topic complete ✓');
+      announce('Topic complete. You can continue.');
+    }
+    refreshTOC(); updateProgress();
+    if(topicIdx===current) updateNav();
+    updateResults();
+  }
+  function topicIndexOf(el){ return topics.indexOf(el.closest('.topic')); }
+
+  /* ---------- tabs (WAI-ARIA pattern) ---------- */
+  document.querySelectorAll('.tabs').forEach(function(tabs){
+    const btns=Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels=Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+    const viewed=new Set([0]);
+    panels.forEach(function(p){ p.tabIndex=0; });
+    function select(idx){
+      btns.forEach(function(b,i){
+        b.setAttribute('aria-selected',String(i===idx));
+        b.tabIndex=i===idx?0:-1;
+        panels[i].hidden=i!==idx;
+      });
+      viewed.add(idx);
+      if(tabs.classList.contains('gate') && viewed.size>=btns.length){
+        markGate(topicIndexOf(tabs),tabs);
+      }
+    }
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){ select(i); });
+      b.addEventListener('keydown',function(e){
+        let n=null;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown') n=(i+1)%btns.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp') n=(i-1+btns.length)%btns.length;
+        else if(e.key==='Home') n=0;
+        else if(e.key==='End') n=btns.length-1;
+        if(n!==null){ e.preventDefault(); select(n); btns[n].focus(); }
+      });
+    });
+    select(0);
+  });
+
+  /* ---------- reveal cards ---------- */
+  document.querySelectorAll('.revealset').forEach(function(set){
+    const cards=Array.from(set.querySelectorAll('.rcard'));
+    const seen=new Set();
+    cards.forEach(function(c,idx){
+      c.addEventListener('click',function(){
+        const exp=c.getAttribute('aria-expanded')==='true';
+        c.setAttribute('aria-expanded',String(!exp));
+        const d=c.querySelector('.rcard-detail'); if(d) d.hidden=exp;
+        const cue=c.querySelector('.rcard-cue');
+        if(cue) cue.textContent=exp?'Select to reveal ›':'Hide details';
+        if(!exp){
+          seen.add(idx);
+          if(seen.size>=cards.length && set.classList.contains('gate')){
+            markGate(topicIndexOf(set),set);
+          }
+        }
+      });
+    });
+  });
+
+  /* ---------- matching ---------- */
+  function shuffle(a){
+    a=a.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+  document.querySelectorAll('.match').forEach(function(m){
+    const pairs=Array.from(m.querySelectorAll('.pair')).map(function(p,i){
+      return {l:p.dataset.left,r:p.dataset.right,i:i};
+    });
+    m.querySelectorAll('.pair').forEach(function(p){ p.remove(); });
+    const lh=(m.dataset.left||'Item'), rh=(m.dataset.right||'Match');
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Choose an item on the left, then choose its match on the right. '+
+      'Every option is a button, so Tab moves between them and Enter or Space selects.';
+    const cols=document.createElement('div'); cols.className='match-cols';
+    const cL=document.createElement('div'), cR=document.createElement('div');
+    cL.innerHTML='<div class="col-h">'+lh+'</div>';
+    cR.innerHTML='<div class="col-h">'+rh+'</div>';
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    let sel=null, matched=0;
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.l;
+      b.dataset.i=o.i; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        cL.querySelectorAll('.chip').forEach(function(x){
+          x.classList.remove('sel'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); sel=b;
+        status.textContent='Selected '+b.textContent+'. Now choose its match under '+rh+'.';
+        status.className='activity-status';
+      });
+      cL.appendChild(b);
+    });
+    shuffle(pairs).forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button'; b.className='chip'; b.innerHTML=o.r; b.dataset.i=o.i;
+      b.addEventListener('click',function(){
+        if(b.classList.contains('done')) return;
+        if(!sel){
+          status.textContent='Choose an item under '+lh+' first.';
+          status.className='activity-status bad'; return;
+        }
+        if(+sel.dataset.i===o.i){
+          const lbl=sel.textContent;
+          b.classList.add('done'); b.disabled=true;
+          sel.classList.add('done'); sel.classList.remove('sel');
+          sel.setAttribute('aria-pressed','false'); sel.disabled=true;
+          const mk=document.createElement('span');
+          mk.className='vh'; mk.textContent=' — matched';
+          b.appendChild(mk);
+          sel=null; matched++;
+          if(matched===pairs.length){
+            status.textContent='✓ All '+pairs.length+' matched correctly.';
+            status.className='activity-status good';
+            markGate(topicIndexOf(m),m);
+          } else {
+            status.textContent='Correct — '+lbl+' matched. '+matched+' of '+pairs.length+' done.';
+            status.className='activity-status good';
+          }
+        } else {
+          b.classList.add('wrong');
+          setTimeout(function(){ b.classList.remove('wrong'); },450);
+          status.textContent='Not a match. '+sel.textContent+
+            ' is still selected — try another option.';
+          status.className='activity-status bad';
+        }
+      });
+      cR.appendChild(b);
+    });
+    cols.appendChild(cL); cols.appendChild(cR);
+    m.appendChild(help); m.appendChild(cols); m.appendChild(status);
+    status.textContent='Matched 0 of '+pairs.length+'.';
+  });
+
+  /* ---------- ordering ---------- */
+  document.querySelectorAll('.order').forEach(function(o){
+    const steps=Array.from(o.querySelectorAll('.step')).map(function(s){
+      return {txt:s.innerHTML,pos:+s.dataset.pos};
+    });
+    o.querySelectorAll('.step').forEach(function(s){ s.remove(); });
+    const help=document.createElement('p');
+    help.className='activity-help';
+    help.textContent='Select the steps in the order they should be carried out. '+
+      'Each step is a button — Tab to move, Enter or Space to add or remove it. '+
+      'Its position is read out as you go.';
+    const ol=document.createElement('ol');
+    const picks=[];
+    const status=document.createElement('div');
+    status.className='activity-status'; status.setAttribute('role','status');
+    function renumber(){
+      picks.forEach(function(x,n){
+        x.querySelector('.pos').textContent=(n+1)+'.';
+        x.querySelector('.pos-sr').textContent='position '+(n+1)+' of '+steps.length+', ';
+        x.setAttribute('aria-pressed','true');
+      });
+      o.querySelectorAll('.step:not(.picked)').forEach(function(s){
+        s.querySelector('.pos').textContent='';
+        s.querySelector('.pos-sr').textContent='not yet placed, ';
+        s.setAttribute('aria-pressed','false');
+      });
+    }
+    shuffle(steps).forEach(function(st){
+      const item=document.createElement('li');
+      item.className='step'; item.dataset.pos=st.pos;
+      item.innerHTML='<span class="pos" aria-hidden="true"></span>'+
+        '<span class="pos-sr vh">not yet placed, </span><span>'+st.txt+'</span>';
+      item.setAttribute('role','button'); item.tabIndex=0;
+      item.setAttribute('aria-pressed','false');
+      function toggle(){
+        if(item.classList.contains('picked')){
+          item.classList.remove('picked');
+          const k=picks.indexOf(item); if(k>-1) picks.splice(k,1);
+          status.textContent='Removed. '+picks.length+' of '+steps.length+' placed.';
+        } else {
+          item.classList.add('picked'); picks.push(item);
+          status.textContent='Placed at position '+picks.length+'. '+
+            picks.length+' of '+steps.length+' placed.';
+        }
+        status.className='activity-status'; renumber();
+      }
+      item.addEventListener('click',toggle);
+      item.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+      ol.appendChild(item);
+    });
+    const row=document.createElement('div'); row.className='btn-row';
+    const check=document.createElement('button');
+    check.type='button'; check.className='btn'; check.textContent='Check order';
+    const reset=document.createElement('button');
+    reset.type='button'; reset.className='btn ghost'; reset.textContent='Reset';
+    check.addEventListener('click',function(){
+      if(picks.length!==steps.length){
+        status.textContent='Select all '+steps.length+' steps in order first. '+
+          picks.length+' placed so far.';
+        status.className='activity-status bad'; return;
+      }
+      let ok=true; const wrongAt=[];
+      picks.forEach(function(x,n){
+        const c=(+x.dataset.pos===n+1);
+        x.classList.toggle('correct',c);
+        x.classList.toggle('incorrect',!c);
+        if(!c){ ok=false; wrongAt.push(n+1); }
+      });
+      if(ok){
+        status.textContent='✓ Correct sequence.';
+        status.className='activity-status good';
+        markGate(topicIndexOf(o),o);
+      } else {
+        status.textContent='Not quite. Position'+(wrongAt.length>1?'s ':' ')+
+          wrongAt.join(', ')+(wrongAt.length>1?' are':' is')+
+          ' in the wrong place — each wrong step is also labeled. Adjust and check again.';
+        status.className='activity-status bad';
+      }
+    });
+    reset.addEventListener('click',function(){
+      picks.length=0;
+      o.querySelectorAll('.step').forEach(function(x){ x.className='step'; });
+      renumber();
+      status.textContent='Reset. 0 of '+steps.length+' placed.';
+      status.className='activity-status';
+    });
+    row.appendChild(check); row.appendChild(reset);
+    o.appendChild(help); o.appendChild(ol); o.appendChild(row); o.appendChild(status);
+    renumber();
+  });
+
+  /* ---------- knowledge check ---------- */
+  document.querySelectorAll('.cyu').forEach(function(cyu,ci){
+    const multi=cyu.dataset.multi==='true';
+    const ans=(cyu.dataset.answer||'').split(',').map(function(s){ return +s.trim(); });
+    const aset=new Set(ans);
+    const fbText=cyu.dataset.fb||'';
+    const opts=Array.from(cyu.querySelectorAll('.opt'));
+    const fb=cyu.querySelector('.cyu-fb');
+    const scored=cyu.dataset.scored!=='false';
+    const tIdx=topicIndexOf(cyu);
+    const sub=cyu.querySelector('.cyu-submit');
+    let awarded=false, solved=false, chosen=new Set();
+
+    /* group semantics so options read as one question */
+    const qEl=cyu.querySelector('.cyu-q');
+    if(qEl){
+      const qid='cyuq-'+ci; qEl.id=qid;
+      cyu.setAttribute('role','group');
+      cyu.setAttribute('aria-labeledby',qid);
+    }
+    opts.forEach(function(o){
+      o.type='button';
+      if(multi) o.setAttribute('aria-pressed','false');
+      const mk=document.createElement('span'); mk.className='opt-mark'; o.appendChild(mk);
+    });
+    function setMark(o,txt){
+      const m=o.querySelector('.opt-mark'); if(m) m.textContent=txt;
+    }
+    const retry=document.createElement('button');
+    retry.type='button'; retry.className='btn ghost cyu-retry';
+    retry.textContent='Try again';
+    retry.style.display='none'; retry.style.marginTop='10px';
+    fb.after(retry);
+    function reset(){
+      opts.forEach(function(o){
+        o.classList.remove('locked','chosen','correct','incorrect');
+        setMark(o,'');
+        if(multi) o.setAttribute('aria-pressed','false');
+      });
+      fb.className='cyu-fb'; fb.innerHTML='';
+      retry.style.display='none';
+      chosen=new Set();
+      if(sub) sub.disabled=false;
+      if(opts[0]) opts[0].focus();
+    }
+    retry.addEventListener('click',reset);
+    function resolve(correct){
+      if(cyu.classList.contains('gate')) markGate(tIdx,cyu);
+      opts.forEach(function(o,oi){
+        if(aset.has(oi)){ o.classList.add('correct'); setMark(o,'correct answer'); }
+      });
+      if(correct){
+        solved=true;
+        opts.forEach(function(o){ o.classList.add('locked'); });
+        if(sub) sub.disabled=true;
+        fb.className='cyu-fb show right';
+        fb.innerHTML='<strong>✓ Correct.</strong> '+fbText;
+        if(scored && !awarded){ awarded=true; score++; }
+        retry.style.display='none';
+      } else {
+        fb.className='cyu-fb show wrong';
+        fb.innerHTML='<strong>✗ Not quite.</strong> The correct answer is marked above. '+
+          'Review the topic and try again. A wrong answer does not block your progress.';
+        if(sub) sub.disabled=true;
+        retry.style.display='inline-block';
+        retry.focus();
+      }
+      updateResults();
+    }
+    if(!multi){
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(!aset.has(oi)){ o.classList.add('incorrect'); setMark(o,'your answer'); }
+          resolve(aset.has(oi));
+        });
+      });
+    } else {
+      opts.forEach(function(o,oi){
+        o.addEventListener('click',function(){
+          if(solved||retry.style.display!=='none') return;
+          if(chosen.has(oi)){
+            chosen.delete(oi); o.classList.remove('chosen'); o.setAttribute('aria-pressed','false');
+          } else {
+            chosen.add(oi); o.classList.add('chosen'); o.setAttribute('aria-pressed','true');
+          }
+        });
+      });
+      if(sub) sub.addEventListener('click',function(){
+        if(solved) return;
+        let ok=chosen.size===aset.size;
+        chosen.forEach(function(i){ if(!aset.has(i)) ok=false; });
+        if(!ok){
+          chosen.forEach(function(i){
+            if(!aset.has(i)){ opts[i].classList.add('incorrect'); setMark(opts[i],'your answer'); }
+          });
+        }
+        resolve(ok);
+      });
+    }
+  });
+
+  /* ---------- acknowledge ---------- */
+  document.querySelectorAll('.ack.gate').forEach(function(a){
+    a.addEventListener('click',function(){
+      a.disabled=true;
+      a.textContent='✓ '+(a.dataset.doneLabel||'Reviewed');
+      markGate(topicIndexOf(a),a);
+    });
+  });
+
+  /* ---------- results ring ---------- */
+  function updateResults(){
+    const ring=document.getElementById('ringFill'); if(!ring) return;
+    const pct=scoreMax?Math.round(score/scoreMax*100):0;
+    const circ=2*Math.PI*70;
+    ring.style.strokeDasharray=circ;
+    ring.style.strokeDashoffset=circ-(circ*pct/100);
+    const pc=document.getElementById('ringPc');
+    if(pc) pc.textContent=pct+'%';
+    const sc=document.getElementById('scoreLine');
+    if(sc) sc.textContent=score+' of '+scoreMax+' knowledge checks correct';
+    const rg=document.getElementById('ringWrap');
+    if(rg) rg.setAttribute('aria-label','Knowledge check score '+pct+
+      ' percent, '+score+' of '+scoreMax+' correct');
+    const msg=document.getElementById('resultMsg');
+    if(msg){
+      if(pct===100) msg.textContent='You answered every check correctly.';
+      else if(pct>=90) msg.textContent='You answered nearly every check correctly. Go back over the one you missed.';
+      else if(pct>=75) msg.textContent='Strong work. Go back over any check you missed.';
+      else if(pct>=50) msg.textContent='Good progress. Go back over the topics behind the checks you missed.';
+      else msg.textContent='Keep going — work through the knowledge checks to build your score.';
+    }
+  }
+
+  /* ---------- lightbox with focus trap ---------- */
+  (function(){
+    const lb=document.getElementById('lightbox'); if(!lb) return;
+    const lbImg=document.getElementById('lbImg');
+    const lbCap=document.getElementById('lbCap');
+    const lbCloseBtn=document.getElementById('lbClose');
+    let opener=null;
+    function openLB(img,cap){
+      opener=document.activeElement;
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lbCap.textContent=cap||img.alt||'';
+      lb.hidden=false;
+      document.body.style.overflow='hidden';
+      lbCloseBtn.focus();
+    }
+    function closeLB(){
+      lb.hidden=true;
+      document.body.style.overflow='';
+      if(opener && opener.focus) opener.focus();
+    }
+    lbCloseBtn.addEventListener('click',closeLB);
+    lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden) return;
+      if(e.key==='Escape'){ closeLB(); return; }
+      if(e.key==='Tab'){ e.preventDefault(); lbCloseBtn.focus(); }
+    });
+    document.querySelectorAll('.photo img').forEach(function(img){
+      const fig=img.closest('figure');
+      const capEl=fig?fig.querySelector('figcaption'):null;
+      const capTxt=capEl?capEl.textContent.trim():(img.alt||'');
+      const btn=document.createElement('button');
+      btn.type='button'; btn.className='zoom-btn';
+      btn.setAttribute('aria-label','Enlarge image: '+(img.alt||'photograph'));
+      img.parentNode.insertBefore(btn,img);
+      btn.appendChild(img);
+      btn.addEventListener('click',function(){ openLB(img,capTxt); });
+      if(capEl){
+        const h=document.createElement('span');
+        h.className='zoom-hint'; h.textContent='Select to enlarge';
+        capEl.appendChild(h);
+      }
+    });
+  })();
+
+  /* ---------- mobile drawer ---------- */
+  const menuBtn=document.getElementById('menuBtn');
+  const toc=document.getElementById('toc');
+  const scrim=document.getElementById('scrim');
+  function openDrawer(){
+    toc.classList.add('open'); scrim.classList.add('show');
+    menuBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    toc.classList.remove('open'); scrim.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click',function(){
+    if(toc.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  scrim.addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && toc.classList.contains('open')){ closeDrawer(); menuBtn.focus(); }
+  });
+
+  /* ---------- init ---------- */
+  topics.forEach(function(t){ t.classList.remove('showing'); });
+  goTo(0); updateProgress(); updateResults();
+  const ovBegin=document.getElementById('ovBegin');
+  if(ovBegin) ovBegin.addEventListener('click',function(){ setView(false); goTo(current); });
+  setView(true);
+})();
+
+</script>
+<!--
+BUILD FLAGS - UCI 1019 Lesson 533.3 Async Reading v0.1.0 DRAFT, 2026-11-12
+(Module 533, Low Voltage Security Systems Installations; delegated build,
+brief Planning/_AGENT-BRIEF_M533-Readings-Decks-Quizzes.md). This comment is
+visible in the page source, so it carries no answer-key value. Not reviewed:
+technical review, language pass and cold read are owed to fresh subagents.
+
+SOURCES READ
+- CLAUDE.md; STYLE-RULES.md (before writing and again before the
+  self-check); style profile v1.4 to line 250; FORMAT-SPEC v1.0 and the 2026
+  addendum.
+- Module plan v0.1.0 sections 2-6 and change log; tech facts v0.1.0 (sections
+  6 and 7 in full); lab-build brief (fixed facts, E1-E10, day clock).
+- ALAB 533.3.1 lab, HO 533.3.1, instructor guide, NVR Check Sheet, delivery
+  rehearsal; work order KC-2645; Security Addendum (present in
+  Project-Documents); Security Plan Sheet (network rows); source map section
+  4 (pfSense zone rules); 535 Kestrel Network Plan (traffic rules).
+- Pattern: 535.5 reading (shell, engine, brand layer, .calc).
+
+DECISIONS TAKEN
+- 14 topics in 5 sections; every plan objective has a topic.
+- Product claims limited to the tech facts: one drive per recorder on the
+  mock-up [A1]; live view only without a drive [A3]; initialize/format
+  erases (the format step clears the database [A3]); overwrite oldest by
+  default [A3] (stated as "most recorders" and "by default"); default 24/7
+  recording [A3] (stated as "many recorders"); NTP among the recorder's
+  protocols [A1]; export to a FAT32 USB flash drive [A3]; camera main and sub
+  streams, H.264/H.265, CBR/VBR [A2]; retention formula and decimal units
+  (tech facts 7). Cameras added automatically or by search: NOT FOUND, so the
+  page says either happens and the maker's guide says which.
+- Export file type: NOT FOUND for the kit. The page teaches "a standard
+  format such as MP4 where offered" and play-before-hand-over; it does not
+  claim what the kit writes.
+- Remote viewing taught as an owner-approved method only; routes named in
+  general (maker's cloud app, a port through the firewall, the owner's
+  remote-access system). The AMLINK P2P/QR detail [A3] is not stated.
+- Camera network: the source map's pfSense rules (LAN may start sessions into
+  CCTV; CCTV cannot start sessions to the LAN; replies pass) stated as the
+  network team's firewall rules, as the 535 Kestrel Network Plan states them.
+  "pfSense", VLAN numbers, subnets and switch port numbers are not named.
+- No AMLINK NVR internal camera addressing, PoE budget or menu path stated
+  (the budget belongs to Lesson 533.2; menu names are posted by the site
+  lead).
+- Channel name example uses another job's scheme (P2-RAMP-C3), not the
+  mock-up's wall-bay-element scheme, so no learner's channel name appears.
+
+NOT FROM THE TECH FACTS (general practice; for the technical review)
+- Surveillance-rated drives and desktop drives rated for fewer hours a day
+  (533.3.2): stated in general, no figure.
+- H.265 typically needs a lower bitrate than H.264 for a similar picture
+  (533.3.7), hedged "typically".
+- Binary units: 8 TB label shows about 7.3 TB (arithmetic: 8e12 / 2^40 =
+  7.28).
+- VBR sends less than the set figure on a still scene (533.3.7, 533.3.9).
+- Daylight saving handled by the time zone setting (533.3.3).
+- Evidence handling: owner decides who receives a clip; keep the original
+  export; record when and to whom (533.3.11). General, not a legal claim.
+
+CHECK QUESTIONS AND WORKED EXAMPLES (for the quiz writer: do not reuse)
+- 533.3.1 CYU: medical office, drive removed; answer: live video shown,
+  nothing kept.
+- 533.3.2 CYU: retail store, drive from a failed recorder, new recorder
+  offers to format; answer: stop and ask the site lead (format erases).
+- 533.3.3 CYU: transit depot, fence at 14:05, time zone one hour ahead;
+  answer: recording stamped 15:05.
+- 533.3.4 CYU: office building, lobby camera on port 3 per schedule, port 3
+  MAC matches the stairwell camera label; answer: crossed cables, resolve
+  before naming.
+- 533.3.5 worked example and CYU: parking structure, P2-RAMP-C3, camera
+  replaced; answer: name stays, record takes the new camera's details.
+- 533.3.6 CYU: school, continuous 6:00-20:00, event 20:00-6:00, gaps
+  overnight; answer: event recording at night.
+- 533.3.7 matching: resolution, codec, bitrate, bitrate type to what each
+  sets.
+- 533.3.8 worked example: 6 TB = 6,000 GB, ten cameras, 2,560 kbit/s, 24 h:
+  27.648 GB a camera a day, 276.48 GB a day, 21.7 days (also in the figure).
+- 533.3.8 CYU: library, 3 TB, five cameras, 1,536 kbit/s, 12 h a day:
+  8.2944 GB, 41.472 GB, 72.3 days (distractors 36.2 for 24 h; 361.7 one
+  camera; 9.0 without the division by 8).
+- 533.3.9 worked figure: 8 TB label shows about 7.3 TB in binary units.
+- 533.3.9 CYU: warehouse, estimate 18.4 days, VBR, oldest recording 23 days
+  old; answer: quiet scenes send less than the set bitrate.
+- 533.3.10 CYU: clinic, rear door forced around 10:15; answer: the door's
+  channel, about 10:05 to 10:25.
+- 533.3.11 CYU: hotel, insurer cannot open the file; answer: export again in
+  a standard format and play it before sending.
+- 533.3.12 CYU: factory, recovery record holds the administrator password;
+  answer: remove the password.
+- 533.3.13 CYU: campus, laptop opens the recorder's page, recorder cannot
+  reach a time server on the office network; answer: the firewall blocks
+  sessions the recorder starts.
+
+LAB CHECK (graded steps and key values not given)
+- No lab key value: no 2 TB / six cameras / 3,072 kbit/s / 10.0 days (lab
+  worked example); no 465.7 GB / 4,096 kbit/s / 2.6 days (NVR Check Sheet);
+  no 500 GB or 1 TB drive, no 8,192 kbit/s, no four-channel example; no
+  recorder IP address, VLAN, switch port, channel name of the mock-up, MAC
+  address, time zone, time source or schedule value.
+- The retention method itself is taught, as the lab's own worked example
+  also teaches it; the learner's figures come from their own screenshots.
+- Lab steps described in general only (search window either side, export
+  range, MP4 where offered, MAC against the label, check-and-save of a
+  default schedule). These are the methods the lab instructs, not answers.
+
+DOCUMENTS NAMED
+- Security Addendum (E4, E5, E9, E10) and the Kestrel security drawings
+  (SEC-201): both project documents the learner opens. The Security Plan
+  Sheet is named once (533.3.6, quoting clause E4 "as posted on the Security
+  Plan Sheet"); it is the posted sheet the lab names, not a deliverable.
+  Flag for the reviewer.
+- "the site lead posts" - the instructor acting as Kestrel's site lead.
+
+CONFLICTS AND OPEN ITEMS
+- The Security Addendum and SEC drawings exist in Project-Documents
+  (Security Addendum v0.1.0 read; SEC drawing PDFs present, not opened:
+  only sheet SEC-201's role is cited, as KC-2645 cites it).
+- Reading time: audit_html.py counts 5,906 words of prose (~53 min at 112
+  wpm) + 13 activities; stated ~60-75 min.
+
+SELF-CHECK (drafter)
+- audit_html.py: FAIL 0, WARN 0 (after removing a false "space before
+  punctuation" hit and two long sentences). contrast_audit.py: FAIL 1, the
+  known engine-amber .order .step.picked .seq rule that the 2026 token block
+  overrides (no ordering activity on this page); REPORT 83, as on the 535.5
+  pattern page.
+- STYLE-RULES re-read; and-tails split in nine sentences; count-announcing
+  lead-ins removed in 533.3.1, .3, .4, .7, .8, .12, .13; "exactly" and
+  "actually" removed from the prose. Counts: 14 topics, 12 checks + 1
+  matching = 13 activities, 2 SVG = 2 longdesc, in tiles, banner and head
+  comment. No double-escaped entities in the file.
+
+TECH1 fixes 2026-11-12 (review TECH1_Lesson-533.3-Content_2026-11-12.md; applied by a fresh agent, not the drafter)
+- Wrong (1): 533.3.14 summary: the unit no longer "moves the retention observed"; variable bitrate and event recording move the observed retention, the unit only an estimate worked from the display.
+- Retention rule (coordinator decision), one rule across reading, deck and quiz: the estimate uses the drive's label capacity in decimal GB; the figure the NVR displays is recorded beside it, with its unit. Applied in 533.3.8 method step 4, 533.3.9 "Two ways of counting a gigabyte" (plus the reserved-space note), the 533.3.9 CYU feedback on binary units (key D unchanged), and the summary table. ⚠ The lab and NVR Check Sheet build their key on the NVR's displayed 465.7 GB (binary); they must change to the label capacity to match (other agent's files).
+- Unverifiable (2): 533.3.4 "the recorder's camera pages usually give these facts"; MAC "usually printed on the camera's own label".
+- Depends (6): 533.3.3 time zone bullet: daylight saving may be a separate setting (opening story left: the hand-set clock is the fault there); 533.3.7 VBR "on most cameras the set figure is its ceiling" and 533.3.9 "Where the set figure is the stream's ceiling", audio and smart codec noted; 533.3.11 export destination "many also let the web interface download"; 533.3.11 H.265 on Windows 11 needs the HEVC Video Extensions; 533.3.13 maker's cloud offered at first start-up left off unless approved, camera network internet access a separate rule.
+- Check-question keys unchanged; worked example figures unchanged (6 TB label x 1,000 = 6,000 GB already follows the rule).
+LP1 language pass 2026-11-12: 11 applied, 1 held
+LP2 language pass 2026-11-12: 5 applied, 0 held
+LP1 held items resolved 2026-11-12: 533.3.13 lead-in narrowed to "On many sites" to match the body.
+LP2 held items resolved 2026-11-12: score message at 90% or more replaced with "You answered every check correctly." (coordinator decision G5). The threshold in the script is still pct>=90; with 12 scored checks, 11 of 12 (92%) also shows this message (flagged, script not changed).
+LP3 language pass 2026-11-12: 14 applied, 0 held
+COORDINATOR 2026-11-12: score messages harmonized across the four 533 readings (every check only at 100%; 90% 'nearly every'; 75% and 50% messages make no field-readiness claim).
+-->
+
+</body>
+</html>
